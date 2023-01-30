@@ -21,6 +21,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SharedLibrary", "src\BidCon
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DesktopBridge", "src\BidConExport\DesktopBridge\DesktopBridge.csproj", "{5A21470C-2A57-4205-B16F-D6B958358FC9}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Shared", "Shared", "{DB95A27D-D372-44E1-B1F2-EFF2A9013434}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IdentityServer", "src\Shared\IdentityServer\IdentityServer.csproj", "{E111DC92-C63A-4B9B-8EAF-3706A3704C0B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -55,6 +59,10 @@ Global
 		{5A21470C-2A57-4205-B16F-D6B958358FC9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5A21470C-2A57-4205-B16F-D6B958358FC9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5A21470C-2A57-4205-B16F-D6B958358FC9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E111DC92-C63A-4B9B-8EAF-3706A3704C0B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E111DC92-C63A-4B9B-8EAF-3706A3704C0B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E111DC92-C63A-4B9B-8EAF-3706A3704C0B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E111DC92-C63A-4B9B-8EAF-3706A3704C0B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -68,6 +76,8 @@ Global
 		{72CB7B17-C174-492F-A7CD-684A4B289EB6} = {0E403F48-F56E-489D-B9A3-3870BC6FAA01}
 		{A86624C4-1709-4EC7-B82D-B122074933D8} = {0E403F48-F56E-489D-B9A3-3870BC6FAA01}
 		{5A21470C-2A57-4205-B16F-D6B958358FC9} = {0E403F48-F56E-489D-B9A3-3870BC6FAA01}
+		{DB95A27D-D372-44E1-B1F2-EFF2A9013434} = {9D4F6A93-CCF5-4A59-81BC-94F6EE38124D}
+		{E111DC92-C63A-4B9B-8EAF-3706A3704C0B} = {DB95A27D-D372-44E1-B1F2-EFF2A9013434}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {330721B9-E9A0-40E7-94AF-5C66478EFEFB}
