@@ -1,0 +1,20 @@
+﻿#FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
+#WORKDIR /src
+#COPY ["PublicWorkerWasmClient/PublicWorkerWasmClient.csproj", "PublicWorkerWasmClient/"]
+#COPY ["ApiAccessLibrary/ApiAccessLibrary.csproj", "ApiAccessLibrary/"]
+#COPY ["SharedLibrary/SharedLibrary.csproj", "SharedLibrary/"]
+#RUN dotnet restore "PublicWorkerWasmClient/PublicWorkerWasmClient.csproj"
+#COPY . .
+#WORKDIR "/src/PublicWorkerWasmClient"
+#RUN dotnet build "PublicWorkerWasmClient.csproj" -c Release -o /app/build
+#
+#FROM build AS publish
+#RUN dotnet publish "PublicWorkerWasmClient.csproj" -c Release -o /app/publish /p:UseAppHost=false
+#
+#FROM httpd:2.4 AS final
+#COPY --from=publish /app/publish/wwwroot /usr/local/apache2/htdocs/
+#
+FROM httpd:2.4 
+COPY ./PublicWorkerWasmClient/bin/Release/net6.0/browser-wasm/publish/wwwroot/ /usr/local/apache2/htdocs/
+
+#C:/Github/BidConExport/src/PublicWorkerWasmClient/bin/Release/net6.0/browser-wasm/publish/wwwroot/

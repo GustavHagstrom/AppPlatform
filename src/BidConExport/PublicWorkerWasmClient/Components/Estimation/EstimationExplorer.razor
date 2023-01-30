@@ -1,0 +1,26 @@
+﻿@implements IDisposable
+
+<div style="@($"overflow-y: scroll; position: relative; height: {Height}")">
+    <MudOverlay Visible="@ImportState!.IsRefreshing" DarkBackground="true" Absolute="true">
+        <MudProgressCircular Color="Color.Primary" Indeterminate="true" Size="Size.Large" />
+    </MudOverlay>
+    @if (ImportState!.IsRefreshing == false)
+    {
+        <DbTreeItemView TreeItems="@ImportState!.ItemTree!.Items" IndentLevel="0"/>
+    }
+</div>
+
+@code {
+    [Parameter, EditorRequired] public IEstimationImportState? ImportState { get; set; }
+    [Parameter] public string Height { get; set; } = string.Empty;
+
+    protected override void OnInitialized()
+    {
+        ImportState!.OnChange += StateHasChanged;
+    }
+    public void Dispose()
+    {
+        ImportState!.OnChange -= StateHasChanged;
+    }
+
+}

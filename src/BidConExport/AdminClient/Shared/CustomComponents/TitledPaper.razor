@@ -1,0 +1,104 @@
+﻿@using System.ComponentModel.DataAnnotations
+
+<MudPaper Class="@Class" Elevation="@Elevation" Width="@Width" MaxWidth="@MaxWidth" MinWidth="@MinWidth"
+          Outlined="@Outlined" Square="@Square" Style="@($"d-flex flex-grow-1;{Style}")" Tag="@Tag" UserAttributes="@UserAttributes" 
+          Height="@Height" MaxHeight="@MaxHeight" MinHeight="@MinHeight">
+
+    <MudPaper Elevation="0" Class="rounded-b-0 py-2 px-3" Style="@($"background:{Theme?.Palette.PrimaryLighten};")">
+        <div class="d-flex justify-space-between align-center">
+
+            <MudText Typo="Typo.h6" Class="flex-none" Style="@($"color:{Theme?.Palette.PrimaryContrastText};")">@Title</MudText>
+
+            @if (WithInputField)
+            {
+                <MudPaper Elevation="1" Class="d-flex rounded align-center">
+
+                    <MudPaper Class="rounded-r-0" Elevation="0">
+                        <input Placeholder="@InputPlaceholder" class="ma-0 pl-2 no-outline" style="width: 130px;" @bind="InputFieldText"/>
+                    </MudPaper>
+
+                    <MudPaper Class="rounded-l-0" Elevation="0" Style="@($"background:{Theme?.Palette.Success};")">
+                        <MudIconButton Variant="Variant.Filled"
+                                    Icon="@Icons.Material.Filled.Add"
+                                    Class="rounded-l-0"
+                                    Style="@($"color:{Theme?.Palette.PrimaryContrastText}; padding: 2px;")"
+                                   OnClick="Click"/>
+                    </MudPaper>
+
+                </MudPaper>
+            }
+            else
+            {
+                <MudPaper Elevation="1" Style="@($"background:{Theme?.Palette.Success};")">
+                    <MudIconButton Variant="Variant.Filled"
+                                Icon="@Icons.Material.Filled.Add"
+                                Class="rounded-l-0"
+                                Style="@($"color:{Theme?.Palette.PrimaryContrastText}; padding: 2px;")"
+                               OnClick="@(async () => await CreateItemCallBack.InvokeAsync())" />
+                </MudPaper>
+            }
+
+           
+
+        </div>
+    </MudPaper>
+
+    <MudPaper Elevation="0" Class="rounded-t-0 align-self-stretch" Style="@($"background:{Theme?.Palette.Background};")">
+        @ChildContent
+    </MudPaper>
+
+</MudPaper>
+
+
+@code {
+    [Parameter]
+    public string Class { get; set; } = string.Empty;
+    [Parameter]
+    public int Elevation { get; set; }
+    [Parameter]
+    public string Height { get; set; } = string.Empty;
+    [Parameter]
+    public string MaxHeight { get; set; } = string.Empty;
+    [Parameter]
+    public string MinHeight { get; set; } = string.Empty;
+    [Parameter]
+    public string Width { get; set; } = string.Empty;
+    [Parameter]
+    public string MaxWidth { get; set; } = string.Empty;
+    [Parameter]
+    public string MinWidth { get; set; } = string.Empty;
+    [Parameter]
+    public bool Outlined { get; set; } = false;
+    [Parameter]
+    public bool Square { get; set; } = false;
+    [Parameter]
+    public string Style { get; set; } = string.Empty;
+    [Parameter]
+    public object? Tag { get; set; }
+    [Parameter]
+    public Dictionary<string, object> UserAttributes { get; set; } = new();
+
+
+    //-----------------
+    [CascadingParameter]
+    protected MudTheme? Theme { get; set; }
+    [Parameter]
+    public RenderFragment? ChildContent { get; set; }
+    [Parameter]
+    public string? Title { get; set; } = string.Empty;
+    [Parameter]
+    public string? InputPlaceholder { get; set; }
+    [Parameter]
+    public EventCallback<string> CreateItemCallBack { get; set; }
+    [Parameter]
+    public bool WithInputField { get; set; } = false;
+    public string InputFieldText { get; set; } = string.Empty;
+
+    private async Task Click()
+    {
+        if(string.IsNullOrEmpty(InputFieldText) == false)
+        {
+            await CreateItemCallBack.InvokeAsync(InputFieldText);
+        }
+    }
+}

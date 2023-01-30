@@ -1,0 +1,51 @@
+﻿@page "/"
+@inject IRoleStore _roleStore
+@inject ISnackbar _snackbar
+@inject IDialogService DialogService
+@inject UsersAndRolesState _usersAndRolesState
+
+@*<PageTitle>Index</PageTitle>*@
+
+
+    <MudContainer Class="mt-8 px-8" MaxWidth="MaxWidth.False">
+        <MudGrid>
+            <MudItem xs="12" sm="12" md="8">
+                <TitledPaper Elevation="2" Title="Användare" CreateItemCallBack="CreateUser">
+                    <UserListEditor/>
+                </TitledPaper>
+            </MudItem>
+        <MudItem xs="12" sm="12" md="4">
+            <TitledPaper Elevation="2" InputPlaceholder="Roll" Title="Roller" WithInputField="true" CreateItemCallBack="CreateRoleAsync">
+                <RoleListEditor />
+            </TitledPaper>
+        </MudItem>
+        </MudGrid>
+    </MudContainer>
+
+@code{
+    protected override void OnInitialized()
+    {
+        _snackbar.Configuration.PositionClass = Defaults.Classes.Position.BottomLeft;
+    }
+    private async Task CreateRoleAsync(string role)
+    {
+        try
+        {
+            await _roleStore.CreateAsync(new UserRole { Name = role });
+            await _usersAndRolesState.UpdateRoleListAsync();
+        }
+        catch (Exception e)
+        {
+            _snackbar.Add(e.Message, Severity.Error);
+        }
+    }
+    private async Task CreateUser()
+    {
+        var result = await DialogService.Show<UserRegisterDialog>("Create user").Result;
+        if(!result.Cancelled)
+        {
+            await _usersAndRolesState.UpdateUsersListAsync();
+        }
+    }
+
+}

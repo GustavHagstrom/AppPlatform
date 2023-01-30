@@ -1,0 +1,67 @@
+﻿@inherits LayoutComponentBase
+
+<CascadingValue Value="Theme">
+
+    <MudThemeProvider Theme="Theme" />
+    <MudDialogProvider FullWidth="true"
+                       MaxWidth="MaxWidth.ExtraSmall"
+                       CloseButton="true"
+                       DisableBackdropClick="true"
+                       NoHeader="false"
+                       Position="DialogPosition.Center"
+                       CloseOnEscapeKey="true" />
+    <MudSnackbarProvider />
+
+
+    <MudLayout>
+
+        <MudAppBar Dense="false" DisableGutters="true" Style="height: 40px">
+            <AuthorizeView>
+                <Authorized>
+                    <MudIconButton Icon="@Icons.Material.Sharp.Menu" Color="Color.Inherit" Edge="Edge.Start" OnClick="@((e) => DrawerToggle())" Class="ml-0" />
+                    <a href="/">
+                        <MudText Typo="Typo.h5" Style="@($"color: {Theme.Palette.AppbarText}")">LB Portalen</MudText>
+                    </a>
+                </Authorized>
+                <Authorizing>
+                    <MudText Typo="Typo.h5" Class="ml-3" Style="@($"color: {Theme.Palette.AppbarText}")">LB Portalen</MudText>
+                </Authorizing>
+                <NotAuthorized>
+                    <a href="/">
+                        <MudText Typo="Typo.h5" Class="ml-3" Style="@($"color: {Theme.Palette.AppbarText}")">LB Portalen</MudText>
+                    </a>
+                </NotAuthorized>
+            </AuthorizeView>
+            
+            <MudSpacer/>
+            <AuthenticationRegion/>
+        </MudAppBar>
+
+        <MudDrawer @bind-Open="_drawerOpen" ClipMode="DrawerClipMode.Always" Elevation="4">
+            <MudNavMenu>
+                <MudNavLink Href="/estimation/import" Icon="@Icons.Material.Sharp.Article"  IconColor="Color.Tertiary">Kalkylomvandling</MudNavLink>
+            </MudNavMenu>
+        </MudDrawer>
+
+        <MudMainContent>
+            <div>
+                @Body
+            </div>
+            <MudScrollToTop>
+                <MudIconButton Variant="Variant.Filled" Size="Size.Large" Class="rounded-circle pa-2" Icon="@Icons.Material.Sharp.ArrowUpward" Color="Color.Success"/>
+            </MudScrollToTop>
+        </MudMainContent>
+    </MudLayout>
+
+</CascadingValue>
+@code {
+    bool _drawerOpen = false;
+
+    public MudTheme Theme { get; set; } = CustomThemes.CustomStandardTheme;
+
+
+    void DrawerToggle()
+    {
+        _drawerOpen = !_drawerOpen;
+    }
+}

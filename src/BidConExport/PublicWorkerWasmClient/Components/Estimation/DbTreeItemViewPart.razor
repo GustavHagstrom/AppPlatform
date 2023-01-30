@@ -1,0 +1,44 @@
+﻿
+<div class="d-flex" style="@($"margin-left: {IndentLevel * 48}px")">
+    <div style="width: 48px; height: 48px;">
+        @if(IsNested)
+        {
+            @if (IsExpanded)
+            {
+                <MudIconButton Icon="@Icons.Sharp.KeyboardArrowDown" OnClick="ToggleExpansion" />
+            }
+            else
+            {
+                <MudIconButton Icon="@Icons.Sharp.KeyboardArrowRight" OnClick="ToggleExpansion" />
+            }
+        }
+    </div>
+    
+    <MudCheckBox @bind-Checked="TreeItem!.IsSelected" />
+    @*<div style="width: 12px"/>*@
+    @if (TreeItem!.Type == DbTreeItemType.Folder)
+    {
+        <MudIcon Icon="@Icons.Sharp.Folder" Class="align-self-center ml-3" />
+    }
+    else
+    {
+        <MudIcon Icon="@Icons.Sharp.Article" Color="@Color.Tertiary" Class="align-self-center ml-3" />
+    }
+    <MudText Class="align-self-center ml-2">@TreeItem!.Name</MudText>
+</div>
+@if(IsExpanded)
+{
+    <MudCollapse Expanded="@IsExpanded">
+        <DbTreeItemView TreeItems="TreeItem!.Items" IndentLevel="@(IndentLevel + 1)"/>
+    </MudCollapse>
+}
+@code{
+    [Parameter, EditorRequired] public DbTreeItem? TreeItem { get; set; }
+    [Parameter, EditorRequired] public int IndentLevel { get; set; } = 0;
+    private bool IsNested => TreeItem!.Items.Count > 0;
+    private bool IsExpanded { get; set; } = false;
+    private void ToggleExpansion()
+    {
+        IsExpanded = !IsExpanded;
+    }
+}

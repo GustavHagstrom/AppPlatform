@@ -1,0 +1,115 @@
+﻿@inject IUserStore _userStore
+@inject ISnackbar _snackbar
+
+<MudDialog>
+    <DialogContent>
+        <MudForm Model="RegisterModel" @ref="Form">
+
+            <MudTextField T="string" 
+                          Label="Email" 
+                          @bind-Value="RegisterModel.Email" 
+                          For="@(() => RegisterModel.Email)" 
+                          Variant="Variant.Text"/>
+
+            <MudTextField T="string" 
+                          Label="FirstName" 
+                          @bind-Value="RegisterModel.FirstName" 
+                          For="@(() => RegisterModel.FirstName)" 
+                          Variant="Variant.Text"/>
+  
+            <MudTextField T="string" 
+                          Label="LastName" 
+                          @bind-Value="RegisterModel.LastName" 
+                          For="@(() => RegisterModel.LastName)" 
+                          Variant="Variant.Text" />
+
+            <MudTextField @bind-Value="RegisterModel.Password" 
+                          For="@(() => RegisterModel.Password)"
+                          Label="Password" 
+                          Variant="Variant.Text"
+                          InputType="@PasswordInput" 
+                          Adornment="Adornment.End" 
+                          AdornmentIcon="@PasswordInputIcon" 
+                          OnAdornmentClick="ToggleShowPassword" 
+                          AdornmentAriaLabel="Show" />
+
+            <MudTextField @bind-Value="RegisterModel.ConfirmPassword"
+                          For="@(() => RegisterModel.ConfirmPassword)"
+                          Label="Confirm password" 
+                          Variant="Variant.Text" 
+                          InputType="@ConfirmPasswordInput" 
+                          Adornment="Adornment.End" 
+                          AdornmentIcon="@ConfirmPasswordInputIcon"
+                          OnAdornmentClick="ToggleShowConfirmPassword" 
+                          AdornmentAriaLabel="Show"/>
+
+        </MudForm>
+        
+    </DialogContent>
+    <DialogActions>
+        <MudIconButton Class="mr-4 mb-2" 
+                       Icon="@Icons.Filled.Save" 
+                       Color="Color.Success" 
+                       Variant="Variant.Filled" 
+                       Size="Size.Large" 
+                       OnClick="@(async () => await SaveAndClose())" />
+    </DialogActions>
+</MudDialog>
+@code {
+    [CascadingParameter] MudDialogInstance? MudDialog { get; set; }
+    public MudForm? Form { get; set; }
+    public RegisterUserModel RegisterModel { get; set; } = new();
+
+    public bool IsShowPass { get; set; } = false;
+    public bool IsShowConfirmPass { get; set; } = false;
+    public InputType PasswordInput { get; set; } = InputType.Password;
+    public InputType ConfirmPasswordInput { get; set; } = InputType.Password;
+    string PasswordInputIcon { get; set; } = Icons.Material.Filled.VisibilityOff;
+    string ConfirmPasswordInputIcon { get; set; } = Icons.Material.Filled.VisibilityOff;
+
+    public void ToggleShowPassword()
+    {
+        if(IsShowPass)
+        {
+            PasswordInputIcon = Icons.Material.Filled.VisibilityOff;
+            PasswordInput = InputType.Password;
+        }
+        else
+        {
+            PasswordInputIcon = Icons.Material.Filled.Visibility;
+            PasswordInput = InputType.Text;
+        }
+        IsShowPass = !IsShowPass;
+    }
+    public void ToggleShowConfirmPassword()
+    {
+        if (IsShowConfirmPass)
+        {
+            ConfirmPasswordInputIcon = Icons.Material.Filled.VisibilityOff;
+            ConfirmPasswordInput = InputType.Password;
+        }
+        else
+        {
+            ConfirmPasswordInputIcon = Icons.Material.Filled.Visibility;
+            ConfirmPasswordInput = InputType.Text;
+        }
+        IsShowConfirmPass = !IsShowConfirmPass;
+    }
+
+    public async Task SaveAndClose()
+    {
+        try
+        {
+            await Form!.Validate();
+            if(Form.IsValid)
+            {
+                await _userStore.CreateAsync(RegisterModel);
+                MudDialog?.Close(DialogResult.Ok(true));
+            }
+        }
+        catch (Exception e)
+        {
+            _snackbar.Add(e.Message, Severity.Error);
+        }
+    }
+}

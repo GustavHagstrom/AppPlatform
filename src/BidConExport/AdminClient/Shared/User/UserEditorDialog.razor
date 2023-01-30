@@ -1,0 +1,159 @@
+﻿@using System.ComponentModel.DataAnnotations
+@inject IUserStore _userStore
+@inject IRoleStore _roleStore
+@inject IUserRoleStore _userRoleStore
+@inject ISnackbar _snackbar
+
+<MudDialog>
+    <DialogContent>
+       @* <div style="overflow-y: scroll;">*@
+        <MudForm Model="CurrentUser" @ref="Form" Style="max-height: 60vh; overflow-y: scroll">
+                <MudTextField T="Guid"
+                              Label="Id"
+                              @bind-Value="CurrentUser!.Id"
+                              ReadOnly="true"
+                              Variant="Variant.Text"
+                              For="() => CurrentUser!.Id" />
+
+                <MudTextField T="string"
+                              Label="Email"
+                              @bind-Value="CurrentUser!.Email"
+                              Variant="Variant.Text"
+                              For="() => CurrentUser.Email" />
+
+                <MudTextField T="string"
+                              Label="FirstName"
+                              @bind-Value="CurrentUser!.FirstName"
+                              Variant="Variant.Text"
+                              For="() => CurrentUser.FirstName" />
+
+                <MudTextField T="string"
+                              Label="LastName"
+                              @bind-Value="CurrentUser!.LastName"
+                              Variant="Variant.Text"
+                              For="()=> CurrentUser.LastName" />
+                <div>
+                    <div class="d-flex">
+                        <MudTextField T="string"
+                                      Label="PasswordHash"
+                                      @bind-Value="CurrentUser!.PasswordHash"
+                                      Variant="Variant.Text"
+                                      For="()=> CurrentUser.PasswordHash"
+                                      ReadOnly="true"
+                                      Class="flex-grow-1" />
+
+                        <MudIconButton Icon="@Icons.Material.Filled.Edit"
+                                       Variant="Variant.Filled" Color="Color.Success"
+                                       Size="Size.Medium"
+                                       Class="align-self-end ml-2"
+                                       OnClick="ToggleEditPasswordPopOver" />
+                    </div>
+                    <MudPopover Open="ShowEditPasswordPopOver" AnchorOrigin="Origin.BottomRight" TransformOrigin="Origin.TopRight" Class="pa-4">
+                        <EditUserPasswordSection CurrentUser="CurrentUser" OnPasswordSaved="ToggleEditPasswordPopOver" />
+                    </MudPopover>
+                </div>
+
+
+                <MudTextField T="string"
+                              Label="Salt"
+                              @bind-Value="CurrentUser!.Salt"
+                              Variant="Variant.Text"
+                              For="()=> CurrentUser.Salt"
+                              ReadOnly="true" />
+
+                <MudTextField T="string"
+                              Label="RefreshToken"
+                              @bind-Value="CurrentUser!.RefreshToken"
+                              Variant="Variant.Text"
+                              For="()=> CurrentUser.RefreshToken"
+                              ReadOnly="true" />
+
+
+                @*<MudPaper Class="mt-4">*@
+                    @foreach (var item in CheckedRoles)
+                    {
+                        <MudCheckBox @bind-Checked="item.IsChecked" Label="@item.Item.Name"/>
+                    }
+               @* </MudPaper>*@
+
+
+            </MudForm>
+     @*   </div>*@        
+    </DialogContent>
+    <DialogActions>
+        <MudIconButton Icon="@Icons.Filled.Save" 
+                       Class="mr-4 mb-2" 
+                       Color="Color.Success"
+                       OnClick="@(async () => await SaveAndCloseAsync())"
+                       Variant="Variant.Filled"
+                       Size="Size.Large" />
+    </DialogActions>
+</MudDialog>
+
+
+
+@code {
+    [CascadingParameter] MudDialogInstance? MudDialog { get; set; }
+    [Parameter] public User? CurrentUser { get; set; }
+    public MudForm? Form { get; set; }
+    public List<CheckableItem<UserRole>> CheckedRoles { get; set; } = new();
+    public List<UserRole> RolesBeforeChanges { get; set; } = new();
+    public List<UserRole> AllRoles { get; set; } = new();
+    public bool ShowEditPasswordPopOver { get; set; } = false;
+
+    private void ToggleEditPasswordPopOver()
+    {
+        ShowEditPasswordPopOver = !ShowEditPasswordPopOver;
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        CurrentUser = await _userStore.FindByEmailAsync(CurrentUser!.Email);
+        RolesBeforeChanges.AddRange(await _userRoleStore.GetUserRolesForUser(CurrentUser!));
+        AllRoles.AddRange(await _roleStore.GetAllAsync());
+        PopulateCheckedRoles();
+        StateHasChanged();
+    }
+    public void PopulateCheckedRoles()
+    {
+        foreach (var item in RolesBeforeChanges)
+        {
+            CheckedRoles.Add(new CheckableItem<UserRole>(true, item));
+        }
+        foreach (var item in AllRoles.Where(x => !RolesBeforeChanges.Any(y => y.Id == x.Id)))
+        {
+            CheckedRoles.Add(new CheckableItem<UserRole>(false, item));
+        }
+    }
+
+    public async Task SaveAndCloseAsync()
+    {
+        await Form!.Validate();
+        if(Form.IsValid)
+        {
+            try
+            {
+                await UpdateRolesAsync();
+                await _userStore.UpdateAsync(CurrentUser!);
+                MudDialog?.Close(DialogResult.Ok(true));
+            }
+            catch (Exception e)
+            {
+                _snackbar.Add(e.Message, Severity.Error);
+            }
+        }
+    }
+    public async Task UpdateRolesAsync()
+    {
+        var rolesToAdd = CheckedRoles.Where(cr => cr.IsChecked && !RolesBeforeChanges.Any(r => cr.Item.Id == r.Id)).Select(x => x.Item).ToList();
+        var rolesToRemove = CheckedRoles.Where(cr => !cr.IsChecked && RolesBeforeChanges.Any(r => cr.Item.Id == r.Id)).Select(x => x.Item).ToList();
+        foreach (var role in rolesToAdd)
+        {
+            await _userRoleStore.AddRoleToUser(CurrentUser!, role);
+        }
+        foreach (var role in rolesToRemove)
+        {
+            await _userRoleStore.RemoveRoleFromUser(CurrentUser!, role);
+        }
+    }
+}

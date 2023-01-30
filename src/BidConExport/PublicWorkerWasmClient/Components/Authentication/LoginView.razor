@@ -1,0 +1,41 @@
+﻿@using PublicWorkerWasmClient.Authentication.Services
+@using SharedLibrary.Models
+@inject ILoginService LoginService
+@inject ISnackbar _snackbar
+
+<MudOverlay Visible="@IsLoggingIn" DarkBackground="true" Absolute="true">
+    <MudProgressCircular Color="Color.Primary" Indeterminate="true" Size="Size.Medium" />
+</MudOverlay>
+<MudStack Row="true" Spacing="3">
+    <div>
+        <MudForm>
+            <MudTextField T="string" Label="Email" @bind-Value="Email" />
+            <MudTextField T="string" Label="Password" InputType="InputType.Password" @bind-Value="Password" />
+        </MudForm>
+    </div>
+    <MudIconButton Class="align-self-start" Variant="Variant.Filled" Icon="@Icons.Material.Sharp.Login" Size="Size.Medium" Color="Color.Success" OnClick="Login" />
+</MudStack>
+
+
+
+@code{
+    [Parameter] public EventCallback OnLogin { get; set; }
+    public string Email { get; set; } = string.Empty;
+    public string Password { get; set; } = string.Empty;
+    public bool IsLoggingIn { get; set; } = false;
+    public async Task Login()
+    {
+        IsLoggingIn = true;
+        try
+        {
+            await LoginService.LoginAsync(new LoginModel { Email = Email, Password = Password });
+            await OnLogin.InvokeAsync();
+
+        }
+        catch (Exception e)
+        {
+            _snackbar.Add($"Exception: {e.Message}", Severity.Error);
+        }
+        IsLoggingIn = false;
+    }
+}

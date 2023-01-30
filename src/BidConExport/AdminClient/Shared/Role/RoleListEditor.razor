@@ -1,0 +1,81 @@
+﻿@inject UsersAndRolesState _usersAndRolesState
+@inject IRoleStore _roleStore
+@inject ISnackbar _snackbar
+@inject IDialogService DialogService
+
+<div style="position: relative; min-height: 150px">
+    <MudOverlay Visible="_usersAndRolesState.IsUpdatingRoles" Absolute="true" LightBackground="true">
+        <MudProgressCircular Indeterminate="true" Color="Color.Primary" Style="height: 100px; width:100px" />
+    </MudOverlay>
+    @for (int i = 0; i < _usersAndRolesState.Roles.Count; i++)
+    {
+        var count = i;
+        var cornerRadiusClass = "rounded-t-0 rounded-b-0";
+        if (i + 1 == _usersAndRolesState.Roles.Count)
+        {
+            cornerRadiusClass = "rounded-t-0 rounded-b";
+        }
+        <MudPaper Elevation="0" Style="@($"background:{GetAlteringBackgroundColor(count)};")" Class="@($"pa-2 {cornerRadiusClass}")">
+            <div class="d-flex align-center pl-2">
+                <MudIcon Icon="@Icons.Filled.AdminPanelSettings" Size="Size.Large" Color="Color.Primary" />
+                <MudText Typo="Typo.subtitle1" Class="ml-2">@_usersAndRolesState.Roles[count].Name</MudText>
+                <MudSpacer />
+                <MudIconButton Icon="@Icons.Material.Filled.Delete" Variant="Variant.Filled" Color="Color.Error"
+                           OnClick="(async () => await DeleteRoleAsync(_usersAndRolesState.Roles[count]))" />
+            </div>
+        </MudPaper>
+    }
+</div>
+
+
+@code {
+    [CascadingParameter] protected MudTheme? Theme { get; set; }
+
+    protected override void OnInitialized()
+    {
+        _usersAndRolesState.OnRolesChanged += StateHasChanged;
+    }
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            await _usersAndRolesState.UpdateRoleListAsync();
+
+        }
+        catch (Exception e)
+        {
+            _snackbar.Add(e.Message, Severity.Error);
+            throw;
+        }
+    }
+    public async Task DeleteRoleAsync(UserRole role)
+    {
+        var parameters = new DialogParameters();
+        parameters.Add("ContentText", $"Vill du ta bort roll \"{role.Name}\"?");
+        parameters.Add("Icon", Icons.Material.Filled.Check);
+        parameters.Add("Color", Color.Error);
+
+        var options = new DialogOptions();
+
+        var r = await DialogService.Show<DynamicDialog>("Ta bort", parameters, options).Result;
+        if (r.Cancelled) return;
+        try
+        {
+            await _roleStore.DeleteAsync(role);
+            await _usersAndRolesState.UpdateRoleListAsync();
+        }
+        catch (Exception e)
+        {
+            _snackbar.Add(e.Message, Severity.Error);
+        }
+    }
+
+    public string GetAlteringBackgroundColor(int i)
+    {
+        if(i % 2 == 0)
+        {
+            return Theme!.Palette.Background.Value;
+        }
+        return Theme!.Palette.BackgroundGrey.Value;
+    }
+}
