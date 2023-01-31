@@ -1,4 +1,5 @@
 ﻿using DesktopBridge;
+using DesktopBridge.Features.Bidcon;
 
 namespace DesktopBridge;
 
@@ -11,6 +12,7 @@ public static class HostingExtensions
         builder.Services.AddSwaggerGen();
         builder.Services.AddSingleton<Shell>();
         builder.Services.AddSingleton<FormsStartup>();
+        builder.Services.UseBidconFeature();
     }
     public static void ConfigurePipeline(this WebApplication app)
     {
@@ -23,7 +25,7 @@ public static class HostingExtensions
 
         app.UseHttpsRedirection();
 
-        app.UseAuthorization();
+        //app.UseAuthorization();
 
         app.MapControllers();
     }

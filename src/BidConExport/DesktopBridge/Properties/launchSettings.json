@@ -1,6 +1,6 @@
 {
   "profiles": {
-    "WinFormsApp1": {
+    "DesktopBridge": {
       "commandName": "Project",
       "dotnetRunMessages": true,
       "launchBrowser": true,

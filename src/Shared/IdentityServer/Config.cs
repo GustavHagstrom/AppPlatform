@@ -73,9 +73,6 @@ public static class Config
                 ClientSecrets = { new Secret("secret".Sha256()) },
 
                 AllowedGrantTypes = GrantTypes.Code,
-                
-                
-
 
                 RedirectUris = { _configuration.GetValue<string>("RedirectUris") },
                 FrontChannelLogoutUri = _configuration.GetValue<string>("FrontChannelLogoutUri") ,
