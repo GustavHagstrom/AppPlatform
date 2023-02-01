@@ -1,4 +1,5 @@
 ﻿using BidCon.SDK;
+using DesktopBridge.Features.Bidcon.RulesEngine.Rules;
 using SharedLibrary.Models;
 
 namespace DesktopBridge.Features.Bidcon.RulesEngine;
@@ -18,7 +19,7 @@ public class EstimationItemRulesEngine : IEstimationItemRulesEngine
     {
         foreach (var rule in _rules)
         {
-            if (rule.ShouldBeProcessed(estimationItem, settings, this) == false)
+            if (rule.Run(estimationItem, settings, this) == false)
             {
                 return false;
             }
