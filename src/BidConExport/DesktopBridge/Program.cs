@@ -1,9 +1,6 @@
-using DesktopBridge;
 using Serilog;
-using Serilog.Formatting.Json;
-using System.Runtime.CompilerServices;
 
-namespace DesktopBridge;
+namespace BidConReport.DesktopBridge;
 
 internal static class Program
 {

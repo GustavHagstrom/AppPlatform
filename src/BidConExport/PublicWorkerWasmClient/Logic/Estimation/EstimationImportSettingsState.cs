@@ -1,5 +1,5 @@
-﻿using PublicWorkerWasmClient.Authentication.Services;
-using SharedLibrary.Models;
+﻿using BidConExportApp.SharedLibrary.Models;
+using PublicWorkerWasmClient.Authentication.Services;
 
 namespace PublicWorkerWasmClient.Logic.Estimation;
 public class EstimationImportSettingsState : IEstimationImportSettingsState

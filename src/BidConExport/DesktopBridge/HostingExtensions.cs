@@ -1,7 +1,7 @@
-﻿using DesktopBridge;
-using DesktopBridge.Features.Bidcon;
+﻿using BidConReport.DesktopBridge;
+using BidConReport.DesktopBridge.Features.Bidcon;
 
-namespace DesktopBridge;
+namespace BidConReport.DesktopBridge;
 
 public static class HostingExtensions
 {

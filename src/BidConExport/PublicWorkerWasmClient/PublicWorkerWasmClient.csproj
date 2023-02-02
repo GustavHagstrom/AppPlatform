@@ -20,14 +20,13 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\ApiAccessLibrary\ApiAccessLibrary.csproj" />
-    <ProjectReference Include="..\SharedLibrary\SharedLibrary.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
     <None Include="wwwroot\favicon.ico">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\SharedLibrary\BidConReport.SharedLibrary.csproj" />
   </ItemGroup>
 
   <ItemGroup>

@@ -26,6 +26,7 @@
   <ItemGroup>
     <Folder Include="ExportPresentation\Files\Pdf\" />
     <Folder Include="ExportPresentation\Files\Word\" />
+    <Folder Include="Features\" />
   </ItemGroup>
 
 </Project>

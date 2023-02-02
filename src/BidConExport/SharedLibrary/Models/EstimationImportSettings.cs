@@ -1,7 +1,6 @@
-﻿using System.Collections.ObjectModel;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 
-namespace SharedLibrary.Models;
+namespace BidConReport.SharedLibrary.Models;
 public class EstimationImportSettings
 {
     //public int Id { get; set; }
@@ -18,5 +17,5 @@ public class EstimationImportSettings
     //public DateTime? ExpirationDate { get; set; }
     public List<string> StyleTags { get; set; } = new();
     public List<string> OptionTags { get; set; } = new();
-    
+
 }

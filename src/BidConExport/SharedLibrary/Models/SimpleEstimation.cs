@@ -1,7 +1,9 @@
-﻿using MongoDB.Bson;
+﻿using BidConReport.SharedLibrary.Models;
+using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 
-namespace SharedLibrary.Models;
+namespace BidConReport.SharedLibrary.Models;
+
 public class SimpleEstimation
 {
     [BsonId]

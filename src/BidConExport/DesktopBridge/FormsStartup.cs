@@ -1,4 +1,4 @@
-﻿namespace DesktopBridge;
+﻿namespace BidConReport.DesktopBridge;
 public class FormsStartup
 {
     private readonly Shell _shell;

@@ -1,8 +1,8 @@
 ﻿using BidCon.SDK;
 using BidCon.SDK.Database;
-using SharedLibrary.Models;
+using BidConReport.SharedLibrary.Models;
 
-namespace DesktopBridge.Features.Bidcon.Services;
+namespace BidConReport.DesktopBridge.Features.Bidcon.Services;
 public interface IBidConModelSimpliefier
 {
     IEnumerable<DbEstimation> SimplifieAllEstimations(DatabaseFolder folder);

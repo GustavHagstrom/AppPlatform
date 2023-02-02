@@ -2,13 +2,13 @@ using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using PublicWorkerWasmClient;
 using ApiAccessLibrary.Extensions;
-using SharedLibrary.Extensions;
 using MudBlazor.Services;
 using Microsoft.AspNetCore.Components.Authorization;
 using Blazored.LocalStorage;
 using PublicWorkerWasmClient.Authentication.Services;
 using MudBlazor;
 using PublicWorkerWasmClient.Logic.Estimation;
+using BidConExportApp.SharedLibrary.Extensions;
 
 var builder = WebAssemblyHostBuilder.CreateDefault(args);
 

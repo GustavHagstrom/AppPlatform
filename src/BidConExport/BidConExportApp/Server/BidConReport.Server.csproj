@@ -11,8 +11,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Client\BidConExportApp.Client.csproj" />
-    <ProjectReference Include="..\Shared\BidConExportApp.Shared.csproj" />
+    <ProjectReference Include="..\Client\BidConReport.Client.csproj" />
   </ItemGroup>
 
   <ItemGroup>

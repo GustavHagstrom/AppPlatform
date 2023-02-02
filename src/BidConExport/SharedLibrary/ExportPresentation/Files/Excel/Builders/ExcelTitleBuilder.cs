@@ -1,6 +1,6 @@
 ﻿using Syncfusion.XlsIO;
 
-namespace SharedLibrary.ExportPresentation.Files.Excel.Builders;
+namespace BidConReport.SharedLibrary.ExportPresentation.Files.Excel.Builders;
 public class ExcelTitleBuilder : IExcelTitleBuilder
 {
     public void AddTitle(IWorksheet sheet)

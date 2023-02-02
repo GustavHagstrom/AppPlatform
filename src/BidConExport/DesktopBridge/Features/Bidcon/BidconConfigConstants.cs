@@ -1,4 +1,4 @@
-﻿namespace DesktopBridge.Features.Bidcon;
+﻿namespace BidConReport.DesktopBridge.Features.Bidcon;
 public static class BidconConfigConstants
 {
     public const string BidConUserName = "BIDCON_USERNAME";

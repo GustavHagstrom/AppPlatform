@@ -1,4 +1,4 @@
-﻿using SharedLibrary.Models;
+﻿using BidConReport.SharedLibrary.Models;
 
 namespace SharedLibrary.ExportPresentation.Layout;
 public class TableDefinition

@@ -1,4 +1,4 @@
-﻿namespace DesktopBridge;
+﻿namespace BidConReport.DesktopBridge;
 
 partial class Shell
 {

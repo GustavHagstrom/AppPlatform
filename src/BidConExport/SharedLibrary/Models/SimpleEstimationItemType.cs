@@ -1,4 +1,4 @@
-﻿namespace SharedLibrary.Models;
+﻿namespace BidConReport.SharedLibrary.Models;
 public enum SimpleEstimationItemType
 {
     Group,

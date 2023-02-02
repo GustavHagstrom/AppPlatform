@@ -1,6 +1,6 @@
 ﻿using System.Text;
 
-namespace DesktopBridge;
+namespace BidConReport.DesktopBridge;
 public partial class Shell : Form
 {
     public Shell()

@@ -1,7 +1,7 @@
 ﻿using BidCon.SDK;
-using SharedLibrary.Models;
+using BidConReport.SharedLibrary.Models;
 
-namespace DesktopBridge.Features.Bidcon.Factories;
+namespace BidConReport.DesktopBridge.Features.Bidcon.Factories;
 public interface ISimpleEstimationFactory
 {
     SimpleEstimation CreateSimpleEstimation(Estimation estimation, EstimationImportSettings settings);

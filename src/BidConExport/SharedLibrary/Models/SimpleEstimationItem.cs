@@ -1,6 +1,6 @@
 ﻿using MongoDB.Bson.Serialization.Attributes;
 
-namespace SharedLibrary.Models;
+namespace BidConReport.SharedLibrary.Models;
 public class SimpleEstimationItem
 {
     [BsonIgnore]

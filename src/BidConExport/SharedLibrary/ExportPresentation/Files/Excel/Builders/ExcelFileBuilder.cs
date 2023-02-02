@@ -1,9 +1,9 @@
-﻿using SharedLibrary.ExportPresentation.Layout;
-using SharedLibrary.Models;
+﻿using BidConReport.SharedLibrary.Models;
+using SharedLibrary.ExportPresentation.Layout;
 using Syncfusion.XlsIO;
 using Syncfusion.XlsIORenderer;
 
-namespace SharedLibrary.ExportPresentation.Files.Excel.Builders;
+namespace BidConReport.SharedLibrary.ExportPresentation.Files.Excel.Builders;
 public class ExcelFileBuilder : IExcelFileBuilder
 {
     private readonly IExcelHeaderBuilder _excelHeaderBuilder;

@@ -1,8 +1,8 @@
-﻿using DesktopBridge.Features.Bidcon.Services;
+﻿using BidConReport.DesktopBridge.Features.Bidcon.Services;
+using BidConReport.SharedLibrary.Models;
 using Microsoft.AspNetCore.Mvc;
-using SharedLibrary.Models;
 
-namespace DesktopBridge.Features.Bidcon;
+namespace BidConReport.DesktopBridge.Features.Bidcon;
 [Route("[controller]")]
 [ApiController]
 public class BidconController : ControllerBase
@@ -26,7 +26,6 @@ public class BidconController : ControllerBase
     [HttpPost("GetEstimation/{id}")]
     public async Task<IActionResult> GetEstimation(string id, [FromBody] EstimationImportSettings settings, CancellationToken cancellationToken)
     {
-        var result = await Task.FromResult(Ok(_bidConImporter.GetEstimation(id, settings)));
-        return result;  
+        return await Task.FromResult(Ok(_bidConImporter.GetEstimation(id, settings)));
     }
 }

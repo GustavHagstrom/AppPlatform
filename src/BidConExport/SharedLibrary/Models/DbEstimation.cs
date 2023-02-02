@@ -1,4 +1,4 @@
-﻿namespace SharedLibrary.Models;
+﻿namespace BidConReport.SharedLibrary.Models;
 public class DbEstimation
 {
     public string Name { get; set; } = string.Empty;

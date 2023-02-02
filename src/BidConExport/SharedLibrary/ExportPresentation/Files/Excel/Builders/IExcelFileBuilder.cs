@@ -1,7 +1,7 @@
-﻿using SharedLibrary.ExportPresentation.Layout;
-using SharedLibrary.Models;
+﻿using BidConReport.SharedLibrary.Models;
+using SharedLibrary.ExportPresentation.Layout;
 
-namespace SharedLibrary.ExportPresentation.Files.Excel.Builders;
+namespace BidConReport.SharedLibrary.ExportPresentation.Files.Excel.Builders;
 public interface IExcelFileBuilder
 {
     byte[] BuildFile(SimpleEstimation estimation, LayoutDefinition layoutDefinition, bool asPdf);

@@ -1,4 +1,4 @@
-﻿namespace SharedLibrary.Models;
+﻿namespace BidConReport.SharedLibrary.Models;
 public class CheckableItem<T>
 {
     public CheckableItem(bool isChecked, T item)

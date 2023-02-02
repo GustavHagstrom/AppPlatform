@@ -1,4 +1,4 @@
-﻿using SharedLibrary.Models;
+﻿using BidConExportApp.SharedLibrary.Models;
 using Syncfusion.DocIO.DLS;
 
 namespace PublicWorkerWasmClient.Logic.Estimation;

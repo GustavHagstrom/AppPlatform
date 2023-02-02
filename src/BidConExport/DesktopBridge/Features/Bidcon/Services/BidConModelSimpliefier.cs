@@ -1,9 +1,9 @@
 ﻿using BidCon.SDK;
 using BidCon.SDK.Database;
-using DesktopBridge.Features.Bidcon.Factories;
-using SharedLibrary.Models;
+using BidConReport.SharedLibrary.Models;
+using BidConReport.DesktopBridge.Features.Bidcon.Factories;
 
-namespace DesktopBridge.Features.Bidcon.Services;
+namespace BidConReport.DesktopBridge.Features.Bidcon.Services;
 public class BidConModelSimpliefier : IBidConModelSimpliefier
 {
     private readonly ISimpleEstimationFactory _simpleEstimationFactory;

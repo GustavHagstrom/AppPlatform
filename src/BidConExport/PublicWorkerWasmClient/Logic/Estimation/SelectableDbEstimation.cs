@@ -1,4 +1,4 @@
-﻿using SharedLibrary.Models;
+﻿using BidConExportApp.SharedLibrary.Models;
 
 namespace PublicWorkerWasmClient.Logic.Estimation;
 public class SelectableDbEstimation : DbEstimation

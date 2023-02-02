@@ -1,7 +1,7 @@
 ﻿using BidCon.SDK;
-using SharedLibrary.Models;
+using BidConReport.SharedLibrary.Models;
 
-namespace DesktopBridge.Features.Bidcon.RulesEngine.Rules;
+namespace BidConReport.DesktopBridge.Features.Bidcon.RulesEngine.Rules;
 public class HiddenRule : IEstimationItemRule
 {
     public bool Run(EstimationItem estimationItem, EstimationImportSettings settings, IEstimationItemRulesEngine engine)

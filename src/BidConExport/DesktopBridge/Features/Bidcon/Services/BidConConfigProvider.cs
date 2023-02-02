@@ -1,4 +1,4 @@
-﻿namespace DesktopBridge.Features.Bidcon.Services;
+﻿namespace BidConReport.DesktopBridge.Features.Bidcon.Services;
 public class BidConConfigProvider : IBidConConfigProvider
 {
     private readonly IConfiguration _configuration;

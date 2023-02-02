@@ -1,8 +1,8 @@
-﻿using DesktopBridge.Features.Bidcon.Factories;
-using DesktopBridge.Features.Bidcon.RulesEngine;
-using DesktopBridge.Features.Bidcon.Services;
+﻿using BidConReport.DesktopBridge.Features.Bidcon.Factories;
+using BidConReport.DesktopBridge.Features.Bidcon.RulesEngine;
+using BidConReport.DesktopBridge.Features.Bidcon.Services;
 
-namespace DesktopBridge.Features.Bidcon;
+namespace BidConReport.DesktopBridge.Features.Bidcon;
 
 public static class BidconDiExtensions
 {

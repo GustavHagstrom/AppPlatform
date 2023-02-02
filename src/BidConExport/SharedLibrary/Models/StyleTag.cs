@@ -1,4 +1,4 @@
-﻿//namespace SharedLibrary.Models;
+﻿//namespace BidConExportApp.SharedLibrary.Models;
 //internal class StyleTag
 //{
 //    public int Id { get; set; }
