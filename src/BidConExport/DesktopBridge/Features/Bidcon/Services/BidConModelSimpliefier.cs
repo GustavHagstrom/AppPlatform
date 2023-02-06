@@ -1,6 +1,6 @@
 ﻿using BidCon.SDK;
 using BidCon.SDK.Database;
-using BidConReport.SharedLibrary.Models;
+using BidConReport.Shared.Models;
 using BidConReport.DesktopBridge.Features.Bidcon.Factories;
 
 namespace BidConReport.DesktopBridge.Features.Bidcon.Services;

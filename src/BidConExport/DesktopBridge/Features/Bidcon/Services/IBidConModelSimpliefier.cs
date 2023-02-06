@@ -1,6 +1,6 @@
 ﻿using BidCon.SDK;
 using BidCon.SDK.Database;
-using BidConReport.SharedLibrary.Models;
+using BidConReport.Shared.Models;
 
 namespace BidConReport.DesktopBridge.Features.Bidcon.Services;
 public interface IBidConModelSimpliefier

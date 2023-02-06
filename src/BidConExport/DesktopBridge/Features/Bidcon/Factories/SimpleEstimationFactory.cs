@@ -1,5 +1,5 @@
 ﻿using BidCon.SDK;
-using BidConReport.SharedLibrary.Models;
+using BidConReport.Shared.Models;
 using DesktopBridge.Features.Bidcon.RulesEngine;
 
 namespace BidConReport.DesktopBridge.Features.Bidcon.Factories;
