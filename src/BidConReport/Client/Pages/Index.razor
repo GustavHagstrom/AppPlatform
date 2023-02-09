@@ -1,0 +1,27 @@
+﻿@page "/"
+@using System.Security.Claims;
+
+<PageTitle>Index</PageTitle>
+
+<button @onclick="Click">GetInfo</button>
+
+@foreach (var claim in @ServerClaims)
+{
+    <dt>@claim.Type</dt>
+    <dd>@claim.Value</dd>
+}
+
+<CurrentSession />
+
+@code {
+    [Inject] public required HttpClient HttpClient { get; set; }
+    public List<Claim> ServerClaims { get; set; } = new();
+    public async Task Click()
+    {
+        var result = await HttpClient.GetAsync("/values/get");
+        var claims = await result.Content.ReadFromJsonAsync<List<Claim>>();
+        ServerClaims = claims!;
+        StateHasChanged();
+    }
+}
+
