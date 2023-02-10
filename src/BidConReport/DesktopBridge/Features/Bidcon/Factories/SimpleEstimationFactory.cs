@@ -1,6 +1,6 @@
 ﻿using BidCon.SDK;
+using BidConReport.DesktopBridge.Features.Bidcon.RulesEngine;
 using BidConReport.Shared.Models;
-using DesktopBridge.Features.Bidcon.RulesEngine;
 
 namespace BidConReport.DesktopBridge.Features.Bidcon.Factories;
 public class SimpleEstimationFactory : ISimpleEstimationFactory
