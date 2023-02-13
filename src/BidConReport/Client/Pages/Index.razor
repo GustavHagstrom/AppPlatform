@@ -1,0 +1,24 @@
+﻿@page "/"
+@attribute [Authorize]
+@using System.Security.Claims;
+
+
+<PageTitle>Index</PageTitle>
+
+<button @onclick="Click">GetInfo</button>
+
+<h3>@Result</h3>
+
+<CurrentSession />
+
+@code {
+    [Inject] public required HttpClient HttpClient { get; set; }
+    public required string Result { get; set; } = "";
+    public async Task Click()
+    {
+        var result = await HttpClient.GetAsync("/values/get");
+        Result = await result.Content.ReadAsStringAsync();
+        StateHasChanged();
+    }
+}
+
