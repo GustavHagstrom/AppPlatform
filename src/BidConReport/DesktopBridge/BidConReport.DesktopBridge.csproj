@@ -25,7 +25,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\BlazorApp2\Shared\BidConReport.Shared.csproj" />
+    <ProjectReference Include="..\Shared\BidConReport.Shared.csproj" />
   </ItemGroup>
 
 </Project>

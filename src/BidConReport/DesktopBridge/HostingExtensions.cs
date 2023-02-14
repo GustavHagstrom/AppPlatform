@@ -13,6 +13,7 @@ public static class HostingExtensions
         builder.Services.AddSingleton<Shell>();
         builder.Services.AddSingleton<FormsStartup>();
         builder.Services.UseBidconFeature();
+
     }
     public static void ConfigurePipeline(this WebApplication app)
     {
@@ -22,7 +23,12 @@ public static class HostingExtensions
             app.UseSwagger();
             app.UseSwaggerUI();
         }
-
+        app.UseCors(builder =>
+        {
+            builder.AllowAnyOrigin();
+            builder.AllowAnyHeader();
+            builder.AllowAnyMethod();
+        });
         app.UseHttpsRedirection();
 
         //app.UseAuthorization();
