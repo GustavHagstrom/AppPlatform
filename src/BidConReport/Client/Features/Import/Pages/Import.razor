@@ -1,4 +1,6 @@
 ﻿@page "/import"
+@using BidConReport.Client.Features.Import.Components
+
 @attribute [Authorize]
 
 <MudToolBar Style="@($"height: 40px; background-color: {Theame!.Palette.GrayLighter}; width: 100%;")" DisableGutters="true" Class="d-flex justify-center">
@@ -12,7 +14,7 @@
         <MudTabs Centered="true" KeepPanelsAlive="true">
             <MudTabPanel Text="Utforska" Icon="@Icons.Material.Sharp.Folder">
                 <MudDivider Light="true" />
-                <EstimationExplorer ImportState="_importState" Height="calc(100vh - 129px)" />
+               <EstimationExplorer ImportState="_importState" Height="calc(100vh - 129px)" />
             </MudTabPanel>
 
             <MudTabPanel Text="Lista" Icon="@Icons.Material.Sharp.Search">
@@ -33,29 +35,29 @@
 
 @code{
     [CascadingParameter] public MudTheme? Theame { get; set; }
+    [Inject] public required IEstimationImportState _importState { get; set; }
+    [Inject] public required IBidConImporter _importer { get; set; }
+    [Inject] public required IEstimationImportSettingsState _settingsState { get; set; }
 
-    //protected override async Task OnInitializedAsync()
-    //{
-    //    await _importState.RefreshItemsAsync();
-    //}
-    //private async Task DownloadAsync()
-    //{
-    //    var token = await _tokenManagerService.GetTokenModelFromLocalStorageAsync();
-    //    if (token == TokenModel.Empty) return;
+    protected override async Task OnInitializedAsync()
+    {
+        await _importState.RefreshItemsAsync();
+    }
+    private async Task DownloadAsync()
+    {
+        var estimations = new List<SimpleEstimation>();
+        foreach (var e in _importState.SelectedEstimations()!)
+        {
+            var estimation = await _importer.GetEstimationAsync(e.Id, _settingsState.CurrentSettings!);
+            estimations.Add(estimation.Result);
+        }
+    }
+    private async Task RefreshEstimationListAsync()
+    {
+        await _importState.RefreshItemsAsync();
+    }
+    private void EditSettings()
+    {
 
-    //    var estimations = new List<SimpleEstimation>();
-    //    foreach (var e in _importState.SelectedEstimations()!)
-    //    {
-    //        var estimation = await _bidconApiHandler.GetEstimationAsync(token, e.Id, _importSettingsState.CurrentSettings!);
-    //        estimations.Add(estimation);
-    //    }
-    //}
-    //private async Task RefreshEstimationListAsync()
-    //{
-    //    await _importState.RefreshItemsAsync();
-    //}
-    //private void EditSettings()
-    //{
-
-    //}
+    }
 }

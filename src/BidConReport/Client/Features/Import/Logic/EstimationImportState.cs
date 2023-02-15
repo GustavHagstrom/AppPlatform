@@ -3,12 +3,11 @@
 namespace BidConReport.Client.Features.Import.Logic;
 public class EstimationImportState : IEstimationImportState
 {
-    private readonly IBidconApiHandler _bidconApiHandler;
+    private readonly IBidConImporter _bidConImporter;
 
-    public EstimationImportState(IBidconApiHandler bidconApiHandler)
+    public EstimationImportState(IBidConImporter bidConImporter)
     {
-        _bidconApiHandler = bidconApiHandler;
-        _tokenManagerService = tokenManagerService;
+        _bidConImporter = bidConImporter;
     }
     public DbTreeItem? ItemTree { get; private set; }
     public bool IsRefreshing { get; private set; } = false;
@@ -16,13 +15,11 @@ public class EstimationImportState : IEstimationImportState
     {
         IsRefreshing = true;
         ItemTree = null;
-        var token = await _tokenManagerService.GetTokenModelFromLocalStorageAsync();
-        if (token != TokenModel.Empty)
-        {
-            var dbFolder = await _bidconApiHandler.GetFolderAsync(token);
-            ItemTree = new DbTreeItem(dbFolder);
-            ItemTree.SelectionChanged += NotifyStateChanged;
-        }
+
+        var dbFolderResult = await _bidConImporter.GetFoldersAsync();
+        ItemTree = new DbTreeItem(dbFolderResult.Result);
+        ItemTree.SelectionChanged += NotifyStateChanged;
+        
         IsRefreshing = false;
         NotifyStateChanged();
     }

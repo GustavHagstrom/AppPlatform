@@ -1,4 +1,6 @@
-﻿namespace BidConReport.Client.Features.Import.Logic;
+﻿using BidConReport.Shared.Models;
+
+namespace BidConReport.Client.Features.Import.Logic;
 public interface IEstimationImportSettingsState
 {
     EstimationImportSettings? CurrentSettings { get; set; }
@@ -6,5 +8,5 @@ public interface IEstimationImportSettingsState
     event Action? OnSettingsChanged;
 
     Task<List<EstimationImportSettings>> GetAllSettings();
-    Task LoadPreferedSettings();
+    Task LoadPreferedSettingsAsync();
 }

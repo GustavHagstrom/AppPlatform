@@ -1,4 +1,4 @@
-﻿using BidConExportApp.SharedLibrary.Models;
+﻿using BidConReport.Shared.Models;
 
 namespace BidConReport.Client.Features.Import.Models;
 public class SelectableDbFolder
