@@ -25,7 +25,7 @@ public class BidConImporter : IBidConImporter
     }
     public async Task<BidConImportResult<SimpleEstimation>> GetEstimationAsync(string id, EstimationImportSettings settings)
     {
-        var result = await GetHttpClient().PostAsJsonAsync("bidcon/getfolders", settings);
+        var result = await GetHttpClient().PostAsJsonAsync($"bidcon/getestimation/{id}", settings);
         result.EnsureSuccessStatusCode();
         return (await result.Content.ReadFromJsonAsync<BidConImportResult<SimpleEstimation>>())!;
     }

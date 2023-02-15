@@ -1,6 +1,4 @@
-﻿@using BidConReport.Client.Features.Authentication.Components
-
-@inherits LayoutComponentBase
+﻿@inherits LayoutComponentBase
 
 <CascadingValue Value="Theme">
 
@@ -41,7 +39,8 @@
 
         <MudDrawer @bind-Open="_drawerOpen" ClipMode="DrawerClipMode.Always" Elevation="4">
             <MudNavMenu>
-                <MudNavLink Href="/import" Icon="@Icons.Material.Sharp.Article"  IconColor="Color.Tertiary">Kalkylomvandling</MudNavLink>
+                @*<MudNavLink Href="/" Icon="@Icons.Material.Sharp.Home"  IconColor="Color.Primary">Hem</MudNavLink>*@
+                <MudNavLink Href="/import" Icon="@Icons.Material.Sharp.Download" IconColor="Color.Primary">Importera från BidCon</MudNavLink>
             </MudNavMenu>
         </MudDrawer>
 

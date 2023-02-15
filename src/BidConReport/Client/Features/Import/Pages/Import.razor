@@ -1,12 +1,11 @@
 ﻿@page "/import"
-@using BidConReport.Client.Features.Import.Components
 
 @attribute [Authorize]
 
 <MudToolBar Style="@($"height: 40px; background-color: {Theame!.Palette.GrayLighter}; width: 100%;")" DisableGutters="true" Class="d-flex justify-center">
-@*    <MudIconButton Icon="@Icons.Material.Sharp.Download" OnClick="DownloadAsync" />
+    <MudIconButton Icon="@Icons.Material.Sharp.Download" OnClick="DownloadAsync" />
     <MudIconButton Icon="@Icons.Material.Sharp.Refresh" OnClick="RefreshEstimationListAsync"/>
-    <MudIconButton Icon="@Icons.Material.Sharp.Settings" OnClick="EditSettings"/>*@
+    <MudIconButton Icon="@Icons.Material.Sharp.Settings" OnClick="EditSettings"/>
 </MudToolBar>
 
 <MudContainer MaxWidth="MaxWidth.Large">
@@ -41,6 +40,7 @@
 
     protected override async Task OnInitializedAsync()
     {
+        await _settingsState.LoadPreferedSettingsAsync();
         await _importState.RefreshItemsAsync();
     }
     private async Task DownloadAsync()
