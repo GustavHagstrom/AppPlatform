@@ -15,7 +15,6 @@
     </div>
     
     <MudCheckBox @bind-Checked="TreeItem!.IsSelected" />
-    @*<div style="width: 12px"/>*@
     @if (TreeItem!.Type == DbTreeItemType.Folder)
     {
         <MudIcon Icon="@Icons.Material.Sharp.Folder" Class="align-self-center ml-3" />

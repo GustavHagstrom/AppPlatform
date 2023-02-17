@@ -9,9 +9,6 @@
         <MudTreeView Items="TreeItems" MultiSelection="true" @bind-SelectedValues="SelectedValues">
             <ItemTemplate>
                 <MudTreeViewItem T="DbEstimation" Value="@context" Text="@($"{context.Name} - {context.Description}")" />
-                @*<MudTreeViewItem @bind-Expanded="@context.IsExpanded" Items="@context.TreeItems" Value="@context"
-                                 Icon="@context.Icon" Text="@context.Title"/>*@
-                @*<MudTreeViewItem Value="rtest"/>*@
             </ItemTemplate>
         </MudTreeView>
     </MudPaper>
@@ -28,13 +25,9 @@
     private async Task RefreshItems()
     {
         IsRefreshing = true;
-        //TreeItems.Clear();
         var result = await _bidconImporter.GetEstimationsAsync();
+
         TreeItems = new(result.Result);
-        //foreach (var item in items)
-        //{
-        //    TreeItems.Add(item);
-        //}
         IsRefreshing = false;
     }
     private void CreateTreeItemsRecursivly(HashSet<TreeItemData> hashSet, DbFolder parentFolder)

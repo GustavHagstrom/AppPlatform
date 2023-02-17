@@ -1,34 +1,46 @@
 ﻿@page "/import"
 
 @attribute [Authorize]
+<MudDrawerContainer Class="mud-height-full">
 
-<MudToolBar Style="@($"height: 40px; background-color: {Theame!.Palette.GrayLighter}; width: 100%;")" DisableGutters="true" Class="d-flex justify-center">
-    <MudIconButton Icon="@Icons.Material.Sharp.Download" OnClick="DownloadAsync" />
-    <MudIconButton Icon="@Icons.Material.Sharp.Refresh" OnClick="RefreshEstimationListAsync"/>
-    <MudIconButton Icon="@Icons.Material.Sharp.Settings" OnClick="EditSettings"/>
-</MudToolBar>
+    <MudDrawer @bind-Open="@drawerOpen" Fixed="false" Anchor="Anchor.End" Elevation="0" Variant="@DrawerVariant.Persistent">
+        <MudDrawerHeader>
+            <MudText Typo="Typo.h6">Settings</MudText>
+        </MudDrawerHeader>
+        <MudNavMenu>
+            <MudNavLink Match="NavLinkMatch.All" Icon="@Icons.Material.Filled.AccountBox">Profile</MudNavLink>
+        </MudNavMenu>
+    </MudDrawer>
 
-<MudContainer MaxWidth="MaxWidth.Large">
-    <MudPaper Square="true" Elevation="4">
-        <MudTabs Centered="true" KeepPanelsAlive="true">
-            <MudTabPanel Text="Utforska" Icon="@Icons.Material.Sharp.Folder">
-                <MudDivider Light="true" />
-               <EstimationExplorer ImportState="_importState" Height="calc(100vh - 129px)" />
-            </MudTabPanel>
 
-            <MudTabPanel Text="Lista" Icon="@Icons.Material.Sharp.Search">
-                <MudDivider Light="true" />
-                <EstimationSelectionList ImportState="_importState" Height="calc(100vh - 129px)" />
-            </MudTabPanel>
+    <MudToolBar Style="@($"height: 40px; background-color: {Theame!.Palette.GrayLighter}; width: 100%;")" DisableGutters="true" Class="d-flex justify-center">
+        <MudIconButton Icon="@Icons.Material.Sharp.Download" OnClick="DownloadAsync" />
+        <MudIconButton Icon="@Icons.Material.Sharp.Refresh" OnClick="RefreshEstimationListAsync"/>
+        <MudIconButton Icon="@Icons.Material.Sharp.Settings" OnClick="ToggleDrawer"/>
+    </MudToolBar>
 
-            <MudTabPanel Text="Valda" Icon="@Icons.Material.Sharp.CheckBox">
-                <MudDivider Light="true" />
-                <EstimationSelectedList ImportState="_importState" Height="calc(100vh - 129px)" />
-            </MudTabPanel>
-        </MudTabs>
-    </MudPaper>
-</MudContainer>
-    
+
+    <MudContainer MaxWidth="MaxWidth.Large">
+        <MudPaper Square="true" Elevation="4">
+            <MudTabs Centered="true" KeepPanelsAlive="true">
+                <MudTabPanel Text="Utforska" Icon="@Icons.Material.Sharp.Folder">
+                    <MudDivider Light="true" />
+                   <EstimationExplorer ImportState="_importState" Height="calc(100vh - 129px)" />
+                </MudTabPanel>
+
+                <MudTabPanel Text="Lista" Icon="@Icons.Material.Sharp.Search">
+                    <MudDivider Light="true" />
+                    <EstimationSelectionList ImportState="_importState" Height="calc(100vh - 129px)" />
+                </MudTabPanel>
+
+                <MudTabPanel Text="Valda" Icon="@Icons.Material.Sharp.CheckBox">
+                    <MudDivider Light="true" />
+                    <EstimationSelectedList ImportState="_importState" Height="calc(100vh - 129px)" />
+                </MudTabPanel>
+            </MudTabs>
+        </MudPaper>
+    </MudContainer>
+</MudDrawerContainer>
 
 
 
@@ -37,7 +49,12 @@
     [Inject] public required IEstimationImportState _importState { get; set; }
     [Inject] public required IBidConImporter _importer { get; set; }
     [Inject] public required IEstimationImportSettingsState _settingsState { get; set; }
+    public bool drawerOpen = false;
 
+    void ToggleDrawer()
+    {
+        drawerOpen = !drawerOpen;
+    }
     protected override async Task OnInitializedAsync()
     {
         await _settingsState.LoadPreferedSettingsAsync();

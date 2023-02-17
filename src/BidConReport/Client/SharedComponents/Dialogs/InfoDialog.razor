@@ -1,0 +1,15 @@
+﻿<MudDialog>
+    <DialogContent>
+        @Info
+    </DialogContent>
+    <DialogActions>
+        <MudButton Color="Color.Success" OnClick="Submit">Ok</MudButton>
+    </DialogActions>
+</MudDialog>
+@code {
+    public const string InfoParameter = "Info";
+    [CascadingParameter] public required MudDialogInstance MudDialog { get; set; }
+    [Parameter] public required string Info { get; set; } = string.Empty;
+
+    void Submit() => MudDialog.Close(DialogResult.Ok(true));
+}
