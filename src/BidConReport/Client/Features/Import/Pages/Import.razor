@@ -1,9 +1,9 @@
 ﻿@page "/import"
 
 @attribute [Authorize]
-<MudDrawerContainer Class="mud-height-full">
+@*<MudDrawerContainer Class="mud-height-full">*@
 
-    <MudDrawer @bind-Open="@drawerOpen" Fixed="false" Anchor="Anchor.End" Elevation="0" Variant="@DrawerVariant.Persistent">
+    <MudDrawer @bind-Open="@drawerOpen" ClipMode="DrawerClipMode.Always" Anchor="Anchor.End" Elevation="4">
         <MudDrawerHeader>
             <MudText Typo="Typo.h6">Settings</MudText>
         </MudDrawerHeader>
@@ -20,27 +20,27 @@
     </MudToolBar>
 
 
-    <MudContainer MaxWidth="MaxWidth.Large">
+    <MudContainer MaxWidth="MaxWidth.Large" Class="my-2">
         <MudPaper Square="true" Elevation="4">
             <MudTabs Centered="true" KeepPanelsAlive="true">
                 <MudTabPanel Text="Utforska" Icon="@Icons.Material.Sharp.Folder">
                     <MudDivider Light="true" />
-                   <EstimationExplorer ImportState="_importState" Height="calc(100vh - 129px)" />
+                   <EstimationExplorer ImportState="_importState" Height="calc(100vh - 145px)" />
                 </MudTabPanel>
 
                 <MudTabPanel Text="Lista" Icon="@Icons.Material.Sharp.Search">
                     <MudDivider Light="true" />
-                    <EstimationSelectionList ImportState="_importState" Height="calc(100vh - 129px)" />
+                    <EstimationSelectionList ImportState="_importState" Height="calc(100vh - 145px)" />
                 </MudTabPanel>
 
                 <MudTabPanel Text="Valda" Icon="@Icons.Material.Sharp.CheckBox">
                     <MudDivider Light="true" />
-                    <EstimationSelectedList ImportState="_importState" Height="calc(100vh - 129px)" />
+                    <EstimationSelectedList ImportState="_importState" Height="calc(100vh - 145px)" />
                 </MudTabPanel>
             </MudTabs>
         </MudPaper>
     </MudContainer>
-</MudDrawerContainer>
+@*</MudDrawerContainer>*@
 
 
 
