@@ -1,4 +1,5 @@
 using BidConReport.Client;
+using BidConReport.Client.Features.MicrosoftGraph;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Authentication;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
@@ -17,6 +18,15 @@ builder.Services.AddHttpClient("BidConReport.ServerAPI", client => client.BaseAd
 
 // Supply HttpClient instances that include access tokens when making requests to the server project
 builder.Services.AddScoped(sp => sp.GetRequiredService<IHttpClientFactory>().CreateClient("BidConReport.ServerAPI"));
+
+var baseUrl = string.Join("/",
+    builder.Configuration.GetSection("MicrosoftGraph")["BaseUrl"],
+    builder.Configuration.GetSection("MicrosoftGraph")["Version"]);
+var scopes = builder.Configuration.GetSection("MicrosoftGraph:Scopes")
+    .Get<List<string>>();
+
+builder.Services.AddGraphClient(baseUrl, scopes);
+
 
 builder.Services.AddMudServices();
 builder.Services.UseImportFeature();
