@@ -1,14 +1,12 @@
 ﻿@using Microsoft.AspNetCore.Components.Authorization
 @using Microsoft.AspNetCore.Components.WebAssembly.Authentication
 @inject NavigationManager Navigation
-@inject GraphServiceClient GraphClient
+
 
 <AuthorizeView>
     <Authorized>
         Hello, @context.User.Identity?.Name!
-        <button class="nav-link btn btn-link" @onclick="BeginLogOut">Log out</button>
-        @GetPhoto()
-        @*<MudAvatar Image="@GetPhoto().ToString()"></MudAvatar>*@
+        <button class="nav-link btn btn-link mr-2" @onclick="BeginLogOut">Log out</button>
     </Authorized>
     <NotAuthorized>
         <a href="authentication/login">Log in</a>
@@ -16,15 +14,10 @@
 </AuthorizeView>
 
 @code{
+
     public void BeginLogOut()
     {
         Navigation.NavigateToLogout("authentication/logout");
     }
-    public async Task<string> GetPhoto()
-    {
-        var me = await GraphClient.Me.Request().GetAsync();
-        var photo = await GraphClient.Me.Photo.Request().GetAsync();
-        return me.GivenName;
-        //return await GraphClient.Me.Photo.Request().GetAsync();
-    }
+    
 }

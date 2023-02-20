@@ -1,5 +1,6 @@
 ﻿@page "/"
 @attribute [Authorize]
+@inject GraphServiceClient GraphClient
 
 
 <MudGrid Class="pt-4 px-4">
@@ -9,10 +10,15 @@
         </MudPaper>
     </MudItem>
     <MudItem xs="12" sm="6" md="4">
-        <MudPaper Elevation="2" Class="pa-4" Style="height: 200px;"></MudPaper>
+        <MudPaper Elevation="2" Class="pa-4" Style="height: 200px;">
+            <img src="@ImageString"/>
+        </MudPaper>
     </MudItem>
     <MudItem xs="12" sm="12" md="4">
-        <MudPaper Elevation="2" Class="pa-4" Style="height: 200px;"></MudPaper>
+        <MudPaper Elevation="2" Class="pa-4" Style="height: 200px;">
+            <MudAvatar Image="@ImageString"/>
+            <h6>@ImageString</h6>
+        </MudPaper>
     </MudItem>
     <MudItem xs="12" sm="6">
         <MudGrid>
@@ -42,10 +48,35 @@
 @code {
     [Inject] public required HttpClient HttpClient { get; set; }
     public required string Result { get; set; } = "";
+    public required string ImageString { get; set; } = "";
+    protected override async Task OnInitializedAsync()
+    {
+        await GetPhoto();
+    }
     public async Task Click()
     {
         var result = await HttpClient.GetAsync("/values/get");
         Result = await result.Content.ReadAsStringAsync();
+        StateHasChanged();
+    }
+    public async Task GetPhoto()
+    {
+        //var me = await GraphClient.Me.Request().GetAsync();
+        //var p = me.Photo;
+        var photo = await GraphClient.Me.Photo.Request().GetAsync();
+        if(photo.Height is not null)
+        {
+            using (var ms = new MemoryStream())
+            {
+                var photoStream = await GraphClient.Me.Photo.Content.Request().GetAsync();
+                photoStream.CopyTo(ms);
+                var photoBytes = ms.ToArray();
+                var photoBase64 = Convert.ToBase64String(photoBytes);
+                ImageString = $"data:image/png;base64,{photoBase64}";
+            }
+        }
+        
+
         StateHasChanged();
     }
 }
