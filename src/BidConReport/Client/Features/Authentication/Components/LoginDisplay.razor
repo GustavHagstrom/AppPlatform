@@ -1,23 +1,67 @@
 ﻿@using Microsoft.AspNetCore.Components.Authorization
 @using Microsoft.AspNetCore.Components.WebAssembly.Authentication
 @inject NavigationManager Navigation
+@inject GraphServiceClient GraphClient
 
+<div>@* @onfocusout="@(() => _isOpen = false)">*@
+    <AuthorizeView>
+        <Authorized>
+            <button @onclick="ToggleOpen" style="height:40px">
+                <MudAvatar Image="@ImageSrc" Class="mr-1 align-self-center" Style="height:35px; width:35px; " />
+                <MudPopover Open="_isOpen" AnchorOrigin="Origin.BottomRight" TransformOrigin="Origin.TopRight">
+                    @*<MudButton Variant="Variant.Text">Default</MudButton>*@
+                    @* <button class="pa-4" @onclick="BeginLogOut">Log out</button>*@
+                    <MudButton OnClick="BeginLogOut" Variant="Variant.Text">Log out</MudButton>
+                </MudPopover>
+            </button>
+            @* Hello, @context.User.Identity?.Name!
+            <button class="nav-link btn btn-link mr-2" @onclick="BeginLogOut">Log out</button>*@
+        </Authorized>
+        <NotAuthorized>
+            <MudButton Variant="Variant.Text" Href="authentication/login">Log in</MudButton>
+            @*<a href="authentication/login">Log in</a>*@
+        </NotAuthorized>
+    </AuthorizeView>
+</div>
 
-<AuthorizeView>
-    <Authorized>
-        Hello, @context.User.Identity?.Name!
-        <button class="nav-link btn btn-link mr-2" @onclick="BeginLogOut">Log out</button>
-    </Authorized>
-    <NotAuthorized>
-        <a href="authentication/login">Log in</a>
-    </NotAuthorized>
-</AuthorizeView>
 
 @code{
+    public required string ImageSrc { get; set; } = "";
+    public bool _isOpen = false;
 
+    public void ToggleOpen()
+    {
+        if (_isOpen)
+            _isOpen = false;
+        else
+            _isOpen = true;
+    }
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        await GetPhotoAsync();
+    }
     public void BeginLogOut()
     {
         Navigation.NavigateToLogout("authentication/logout");
     }
-    
+    public async Task GetPhotoAsync()
+    {
+        //var me = await GraphClient.Me.Request().GetAsync();
+        //var p = me.Photo;
+        var photo = await GraphClient.Me.Photo.Request().GetAsync();
+        if (photo.Height is not null)
+        {
+            using (var ms = new MemoryStream())
+            {
+                var photoStream = await GraphClient.Me.Photo.Content.Request().GetAsync();
+                photoStream.CopyTo(ms);
+                var photoBytes = ms.ToArray();
+                var photoBase64 = Convert.ToBase64String(photoBytes);
+                ImageSrc = $"data:image/png;base64,{photoBase64}";
+            }
+        }
+
+
+        StateHasChanged();
+    }
 }
