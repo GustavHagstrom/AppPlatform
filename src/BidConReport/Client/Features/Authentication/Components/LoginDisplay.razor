@@ -4,28 +4,34 @@
 @inject GraphServiceClient GraphClient
 
 <div>@* @onfocusout="@(() => _isOpen = false)">*@
-    <AuthorizeView>
+    <AuthorizeView @ref="AuthView">
         <Authorized>
             <button @onclick="ToggleOpen" style="height:40px">
-                <MudAvatar Image="@ImageSrc" Class="mr-1 align-self-center" Style="height:35px; width:35px; " />
+                <MudAvatar Class="mr-1 align-self-center" Style="@($"height:35px; width:35px; background-color: {Theme.Palette.PrimaryLighten}")">
+                    <img src="@ImageSrc" style="height:35px; width:35px;" class="align-self-center"/>
+                </MudAvatar>
+
+                <MudAvatar Class="mr-1 align-self-center" Style="@($"height:35px; width:35px; background-color: {Theme.Palette.PrimaryLighten}")">
+                        <MudText Typo="Typo.h6" Class="align-self-center" Style="font-size: 1rem">@GetInitials(context.User.Identity?.Name)</MudText>
+                </MudAvatar>
+
                 <MudPopover Open="_isOpen" AnchorOrigin="Origin.BottomRight" TransformOrigin="Origin.TopRight">
-                    @*<MudButton Variant="Variant.Text">Default</MudButton>*@
-                    @* <button class="pa-4" @onclick="BeginLogOut">Log out</button>*@
                     <MudButton OnClick="BeginLogOut" Variant="Variant.Text">Log out</MudButton>
                 </MudPopover>
+
             </button>
-            @* Hello, @context.User.Identity?.Name!
-            <button class="nav-link btn btn-link mr-2" @onclick="BeginLogOut">Log out</button>*@
         </Authorized>
         <NotAuthorized>
             <MudButton Variant="Variant.Text" Href="authentication/login">Log in</MudButton>
-            @*<a href="authentication/login">Log in</a>*@
         </NotAuthorized>
     </AuthorizeView>
 </div>
 
 
 @code{
+    [CascadingParameter] public required MudTheme Theme { get; set; }
+    public AuthorizeView? AuthView { get; set; }
+    public bool PhotoExists = false;
     public required string ImageSrc { get; set; } = "";
     public bool _isOpen = false;
 
@@ -36,7 +42,18 @@
         else
             _isOpen = true;
     }
-    protected override async Task OnAfterRenderAsync(bool firstRender)
+    public string GetInitials(string? name)
+    {
+        if (name is null) return string.Empty;
+        var names = name.Split(" ");
+        var initials = string.Empty;
+        foreach (var item in names)
+        {
+            initials += item.First();
+        }
+        return initials;
+    }
+    protected override async Task OnInitializedAsync()
     {
         await GetPhotoAsync();
     }
@@ -46,22 +63,21 @@
     }
     public async Task GetPhotoAsync()
     {
-        //var me = await GraphClient.Me.Request().GetAsync();
-        //var p = me.Photo;
+        //This runs before tokens are set and will therefor not get photo on the first try
+        //fix please
+        PhotoExists = false;
         var photo = await GraphClient.Me.Photo.Request().GetAsync();
         if (photo.Height is not null)
         {
-            using (var ms = new MemoryStream())
-            {
-                var photoStream = await GraphClient.Me.Photo.Content.Request().GetAsync();
-                photoStream.CopyTo(ms);
-                var photoBytes = ms.ToArray();
-                var photoBase64 = Convert.ToBase64String(photoBytes);
-                ImageSrc = $"data:image/png;base64,{photoBase64}";
-            }
+            PhotoExists = true;
+            var ms = new MemoryStream();
+            var photoStream = await GraphClient.Me.Photo.Content.Request().GetAsync();
+            photoStream.CopyTo(ms);
+            var photoBytes = ms.ToArray();
+            var photoBase64 = Convert.ToBase64String(photoBytes);
+            ImageSrc = $"data:image/png;base64,{photoBase64}";
+            
         }
-
-
         StateHasChanged();
     }
 }
