@@ -1,0 +1,44 @@
+﻿<MudAppBar Dense="false" DisableGutters="true" Style="height: 40px">
+
+    <AuthorizeView>
+        <Authorized>
+            <MudIconButton Icon="@Icons.Material.Sharp.Menu" Color="Color.Inherit" Edge="Edge.Start" OnClick="@((e) => DrawerToggle())" Class="ml-0" />
+            <a href="/">
+                <MudText Typo="Typo.h5" Style="@($"color: {Theme.Palette.AppbarText}")">LB Portalen</MudText>
+            </a>
+        </Authorized>
+        <Authorizing>
+            <MudText Typo="Typo.h5" Class="ml-3" Style="@($"color: {Theme.Palette.AppbarText}")">LB Portalen</MudText>
+        </Authorizing>
+        <NotAuthorized>
+            <a href="/">
+                <MudText Typo="Typo.h5" Class="ml-3" Style="@($"color: {Theme.Palette.AppbarText}")">LB Portalen</MudText>
+            </a>
+        </NotAuthorized>
+    </AuthorizeView>
+            
+    <MudSpacer/>
+    @ChildContent
+    <MudSpacer />
+    <LoginDisplay/>
+</MudAppBar>
+
+<MudDrawer @bind-Open="_drawerOpen" ClipMode="DrawerClipMode.Always" Elevation="4">
+    <MudNavMenu>
+        <MudNavLink Href="/import" Icon="@Icons.Material.Sharp.Download" IconColor="Color.Primary">Importera från BidCon</MudNavLink>
+    </MudNavMenu>
+</MudDrawer>
+
+@code {
+    bool _drawerOpen = true;
+
+    [CascadingParameter] public required  MudTheme Theme { get; set; }
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+
+    void DrawerToggle()
+    {
+        _drawerOpen = !_drawerOpen;
+    }
+
+
+}

@@ -16,34 +16,8 @@
 
     <MudLayout>
 
-        <MudAppBar Dense="false" DisableGutters="true" Style="height: 40px">
-            <AuthorizeView>
-                <Authorized>
-                    <MudIconButton Icon="@Icons.Material.Sharp.Menu" Color="Color.Inherit" Edge="Edge.Start" OnClick="@((e) => DrawerToggle())" Class="ml-0" />
-                    <a href="/">
-                        <MudText Typo="Typo.h5" Style="@($"color: {Theme.Palette.AppbarText}")">LB Portalen</MudText>
-                    </a>
-                </Authorized>
-                <Authorizing>
-                    <MudText Typo="Typo.h5" Class="ml-3" Style="@($"color: {Theme.Palette.AppbarText}")">LB Portalen</MudText>
-                </Authorizing>
-                <NotAuthorized>
-                    <a href="/">
-                        <MudText Typo="Typo.h5" Class="ml-3" Style="@($"color: {Theme.Palette.AppbarText}")">LB Portalen</MudText>
-                    </a>
-                </NotAuthorized>
-            </AuthorizeView>
-            
-            <MudSpacer/>
-            <LoginDisplay/>
-        </MudAppBar>
-
-        <MudDrawer @bind-Open="_drawerOpen" ClipMode="DrawerClipMode.Always" Elevation="4">
-            <MudNavMenu>
-                @*<MudNavLink Href="/" Icon="@Icons.Material.Sharp.Home"  IconColor="Color.Primary">Hem</MudNavLink>*@
-                <MudNavLink Href="/import" Icon="@Icons.Material.Sharp.Download" IconColor="Color.Primary">Importera från BidCon</MudNavLink>
-            </MudNavMenu>
-        </MudDrawer>
+        <DefaultAppBar/>
+       
 
         <MudMainContent>
             <div>
@@ -57,15 +31,5 @@
 
 </CascadingValue>
 @code {
-    bool _drawerOpen = true;
-
     public MudTheme Theme { get; set; } = CustomThemes.CustomStandardTheme;
-
-
-    void DrawerToggle()
-    {
-        _drawerOpen = !_drawerOpen;
-    }
-
-    
 }
