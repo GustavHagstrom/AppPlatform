@@ -3,43 +3,43 @@
 @attribute [Authorize]
 @*<MudDrawerContainer Class="mud-height-full">*@
 
-    <MudDrawer @bind-Open="@drawerOpen" ClipMode="DrawerClipMode.Always" Anchor="Anchor.End" Elevation="4">
-        <MudDrawerHeader>
-            <MudText Typo="Typo.h6">Settings</MudText>
-        </MudDrawerHeader>
-        <MudNavMenu>
-            <MudNavLink Match="NavLinkMatch.All" Icon="@Icons.Material.Filled.AccountBox">Profile</MudNavLink>
-        </MudNavMenu>
-    </MudDrawer>
+<MudDrawer @bind-Open="@drawerOpen" ClipMode="DrawerClipMode.Always" Anchor="Anchor.End" Elevation="4">
+    <MudDrawerHeader>
+        <MudText Typo="Typo.h6">Settings</MudText>
+    </MudDrawerHeader>
+    <MudNavMenu>
+        <MudNavLink Match="NavLinkMatch.All" Icon="@Icons.Material.Filled.AccountBox">Profile</MudNavLink>
+    </MudNavMenu>
+</MudDrawer>
 
 
-    <MudToolBar Style="@($"height: 40px; background-color: {Theame!.Palette.GrayLighter}; width: 100%;")" DisableGutters="true" Class="d-flex justify-center">
-        <MudIconButton Icon="@Icons.Material.Sharp.Download" OnClick="DownloadAsync" />
-        <MudIconButton Icon="@Icons.Material.Sharp.Refresh" OnClick="RefreshEstimationListAsync"/>
-        <MudIconButton Icon="@Icons.Material.Sharp.Settings" OnClick="ToggleDrawer"/>
-    </MudToolBar>
+<MudToolBar Style="@($"height: 40px; background-color: {Theame!.Palette.GrayLighter}; width: 100%;")" DisableGutters="true" Class="d-flex justify-center">
+    <MudIconButton Icon="@Icons.Material.Sharp.Download" OnClick="DownloadAsync" />
+    <MudIconButton Icon="@Icons.Material.Sharp.Refresh" OnClick="RefreshEstimationListAsync"/>
+    <MudIconButton Icon="@Icons.Material.Sharp.Settings" OnClick="ToggleDrawer"/>
+</MudToolBar>
 
 
-    <MudContainer MaxWidth="MaxWidth.Large" Class="my-2">
-        <MudPaper Square="true" Elevation="4">
-            <MudTabs Centered="true" KeepPanelsAlive="true">
-                <MudTabPanel Text="Utforska" Icon="@Icons.Material.Sharp.Folder">
-                    <MudDivider Light="true" />
-                   <EstimationExplorer ImportState="_importState" Height="calc(100vh - 145px)" />
-                </MudTabPanel>
+<MudContainer MaxWidth="MaxWidth.Large" Class="my-2">
+    <MudPaper Square="true" Elevation="4">
+        <MudTabs Centered="true" KeepPanelsAlive="true">
+            <MudTabPanel Text="Utforska" Icon="@Icons.Material.Sharp.Folder">
+                <MudDivider Light="true" />
+                <EstimationExplorer ImportState="_importState" Height="calc(100vh - 145px)" />
+            </MudTabPanel>
 
-                <MudTabPanel Text="Lista" Icon="@Icons.Material.Sharp.Search">
-                    <MudDivider Light="true" />
-                    <EstimationSelectionList ImportState="_importState" Height="calc(100vh - 145px)" />
-                </MudTabPanel>
+            <MudTabPanel Text="Lista" Icon="@Icons.Material.Sharp.Search">
+                <MudDivider Light="true" />
+                <EstimationSelectionList ImportState="_importState" Height="calc(100vh - 145px)" />
+            </MudTabPanel>
 
-                <MudTabPanel Text="Valda" Icon="@Icons.Material.Sharp.CheckBox">
-                    <MudDivider Light="true" />
-                    <EstimationSelectedList ImportState="_importState" Height="calc(100vh - 145px)" />
-                </MudTabPanel>
-            </MudTabs>
-        </MudPaper>
-    </MudContainer>
+            <MudTabPanel Text="Valda" Icon="@Icons.Material.Sharp.CheckBox">
+                <MudDivider Light="true" />
+                <EstimationSelectedList ImportState="_importState" Height="calc(100vh - 145px)" />
+            </MudTabPanel>
+        </MudTabs>
+    </MudPaper>
+</MudContainer>
 @*</MudDrawerContainer>*@
 
 
