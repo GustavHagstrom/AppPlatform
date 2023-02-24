@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Components.WebAssembly.Authentication;
 using Microsoft.Authentication.WebAssembly.Msal.Models;
 using Microsoft.Graph;
 
-namespace BidConReport.Client.Features.MicrosoftGraph;
+namespace BidConReport.Client;
 public static class GraphClientExtensions
 {
     public static IServiceCollection AddGraphClient(
@@ -69,7 +69,7 @@ public static class GraphClientExtensions
 
         public HttpClientHttpProvider(HttpClient client)
         {
-            this._client = client;
+            _client = client;
         }
 
         public ISerializer Serializer { get; } = new Serializer();

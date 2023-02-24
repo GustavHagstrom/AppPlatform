@@ -2,49 +2,51 @@
 @using Microsoft.AspNetCore.Components.WebAssembly.Authentication
 @inject NavigationManager Navigation
 @inject GraphServiceClient GraphClient
+@inject OnLoginScopedData _loginData
 
-<div>@* @onfocusout="@(() => _isOpen = false)">*@
-    <AuthorizeView>
-        <Authorized>
-            <button @onclick="ToggleOpen" style="height:40px">
-                <MudAvatar Class="mr-1 align-self-center" Style="@($"height:35px; width:35px; background-color: {Theme.Palette.PrimaryLighten}")">
-                    @if (PhotoExists(context))
-                    {
-                        <img src="@context.User.Claims.FirstOrDefault(x => x.Type == "photo")!.Value" style="height:35px; width:35px;" class="align-self-center"/>
-                    }
-                    else
-                    {
-                        <MudText Typo="Typo.h6" Class="align-self-center" Style="font-size: 1rem">@GetInitials(context.User.Identity?.Name)</MudText>
-                    }
-                </MudAvatar>
-                <MudPopover Open="_isOpen" AnchorOrigin="Origin.BottomRight" TransformOrigin="Origin.TopRight">
-                    <MudButton OnClick="BeginLogOut" Variant="Variant.Text">Log out</MudButton>
-                </MudPopover>
 
-            </button>
-        </Authorized>
-        <NotAuthorized>
-            <MudButton Variant="Variant.Text" Href="authentication/login">Log in</MudButton>
-        </NotAuthorized>
-    </AuthorizeView>
-</div>
+<AuthorizeView>
+    <Authorized>
+        <MudAvatar Class="mr-1 align-self-center mud-ripple cursor-pointer" Style="@($"height:40px; width:40px; background-color: {Theme.Palette.PrimaryLighten}")" @onclick="ToggleOpen">
+                @if (!string.IsNullOrEmpty(_loginData.ProfilePhotoString))
+                {
+                    <img src="@_loginData.ProfilePhotoString" style="height:40px; width:40px;" class="align-self-center" />
+                }
+                else
+                {
+                    <MudText Typo="Typo.h6" Class="align-self-center" Style="font-size: 1rem">@GetInitials(context.User.Identity?.Name)</MudText>
+                }
+                
+            </MudAvatar>
+    <MudPopover Open="_isOpen" AnchorOrigin="Origin.BottomRight" TransformOrigin="Origin.TopRight">
+        <MudButton OnClick="BeginLogOut" Variant="Variant.Text">Log out</MudButton>
+    </MudPopover>
+    </Authorized>
+    <NotAuthorized>
+        <MudButton Variant="Variant.Text" Href="authentication/login">Log in</MudButton>
+    </NotAuthorized>
+</AuthorizeView>
+
 
 
 @code{
     [CascadingParameter] public required MudTheme Theme { get; set; }
     public bool _isOpen = false;
 
+    protected override void OnInitialized()
+    {
+        _loginData.StateChanged += StateHasChanged;
+    }
+    protected override async Task OnInitializedAsync()
+    {
+        await _loginData.SetPhotoStringAsync();
+    }
     public void ToggleOpen()
     {
         if (_isOpen)
             _isOpen = false;
         else
             _isOpen = true;
-    }
-    public bool PhotoExists(AuthenticationState state)
-    {
-        var photoClaim = state.User.Claims.FirstOrDefault(x => x.Type == "photo");
-        return photoClaim is not null && !string.IsNullOrEmpty(photoClaim.Value);
     }
     public string GetInitials(string? name)
     {

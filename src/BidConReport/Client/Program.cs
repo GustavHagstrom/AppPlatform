@@ -1,5 +1,4 @@
 using BidConReport.Client;
-using BidConReport.Client.Features.MicrosoftGraph;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Authentication;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
@@ -30,6 +29,7 @@ builder.Services.AddGraphClient(baseUrl, scopes);
 
 builder.Services.AddMudServices();
 builder.Services.UseImportFeature();
+builder.Services.UseAuthenticationFeature();
 
 builder.Services.AddMsalAuthentication(options =>
 {

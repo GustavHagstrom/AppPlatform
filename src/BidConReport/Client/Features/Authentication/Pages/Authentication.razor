@@ -1,6 +1,9 @@
 ﻿@page "/authentication/{action}"
 @using Microsoft.AspNetCore.Components.WebAssembly.Authentication
-<RemoteAuthenticatorView Action="@Action"> 
+@inject GraphServiceClient _graphServiceClient
+@inject OnLoginScopedData _loginData
+
+<RemoteAuthenticatorView Action="@Action" OnLogInSucceeded="_loginData.SetPhotoStringAsync" OnLogOutSucceeded="() => _loginData.ProfilePhotoString = string.Empty">
     <LoggingIn>
         <span>LoggingIn</span>
     </LoggingIn>
@@ -30,4 +33,12 @@
 
 @code{
     [Parameter] public string? Action { get; set; }
+    //private async Task OnLogInSucceded(RemoteAuthenticationState state)
+    //{
+    //    await _loginData.SetPhotoStringAsync();
+    //}
+    //private void OnLogOutSucceded(RemoteAuthenticationState state)
+    //{
+    //    _loginData.ProfilePhotoString = string.Empty;
+    //}
 }
