@@ -17,12 +17,6 @@ public class BidConImporter : IBidConImporter
         result.EnsureSuccessStatusCode();
         return (await result.Content.ReadFromJsonAsync<BidConImportResult<DbFolder>>())!;
     }
-    public async Task<BidConImportResult<IEnumerable<DbEstimation>>> GetEstimationsAsync()
-    {
-        var result = await GetHttpClient().GetAsync("bidcon/getestimations");
-        result.EnsureSuccessStatusCode();
-        return (await result.Content.ReadFromJsonAsync<BidConImportResult<IEnumerable<DbEstimation>>>())!;
-    }
     public async Task<BidConImportResult<Estimation>> GetEstimationAsync(string id, EstimationImportSettings settings)
     {
         var result = await GetHttpClient().PostAsJsonAsync($"bidcon/getestimation/{id}", settings);

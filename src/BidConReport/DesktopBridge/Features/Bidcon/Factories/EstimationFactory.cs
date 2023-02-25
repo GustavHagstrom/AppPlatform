@@ -3,13 +3,13 @@ using BidConReport.DesktopBridge.Features.Bidcon.RulesEngine;
 using BidConReport.Shared.Models;
 
 namespace BidConReport.DesktopBridge.Features.Bidcon.Factories;
-public class SimpleEstimationFactory : ISimpleEstimationFactory
+public class EstimationFactory : IEstimationFactory
 {
     private readonly IEstimationItemRulesEngine _rulesEngine;
 
     private EstimationImportSettings? Settings { get; set; }
     private double? CostFactor { get; set; }
-    public SimpleEstimationFactory(IEstimationItemRulesEngine rulesEngine)
+    public EstimationFactory(IEstimationItemRulesEngine rulesEngine)
     {
         _rulesEngine = rulesEngine;
     }

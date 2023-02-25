@@ -5,12 +5,10 @@ namespace BidConReport.DesktopBridge.Features.Bidcon.Services;
 public class BidConImporter : IBidConImporter
 {
     private readonly IBidConConfigProvider _bidConConfigProvider;
-    private readonly IBidConModelSimpliefier _bidConModelSimpliefier;
     private DatabaseUser? _databaseUser;
-    public BidConImporter(IBidConConfigProvider bidConConfigProvider, IBidConModelSimpliefier bidConModelSimpliefier)
+    public BidConImporter(IBidConConfigProvider bidConConfigProvider)
     {
         _bidConConfigProvider = bidConConfigProvider;
-        _bidConModelSimpliefier = bidConModelSimpliefier;
     }
     private DatabaseUser DatabaseUser
     {
@@ -30,16 +28,12 @@ public class BidConImporter : IBidConImporter
         app.InitConnectionFromIni();
         _databaseUser = app.Login(_bidConConfigProvider.GetUserName(), _bidConConfigProvider.GetPassword());
     }
-    public DbFolder GetFolderStructure()
+    public DatabaseFolder GetDatabaseFolder()
     {
-        return _bidConModelSimpliefier.SimplifieBidConFolderStructure(DatabaseUser.ReadEstimations());
+        return DatabaseUser.ReadEstimations();
     }
-    public IEnumerable<DbEstimation> GetAllEstimations()
+    public BidCon.SDK.Estimation GetEstimation(string id)
     {
-        return _bidConModelSimpliefier.SimplifieAllEstimations(DatabaseUser.ReadEstimations());
-    }
-    public Estimation GetEstimation(string id, EstimationImportSettings settings)
-    {
-        return _bidConModelSimpliefier.SimplifieEstimation(DatabaseUser.ReadEstimation(id), settings);
+        return DatabaseUser.ReadEstimation(id);
     }
 }

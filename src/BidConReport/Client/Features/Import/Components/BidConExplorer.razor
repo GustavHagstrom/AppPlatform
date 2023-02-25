@@ -25,9 +25,12 @@
     private async Task RefreshItems()
     {
         IsRefreshing = true;
-        var result = await _bidconImporter.GetEstimationsAsync();
+        var result = await _bidconImporter.GetFoldersAsync();
 
-        TreeItems = new(result.Result);
+        if(result.Value is not null)
+        {
+            TreeItems = new(result.Value.GetAllEstimations());
+        }
         IsRefreshing = false;
     }
     private void CreateTreeItemsRecursivly(HashSet<TreeItemData> hashSet, DbFolder parentFolder)

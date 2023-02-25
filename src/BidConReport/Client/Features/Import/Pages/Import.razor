@@ -65,8 +65,11 @@
         var estimations = new List<Estimation>();
         foreach (var e in _importState.SelectedEstimations()!)
         {
-            var estimation = await _importer.GetEstimationAsync(e.Id, _settingsState.CurrentSettings!);
-            estimations.Add(estimation.Result);
+            var result = await _importer.GetEstimationAsync(e.Id, _settingsState.CurrentSettings!);
+            if(result.Value is not null)
+            {
+                estimations.Add(result.Value);
+            }
         }
     }
     private async Task RefreshEstimationListAsync()

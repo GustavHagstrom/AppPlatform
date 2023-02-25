@@ -2,7 +2,7 @@
 using BidConReport.Shared.Models;
 
 namespace BidConReport.DesktopBridge.Features.Bidcon.Factories;
-public interface ISimpleEstimationFactory
+public interface IEstimationFactory
 {
     Shared.Models.Estimation CreateSimpleEstimation(BidCon.SDK.Estimation estimation, EstimationImportSettings settings);
 }

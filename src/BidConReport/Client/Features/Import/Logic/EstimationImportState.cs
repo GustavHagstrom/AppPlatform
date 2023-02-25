@@ -17,9 +17,9 @@ public class EstimationImportState : IEstimationImportState
         ItemTree = null;
 
         var dbFolderResult = await _bidConImporter.GetFoldersAsync();
-        if (dbFolderResult.Result is not null)
+        if (dbFolderResult.Value is not null)
         {
-            ItemTree = new DbTreeItem(dbFolderResult.Result);
+            ItemTree = new DbTreeItem(dbFolderResult.Value);
             ItemTree.SelectionChanged += NotifyStateChanged;
         }
         IsRefreshing = false;

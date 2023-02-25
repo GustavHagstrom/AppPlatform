@@ -9,9 +9,9 @@ public static class BidconDiExtensions
     public static void UseBidconFeature(this IServiceCollection services)
     {
         services.AddSingleton<IBidConImporter, BidConImporter>();
-        services.AddTransient<IBidConModelSimpliefier, BidConModelSimpliefier>();
+        services.AddTransient<IBidconDataConverter, BidconDataConverter>();
         services.AddTransient<IEstimationItemRulesEngine, EstimationItemRulesEngine>();
-        services.AddTransient<ISimpleEstimationFactory, SimpleEstimationFactory>();
+        services.AddTransient<IEstimationFactory, EstimationFactory>();
         services.AddTransient<IBidConConfigProvider, BidConConfigProvider>();
     }
 }

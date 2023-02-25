@@ -27,16 +27,12 @@ internal static class Program
             Application.ApplicationExit += OnExit;
 
             var builder = WebApplication.CreateBuilder();
-
             builder.Host.UseSerilog();
-
             builder.ConfigureServices();
 
             var app = builder.Build();
-
             app.ConfigurePipeline();
-
-            app.StartAsync();
+            app.StartAsync(_cts.Token);
 
             // To customize application configuration such as set high DPI settings or default font,
             // see https://aka.ms/applicationconfiguration.

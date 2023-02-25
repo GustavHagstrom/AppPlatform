@@ -8,10 +8,12 @@ namespace BidConReport.DesktopBridge.Features.Bidcon;
 public class BidconController : ControllerBase
 {
     private readonly IBidConImporter _bidConImporter;
+    private readonly IBidconDataConverter _bidconDataConverter;
 
-    public BidconController(IBidConImporter bidConImporter)
+    public BidconController(IBidConImporter bidConImporter, IBidconDataConverter bidconDataConverter)
     {
         _bidConImporter = bidConImporter;
+        _bidconDataConverter = bidconDataConverter;
     }
     [HttpGet("GetFolders")]
     public async Task<IActionResult> GetFolders(CancellationToken cancellationToken)
@@ -20,22 +22,8 @@ public class BidconController : ControllerBase
         var result = new BidConImportResult<DbFolder>(); 
         try
         {
-            result.Result = _bidConImporter.GetFolderStructure();
-        }
-        catch (Exception e)
-        {
-            result.ErrorMessage = e.Message;
-        }
-        return await Task.FromResult(Ok(result));
-    }
-    [HttpGet("GetEstimations")]
-    public async Task<IActionResult> GetEstimations(CancellationToken cancellationToken)
-    {
-        //TODO implement error message for each failed importation
-        var result = new BidConImportResult<IEnumerable<DbEstimation>>();
-        try
-        {
-            result.Result = _bidConImporter.GetAllEstimations();
+            var folder = _bidConImporter.GetDatabaseFolder();
+            result.Value = _bidconDataConverter.ConvertDatabaseFolder(folder);
         }
         catch (Exception e)
         {
@@ -50,13 +38,14 @@ public class BidconController : ControllerBase
         var result = new BidConImportResult<Estimation>();
         try
         {
-            result.Result = _bidConImporter.GetEstimation(id, settings);
+            var estimation = _bidConImporter.GetEstimation(id);
+            result.Value = _bidconDataConverter.ConvertEstimation(estimation, settings);
         }
         catch (Exception e)
         {
             result.ErrorMessage = e.Message;
             throw;
         }
-        return await Task.FromResult(Ok(_bidConImporter.GetEstimation(id, settings)));
+        return await Task.FromResult(Ok(result));
     }
 }
