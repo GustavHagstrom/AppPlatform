@@ -1,16 +1,9 @@
-﻿@using Microsoft.AspNetCore.Components.Authorization
-@using Microsoft.AspNetCore.Components.WebAssembly.Authentication
-@inject NavigationManager Navigation
-@inject GraphServiceClient GraphClient
-@inject OnLoginScopedData _loginData
-
-
-<AuthorizeView>
+﻿<AuthorizeView>
     <Authorized>
         <MudAvatar Class="mr-1 align-self-center mud-ripple cursor-pointer" Style="@($"height:40px; width:40px; background-color: {Theme.Palette.PrimaryLighten}")" @onclick="ToggleOpen">
-                @if (!string.IsNullOrEmpty(_loginData.ProfilePhotoString))
+                @if (!string.IsNullOrEmpty(PhotoString))
                 {
-                    <img src="@_loginData.ProfilePhotoString" style="height:40px; width:40px;" class="align-self-center" />
+                <img src="@PhotoString" style="height:40px; width:40px;" class="align-self-center" />
                 }
                 else
                 {
@@ -18,7 +11,7 @@
                 }
                 
             </MudAvatar>
-    <MudPopover Open="_isOpen" AnchorOrigin="Origin.BottomRight" TransformOrigin="Origin.TopRight">
+    <MudPopover Open="IsOpen" AnchorOrigin="Origin.BottomRight" TransformOrigin="Origin.TopRight">
         <MudButton OnClick="BeginLogOut" Variant="Variant.Text">Log out</MudButton>
     </MudPopover>
     </Authorized>
@@ -27,40 +20,3 @@
     </NotAuthorized>
 </AuthorizeView>
 
-
-
-@code{
-    [CascadingParameter] public required MudTheme Theme { get; set; }
-    public bool _isOpen = false;
-
-    protected override void OnInitialized()
-    {
-        _loginData.StateChanged += StateHasChanged;
-    }
-    protected override async Task OnInitializedAsync()
-    {
-        await _loginData.SetPhotoStringAsync();
-    }
-    public void ToggleOpen()
-    {
-        if (_isOpen)
-            _isOpen = false;
-        else
-            _isOpen = true;
-    }
-    public string GetInitials(string? name)
-    {
-        if (name is null) return string.Empty;
-        var names = name.Split(" ");
-        var initials = string.Empty;
-        foreach (var item in names)
-        {
-            initials += item.First();
-        }
-        return initials;
-    }
-    public void BeginLogOut()
-    {
-        Navigation.NavigateToLogout("authentication/logout");
-    }
-}

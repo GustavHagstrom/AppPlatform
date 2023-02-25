@@ -1,9 +1,8 @@
 ﻿@page "/authentication/{action}"
 @using Microsoft.AspNetCore.Components.WebAssembly.Authentication
-@inject GraphServiceClient _graphServiceClient
-@inject OnLoginScopedData _loginData
 
-<RemoteAuthenticatorView Action="@Action" OnLogInSucceeded="_loginData.SetPhotoStringAsync" OnLogOutSucceeded="() => _loginData.ProfilePhotoString = string.Empty">
+
+<RemoteAuthenticatorView Action="@Action" OnLogInSucceeded="() => SendAuthenticationChangedMessage(true)" OnLogOutSucceeded="() => SendAuthenticationChangedMessage(false)">
     <LoggingIn>
         <span>LoggingIn</span>
     </LoggingIn>
@@ -33,12 +32,8 @@
 
 @code{
     [Parameter] public string? Action { get; set; }
-    //private async Task OnLogInSucceded(RemoteAuthenticationState state)
-    //{
-    //    await _loginData.SetPhotoStringAsync();
-    //}
-    //private void OnLogOutSucceded(RemoteAuthenticationState state)
-    //{
-    //    _loginData.ProfilePhotoString = string.Empty;
-    //}
+    public void SendAuthenticationChangedMessage(bool isLoggedIn)
+    {
+        WeakReferenceMessenger.Default.Send(new AuthenticationChangedMessage(isLoggedIn));
+    }
 }

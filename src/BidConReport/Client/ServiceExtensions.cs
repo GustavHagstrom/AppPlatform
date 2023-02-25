@@ -14,7 +14,7 @@ public static class ServiceExtensions
     }
     public static void UseAuthenticationFeature(this IServiceCollection services)
     {
-        services.AddScoped<OnLoginScopedData>();
+        //services.AddScoped<OnLoginScopedData>();
         //services.AddScoped<AuthenticationStateProvider, MsGraphAuthenticationStateProvider>();
     }
 }
