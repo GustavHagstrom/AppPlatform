@@ -3,7 +3,7 @@
 namespace SharedLibrary.ExportPresentation.Services;
 public class DisplayItemService
 {
-    public List<SimpleEstimationDisplayItem> ConvertToDisplayItems(IEnumerable<SimpleEstimationItem> estimationItems)
+    public List<EstimationDisplayItem> ConvertToDisplayItems(IEnumerable<EstimationItem> estimationItems)
     {
 
         throw new NotImplementedException();

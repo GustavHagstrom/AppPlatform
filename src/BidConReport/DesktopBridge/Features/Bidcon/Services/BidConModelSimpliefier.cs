@@ -49,7 +49,7 @@ public class BidConModelSimpliefier : IBidConModelSimpliefier
         };
     }
 
-    public SimpleEstimation SimplifieEstimation(Estimation estimation, EstimationImportSettings settings)
+    public Shared.Models.Estimation SimplifieEstimation(BidCon.SDK.Estimation estimation, EstimationImportSettings settings)
     {
         return _simpleEstimationFactory.CreateSimpleEstimation(estimation, settings);
     }

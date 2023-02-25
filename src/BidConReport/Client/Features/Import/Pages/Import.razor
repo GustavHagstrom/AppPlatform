@@ -62,7 +62,7 @@
     }
     private async Task DownloadAsync()
     {
-        var estimations = new List<SimpleEstimation>();
+        var estimations = new List<Estimation>();
         foreach (var e in _importState.SelectedEstimations()!)
         {
             var estimation = await _importer.GetEstimationAsync(e.Id, _settingsState.CurrentSettings!);

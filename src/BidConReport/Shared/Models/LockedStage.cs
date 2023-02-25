@@ -2,5 +2,5 @@
 public class LockedStage
 {
     public string Name { get; set; } = string.Empty;
-    public List<SimpleEstimationItem> Items { get; set; } = new();
+    public List<EstimationItem> Items { get; set; } = new();
 }

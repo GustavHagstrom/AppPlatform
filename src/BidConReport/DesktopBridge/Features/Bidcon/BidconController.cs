@@ -47,7 +47,7 @@ public class BidconController : ControllerBase
     public async Task<IActionResult> GetEstimation(string id, [FromBody] EstimationImportSettings settings, CancellationToken cancellationToken)
     {
         //TODO implement error message 
-        var result = new BidConImportResult<SimpleEstimation>();
+        var result = new BidConImportResult<Estimation>();
         try
         {
             result.Result = _bidConImporter.GetEstimation(id, settings);

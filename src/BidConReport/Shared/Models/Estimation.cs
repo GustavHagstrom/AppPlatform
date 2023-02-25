@@ -1,13 +1,9 @@
-﻿using BidConReport.Shared.Models;
-using MongoDB.Bson;
-using MongoDB.Bson.Serialization.Attributes;
+﻿namespace BidConReport.Shared.Models;
 
-namespace BidConReport.Shared.Models;
-
-public class SimpleEstimation
+public class Estimation
 {
-    [BsonId]
-    [BsonRepresentation(BsonType.ObjectId)]
+    //[BsonId]
+    //[BsonRepresentation(BsonType.ObjectId)]
     public string Id { get; set; } = string.Empty;
     public string BidConId { get; set; } = string.Empty;
     public string Name { get; set; } = string.Empty;
@@ -18,8 +14,8 @@ public class SimpleEstimation
     public DateTime? ExpirationDate { get; set; }
     public string[] StyleTags { get; set; } = Array.Empty<string>();
     public string[] OptionTags { get; set; } = Array.Empty<string>();
-    public List<SimpleEstimationItem> Items { get; set; } = new();
-    [BsonIgnore]
+    public List<EstimationItem> Items { get; set; } = new();
+    //[BsonIgnore]
     public List<LockedCategory> LockedCategories { get; set; } = new();
 
     public override string ToString()

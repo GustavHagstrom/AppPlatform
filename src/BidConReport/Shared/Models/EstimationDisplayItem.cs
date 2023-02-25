@@ -1,5 +1,5 @@
 ﻿namespace BidConReport.Shared.Models;
-public class SimpleEstimationDisplayItem
+public class EstimationDisplayItem
 {
    
     public double UnitApriceCost { get; set; }
@@ -11,7 +11,7 @@ public class SimpleEstimationDisplayItem
     public string BidConId { get; set; } = string.Empty;
     
     public int? ParentRowNumber { get; set; }
-    public SimpleEstimationItemType ItemType { get; set; }
+    public EstimationItemType ItemType { get; set; }
     public string Name { get; set; } = string.Empty;
     public string Unit { get; set; } = string.Empty;
     public string DisplayedUnit { get; set; } = string.Empty;

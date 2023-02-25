@@ -38,7 +38,7 @@ public class BidConImporter : IBidConImporter
     {
         return _bidConModelSimpliefier.SimplifieAllEstimations(DatabaseUser.ReadEstimations());
     }
-    public SimpleEstimation GetEstimation(string id, EstimationImportSettings settings)
+    public Estimation GetEstimation(string id, EstimationImportSettings settings)
     {
         return _bidConModelSimpliefier.SimplifieEstimation(DatabaseUser.ReadEstimation(id), settings);
     }

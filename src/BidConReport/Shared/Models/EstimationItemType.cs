@@ -1,5 +1,5 @@
 ﻿namespace BidConReport.Shared.Models;
-public enum SimpleEstimationItemType
+public enum EstimationItemType
 {
     Group,
     Part,

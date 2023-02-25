@@ -13,14 +13,14 @@ public class SimpleEstimationFactory : ISimpleEstimationFactory
     {
         _rulesEngine = rulesEngine;
     }
-    public SimpleEstimation CreateSimpleEstimation(Estimation estimation, EstimationImportSettings settings)
+    public Shared.Models.Estimation CreateSimpleEstimation(BidCon.SDK.Estimation estimation, EstimationImportSettings settings)
     {
         var resources = GetResources(estimation.SummarySheet);// (Resource[])estimation.SummarySheet.Items;
         CostFactor = resources!.Where(x => x.Account.Code == settings.CostFactorAccount).Single().TotalCost;
         Settings = settings;
         var costBeforeChanges = resources!.Where(x => x.Account.Code == settings.CostBeforeChangesAccount).Single().TotalCost;
         var endPageNetCost = resources!.Where(x => x.Account.Code == settings.NetCostAccount).Single().TotalCost;
-        return new SimpleEstimation
+        return new Shared.Models.Estimation
         {
             BidConId = estimation.ID.ToString(),
             Name = estimation.Name,
@@ -36,7 +36,7 @@ public class SimpleEstimationFactory : ISimpleEstimationFactory
         };
     }
 
-    private IEnumerable<LockedCategory> CreateLockedCategories(Estimation estimation)
+    private IEnumerable<LockedCategory> CreateLockedCategories(BidCon.SDK.Estimation estimation)
     {
         foreach (var category in estimation.LockedStages.Items)
         {
@@ -48,7 +48,7 @@ public class SimpleEstimationFactory : ISimpleEstimationFactory
         }
     }
 
-    private IEnumerable<LockedStage> CreateLockedStages(EstimationItem category)
+    private IEnumerable<LockedStage> CreateLockedStages(BidCon.SDK.EstimationItem category)
     {
         foreach (var stage in category.Items)
         {
@@ -60,9 +60,9 @@ public class SimpleEstimationFactory : ISimpleEstimationFactory
         }
     }
 
-    private List<SimpleEstimationItem> CreateSimpleEstimationItemsRecursivly(EstimationItem[] items, SimpleEstimationItem? parent = null, int row = 0)//, int? parentRow = null)
+    private List<Shared.Models.EstimationItem> CreateSimpleEstimationItemsRecursivly(BidCon.SDK.EstimationItem[] items, Shared.Models.EstimationItem? parent = null, int row = 0)//, int? parentRow = null)
     {
-        var returnlist = new List<SimpleEstimationItem>();
+        var returnlist = new List<Shared.Models.EstimationItem>();
         foreach (var item in items)
         {
             if (_rulesEngine.ShouldBeProcessed(item, Settings!))
@@ -76,18 +76,18 @@ public class SimpleEstimationFactory : ISimpleEstimationFactory
         return returnlist;
     }
 
-    private List<SimpleEstimationItem> GetSubItems(EstimationItem item, int row, SimpleEstimationItem? parent = null)
+    private List<Shared.Models.EstimationItem> GetSubItems(BidCon.SDK.EstimationItem item, int row, Shared.Models.EstimationItem? parent = null)
     {
-        var subItems = new List<SimpleEstimationItem>();
-        if (item.ItemType == EstimationItemType.Part || item.ItemType == EstimationItemType.Group)
+        var subItems = new List<Shared.Models.EstimationItem>();
+        if (item.ItemType == BidCon.SDK.EstimationItemType.Part || item.ItemType == BidCon.SDK.EstimationItemType.Group)
         {
             subItems.AddRange(CreateSimpleEstimationItemsRecursivly(item.Items, parent, row));
         }
         return subItems;
     }
-    private SimpleEstimationItem CreateSimpleEstimationItem(EstimationItem item, int row, SimpleEstimationItem? parent = null)
+    private Shared.Models.EstimationItem CreateSimpleEstimationItem(BidCon.SDK.EstimationItem item, int row, Shared.Models.EstimationItem? parent = null)
     {
-        return new SimpleEstimationItem
+        return new Shared.Models.EstimationItem
         {
             RowNumber = row,
             //BidConId = item.ID,
@@ -96,7 +96,7 @@ public class SimpleEstimationFactory : ISimpleEstimationFactory
             //Parent = parent,
             ChangedToRowNumber = row,
             //Items = GetSubItems(item),
-            ItemType = (SimpleEstimationItemType)Enum.Parse(typeof(SimpleEstimationItemType), item.ItemType.ToString()),
+            ItemType = (Shared.Models.EstimationItemType)Enum.Parse(typeof(Shared.Models.EstimationItemType), item.ItemType.ToString()),
             Quantity = item.Quantity,
             //RegulatedQuantity = item.Quantity - item.OriginalQuantity,
             DisplayedQuantity = GetDisplayedQuantity(item),
@@ -111,7 +111,7 @@ public class SimpleEstimationFactory : ISimpleEstimationFactory
         };
     }
 
-    private string[] GetOptionTags(EstimationItem item)
+    private string[] GetOptionTags(BidCon.SDK.EstimationItem item)
     {
         var tags = GetTags(item, Settings!.OptionTags).ToList();
         if (item.Revision is not null && item.Revision.Code is not null)
@@ -121,9 +121,9 @@ public class SimpleEstimationFactory : ISimpleEstimationFactory
         return tags.ToArray();
     }
 
-    private static string GetDisplayedUnit(EstimationItem estimationItem)
+    private static string GetDisplayedUnit(BidCon.SDK.EstimationItem estimationItem)
     {
-        if (estimationItem.ItemType == EstimationItemType.Group || estimationItem.ItemType == EstimationItemType.Part)
+        if (estimationItem.ItemType == BidCon.SDK.EstimationItemType.Group || estimationItem.ItemType == BidCon.SDK.EstimationItemType.Part)
         {
             return string.Empty;
         }
@@ -133,19 +133,19 @@ public class SimpleEstimationFactory : ISimpleEstimationFactory
         }
         return estimationItem.Unit;
     }
-    private static string GetDisplayedQuantity(EstimationItem estimationItem)
+    private static string GetDisplayedQuantity(BidCon.SDK.EstimationItem estimationItem)
     {
         if (!string.IsNullOrWhiteSpace(estimationItem.Reference))
         {
             return 1.ToString("N1");
         }
-        if (estimationItem.ItemType == EstimationItemType.Group || estimationItem.ItemType == EstimationItemType.Part || estimationItem.ItemType == EstimationItemType.Text)
+        if (estimationItem.ItemType == BidCon.SDK.EstimationItemType.Group || estimationItem.ItemType == BidCon.SDK.EstimationItemType.Part || estimationItem.ItemType == BidCon.SDK.EstimationItemType.Text)
         {
             return string.Empty;
         }
         return estimationItem.Quantity.ToString("N1");
     }
-    private static IEnumerable<string> GetTags(EstimationItem estimationItem, IEnumerable<string> TagsTemplate)
+    private static IEnumerable<string> GetTags(BidCon.SDK.EstimationItem estimationItem, IEnumerable<string> TagsTemplate)
     {
         foreach (string tag in TagsTemplate)
         {
@@ -163,7 +163,7 @@ public class SimpleEstimationFactory : ISimpleEstimationFactory
         }
         return unitCost.Value * CostFactor!.Value;
     }
-    private static List<Resource> GetResources(EstimationItem estimationItem)
+    private static List<Resource> GetResources(BidCon.SDK.EstimationItem estimationItem)
     {
         var resources = new List<Resource>();
         if (estimationItem is Resource resource)

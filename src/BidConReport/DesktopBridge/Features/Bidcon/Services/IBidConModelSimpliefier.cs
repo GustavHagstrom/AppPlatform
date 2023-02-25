@@ -7,5 +7,5 @@ public interface IBidConModelSimpliefier
 {
     IEnumerable<DbEstimation> SimplifieAllEstimations(DatabaseFolder folder);
     DbFolder SimplifieBidConFolderStructure(DatabaseFolder folder);
-    SimpleEstimation SimplifieEstimation(Estimation estimation, EstimationImportSettings settings);
+    Shared.Models.Estimation SimplifieEstimation(BidCon.SDK.Estimation estimation, EstimationImportSettings settings);
 }
