@@ -1,4 +1,6 @@
 ﻿using BidConReport.Shared.Models;
+using Microsoft.AspNetCore.Components;
+using System.Runtime.CompilerServices;
 
 namespace BidConReport.Client.Features.Import.Models;
 public class DbTreeItem
@@ -33,7 +35,8 @@ public class DbTreeItem
     public string Id { get; private set; } = string.Empty;
     public string Name { get; private set; } = string.Empty;
     public HashSet<DbTreeItem> Items { get; private set; } = new();
-    public event Action? SelectionChanged;
+    //public event Action? SelectionChanged;
+    public Action? SelectionChanged { get; set; }
     public IEnumerable<DbTreeItem> GetAllEstimations()
     {
         foreach (var item in Items)
@@ -48,10 +51,25 @@ public class DbTreeItem
             }
         }
     }
-    public void SetIsSelectedWithoutNotification(bool value)
+    public IEnumerable<DbTreeItem>? SelectedEstimations()
     {
-        _isSelected = value;
-        SetAllSubItemsWithoutNotification(value);
+        return GetAllEstimations().Where(x => x.IsSelected == true);
+    }
+    public IEnumerable<DbTreeItem>? Search(string filterString)
+    {
+        var parameters = filterString.Split(" ");
+        return GetAllEstimations().Where(x => AllParametersExists(x, parameters));
+    }
+    private bool AllParametersExists(DbTreeItem estimationItem, IEnumerable<string> parameters)
+    {
+        foreach (var parameter in parameters)
+        {
+            if (!estimationItem.Name.ToLower().Contains(parameter.ToLower()))
+            {
+                return false;
+            }
+        }
+        return true;
     }
     private void AddEstimations(DbFolder dbFolder)
     {
@@ -59,7 +77,7 @@ public class DbTreeItem
         {
             var newItem = new DbTreeItem(estimation);
             Items.Add(newItem);
-            newItem.SelectionChanged += OnSubItemSelectionChanged;
+            newItem.SelectionChanged = OnSubItemSelectionChanged;
         }
     }
     private void AddSubFolders(DbFolder dbFolder)
@@ -68,7 +86,7 @@ public class DbTreeItem
         {
             var newItem = new DbTreeItem(folder);
             Items.Add(newItem);
-            newItem.SelectionChanged += OnSubItemSelectionChanged;
+            newItem.SelectionChanged = OnSubItemSelectionChanged;
         }
     }
     private void OnSubItemSelectionChanged()
@@ -82,6 +100,11 @@ public class DbTreeItem
         {
             item.SetIsSelectedWithoutNotification(value);
         }
+    }
+    private void SetIsSelectedWithoutNotification(bool value)
+    {
+        _isSelected = value;
+        SetAllSubItemsWithoutNotification(value);
     }
     private void NotifySelectionChanged()
     {

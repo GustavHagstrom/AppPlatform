@@ -2,6 +2,7 @@ using BidConReport.Client;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Authentication;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
+using MudBlazor;
 using MudBlazor.Services;
 
 var builder = WebAssemblyHostBuilder.CreateDefault(args);
@@ -25,9 +26,18 @@ var scopes = builder.Configuration.GetSection("MicrosoftGraph:Scopes")
     .Get<List<string>>();
 
 builder.Services.AddGraphClient(baseUrl, scopes);
+builder.Services.AddMudServices(config =>
+{
+    config.SnackbarConfiguration.PositionClass = Defaults.Classes.Position.BottomCenter;
+    config.SnackbarConfiguration.PreventDuplicates = false;
+    config.SnackbarConfiguration.NewestOnTop = false;
+    config.SnackbarConfiguration.ShowCloseIcon = true;
+    config.SnackbarConfiguration.VisibleStateDuration = 1000 * 60 * 5;
+    config.SnackbarConfiguration.HideTransitionDuration = 500;
+    config.SnackbarConfiguration.ShowTransitionDuration = 500;
+    config.SnackbarConfiguration.SnackbarVariant = Variant.Filled;
 
-
-builder.Services.AddMudServices();
+});
 builder.Services.UseImportFeature();
 builder.Services.UseAuthenticationFeature();
 

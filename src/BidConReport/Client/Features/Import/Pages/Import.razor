@@ -14,29 +14,34 @@
 
 
 <MudToolBar Style="@($"height: 40px; background-color: {Theame!.Palette.GrayLighter}; width: 100%;")" DisableGutters="true" Class="d-flex justify-center">
-    <MudIconButton Icon="@Icons.Material.Sharp.Download" OnClick="DownloadAsync" />
-    <MudIconButton Icon="@Icons.Material.Sharp.Refresh" OnClick="RefreshEstimationListAsync"/>
-    <MudIconButton Icon="@Icons.Material.Sharp.Settings" OnClick="ToggleDrawer"/>
+    <MudIconButton Icon="@Icons.Material.Sharp.Download" OnClick="DownloadAsync" Style="height: 40px; width: 40px;"/>
+    <MudIconButton Icon="@Icons.Material.Sharp.Refresh" OnClick="GetEstimationItemTreeAsync" Style="height: 40px; width: 40px;" />
+    <MudIconButton Icon="@Icons.Material.Sharp.Settings" OnClick="ToggleDrawer" Style="height: 40px; width: 40px;" />
 </MudToolBar>
 
 
 <MudContainer MaxWidth="MaxWidth.Large" Class="my-2">
     <MudPaper Square="true" Elevation="4">
         <MudTabs Centered="true" KeepPanelsAlive="true">
+
             <MudTabPanel Text="Utforska" Icon="@Icons.Material.Sharp.Folder">
                 <MudDivider Light="true" />
-                <EstimationExplorer ImportState="_importState" Height="calc(100vh - 145px)" />
+                <EstimationExplorer ItemTree="ItemTree" IsRefreshing="IsRefreshing" Height="calc(100vh - 145px)" />
             </MudTabPanel>
 
             <MudTabPanel Text="Lista" Icon="@Icons.Material.Sharp.Search">
                 <MudDivider Light="true" />
-                <EstimationSelectionList ImportState="_importState" Height="calc(100vh - 145px)" />
+                <EstimationList ItemTree="ItemTree" IsRefreshing="IsRefreshing" Height="calc(100vh - 145px)" />
             </MudTabPanel>
 
-            <MudTabPanel Text="Valda" Icon="@Icons.Material.Sharp.CheckBox">
-                <MudDivider Light="true" />
-                <EstimationSelectedList ImportState="_importState" Height="calc(100vh - 145px)" />
-            </MudTabPanel>
+            <MudBadge Content="5">
+                <MudTabPanel Icon="@Icons.Material.Sharp.CheckBox">
+                    <MudDivider Light="true" />
+                    <EstimationSelectionList ItemTree="ItemTree" IsRefreshing="IsRefreshing" Height="calc(100vh - 145px)" />
+                </MudTabPanel>
+            </MudBadge>
+            
+
         </MudTabs>
     </MudPaper>
 </MudContainer>
@@ -46,24 +51,30 @@
 
 @code{
     [CascadingParameter] public MudTheme? Theame { get; set; }
-    [Inject] public required IEstimationImportState _importState { get; set; }
     [Inject] public required IBidConImporter _importer { get; set; }
     [Inject] public required IEstimationImportSettingsState _settingsState { get; set; }
+    [Inject] public required ISnackbar Snackbar { get; set; }
+    public DbTreeItem? ItemTree { get; set; }
+    public bool IsRefreshing { get; set; } = true;
     public bool drawerOpen = false;
 
     void ToggleDrawer()
     {
         drawerOpen = !drawerOpen;
     }
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+    }
     protected override async Task OnInitializedAsync()
     {
-        await _settingsState.LoadPreferedSettingsAsync();
-        await _importState.RefreshItemsAsync();
+        //await _settingsState.LoadPreferedSettingsAsync();
+        await GetEstimationItemTreeAsync();
     }
     private async Task DownloadAsync()
     {
         var estimations = new List<Estimation>();
-        foreach (var e in _importState.SelectedEstimations()!)
+        foreach (var e in ItemTree?.SelectedEstimations()!)
         {
             var result = await _importer.GetEstimationAsync(e.Id, _settingsState.CurrentSettings!);
             if(result.Value is not null)
@@ -72,9 +83,22 @@
             }
         }
     }
-    private async Task RefreshEstimationListAsync()
+    private async Task GetEstimationItemTreeAsync()
     {
-        await _importState.RefreshItemsAsync();
+        IsRefreshing = true;
+        ItemTree = null;
+        var dbFolderResult = await _importer.GetFoldersAsync();
+        if (dbFolderResult.Value is not null)
+        {
+            ItemTree = new DbTreeItem(dbFolderResult.Value);
+            ItemTree.SelectionChanged = StateHasChanged;
+        }
+        else
+        {
+            Snackbar.Add($"Error: {dbFolderResult.ErrorMessage}", Severity.Error);
+        }
+        IsRefreshing = false;
+        StateHasChanged();
     }
     private void EditSettings()
     {
