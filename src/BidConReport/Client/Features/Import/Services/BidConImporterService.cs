@@ -1,13 +1,13 @@
 ﻿using BidConReport.Shared.Models;
 using System.Net.Http.Json;
 
-namespace BidConReport.Client.Features.Import.Logic;
+namespace BidConReport.Client.Features.Import.Services;
 
-public class BidConImporter : IBidConImporter
+public class BidConImporterService : IBidConImporterService
 {
     private readonly IHttpClientFactory _httpClientFactory;
 
-    public BidConImporter(IHttpClientFactory httpClientFactory)
+    public BidConImporterService(IHttpClientFactory httpClientFactory)
     {
         _httpClientFactory = httpClientFactory;
     }
