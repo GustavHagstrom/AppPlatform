@@ -4,7 +4,7 @@ public class AuthenticationChangedMessage : CommunityToolkit.Mvvm.Messaging.Mess
 {
     public AuthenticationChangedMessage(bool value) : base(value)
     {
-
+        
     }
 
 }

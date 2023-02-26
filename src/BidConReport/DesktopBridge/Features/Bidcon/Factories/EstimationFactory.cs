@@ -1,6 +1,9 @@
-﻿using BidCon.SDK;
+﻿using BidCon.MM.Properties;
+using BidCon.SDK;
 using BidConReport.DesktopBridge.Features.Bidcon.RulesEngine;
 using BidConReport.Shared.Models;
+using Syncfusion.DocIO.DLS;
+using System.Runtime.CompilerServices;
 
 namespace BidConReport.DesktopBridge.Features.Bidcon.Factories;
 public class EstimationFactory : IEstimationFactory
@@ -13,13 +16,16 @@ public class EstimationFactory : IEstimationFactory
     {
         _rulesEngine = rulesEngine;
     }
-    public Shared.Models.Estimation CreateSimpleEstimation(BidCon.SDK.Estimation estimation, EstimationImportSettings settings)
+    public Shared.Models.Estimation Create(BidCon.SDK.Estimation estimation, EstimationImportSettings settings)
     {
-        var resources = GetResources(estimation.SummarySheet);// (Resource[])estimation.SummarySheet.Items;
-        CostFactor = resources!.Where(x => x.Account.Code == settings.CostFactorAccount).Single().TotalCost;
         Settings = settings;
-        var costBeforeChanges = resources!.Where(x => x.Account.Code == settings.CostBeforeChangesAccount).Single().TotalCost;
-        var endPageNetCost = resources!.Where(x => x.Account.Code == settings.NetCostAccount).Single().TotalCost;
+
+        var resources = GetResources(estimation.SummarySheet);// (Resource[])estimation.SummarySheet.Items;
+        
+        CostFactor = GetSummarySheetResourceAccountValue(settings.CostFactorAccount, estimation);
+        var costBeforeChanges = GetSummarySheetResourceAccountValue(settings.CostBeforeChangesAccount, estimation);
+        var endPageNetCost = GetSummarySheetResourceAccountValue(settings.NetCostAccount, estimation);
+
         return new Shared.Models.Estimation
         {
             BidConId = estimation.ID.ToString(),
@@ -31,11 +37,18 @@ public class EstimationFactory : IEstimationFactory
             Currency = estimation.Currency,
             StyleTags = settings.StyleTags.ToArray(),
             OptionTags = settings.OptionTags.ToArray(),
-            Items = CreateSimpleEstimationItemsRecursivly(estimation.NetSheet.Items),
+            Items = CreateEstimationItemsRecursivly(estimation.NetSheet.Items),
             LockedCategories = CreateLockedCategories(estimation).ToList(),
         };
     }
-
+    private double GetSummarySheetResourceAccountValue(string account, BidCon.SDK.Estimation estimation)
+    {
+        var allSummarySheetResources = GetResources(estimation.SummarySheet);
+        var accountSpecifiResources = allSummarySheetResources!.Where(x => x.Account.Code == account).ToList();
+        if (accountSpecifiResources.Count == 0) throw new Exception($"""Required resource with account "{account}" does not exist""");
+        if (accountSpecifiResources.Count > 1) throw new Exception($"""Required resource with account "{account}" has more than one occurance""");
+        return accountSpecifiResources.First().TotalCost;
+    }
     private IEnumerable<LockedCategory> CreateLockedCategories(BidCon.SDK.Estimation estimation)
     {
         foreach (var category in estimation.LockedStages.Items)
@@ -55,12 +68,12 @@ public class EstimationFactory : IEstimationFactory
             yield return new LockedStage
             {
                 Name = stage.Name,
-                Items = CreateSimpleEstimationItemsRecursivly(stage.Items)
+                Items = CreateEstimationItemsRecursivly(stage.Items)
             };
         }
     }
 
-    private List<Shared.Models.EstimationItem> CreateSimpleEstimationItemsRecursivly(BidCon.SDK.EstimationItem[] items, Shared.Models.EstimationItem? parent = null, int row = 0)//, int? parentRow = null)
+    private List<Shared.Models.EstimationItem> CreateEstimationItemsRecursivly(BidCon.SDK.EstimationItem[] items, Shared.Models.EstimationItem? parent = null, int row = 0)//, int? parentRow = null)
     {
         var returnlist = new List<Shared.Models.EstimationItem>();
         foreach (var item in items)
@@ -81,7 +94,7 @@ public class EstimationFactory : IEstimationFactory
         var subItems = new List<Shared.Models.EstimationItem>();
         if (item.ItemType == BidCon.SDK.EstimationItemType.Part || item.ItemType == BidCon.SDK.EstimationItemType.Group)
         {
-            subItems.AddRange(CreateSimpleEstimationItemsRecursivly(item.Items, parent, row));
+            subItems.AddRange(CreateEstimationItemsRecursivly(item.Items, parent, row));
         }
         return subItems;
     }

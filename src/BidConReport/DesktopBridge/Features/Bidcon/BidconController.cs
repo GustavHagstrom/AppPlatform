@@ -1,6 +1,7 @@
 ﻿using BidConReport.DesktopBridge.Features.Bidcon.Services;
 using BidConReport.Shared.Models;
 using Microsoft.AspNetCore.Mvc;
+using System.Data.SqlClient;
 
 namespace BidConReport.DesktopBridge.Features.Bidcon;
 [Route("[controller]")]
@@ -19,11 +20,15 @@ public class BidconController : ControllerBase
     public async Task<IActionResult> GetFolders(CancellationToken cancellationToken)
     {
         //TODO implement error message for each failed importation
-        var result = new BidConImportResult<DbFolder>(); 
+        var result = new BidConImportResult<DbFolder>();
         try
         {
             var folder = _bidConImporter.GetDatabaseFolder();
             result.Value = _bidconDataConverter.ConvertDatabaseFolder(folder);
+        }
+        catch (FileNotFoundException e)
+        {
+            result.ErrorMessage = $"""File at location: "{e.Message}" was not found""";
         }
         catch (Exception e)
         {
@@ -44,7 +49,6 @@ public class BidconController : ControllerBase
         catch (Exception e)
         {
             result.ErrorMessage = e.Message;
-            throw;
         }
         return await Task.FromResult(Ok(result));
     }

@@ -13,15 +13,38 @@ public class BidConImporter : IBidConImporter
     }
     public async Task<BidConImportResult<DbFolder>> GetFoldersAsync()
     {
-        var result = await GetHttpClient().GetAsync("bidcon/getfolders");
-        result.EnsureSuccessStatusCode();
-        return (await result.Content.ReadFromJsonAsync<BidConImportResult<DbFolder>>())!;
+        try
+        {
+            var result = await GetHttpClient().GetAsync("bidcon/getfolders");
+            result.EnsureSuccessStatusCode();
+            return (await result.Content.ReadFromJsonAsync<BidConImportResult<DbFolder>>())!;
+        }
+        catch (HttpRequestException)
+        {
+            return new BidConImportResult<DbFolder> { ErrorMessage = "Failed to connect to the Bidcon link" };
+        }
+        catch (Exception e)
+        {
+            return new BidConImportResult<DbFolder> { ErrorMessage= e.Message };
+        }
     }
     public async Task<BidConImportResult<Estimation>> GetEstimationAsync(string id, EstimationImportSettings settings)
     {
-        var result = await GetHttpClient().PostAsJsonAsync($"bidcon/getestimation/{id}", settings);
-        result.EnsureSuccessStatusCode();
-        return (await result.Content.ReadFromJsonAsync<BidConImportResult<Estimation>>())!;
+        
+        try
+        {
+            var result = await GetHttpClient().PostAsJsonAsync($"bidcon/getestimation/{id}", settings);
+            result.EnsureSuccessStatusCode();
+            return (await result.Content.ReadFromJsonAsync<BidConImportResult<Estimation>>())!;
+        }
+        catch (HttpRequestException)
+        {
+            return new BidConImportResult<Estimation> { ErrorMessage = "Failed to connect to the Bidcon link" };
+        }
+        catch (Exception e)
+        {
+            return new BidConImportResult<Estimation> { ErrorMessage = e.Message };
+        }
     }
     private HttpClient GetHttpClient()
     {

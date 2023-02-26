@@ -35,7 +35,7 @@ public class BidconDataConverter : IBidconDataConverter
     }
     public Shared.Models.Estimation ConvertEstimation(BidCon.SDK.Estimation estimation, EstimationImportSettings settings)
     {
-        return _estimationFactory.CreateSimpleEstimation(estimation, settings);
+        return _estimationFactory.Create(estimation, settings);
     }
 
 
