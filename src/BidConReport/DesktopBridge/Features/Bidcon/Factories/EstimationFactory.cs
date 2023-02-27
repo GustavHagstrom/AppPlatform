@@ -133,7 +133,17 @@ public class EstimationFactory : IEstimationFactory
     //    }
     //    return tags.ToArray();
     //}
-    private static IEnumerable<Tag> GetTags(BidCon.SDK.EstimationItem estimationItem, IEnumerable<Tag> TagsTemplate)
+    private static IEnumerable<QuickTag> GetTags(BidCon.SDK.EstimationItem estimationItem, IEnumerable<QuickTag> TagsTemplate)
+    {
+        foreach (var tag in TagsTemplate)
+        {
+            if (estimationItem.Remark.ToLower().Contains(tag.Value.ToLower()))
+            {
+                yield return tag;
+            }
+        }
+    }
+    private static IEnumerable<SelectionTag> GetTags(BidCon.SDK.EstimationItem estimationItem, IEnumerable<SelectionTag> TagsTemplate)
     {
         foreach (var tag in TagsTemplate)
         {

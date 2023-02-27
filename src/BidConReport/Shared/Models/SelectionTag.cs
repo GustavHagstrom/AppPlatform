@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
 namespace BidConReport.Shared.Models;
-public class Tag
+public class SelectionTag
 {
     public required int Id { get; set; }
     [MaxLength(30)]

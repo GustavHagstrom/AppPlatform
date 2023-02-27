@@ -19,8 +19,8 @@ public class EstimationItem
     //public double RegulatedUnitCost { get; set; }
     //public string? Revision { get; set; }
     public string Comment { get; set; } = string.Empty;
-    public required Tag[] QuickTags { get; set; }
-    public required Tag[] SelectionTags { get; set; }
+    public required QuickTag[] QuickTags { get; set; }
+    public required SelectionTag[] SelectionTags { get; set; }
     public List<EstimationItem> Items { get; set; } = new();
 
 
