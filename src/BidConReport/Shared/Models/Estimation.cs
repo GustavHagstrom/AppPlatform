@@ -1,22 +1,30 @@
-﻿namespace BidConReport.Shared.Models;
+﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+
+namespace BidConReport.Shared.Models;
 
 public class Estimation
 {
     //[BsonId]
     //[BsonRepresentation(BsonType.ObjectId)]
-    public string Id { get; set; } = string.Empty;
-    public string BidConId { get; set; } = string.Empty;
-    public string Name { get; set; } = string.Empty;
-    public string Description { get; set; } = string.Empty;
-    public string Currency { get; set; } = string.Empty;
-    public double CostBeforeChanges { get; set; }
-    public DateTime CreationDate { get; set; }
+    [MaxLength(50)]
+    public required Guid Id { get; set; }
+    [MaxLength(50)]
+    public required string BidConId { get; set; }
+    [MaxLength(50)]
+    public required string Name { get; set; }
+    [MaxLength(50)]
+    public string? Description { get; set; }
+    [MaxLength(10)]
+    public required string Currency { get; set; }
+    public required double CostBeforeChanges { get; set; }
+    public required DateTime CreationDate { get; set; }
     public DateTime? ExpirationDate { get; set; }
     public required QuickTag[] QuickTags { get; set; }
     public required SelectionTag[] SelectionTags { get; set; }
-    public List<EstimationItem> Items { get; set; } = new();
-    //[BsonIgnore]
-    public List<LockedCategory> LockedCategories { get; set; } = new();
+    public required List<EstimationItem> Items { get; set; } = new();
+    [NotMapped]
+    public required List<LockedCategory> LockedCategories { get; set; } = new();
 
     public override string ToString()
     {

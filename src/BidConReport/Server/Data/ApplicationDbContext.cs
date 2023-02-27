@@ -11,6 +11,7 @@ public class ApplicationDbContext : DbContext
     }
 
     public DbSet<EstimationImportSettings> EstimationImportSettings { get; set; }
+    public DbSet<Estimation> Estimations { get; set; }
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
         base.OnConfiguring(optionsBuilder);
@@ -35,5 +36,29 @@ public class ApplicationDbContext : DbContext
             .HasMany(s => s.SelectionTags)
             .WithMany()
             .UsingEntity(j => j.ToTable("SettingSelectionTags"));
+
+        modelBuilder.Entity<Estimation>()
+            .HasMany(s => s.QuickTags)
+            .WithMany()
+            .UsingEntity(j => j.ToTable("EstimationQuickTags"));
+        modelBuilder.Entity<Estimation>()
+            .HasMany(s => s.SelectionTags)
+            .WithMany()
+            .UsingEntity(j => j.ToTable("EstimationSelectionTags"));
+        modelBuilder.Entity<Estimation>()
+            .HasMany(e => e.Items)
+            .WithOne();
+
+        modelBuilder.Entity<EstimationItem>()
+            .HasMany(e => e.Items)
+            .WithOne();
+        modelBuilder.Entity<EstimationItem>()
+            .HasMany(s => s.QuickTags)
+            .WithMany()
+            .UsingEntity(j => j.ToTable("EstimationItemQuickTags"));
+        modelBuilder.Entity<EstimationItem>()
+            .HasMany(s => s.SelectionTags)
+            .WithMany()
+            .UsingEntity(j => j.ToTable("EstimationItemSelectionTags"));
     }
 }
