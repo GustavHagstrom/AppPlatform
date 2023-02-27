@@ -35,8 +35,8 @@ public class EstimationFactory : IEstimationFactory
             //ExpirationDate = settings.ExpirationDate,
             CostBeforeChanges = costBeforeChanges + (estimation.NetSheet.TotalCost - endPageNetCost) * CostFactor!.Value,
             Currency = estimation.Currency,
-            StyleTags = settings.StyleTags.ToArray(),
-            OptionTags = settings.OptionTags.ToArray(),
+            QuickTags = settings.QuickTags.ToArray(),
+            SelectionTags = settings.SelectionTags.ToArray(),
             Items = CreateEstimationItemsRecursivly(estimation.NetSheet.Items),
             LockedCategories = CreateLockedCategories(estimation).ToList(),
         };
@@ -119,21 +119,30 @@ public class EstimationFactory : IEstimationFactory
             //RegulatedUnitCost = GetUnitCost(item.RegulatedCost),
             Name = item.Name,
             //Revision = item.Revision?.Code,
-            StyleTags = GetTags(item, Settings!.StyleTags).ToArray(),
-            OptionTags = GetOptionTags(item),// GetTags(item, Settings!.OptionTags).ToArray(),
+            QuickTags = GetTags(item, Settings!.QuickTags).ToArray(),
+            SelectionTags = GetTags(item, Settings!.SelectionTags).ToArray(),//GetOptionTags(item),// GetTags(item, Settings!.OptionTags).ToArray(),
         };
     }
 
-    private string[] GetOptionTags(BidCon.SDK.EstimationItem item)
+    //private string[] GetOptionTags(BidCon.SDK.EstimationItem item)
+    //{
+    //    var tags = GetTags(item, Settings!.SelectionTags).ToList();
+    //    if (item.Revision is not null && item.Revision.Code is not null)
+    //    {
+    //        tags.Add(new item.Revision.Code);
+    //    }
+    //    return tags.ToArray();
+    //}
+    private static IEnumerable<Tag> GetTags(BidCon.SDK.EstimationItem estimationItem, IEnumerable<Tag> TagsTemplate)
     {
-        var tags = GetTags(item, Settings!.OptionTags).ToList();
-        if (item.Revision is not null && item.Revision.Code is not null)
+        foreach (var tag in TagsTemplate)
         {
-            tags.Add(item.Revision.Code);
+            if (estimationItem.Remark.ToLower().Contains(tag.Value.ToLower()))
+            {
+                yield return tag;
+            }
         }
-        return tags.ToArray();
     }
-
     private static string GetDisplayedUnit(BidCon.SDK.EstimationItem estimationItem)
     {
         if (estimationItem.ItemType == BidCon.SDK.EstimationItemType.Group || estimationItem.ItemType == BidCon.SDK.EstimationItemType.Part)
@@ -157,16 +166,6 @@ public class EstimationFactory : IEstimationFactory
             return string.Empty;
         }
         return estimationItem.Quantity.ToString("N1");
-    }
-    private static IEnumerable<string> GetTags(BidCon.SDK.EstimationItem estimationItem, IEnumerable<string> TagsTemplate)
-    {
-        foreach (string tag in TagsTemplate)
-        {
-            if (estimationItem.Remark.ToLower().Contains(tag.ToLower()))
-            {
-                yield return tag;
-            }
-        }
     }
     private double GetUnitCost(double? unitCost)
     {

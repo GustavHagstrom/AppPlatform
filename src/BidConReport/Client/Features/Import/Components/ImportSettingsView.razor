@@ -47,7 +47,7 @@
                                OnClick="AddStyleTagg" />
                 </MudPaper>
             }
-            @foreach (var tagg in Settings.StyleTags)
+            @foreach (var tagg in Settings.QuickTags)
             {
                 <p>@($"StyleTagg {tagg}. This is a placeholder")</p>
             }
@@ -70,7 +70,7 @@
                            OnClick="AddStyleTagg" />
             </MudPaper>
         }
-        @foreach (var tagg in Settings.OptionTags)
+        @foreach (var tagg in Settings.SelectionTags)
         {
             <p>@($"StyleTagg {tagg}. This is a placeholder")</p>
         }
@@ -92,27 +92,27 @@
 
     private void AddStyleTagg()
     {
-        if (string.IsNullOrEmpty(StyleTaggInputField) || Settings!.StyleTags.Contains(StyleTaggInputField)) return;
-        Settings.StyleTags.Add(StyleTaggInputField);
-        StyleTaggInputField = string.Empty;
-        StateHasChanged();
+        //if (string.IsNullOrEmpty(StyleTaggInputField) || Settings!.QuickTags.Contains(StyleTaggInputField)) return;
+        //Settings.QuickTags.Add(StyleTaggInputField);
+        //StyleTaggInputField = string.Empty;
+        //StateHasChanged();
     }
     private void RemoveStyleTagg(string tagg)
     {
-        Settings!.StyleTags.Remove(tagg);
-        StateHasChanged();
+        //Settings!.QuickTags.Remove(tagg);
+        //StateHasChanged();
     }
     private void AddOptionTagg()
     {
-        if (string.IsNullOrEmpty(OptionTaggInputField) || Settings!.OptionTags.Contains(OptionTaggInputField)) return;
-        Settings.OptionTags.Add(OptionTaggInputField);
-        OptionTaggInputField = string.Empty;
-        StateHasChanged();
+        //if (string.IsNullOrEmpty(OptionTaggInputField) || Settings!.SelectionTags.Contains(OptionTaggInputField)) return;
+        //Settings.SelectionTags.Add(OptionTaggInputField);
+        //OptionTaggInputField = string.Empty;
+        //StateHasChanged();
     }
     private void RemoveOptionTagg(string tagg)
     {
-        Settings!.OptionTags.Remove(tagg);
-        StateHasChanged();
+        //Settings!.SelectionTags.Remove(tagg);
+        //StateHasChanged();
     }
     private Task SaveAsync()
     {

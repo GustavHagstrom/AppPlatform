@@ -3,19 +3,18 @@
 namespace BidConReport.Shared.Models;
 public class EstimationImportSettings
 {
-    //public int Id { get; set; }
-    [Required]
-    public string SettingsName { get; set; } = string.Empty;
-    [Required]
-    public string CostFactorAccount { get; set; } = string.Empty;
-    [Required]
-    public string CostBeforeChangesAccount { get; set; } = string.Empty;
-    [Required]
-    public string NetCostAccount { get; set; } = string.Empty;
-    //[Required]
-    public string HiddenTag { get; set; } = string.Empty;
-    //public DateTime? ExpirationDate { get; set; }
-    public List<string> StyleTags { get; set; } = new();
-    public List<string> OptionTags { get; set; } = new();
+    public int Id { get; set; }
+    [MaxLength(30)]
+    public required string SettingsName { get; set; }
+    [MaxLength(10)]
+    public required string CostFactorAccount { get; set; }
+    [MaxLength(10)]
+    public required string CostBeforeChangesAccount { get; set; }
+    [MaxLength(10)]
+    public required string NetCostAccount { get; set; }
+    [MaxLength(10)]
+    public required string HiddenTag { get; set; }
+    public required List<Tag> QuickTags { get; set; } = new();
+    public required List<Tag> SelectionTags { get; set; } = new();
 
 }

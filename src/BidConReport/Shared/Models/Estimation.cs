@@ -12,8 +12,8 @@ public class Estimation
     public double CostBeforeChanges { get; set; }
     public DateTime CreationDate { get; set; }
     public DateTime? ExpirationDate { get; set; }
-    public string[] StyleTags { get; set; } = Array.Empty<string>();
-    public string[] OptionTags { get; set; } = Array.Empty<string>();
+    public required Tag[] QuickTags { get; set; }
+    public required Tag[] SelectionTags { get; set; }
     public List<EstimationItem> Items { get; set; } = new();
     //[BsonIgnore]
     public List<LockedCategory> LockedCategories { get; set; } = new();

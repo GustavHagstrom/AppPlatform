@@ -1,6 +1,6 @@
-//using BidConReport.Server.Data;
+using BidConReport.Server.Data;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-//using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Identity.Web;
 
 var builder = WebApplication.CreateBuilder(args);
