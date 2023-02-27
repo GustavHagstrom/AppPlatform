@@ -42,7 +42,7 @@
 
 @code{
     [CascadingParameter] public required MudTheme Theame { get; set; }
-    [Inject] public required IBidConImporter _importer { get; set; }
+    [Inject] public required IBidConImporterService _importer { get; set; }
     [Inject] public required ISnackbar Snackbar { get; set; }
     public DbTreeItem? ItemTree { get; set; }
     public bool IsRefreshing { get; set; } = true;
@@ -61,18 +61,18 @@
         //await _settingsState.LoadPreferedSettingsAsync();
         await GetEstimationItemTreeAsync();
     }
-    //private async Task DownloadAsync()
-    //{
-    //    var estimations = new List<Estimation>();
-    //    foreach (var e in ItemTree?.SelectedEstimations()!)
-    //    {
-    //        var result = await _importer.GetEstimationAsync(e.Id, _settingsState.CurrentSettings!);
-    //        if(result.Value is not null)
-    //        {
-    //            estimations.Add(result.Value);
-    //        }
-    //    }
-    //}
+    private async Task DownloadAsync()
+    {
+        //var estimations = new List<Estimation>();
+        //foreach (var e in ItemTree?.SelectedEstimations()!)
+        //{
+        //    var result = await _importer.GetEstimationAsync(e.Id, _settingsState.CurrentSettings!);
+        //    if(result.Value is not null)
+        //    {
+        //        estimations.Add(result.Value);
+        //    }
+        //}
+    }
     private async Task GetEstimationItemTreeAsync()
     {
         IsRefreshing = true;

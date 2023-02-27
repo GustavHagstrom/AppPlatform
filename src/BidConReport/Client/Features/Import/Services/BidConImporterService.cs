@@ -28,7 +28,7 @@ public class BidConImporterService : IBidConImporterService
             return new BidConImportResult<DbFolder> { ErrorMessage= e.Message };
         }
     }
-    public async Task<BidConImportResult<Estimation>> GetEstimationAsync(string id, EstimationImportSettings settings)
+    private async Task<BidConImportResult<Estimation>> GetEstimationAsync(string id, EstimationImportSettings settings)
     {
         
         try
@@ -51,4 +51,9 @@ public class BidConImporterService : IBidConImporterService
         return _httpClientFactory.CreateClient(Constants.BidConApiHttpClientName);
     }
 
+    public async Task<IEnumerable<BidConImportResult<Estimation>>> GetEstimationsAsync(IEnumerable<string> ids, EstimationImportSettings settings)
+    {
+        var tasks = ids.Select(id => GetEstimationAsync(id, settings));
+        return await Task.WhenAll(tasks);
+    }
 }
