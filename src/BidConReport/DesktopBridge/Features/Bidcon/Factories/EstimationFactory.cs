@@ -28,6 +28,7 @@ public class EstimationFactory : IEstimationFactory
 
         return new Shared.Models.Estimation
         {
+            Id = Guid.NewGuid(),
             BidConId = estimation.ID.ToString(),
             Name = estimation.Name,
             Description = estimation.Description,
@@ -102,6 +103,8 @@ public class EstimationFactory : IEstimationFactory
     {
         return new Shared.Models.EstimationItem
         {
+            Id = Guid.NewGuid(),
+            Comment = string.Empty,
             RowNumber = row,
             //BidConId = item.ID,
             //BidConRow = item.RowNum,
@@ -119,40 +122,40 @@ public class EstimationFactory : IEstimationFactory
             //RegulatedUnitCost = GetUnitCost(item.RegulatedCost),
             Name = item.Name,
             //Revision = item.Revision?.Code,
-            QuickTags = GetTags(item, Settings!.QuickTags).ToArray(),
-            SelectionTags = GetTags(item, Settings!.SelectionTags).ToArray(),//GetOptionTags(item),// GetTags(item, Settings!.OptionTags).ToArray(),
+            QuickTags = GetTagsFromRemark(item, Settings!.QuickTags).ToArray(),
+            SelectionTags = GetSelectionTags(item),// GetTags(item, Settings!.OptionTags).ToArray(),
         };
     }
 
-    //private string[] GetOptionTags(BidCon.SDK.EstimationItem item)
+    private string[] GetSelectionTags(BidCon.SDK.EstimationItem item)
+    {
+        var tags = GetTagsFromRemark(item, Settings!.SelectionTags).ToList();
+        if (item.Revision is not null && item.Revision.Code is not null)
+        {
+            tags.Add(item.Revision.Code);
+        }
+        return tags.ToArray();
+    }
+    private static IEnumerable<string> GetTagsFromRemark(BidCon.SDK.EstimationItem estimationItem, IEnumerable<string> TagsTemplate)
+    {
+        foreach (var tag in TagsTemplate)
+        {
+            if (estimationItem.Remark.ToLower().Contains(tag.ToLower()))
+            {
+                yield return tag;
+            }
+        }
+    }
+    //private static IEnumerable<SelectionTag> GetTags(BidCon.SDK.EstimationItem estimationItem, IEnumerable<SelectionTag> TagsTemplate)
     //{
-    //    var tags = GetTags(item, Settings!.SelectionTags).ToList();
-    //    if (item.Revision is not null && item.Revision.Code is not null)
+    //    foreach (var tag in TagsTemplate)
     //    {
-    //        tags.Add(new item.Revision.Code);
+    //        if (estimationItem.Remark.ToLower().Contains(tag.Value.ToLower()))
+    //        {
+    //            yield return tag;
+    //        }
     //    }
-    //    return tags.ToArray();
     //}
-    private static IEnumerable<QuickTag> GetTags(BidCon.SDK.EstimationItem estimationItem, IEnumerable<QuickTag> TagsTemplate)
-    {
-        foreach (var tag in TagsTemplate)
-        {
-            if (estimationItem.Remark.ToLower().Contains(tag.Value.ToLower()))
-            {
-                yield return tag;
-            }
-        }
-    }
-    private static IEnumerable<SelectionTag> GetTags(BidCon.SDK.EstimationItem estimationItem, IEnumerable<SelectionTag> TagsTemplate)
-    {
-        foreach (var tag in TagsTemplate)
-        {
-            if (estimationItem.Remark.ToLower().Contains(tag.Value.ToLower()))
-            {
-                yield return tag;
-            }
-        }
-    }
     private static string GetDisplayedUnit(BidCon.SDK.EstimationItem estimationItem)
     {
         if (estimationItem.ItemType == BidCon.SDK.EstimationItemType.Group || estimationItem.ItemType == BidCon.SDK.EstimationItemType.Part)

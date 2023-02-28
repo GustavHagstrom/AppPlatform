@@ -20,8 +20,10 @@ public class Estimation
     public required double CostBeforeChanges { get; set; }
     public required DateTime CreationDate { get; set; }
     public DateTime? ExpirationDate { get; set; }
-    public required QuickTag[] QuickTags { get; set; }
-    public required SelectionTag[] SelectionTags { get; set; }
+    public required ICollection<string> QuickTags { get; set; }
+    public required ICollection<string> SelectionTags { get; set; }
+    //public required QuickTag[] QuickTags { get; set; }
+    //public required SelectionTag[] SelectionTags { get; set; }
     public required List<EstimationItem> Items { get; set; } = new();
     [NotMapped]
     public required List<LockedCategory> LockedCategories { get; set; } = new();

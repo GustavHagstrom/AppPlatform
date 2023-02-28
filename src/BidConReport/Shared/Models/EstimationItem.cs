@@ -28,9 +28,11 @@ public class EstimationItem
     //public string? Revision { get; set; }
     [MaxLength(2000)]
     public required string Comment { get; set; }
-    public required QuickTag[] QuickTags { get; set; }
-    public required SelectionTag[] SelectionTags { get; set; }
-    public required List<EstimationItem> Items { get; set; } = new();
+    public required ICollection<string> QuickTags { get; set; }
+    public required ICollection<string> SelectionTags { get; set; }
+    //public required QuickTag[] QuickTags { get; set; }
+    //public required SelectionTag[] SelectionTags { get; set; }
+    public List<EstimationItem> Items { get; set; } = new();
 
 
     public override string ToString()

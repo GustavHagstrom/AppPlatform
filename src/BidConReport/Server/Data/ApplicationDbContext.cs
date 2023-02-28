@@ -1,10 +1,15 @@
 ﻿using BidConReport.Shared.Models;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
+using System.Text.Json;
 
 namespace BidConReport.Server.Data;
 
 public class ApplicationDbContext : DbContext
 {
+    private ValueComparer<ICollection<string>> _stringCollectionValueComparer = new ((c1, c2) => c1!.SequenceEqual(c2!),
+            c => c.Aggregate(0, (a, v) => HashCode.Combine(a, v.GetHashCode())),
+            c => c.ToList());
     public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
     {
 
@@ -12,53 +17,56 @@ public class ApplicationDbContext : DbContext
 
     public DbSet<EstimationImportSettings> EstimationImportSettings { get; set; }
     public DbSet<Estimation> Estimations { get; set; }
-    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-    {
-        base.OnConfiguring(optionsBuilder);
-        //if (!optionsBuilder.IsConfigured)
-        //{
-        //    IConfigurationRoot configuration = new ConfigurationBuilder()
-        //       .SetBasePath(Directory.GetCurrentDirectory())
-        //       .AddJsonFile("appsettings.json")
-        //       .Build();
-        //    var connectionString = configuration.GetConnectionString("Default");
-        //    optionsBuilder.UseSqlServer(connectionString);
-        //}
-    }
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
-        modelBuilder.Entity<EstimationImportSettings>()
-            .HasMany(s => s.QuickTags)
-            .WithMany()
-            .UsingEntity(j => j.ToTable("SettingQuickTags"));
-        modelBuilder.Entity<EstimationImportSettings>()
-            .HasMany(s => s.SelectionTags)
-            .WithMany()
-            .UsingEntity(j => j.ToTable("SettingSelectionTags"));
 
         modelBuilder.Entity<Estimation>()
-            .HasMany(s => s.QuickTags)
-            .WithMany()
-            .UsingEntity(j => j.ToTable("EstimationQuickTags"));
+            .Property(e => e.QuickTags)
+            .HasConversion(
+            v => JsonSerializer.Serialize(v, new JsonSerializerOptions()),
+            v => (JsonSerializer.Deserialize<ICollection<string>>(v, new JsonSerializerOptions())!))
+            .HasColumnType("NVARCHAR(1000)")
+            .Metadata.SetValueComparer(_stringCollectionValueComparer);
         modelBuilder.Entity<Estimation>()
-            .HasMany(s => s.SelectionTags)
-            .WithMany()
-            .UsingEntity(j => j.ToTable("EstimationSelectionTags"));
-        modelBuilder.Entity<Estimation>()
-            .HasMany(e => e.Items)
-            .WithOne();
+            .Property(e => e.SelectionTags)
+            .HasConversion(
+            v => JsonSerializer.Serialize(v, new JsonSerializerOptions()),
+            v => (JsonSerializer.Deserialize<ICollection<string>>(v, new JsonSerializerOptions())!))
+            .HasColumnType("NVARCHAR(1000)")
+            .Metadata.SetValueComparer(_stringCollectionValueComparer);
 
         modelBuilder.Entity<EstimationItem>()
-            .HasMany(e => e.Items)
-            .WithOne();
+            .Property(e => e.QuickTags)
+            .HasConversion(
+            v => JsonSerializer.Serialize(v, new JsonSerializerOptions()),
+            v => (JsonSerializer.Deserialize<ICollection<string>>(v, new JsonSerializerOptions())!))
+            .HasColumnType("NVARCHAR(1000)")
+            .Metadata.SetValueComparer(_stringCollectionValueComparer);
         modelBuilder.Entity<EstimationItem>()
-            .HasMany(s => s.QuickTags)
-            .WithMany()
-            .UsingEntity(j => j.ToTable("EstimationItemQuickTags"));
-        modelBuilder.Entity<EstimationItem>()
-            .HasMany(s => s.SelectionTags)
-            .WithMany()
-            .UsingEntity(j => j.ToTable("EstimationItemSelectionTags"));
+            .Property(e => e.SelectionTags)
+            .HasConversion(
+            v => JsonSerializer.Serialize(v, new JsonSerializerOptions()),
+            v => (JsonSerializer.Deserialize<ICollection<string>>(v, new JsonSerializerOptions())!))
+            .HasColumnType("NVARCHAR(1000)")
+            .Metadata.SetValueComparer(_stringCollectionValueComparer);
+
+        modelBuilder.Entity<EstimationImportSettings>()
+            .Property(e => e.QuickTags)
+            .HasConversion(
+            v => JsonSerializer.Serialize(v, new JsonSerializerOptions()),
+            v => (JsonSerializer.Deserialize<ICollection<string>>(v, new JsonSerializerOptions())!))
+            .HasColumnType("NVARCHAR(1000)")
+            .Metadata.SetValueComparer(_stringCollectionValueComparer);
+        modelBuilder.Entity<EstimationImportSettings>()
+            .Property(e => e.SelectionTags)
+            .HasConversion(
+            v => JsonSerializer.Serialize(v, new JsonSerializerOptions()),
+            v => (JsonSerializer.Deserialize<ICollection<string>>(v, new JsonSerializerOptions())!))
+            .HasColumnType("NVARCHAR(1000)")
+            .Metadata.SetValueComparer(_stringCollectionValueComparer);
     }
+
+    
 }

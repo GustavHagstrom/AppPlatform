@@ -14,7 +14,9 @@ public class EstimationImportSettings
     public required string NetCostAccount { get; set; }
     [MaxLength(10)]
     public required string HiddenTag { get; set; }
-    public required List<QuickTag> QuickTags { get; set; } = new();
-    public required List<SelectionTag> SelectionTags { get; set; } = new();
+    public required ICollection<string> QuickTags { get; set; }
+    public required ICollection<string> SelectionTags { get; set; }
+    //public required List<QuickTag> QuickTags { get; set; } = new();
+    //public required List<SelectionTag> SelectionTags { get; set; } = new();
 
 }
