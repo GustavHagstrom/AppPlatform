@@ -13,7 +13,7 @@ public class BidconDataConverter : IBidconDataConverter
     }
     public DbFolder ConvertDatabaseFolder(DatabaseFolder folder)
     {
-        var returnFolder = new DbFolder { Name = folder.Name };
+        var returnFolder = new DbFolder { Name = folder.Name, SubFolders = new List<DbFolder>(), DbEstimations = new List<DbEstimation>() };
         foreach (var subFolder in folder.Folders)
         {
             returnFolder.SubFolders.Add(ConvertDatabaseFolder(subFolder));
