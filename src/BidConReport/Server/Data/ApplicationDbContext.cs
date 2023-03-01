@@ -7,7 +7,7 @@ namespace BidConReport.Server.Data;
 
 public class ApplicationDbContext : DbContext
 {
-    private ValueComparer<ICollection<string>> _stringCollectionValueComparer = new ((c1, c2) => c1!.SequenceEqual(c2!),
+    private readonly ValueComparer<ICollection<string>> _stringCollectionValueComparer = new ((c1, c2) => c1!.SequenceEqual(c2!),
             c => c.Aggregate(0, (a, v) => HashCode.Combine(a, v.GetHashCode())),
             c => c.ToList());
     public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
@@ -38,14 +38,7 @@ public class ApplicationDbContext : DbContext
             .Metadata.SetValueComparer(_stringCollectionValueComparer);
 
         modelBuilder.Entity<EstimationItem>()
-            .Property(e => e.QuickTags)
-            .HasConversion(
-            v => JsonSerializer.Serialize(v, new JsonSerializerOptions()),
-            v => (JsonSerializer.Deserialize<ICollection<string>>(v, new JsonSerializerOptions())!))
-            .HasColumnType("NVARCHAR(1000)")
-            .Metadata.SetValueComparer(_stringCollectionValueComparer);
-        modelBuilder.Entity<EstimationItem>()
-            .Property(e => e.SelectionTags)
+            .Property(e => e.Tags)
             .HasConversion(
             v => JsonSerializer.Serialize(v, new JsonSerializerOptions()),
             v => (JsonSerializer.Deserialize<ICollection<string>>(v, new JsonSerializerOptions())!))

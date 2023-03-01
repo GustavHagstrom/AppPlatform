@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BidConReport.Server.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230228215307_InitialMigration")]
+    [Migration("20230301084054_InitialMigration")]
     partial class InitialMigration
     {
         /// <inheritdoc />
@@ -96,6 +96,11 @@ namespace BidConReport.Server.Migrations
                         .HasMaxLength(10)
                         .HasColumnType("nvarchar(10)");
 
+                    b.Property<string>("HiddenUnitTag")
+                        .IsRequired()
+                        .HasMaxLength(10)
+                        .HasColumnType("nvarchar(10)");
+
                     b.Property<string>("NetCostAccount")
                         .IsRequired()
                         .HasMaxLength(10)
@@ -113,6 +118,9 @@ namespace BidConReport.Server.Migrations
                         .IsRequired()
                         .HasMaxLength(30)
                         .HasColumnType("nvarchar(30)");
+
+                    b.Property<bool>("UseRevisionAsSelectionTags")
+                        .HasColumnType("bit");
 
                     b.HasKey("Id");
 
@@ -159,14 +167,10 @@ namespace BidConReport.Server.Migrations
                     b.Property<double>("Quantity")
                         .HasColumnType("float");
 
-                    b.Property<string>("QuickTags")
-                        .IsRequired()
-                        .HasColumnType("NVARCHAR(1000)");
-
                     b.Property<int>("RowNumber")
                         .HasColumnType("int");
 
-                    b.Property<string>("SelectionTags")
+                    b.Property<string>("Tags")
                         .IsRequired()
                         .HasColumnType("NVARCHAR(1000)");
 

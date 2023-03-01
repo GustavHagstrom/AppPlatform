@@ -20,7 +20,7 @@ public class EstimationFactory : IEstimationFactory
     {
         Settings = settings;
 
-        var resources = GetResources(estimation.SummarySheet);// (Resource[])estimation.SummarySheet.Items;
+        //var resources = GetResources(estimation.SummarySheet);// (Resource[])estimation.SummarySheet.Items;
         
         CostFactor = GetSummarySheetResourceAccountValue(settings.CostFactorAccount, estimation);
         var costBeforeChanges = GetSummarySheetResourceAccountValue(settings.CostBeforeChangesAccount, estimation);
@@ -42,7 +42,7 @@ public class EstimationFactory : IEstimationFactory
             LockedCategories = CreateLockedCategories(estimation).ToList(),
         };
     }
-    private double GetSummarySheetResourceAccountValue(string account, BidCon.SDK.Estimation estimation)
+    private static double GetSummarySheetResourceAccountValue(string account, BidCon.SDK.Estimation estimation)
     {
         var allSummarySheetResources = GetResources(estimation.SummarySheet);
         var accountSpecifiResources = allSummarySheetResources!.Where(x => x.Account.Code == account).ToList();
@@ -121,29 +121,34 @@ public class EstimationFactory : IEstimationFactory
             UnitCost = GetUnitCost(item.UnitCost),
             //RegulatedUnitCost = GetUnitCost(item.RegulatedCost),
             Name = item.Name,
+            Tags = GetTags(item).ToArray()
             //Revision = item.Revision?.Code,
-            QuickTags = GetTagsFromRemark(item, Settings!.QuickTags).ToArray(),
-            SelectionTags = GetSelectionTags(item),// GetTags(item, Settings!.OptionTags).ToArray(),
+            //QuickTags = GetTagsFromRemark(item, Settings!.QuickTags).ToArray(),
+            //SelectionTags = GetSelectionTags(item),// GetTags(item, Settings!.OptionTags).ToArray(),
         };
     }
 
-    private string[] GetSelectionTags(BidCon.SDK.EstimationItem item)
+    //private string[] GetSelectionTags(BidCon.SDK.EstimationItem item)
+    //{
+    //    var tags = GetTags(item, Settings!.SelectionTags).ToList();
+    //    if (item.Revision is not null && item.Revision.Code is not null)
+    //    {
+    //        tags.Add(item.Revision.Code);
+    //    }
+    //    return tags.ToArray();
+    //}
+    private IEnumerable<string> GetTags(BidCon.SDK.EstimationItem estimationItem)//, IEnumerable<string> TagsTemplate)
     {
-        var tags = GetTagsFromRemark(item, Settings!.SelectionTags).ToList();
-        if (item.Revision is not null && item.Revision.Code is not null)
-        {
-            tags.Add(item.Revision.Code);
-        }
-        return tags.ToArray();
-    }
-    private static IEnumerable<string> GetTagsFromRemark(BidCon.SDK.EstimationItem estimationItem, IEnumerable<string> TagsTemplate)
-    {
-        foreach (var tag in TagsTemplate)
+        foreach (var tag in Settings!.QuickTags.Concat(Settings.SelectionTags))
         {
             if (estimationItem.Remark.ToLower().Contains(tag.ToLower()))
             {
                 yield return tag;
             }
+        }
+        if (Settings.UseRevisionAsSelectionTags && estimationItem.Revision is not null && estimationItem.Revision.Code is not null)
+        {
+            yield return estimationItem.Revision.Code;
         }
     }
     //private static IEnumerable<SelectionTag> GetTags(BidCon.SDK.EstimationItem estimationItem, IEnumerable<SelectionTag> TagsTemplate)
@@ -156,9 +161,9 @@ public class EstimationFactory : IEstimationFactory
     //        }
     //    }
     //}
-    private static string GetDisplayedUnit(BidCon.SDK.EstimationItem estimationItem)
+    private string GetDisplayedUnit(BidCon.SDK.EstimationItem estimationItem)
     {
-        if (estimationItem.ItemType == BidCon.SDK.EstimationItemType.Group || estimationItem.ItemType == BidCon.SDK.EstimationItemType.Part)
+        if (estimationItem.ItemType == BidCon.SDK.EstimationItemType.Group || estimationItem.ItemType == BidCon.SDK.EstimationItemType.Part || estimationItem.Remark.Contains(Settings!.HiddenUnitTag))
         {
             return string.Empty;
         }

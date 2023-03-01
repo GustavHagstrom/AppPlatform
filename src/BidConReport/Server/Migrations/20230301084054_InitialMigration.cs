@@ -22,6 +22,8 @@ namespace BidConReport.Server.Migrations
                     CostBeforeChangesAccount = table.Column<string>(type: "nvarchar(10)", maxLength: 10, nullable: false),
                     NetCostAccount = table.Column<string>(type: "nvarchar(10)", maxLength: 10, nullable: false),
                     HiddenTag = table.Column<string>(type: "nvarchar(10)", maxLength: 10, nullable: false),
+                    HiddenUnitTag = table.Column<string>(type: "nvarchar(10)", maxLength: 10, nullable: false),
+                    UseRevisionAsSelectionTags = table.Column<bool>(type: "bit", nullable: false),
                     QuickTags = table.Column<string>(type: "NVARCHAR(1000)", nullable: false),
                     SelectionTags = table.Column<string>(type: "NVARCHAR(1000)", nullable: false)
                 },
@@ -65,8 +67,7 @@ namespace BidConReport.Server.Migrations
                     DisplayedQuantity = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     UnitCost = table.Column<double>(type: "float", nullable: false),
                     Comment = table.Column<string>(type: "nvarchar(2000)", maxLength: 2000, nullable: false),
-                    QuickTags = table.Column<string>(type: "NVARCHAR(1000)", nullable: false),
-                    SelectionTags = table.Column<string>(type: "NVARCHAR(1000)", nullable: false),
+                    Tags = table.Column<string>(type: "NVARCHAR(1000)", nullable: false),
                     EstimationId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
                     EstimationItemId = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
                 },
