@@ -22,6 +22,28 @@ namespace BidConReport.Server.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
+            modelBuilder.Entity("BidConReport.Server.Features.Authorization.Models.Role", b =>
+                {
+                    b.Property<string>("Name")
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
+
+                    b.HasKey("Name");
+
+                    b.ToTable("Roles");
+                });
+
+            modelBuilder.Entity("BidConReport.Server.Features.Authorization.Models.User", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Users");
+                });
+
             modelBuilder.Entity("BidConReport.Shared.Models.Estimation", b =>
                 {
                     b.Property<Guid>("Id")
@@ -188,6 +210,21 @@ namespace BidConReport.Server.Migrations
                     b.ToTable("EstimationItem");
                 });
 
+            modelBuilder.Entity("RoleUser", b =>
+                {
+                    b.Property<string>("RolesName")
+                        .HasColumnType("nvarchar(20)");
+
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(50)");
+
+                    b.HasKey("RolesName", "UserId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("RoleUser");
+                });
+
             modelBuilder.Entity("BidConReport.Shared.Models.EstimationItem", b =>
                 {
                     b.HasOne("BidConReport.Shared.Models.Estimation", null)
@@ -197,6 +234,21 @@ namespace BidConReport.Server.Migrations
                     b.HasOne("BidConReport.Shared.Models.EstimationItem", null)
                         .WithMany("Items")
                         .HasForeignKey("EstimationItemId");
+                });
+
+            modelBuilder.Entity("RoleUser", b =>
+                {
+                    b.HasOne("BidConReport.Server.Features.Authorization.Models.Role", null)
+                        .WithMany()
+                        .HasForeignKey("RolesName")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("BidConReport.Server.Features.Authorization.Models.User", null)
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("BidConReport.Shared.Models.Estimation", b =>

@@ -1,18 +1,19 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
-namespace BidConReport.Server.Features;
-[Route("[controller]")]
+namespace BidConReport.Server.Features.Import;
+[Route("api/[controller]")]
 [ApiController]
 public class ImportController : ControllerBase
 {
     [HttpGet("GetAllImportSettings")]
     public async Task<IActionResult> GetAllImportSettings()
     {
-        throw new NotImplementedException();
+        return await Task.FromResult(Ok("Success"));
     }
     [HttpGet("GetStandardImportSettings")]
-    public async Task<IActionResult> GetStandardImportSettings()
+    public Task<IActionResult> GetStandardImportSettings()
     {
         throw new NotImplementedException();
     }

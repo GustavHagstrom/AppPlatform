@@ -1,4 +1,7 @@
 using BidConReport.Client;
+using BidConReport.Client.Features.Authentication;
+using BidConReport.Shared;
+using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Authentication;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
@@ -9,15 +12,15 @@ var builder = WebAssemblyHostBuilder.CreateDefault(args);
 builder.RootComponents.Add<App>("#app");
 builder.RootComponents.Add<HeadOutlet>("head::after");
 
-builder.Services.AddHttpClient(Constants.BidConApiHttpClientName, client =>
+builder.Services.AddHttpClient(AppConstants.BidConApiHttpClientName, client =>
 {
     client.BaseAddress = new Uri(builder.Configuration.GetValue<string>("BidConApiAddress")!);
 });
-builder.Services.AddHttpClient("BidConReport.ServerAPI", client => client.BaseAddress = new Uri(builder.HostEnvironment.BaseAddress))
+builder.Services.AddHttpClient(AppConstants.BackendHttpClientName, client => client.BaseAddress = new Uri(builder.HostEnvironment.BaseAddress))
     .AddHttpMessageHandler<BaseAddressAuthorizationMessageHandler>();
 
 // Supply HttpClient instances that include access tokens when making requests to the server project
-builder.Services.AddScoped(sp => sp.GetRequiredService<IHttpClientFactory>().CreateClient("BidConReport.ServerAPI"));
+builder.Services.AddScoped(sp => sp.GetRequiredService<IHttpClientFactory>().CreateClient(AppConstants.BackendHttpClientName));
 
 var baseUrl = string.Join("/",
     builder.Configuration.GetSection("MicrosoftGraph")["BaseUrl"],
@@ -47,5 +50,6 @@ builder.Services.AddMsalAuthentication(options =>
     options.ProviderOptions.DefaultAccessTokenScopes.Add(builder.Configuration.GetSection("ServerApi")["Scopes"]!);
     options.ProviderOptions.LoginMode = "redirect";
 });
+builder.Services.AddScoped<AuthenticationStateProvider, CustomAuthStateProvider>();
 
 await builder.Build().RunAsync();

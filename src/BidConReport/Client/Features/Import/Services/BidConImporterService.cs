@@ -1,4 +1,5 @@
-﻿using BidConReport.Shared.Models;
+﻿using BidConReport.Shared;
+using BidConReport.Shared.Models;
 using System.Net.Http.Json;
 
 namespace BidConReport.Client.Features.Import.Services;
@@ -48,7 +49,7 @@ public class BidConImporterService : IBidConImporterService
     }
     private HttpClient GetHttpClient()
     {
-        return _httpClientFactory.CreateClient(Constants.BidConApiHttpClientName);
+        return _httpClientFactory.CreateClient(AppConstants.BidConApiHttpClientName);
     }
 
     public async Task<IEnumerable<BidConImportResult<Estimation>>> GetEstimationsAsync(IEnumerable<string> ids, EstimationImportSettings settings)

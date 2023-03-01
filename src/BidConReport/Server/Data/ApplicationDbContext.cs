@@ -1,4 +1,5 @@
-﻿using BidConReport.Shared.Models;
+﻿using BidConReport.Server.Features.Authorization.Models;
+using BidConReport.Shared.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using System.Text.Json;
@@ -17,10 +18,18 @@ public class ApplicationDbContext : DbContext
 
     public DbSet<EstimationImportSettings> EstimationImportSettings { get; set; }
     public DbSet<Estimation> Estimations { get; set; }
+    public DbSet<User> Users { get; set; }
+    public DbSet<Role> Roles { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
+
+        modelBuilder.Entity<User>()
+            .HasMany(u => u.Roles)
+            .WithMany();
+        modelBuilder.Entity<Role>()
+            .HasKey(r => r.Name);
 
         modelBuilder.Entity<Estimation>()
             .Property(e => e.QuickTags)

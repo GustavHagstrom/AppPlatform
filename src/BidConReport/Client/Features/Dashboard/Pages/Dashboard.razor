@@ -21,7 +21,10 @@
     <MudItem xs="12" sm="6">
         <MudGrid>
             <MudItem xs="12">
-                <MudPaper Elevation="2" Class="pa-4" Style="height: 200px;"></MudPaper>
+                <MudPaper Elevation="2" Class="pa-4" Style="min-height: 200px;">
+                    <MudButton OnClick="Click">Test</MudButton>
+                    <MudText Typo="Typo.h6">@Result</MudText>
+                </MudPaper>
             </MudItem>
             <MudItem xs="12">
                 <MudPaper Elevation="2" Class="pa-4" Style="height: 200px;"></MudPaper>
@@ -53,7 +56,7 @@
     }
     public async Task Click()
     {
-        var result = await HttpClient.GetAsync("/values/get");
+        var result = await HttpClient.GetAsync("/api/authorization/roles");
         Result = await result.Content.ReadAsStringAsync();
         StateHasChanged();
     }

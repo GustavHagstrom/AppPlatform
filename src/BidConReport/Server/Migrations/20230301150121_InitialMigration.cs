@@ -53,6 +53,28 @@ namespace BidConReport.Server.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Roles",
+                columns: table => new
+                {
+                    Name = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Roles", x => x.Name);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Users",
+                columns: table => new
+                {
+                    Id = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Users", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "EstimationItem",
                 columns: table => new
                 {
@@ -86,6 +108,30 @@ namespace BidConReport.Server.Migrations
                         principalColumn: "Id");
                 });
 
+            migrationBuilder.CreateTable(
+                name: "RoleUser",
+                columns: table => new
+                {
+                    RolesName = table.Column<string>(type: "nvarchar(20)", nullable: false),
+                    UserId = table.Column<string>(type: "nvarchar(50)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_RoleUser", x => new { x.RolesName, x.UserId });
+                    table.ForeignKey(
+                        name: "FK_RoleUser_Roles_RolesName",
+                        column: x => x.RolesName,
+                        principalTable: "Roles",
+                        principalColumn: "Name",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_RoleUser_Users_UserId",
+                        column: x => x.UserId,
+                        principalTable: "Users",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
             migrationBuilder.CreateIndex(
                 name: "IX_EstimationItem_EstimationId",
                 table: "EstimationItem",
@@ -95,6 +141,11 @@ namespace BidConReport.Server.Migrations
                 name: "IX_EstimationItem_EstimationItemId",
                 table: "EstimationItem",
                 column: "EstimationItemId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_RoleUser_UserId",
+                table: "RoleUser",
+                column: "UserId");
         }
 
         /// <inheritdoc />
@@ -107,7 +158,16 @@ namespace BidConReport.Server.Migrations
                 name: "EstimationItem");
 
             migrationBuilder.DropTable(
+                name: "RoleUser");
+
+            migrationBuilder.DropTable(
                 name: "Estimations");
+
+            migrationBuilder.DropTable(
+                name: "Roles");
+
+            migrationBuilder.DropTable(
+                name: "Users");
         }
     }
 }
