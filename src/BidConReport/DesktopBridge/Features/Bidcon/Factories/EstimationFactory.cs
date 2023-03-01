@@ -121,7 +121,8 @@ public class EstimationFactory : IEstimationFactory
             UnitCost = GetUnitCost(item.UnitCost),
             //RegulatedUnitCost = GetUnitCost(item.RegulatedCost),
             Name = item.Name,
-            Tags = GetTags(item).ToArray()
+            Tags = GetTags(item).ToArray(),
+            Items = new HashSet<Shared.Models.EstimationItem>()
             //Revision = item.Revision?.Code,
             //QuickTags = GetTagsFromRemark(item, Settings!.QuickTags).ToArray(),
             //SelectionTags = GetSelectionTags(item),// GetTags(item, Settings!.OptionTags).ToArray(),

@@ -19,7 +19,5 @@ public class EstimationImportSettings
     public required bool UseRevisionAsSelectionTags { get; set; }
     public required ICollection<string> QuickTags { get; set; }
     public required ICollection<string> SelectionTags { get; set; }
-    //public required List<QuickTag> QuickTags { get; set; } = new();
-    //public required List<SelectionTag> SelectionTags { get; set; } = new();
 
 }

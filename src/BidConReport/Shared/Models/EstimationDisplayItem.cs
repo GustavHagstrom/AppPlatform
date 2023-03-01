@@ -2,35 +2,26 @@
 public class EstimationDisplayItem
 {
    
-    public double UnitApriceCost { get; set; }
+    public required double UnitApriceCost { get; set; }
     
   
 
 
-    public int RowNumber { get; set; }
-    public string BidConId { get; set; } = string.Empty;
+    public required int RowNumber { get; set; }
+    public required string BidConId { get; set; }
     
     public int? ParentRowNumber { get; set; }
-    public EstimationItemType ItemType { get; set; }
-    public string Name { get; set; } = string.Empty;
-    public string Unit { get; set; } = string.Empty;
-    public string DisplayedUnit { get; set; } = string.Empty;
-    public double Quantity { get; set; }
-    public string DisplayedQuantity { get; set; } = string.Empty;
-    //public double RegulatedQuantity { get; set; }
-    public double UnitCost { get; set; }
-    //public double RegulatedUnitCost { get; set; }
-    
-    //public string? Revision { get; set; }
-    
-
-    public int? ChangedFromRowNumber { get; set; }
-    public double PriceDifference { get; set; }
-    public bool CanBeChanged { get; set; }
-    public bool IsOriginalItem { get; set; }
-    public int Level { get; set; }
-    public string Comment { get; set; } = string.Empty;
-    //public List<SimpleEstimationItem> Items { get; set; } = new();
-    //public string[] StyleTags { get; set; } = Array.Empty<string>();
-    //public string[] OptionTags { get; set; } = Array.Empty<string>();
+    public required EstimationItemType ItemType { get; set; }
+    public required string Name { get; set; }
+    public required string Unit { get; set; }
+    public required string DisplayedUnit { get; set; }
+    public required double Quantity { get; set; }
+    public required string DisplayedQuantity { get; set; }
+    public required double UnitCost { get; set; }
+    public required int? ChangedFromRowNumber { get; set; }
+    public required double PriceDifference { get; set; }
+    public required bool CanBeChanged { get; set; }
+    public required bool IsOriginalItem { get; set; }
+    public required int Level { get; set; }
+    public required string Comment { get; set; }
 }

@@ -5,8 +5,6 @@ namespace BidConReport.Shared.Models;
 
 public class Estimation
 {
-    //[BsonId]
-    //[BsonRepresentation(BsonType.ObjectId)]
     [MaxLength(50)]
     public required Guid Id { get; set; }
     [MaxLength(50)]
@@ -22,11 +20,9 @@ public class Estimation
     public DateTime? ExpirationDate { get; set; }
     public required ICollection<string> QuickTags { get; set; }
     public required ICollection<string> SelectionTags { get; set; }
-    //public required QuickTag[] QuickTags { get; set; }
-    //public required SelectionTag[] SelectionTags { get; set; }
-    public required List<EstimationItem> Items { get; set; } = new();
+    public required ICollection<EstimationItem> Items { get; set; }
     [NotMapped]
-    public required List<LockedCategory> LockedCategories { get; set; } = new();
+    public required ICollection<LockedCategory> LockedCategories { get; set; }
 
     public override string ToString()
     {

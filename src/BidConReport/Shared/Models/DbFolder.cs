@@ -3,9 +3,9 @@
 namespace BidConReport.Shared.Models;
 public class DbFolder
 {
-    public string Name { get; set; } = string.Empty;
-    public List<DbFolder> SubFolders { get; set; } = new();
-    public List<DbEstimation> DbEstimations { get; set; } = new();
+    public required string Name { get; set; }
+    public required ICollection<DbFolder> SubFolders { get; set; }
+    public required ICollection<DbEstimation> DbEstimations { get; set; }
     public IEnumerable<DbEstimation> GetAllEstimations()
     {
         return GetAllEstimations(this);

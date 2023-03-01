@@ -1,6 +1,6 @@
 ﻿namespace BidConReport.Shared.Models;
 public class LockedStage
 {
-    public string Name { get; set; } = string.Empty;
-    public List<EstimationItem> Items { get; set; } = new();
+    public required string Name { get; set; }
+    public required ICollection<EstimationItem> Items { get; set; }
 }
