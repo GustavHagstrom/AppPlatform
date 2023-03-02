@@ -1,5 +1,12 @@
-﻿
-<ImportSettingsEditor Settings="SelectedSettings" />
+﻿<MudSelect @bind-Value="SelectedSetting" T="EstimationImportSettings" MultiSelection="false" ToStringFunc="ConvertFunc">
+    @foreach (var item in AllSettings)
+    {
+        <MudSelectItem Value="item" />
+    }
+</MudSelect>
+<ImportSettingsEditor Settings="SelectedSetting" OnSave="GetSettingsAsync" />
+
+
 
 
 
@@ -7,7 +14,9 @@
     [Inject] public required ISnackbar Snackbar { get; set; }
     [Inject] public required IImportSettingsService ImportSettingsService { get; set; }
     [Parameter, EditorRequired] public required EstimationImportSettings SelectedSettings { get; set; }
+    public EstimationImportSettings SelectedSetting { get; set; } = EstimationImportSettings.Empty;
     public HashSet<EstimationImportSettings> AllSettings { get; set; } = new();
+    public Func<EstimationImportSettings, string> ConvertFunc { get; set; } = s => s.Name;
 
     protected override async Task OnInitializedAsync()
     {
@@ -15,18 +24,22 @@
     }
     public async Task GetSettingsAsync()
     {
-        await GetStandardSettingsAsync();
         await GetAllSettingsAsync();
+        await GetStandardSettingsAsync();
         StateHasChanged();
     }
     public async Task GetStandardSettingsAsync()
     {
         try
         {
-            var settings = await ImportSettingsService.GetStandardAsync();
-            if (settings is not null)
+            var standard = await ImportSettingsService.GetStandardAsync();
+            if (standard is not null)
             {
-                SelectedSettings = settings;
+                SelectedSettings = AllSettings.Where(s => s.Id == standard.Id).First();
+            }
+            else if(AllSettings.Count > 0)
+            {
+                SelectedSettings = AllSettings.First();
             }
         }
         catch (Exception e)

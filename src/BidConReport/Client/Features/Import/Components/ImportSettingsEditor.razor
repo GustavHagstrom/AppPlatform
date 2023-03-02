@@ -1,4 +1,6 @@
-﻿<MudForm Model="Settings" @ref="Form" Style="overflow-y: scroll">
+﻿<MudIconButton Icon="@Icons.Material.Sharp.Save" OnClick="SaveAsync"/>
+<MudIconButton Icon="@Icons.Material.Sharp.Add" OnClick="SaveAsNew" />
+<MudForm Model="Settings" @ref="Form" Style="overflow-y: scroll">
     <MudTextField T="string"
                   Label="Namn"
                   @bind-Value="Settings!.Name"
@@ -105,10 +107,12 @@
 
 
 @code{
+
     [CascadingParameter] private MudTheme? Theme { get; set; }
     [Inject] public required ISnackbar Snackbar { get; set; }
     [Parameter] public bool EditMode { get; set; } = true;
     [Parameter, EditorRequired] public required EstimationImportSettings Settings { get; set; }
+    [Parameter] public EventCallback OnSave { get; set; }
 
     [Inject] public required IImportSettingsService ImportSettingsService { get; set; }
     public string StyleTaggInputField { get; set; } = string.Empty;
@@ -147,6 +151,11 @@
         //Settings!.SelectionTags.Remove(tagg);
         //StateHasChanged();
     }
+    public async Task SaveAsNew()
+    {
+        Settings.Id = 0;
+        await SaveAsync();
+    }
     private async Task SaveAsync()
     {
         if (Form is null) return;
@@ -162,6 +171,6 @@
                 Snackbar.Add($"Error (Settings): {e.Message}", Severity.Info);
             }
         }
-        
+        await OnSave.InvokeAsync();
     }
 }
