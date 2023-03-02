@@ -20,7 +20,12 @@
 
             <AuthorizeView>
                 <Authorized>
-                    <MudIconButton Icon="@Icons.Material.Sharp.Menu" Color="Color.Inherit" Edge="Edge.Start" OnClick="@((e) => DrawerToggle())" Class="ml-0" Style="height: 35px; width: 35px;"/>
+                    @*<MudIconButton Icon="@Icons.Material.Sharp.Menu" Color="Color.Inherit" OnClick="DrawerToggle" Class="align-self-stretch" Style="height: 35px; width: 35px;"/>*@
+                    <MudIconButton Icon="@Icons.Material.Sharp.Menu" Color="Color.Inherit" OnClick="DrawerToggle" Class="align-self-stretch"/>
+                    @*<MudButton Color="Color.Inherit" Edge="Edge.Start" OnClick="@((e) => DrawerToggle())" Class="ml-0">*@
+                @*    <MudButton OnClick="DrawerToggle" Class="py-0 px-2 align-self-stretch" Style="min-width: 20px" Color="Color.Inherit">
+                        <MudIcon Icon="@Icons.Material.Sharp.Menu"/>
+                    </MudButton>*@
                     <a href="/">
                         <MudText Typo="Typo.h5" Style="@($"color: {Theme.Palette.AppbarText}")">LB Portalen</MudText>
                     </a>

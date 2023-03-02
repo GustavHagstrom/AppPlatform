@@ -1,6 +1,9 @@
-﻿<MudIconButton Icon="@Icons.Material.Sharp.Save" OnClick="SaveAsync"/>
-<MudIconButton Icon="@Icons.Material.Sharp.Add" OnClick="SaveAsNew" />
-<MudForm Model="Settings" @ref="Form" Style="overflow-y: scroll">
+﻿<MudForm Model="Settings" @ref="Form" Style="overflow-y: scroll" Class="pa-6">
+    <div class="d-flex justify-space-between">
+        <MudIconButton Icon="@Icons.Material.Sharp.Add" OnClick="SaveAsNew" />
+        <MudIconButton OnClick="SaveAsync" Icon="@Icons.Material.Sharp.Save" />
+    </div>
+        
     <MudTextField T="string"
                   Label="Namn"
                   @bind-Value="Settings!.Name"
@@ -55,7 +58,7 @@
                   Variant="Variant.Text"
                   For="() => Settings!.HiddenUnitTag"
                   ReadOnly="!EditMode" />
-
+    <MudSwitch Class="py-2" @bind-Checked="Settings.UseRevisionAsSelectionTags" Label="@Localizer["Revision som valtagg"]" Color="Color.Primary"/>
 
         <MudPaper Elevation="1" Class="d-flex rounded align-center">
 
@@ -109,6 +112,7 @@
 @code{
 
     [CascadingParameter] private MudTheme? Theme { get; set; }
+    [Inject] public required IStringLocalizer<ImportSettingsEditor> Localizer { get; set; }
     [Inject] public required ISnackbar Snackbar { get; set; }
     [Parameter] public bool EditMode { get; set; } = true;
     [Parameter, EditorRequired] public required EstimationImportSettings Settings { get; set; }
@@ -123,6 +127,7 @@
     protected override void OnAfterRender(bool firstRender)
     {
         base.OnAfterRender(firstRender);
+        //var a = new Func<EstimationImportSettings, string>()
         CanBeSaved = false;
         //Form.FieldChanged = (e) => CanBeSaved = true;
     }
@@ -170,7 +175,8 @@
             {
                 Snackbar.Add($"Error (Settings): {e.Message}", Severity.Info);
             }
+            await OnSave.InvokeAsync();
         }
-        await OnSave.InvokeAsync();
+        
     }
 }

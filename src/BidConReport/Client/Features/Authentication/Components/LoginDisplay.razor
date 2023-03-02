@@ -1,9 +1,10 @@
 ﻿<AuthorizeView>
     <Authorized>
-        <MudAvatar Class="mr-1 align-self-center mud-ripple cursor-pointer" Style="@($"height: 35px; width: 35px; background-color: {Theme.Palette.PrimaryLighten}")" @onclick="ToggleOpen">
+        <MudButton OnClick="ToggleOpen" Class="px-3 align-self-stretch" Style="min-width: 20px">
+            <MudAvatar Class="align-self-center align-content-center" Style="@($"height: 35px; width: 35px; background-color: {Theme.Palette.PrimaryLighten}")">
                 @if (!string.IsNullOrEmpty(PhotoString))
                 {
-                <img src="@PhotoString" style="height:35px; width:35px;" class="align-self-center" />
+                    <img src="@PhotoString" style="height:35px; width:35px;" class="align-self-center" />
                 }
                 else
                 {
@@ -11,6 +12,7 @@
                 }
                 
             </MudAvatar>
+        </MudButton>
     <MudPopover Open="IsOpen" AnchorOrigin="Origin.BottomRight" TransformOrigin="Origin.TopRight">
         <MudButton OnClick="BeginLogOut" Variant="Variant.Text">Log out</MudButton>
     </MudPopover>

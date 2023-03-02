@@ -1,16 +1,29 @@
-﻿<MudSelect @bind-Value="SelectedSetting" T="EstimationImportSettings" MultiSelection="false" ToStringFunc="ConvertFunc">
-    @foreach (var item in AllSettings)
-    {
-        <MudSelectItem Value="item" />
-    }
-</MudSelect>
-<ImportSettingsEditor Settings="SelectedSetting" OnSave="GetSettingsAsync" />
-
+﻿<MudDivider Light="true" />
+<MudPaper Class="pa-6" Elevation="0">
+    <MudSelect @bind-Value="SelectedSetting"
+               T="EstimationImportSettings"
+               MultiSelection="false"
+               ToStringFunc="ConvertFunc"
+               Label="@Localizer["Inställningsprofil"]"
+               Variant="Variant.Outlined"
+               AnchorOrigin="Origin.BottomCenter">
+        @foreach (var item in AllSettings)
+        {
+            <MudSelectItem Value="item" />
+        }
+    </MudSelect>
+</MudPaper>
+<MudDivider Light="true" />
+<MudPaper Elevation="0">
+    <ImportSettingsEditor Settings="SelectedSetting" OnSave="GetSettingsAsync" />
+</MudPaper>
+<MudDivider Light="true" />
 
 
 
 
 @code {
+    [Inject] public required IStringLocalizer<ImportSettingsView> Localizer { get; set; }
     [Inject] public required ISnackbar Snackbar { get; set; }
     [Inject] public required IImportSettingsService ImportSettingsService { get; set; }
     [Parameter, EditorRequired] public required EstimationImportSettings SelectedSettings { get; set; }

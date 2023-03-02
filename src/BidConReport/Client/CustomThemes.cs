@@ -284,7 +284,7 @@ public static class CustomThemes
             ErrorLighten = "rgb(246,96,85)",
             DarkDarken = "rgb(46,46,46)",
             DarkLighten = "rgb(87,87,87)",
-            HoverOpacity = 0.06,
+            HoverOpacity = 0.12,
             GrayDefault = "#9E9E9E",
             GrayLight = "#BDBDBD",
             GrayLighter = "#E0E0E0",
