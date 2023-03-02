@@ -39,7 +39,12 @@ namespace BidConReport.Server.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
+                    b.Property<int?>("StandardSettingsId")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("StandardSettingsId");
 
                     b.ToTable("Users");
                 });
@@ -48,7 +53,6 @@ namespace BidConReport.Server.Migrations
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasMaxLength(50)
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("BidConId")
@@ -75,6 +79,11 @@ namespace BidConReport.Server.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<string>("OrganizationId")
                         .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
@@ -120,10 +129,20 @@ namespace BidConReport.Server.Migrations
                         .HasMaxLength(10)
                         .HasColumnType("nvarchar(10)");
 
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)");
+
                     b.Property<string>("NetCostAccount")
                         .IsRequired()
                         .HasMaxLength(10)
                         .HasColumnType("nvarchar(10)");
+
+                    b.Property<string>("OrganizationId")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<string>("QuickTags")
                         .IsRequired()
@@ -132,11 +151,6 @@ namespace BidConReport.Server.Migrations
                     b.Property<string>("SelectionTags")
                         .IsRequired()
                         .HasColumnType("NVARCHAR(1000)");
-
-                    b.Property<string>("SettingsName")
-                        .IsRequired()
-                        .HasMaxLength(30)
-                        .HasColumnType("nvarchar(30)");
 
                     b.Property<bool>("UseRevisionAsSelectionTags")
                         .HasColumnType("bit");
@@ -157,8 +171,8 @@ namespace BidConReport.Server.Migrations
 
                     b.Property<string>("Comment")
                         .IsRequired()
-                        .HasMaxLength(2000)
-                        .HasColumnType("nvarchar(2000)");
+                        .HasMaxLength(1000)
+                        .HasColumnType("nvarchar(1000)");
 
                     b.Property<string>("DisplayedQuantity")
                         .IsRequired()
@@ -223,6 +237,15 @@ namespace BidConReport.Server.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("RoleUser");
+                });
+
+            modelBuilder.Entity("BidConReport.Server.Features.Authorization.Models.User", b =>
+                {
+                    b.HasOne("BidConReport.Shared.Models.EstimationImportSettings", "StandardSettings")
+                        .WithMany()
+                        .HasForeignKey("StandardSettingsId");
+
+                    b.Navigation("StandardSettings");
                 });
 
             modelBuilder.Entity("BidConReport.Shared.Models.EstimationItem", b =>

@@ -1,4 +1,5 @@
 ﻿using BidConReport.Server.Data;
+using BidConReport.Server.Features.Authorization.Models;
 using BidConReport.Shared;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -28,6 +29,9 @@ public class AuthorizationController : ControllerBase
             .Where(u => u.Id == userId.Value).FirstOrDefaultAsync(cancellationToken);
         if(user is null || !user.Roles.Any()) 
         {
+            //Maybe not the correct place to add UserId to the DB?
+            var r = await _applicationDbContext.Users.AddAsync(new User { Id = userId.Value, Roles = Array.Empty<Role>() });
+            await _applicationDbContext.SaveChangesAsync();
             return Ok(Array.Empty<string>());
         }
 

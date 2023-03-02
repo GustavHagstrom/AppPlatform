@@ -5,10 +5,12 @@ namespace BidConReport.Shared.Models;
 
 public class Estimation
 {
-    [MaxLength(50)]
+    //[MaxLength(50)]
     public required Guid Id { get; set; }
     [MaxLength(50)]
     public required string BidConId { get; set; }
+    [MaxLength(50)]
+    public required string OrganizationId { get; set; }
     [MaxLength(50)]
     public required string Name { get; set; }
     [MaxLength(50)]

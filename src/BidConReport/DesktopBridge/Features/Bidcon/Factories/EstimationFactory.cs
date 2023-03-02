@@ -30,6 +30,7 @@ public class EstimationFactory : IEstimationFactory
         {
             Id = Guid.NewGuid(),
             BidConId = estimation.ID.ToString(),
+            OrganizationId = Settings.OrganizationId,
             Name = estimation.Name,
             Description = estimation.Description,
             CreationDate = DateTime.Now,
