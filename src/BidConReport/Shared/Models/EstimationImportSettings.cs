@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace BidConReport.Shared.Models;
 public class EstimationImportSettings
@@ -21,5 +22,21 @@ public class EstimationImportSettings
     public required bool UseRevisionAsSelectionTags { get; set; }
     public required ICollection<string> QuickTags { get; set; }
     public required ICollection<string> SelectionTags { get; set; }
+
+
+    [NotMapped]
+    public static readonly EstimationImportSettings Empty = new EstimationImportSettings
+    {
+        Name = string.Empty,
+        OrganizationId = string.Empty,
+        CostFactorAccount = string.Empty,
+        NetCostAccount = string.Empty,
+        CostBeforeChangesAccount = string.Empty,
+        HiddenTag = string.Empty,
+        HiddenUnitTag = string.Empty,
+        UseRevisionAsSelectionTags = false,
+        QuickTags = new List<string>(),
+        SelectionTags = new List<string>(),
+    };
 
 }

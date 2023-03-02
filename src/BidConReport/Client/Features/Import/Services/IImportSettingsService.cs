@@ -4,6 +4,7 @@ namespace BidConReport.Client.Features.Import.Services;
 
 public interface IImportSettingsService
 {
-    Task<IEnumerable<EstimationImportSettings>> GetAllAsync();
+    Task<ICollection<EstimationImportSettings>> GetAllAsync();
     Task<EstimationImportSettings> GetStandardAsync();
+    Task UpsertAsync(EstimationImportSettings settings);
 }

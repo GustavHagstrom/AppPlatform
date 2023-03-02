@@ -1,9 +1,9 @@
 ﻿<AuthorizeView>
     <Authorized>
-        <MudAvatar Class="mr-1 align-self-center mud-ripple cursor-pointer" Style="@($"height:40px; width:40px; background-color: {Theme.Palette.PrimaryLighten}")" @onclick="ToggleOpen">
+        <MudAvatar Class="mr-1 align-self-center mud-ripple cursor-pointer" Style="@($"height: 35px; width: 35px; background-color: {Theme.Palette.PrimaryLighten}")" @onclick="ToggleOpen">
                 @if (!string.IsNullOrEmpty(PhotoString))
                 {
-                <img src="@PhotoString" style="height:40px; width:40px;" class="align-self-center" />
+                <img src="@PhotoString" style="height:35px; width:35px;" class="align-self-center" />
                 }
                 else
                 {

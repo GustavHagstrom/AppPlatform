@@ -16,11 +16,11 @@
 
     <MudLayout>
 
-        <MudAppBar Dense="false" DisableGutters="true" Style="height: 40px">
+        <MudAppBar Dense="false" DisableGutters="true">
 
             <AuthorizeView>
                 <Authorized>
-                    <MudIconButton Icon="@Icons.Material.Sharp.Menu" Color="Color.Inherit" Edge="Edge.Start" OnClick="@((e) => DrawerToggle())" Class="ml-0" />
+                    <MudIconButton Icon="@Icons.Material.Sharp.Menu" Color="Color.Inherit" Edge="Edge.Start" OnClick="@((e) => DrawerToggle())" Class="ml-0" Style="height: 35px; width: 35px;"/>
                     <a href="/">
                         <MudText Typo="Typo.h5" Style="@($"color: {Theme.Palette.AppbarText}")">LB Portalen</MudText>
                     </a>
@@ -60,7 +60,7 @@
 @code {
     public MudTheme Theme { get; set; } = CustomThemes.CustomStandardTheme;
     bool _drawerOpen = true;
-
+    //MudButton
 
     void DrawerToggle()
     {

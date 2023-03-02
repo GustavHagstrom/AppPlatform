@@ -39,6 +39,7 @@ public class ImportController : ControllerBase
         var organizationIdClaim = User.Claims.Where(x => x.Type == AppConstants.OrganizationIdClaimKey).FirstOrDefault();
         if (organizationIdClaim is null) return Problem();
 
+        settings.OrganizationId = organizationIdClaim.Value;
         var dbSettings = await _applicationDbContext.EstimationImportSettings
             .Where(s => s.OrganizationId == organizationIdClaim.Value && s.Id == settings.Id)
             .FirstOrDefaultAsync();

@@ -363,10 +363,10 @@ public static class CustomThemes
         {
 
             DefaultBorderRadius = "0px",
-            DrawerMiniWidthLeft = "56px",
-            DrawerMiniWidthRight = "56px",
-            DrawerWidthLeft = "240px",
-            DrawerWidthRight = "240px",
+            DrawerMiniWidthLeft = "40px",
+            DrawerMiniWidthRight = "40px",
+            DrawerWidthLeft = "290px",
+            DrawerWidthRight = "290px",
             DrawerHeightTop = "320px",
             DrawerHeightBottom = "320px",
             AppbarHeight = "40px",

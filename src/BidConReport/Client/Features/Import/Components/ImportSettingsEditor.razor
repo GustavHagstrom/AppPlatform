@@ -1,0 +1,167 @@
+﻿<MudForm Model="Settings" @ref="Form" Style="overflow-y: scroll">
+    <MudTextField T="string"
+                  Label="Namn"
+                  @bind-Value="Settings!.Name"
+                  Variant="Variant.Text"
+                  For="() => Settings!.Name"
+                  ReadOnly="!EditMode" />
+    <MudTextField T="string"
+                  Label="Kontokod - A-pris faktor"
+                  @bind-Value="Settings!.CostFactorAccount"
+                  Variant="Variant.Text"
+                  For="() => Settings!.CostFactorAccount"
+                  ReadOnly="!EditMode" />
+    <MudTextField T="string"
+                  Label="Kontokod - Nettokalkyl"
+                  @bind-Value="Settings!.NetCostAccount"
+                  Variant="Variant.Text"
+                  For="() => Settings!.NetCostAccount"
+                  ReadOnly="!EditMode" />
+    <MudTextField T="string"
+                  Label="Kontokod - Försäljningspris"
+                  @bind-Value="Settings!.CostBeforeChangesAccount"
+                  Variant="Variant.Text"
+                  For="() => Settings!.CostBeforeChangesAccount"
+                  ReadOnly="!EditMode" />
+    @*<MudTextField T="string"
+                  Label="Använd revision som valtagg"
+                  @bind-Value="Settings!.UseRevisionAsSelectionTags"
+                  Variant="Variant.Text"
+                  For="() => Settings!.UseRevisionAsSelectionTags"
+                  ReadOnly="!EditMode" />
+    <MudTextField T="string"
+                  Label="Valtaggar"
+                  @bind-Value="Settings!.SelectionTags"
+                  Variant="Variant.Text"
+                  For="() => Settings!.SelectionTags"
+                  ReadOnly="!EditMode" />
+    <MudTextField T="string"
+                  Label="Snabbtaggar"
+                  @bind-Value="Settings!.QuickTags"
+                  Variant="Variant.Text"
+                  For="() => Settings!.QuickTags"
+                  ReadOnly="!EditMode" />*@
+    <MudTextField T="string"
+                  Label="Tagg för dolda rader"
+                  @bind-Value="Settings!.HiddenTag"
+                  Variant="Variant.Text"
+                  For="() => Settings!.HiddenTag" 
+                  ReadOnly="!EditMode" />
+    <MudTextField T="string"
+                  Label="Tagg för dolda enhet"
+                  @bind-Value="Settings!.HiddenUnitTag"
+                  Variant="Variant.Text"
+                  For="() => Settings!.HiddenUnitTag"
+                  ReadOnly="!EditMode" />
+
+
+        <MudPaper Elevation="1" Class="d-flex rounded align-center">
+
+            @if(EditMode)
+            {
+                <MudPaper Class="rounded-r-0" Elevation="0">
+                <input Placeholder="Tagg" class="ma-0 pl-2 no-outline" style="width: 130px;" @bind="StyleTaggInputField"/>
+                </MudPaper>
+
+                <MudPaper Class="rounded-l-0" Elevation="0" Style="@($"background:{Theme?.Palette.Success};")">
+                    <MudIconButton Variant="Variant.Filled"
+                                Icon="@Icons.Material.Filled.Add"
+                                Class="rounded-l-0"
+                                Style="@($"color:{Theme?.Palette.PrimaryContrastText}; padding: 2px;")"
+                               OnClick="AddStyleTagg" />
+                </MudPaper>
+            }
+            @foreach (var tagg in Settings.QuickTags)
+            {
+                <p>@($"StyleTagg {tagg}. This is a placeholder")</p>
+            }
+
+        </MudPaper>
+
+    <MudPaper Elevation="1" Class="d-flex rounded align-center">
+
+        @if (EditMode)
+        {
+            <MudPaper Class="rounded-r-0" Elevation="0">
+                <input Placeholder="Tagg" class="ma-0 pl-2 no-outline" style="width: 130px;" @bind="StyleTaggInputField" />
+            </MudPaper>
+
+            <MudPaper Class="rounded-l-0" Elevation="0" Style="@($"background:{Theme?.Palette.Success};")">
+                <MudIconButton Variant="Variant.Filled"
+                           Icon="@Icons.Material.Filled.Add"
+                           Class="rounded-l-0"
+                           Style="@($"color:{Theme?.Palette.PrimaryContrastText}; padding: 2px;")"
+                           OnClick="AddStyleTagg" />
+            </MudPaper>
+        }
+        @foreach (var tagg in Settings.SelectionTags)
+        {
+            <p>@($"StyleTagg {tagg}. This is a placeholder")</p>
+        }
+
+    </MudPaper>
+
+</MudForm>
+
+
+@code{
+    [CascadingParameter] private MudTheme? Theme { get; set; }
+    [Inject] public required ISnackbar Snackbar { get; set; }
+    [Parameter] public bool EditMode { get; set; } = true;
+    [Parameter, EditorRequired] public required EstimationImportSettings Settings { get; set; }
+
+    [Inject] public required IImportSettingsService ImportSettingsService { get; set; }
+    public string StyleTaggInputField { get; set; } = string.Empty;
+    public string OptionTaggInputField { get; set; } = string.Empty;
+    public MudForm? Form { get; set; }
+    public bool CanBeSaved { get; set; } = false;
+
+    protected override void OnAfterRender(bool firstRender)
+    {
+        base.OnAfterRender(firstRender);
+        CanBeSaved = false;
+        //Form.FieldChanged = (e) => CanBeSaved = true;
+    }
+
+    private void AddStyleTagg()
+    {
+        //if (string.IsNullOrEmpty(StyleTaggInputField) || Settings!.QuickTags.Contains(StyleTaggInputField)) return;
+        //Settings.QuickTags.Add(StyleTaggInputField);
+        //StyleTaggInputField = string.Empty;
+        //StateHasChanged();
+    }
+    private void RemoveStyleTagg(string tagg)
+    {
+        //Settings!.QuickTags.Remove(tagg);
+        //StateHasChanged();
+    }
+    private void AddOptionTagg()
+    {
+        //if (string.IsNullOrEmpty(OptionTaggInputField) || Settings!.SelectionTags.Contains(OptionTaggInputField)) return;
+        //Settings.SelectionTags.Add(OptionTaggInputField);
+        //OptionTaggInputField = string.Empty;
+        //StateHasChanged();
+    }
+    private void RemoveOptionTagg(string tagg)
+    {
+        //Settings!.SelectionTags.Remove(tagg);
+        //StateHasChanged();
+    }
+    private async Task SaveAsync()
+    {
+        if (Form is null) return;
+        await Form!.Validate();
+        if(Form.IsValid)
+        {
+            try
+            {
+                await ImportSettingsService.UpsertAsync(Settings);
+            }
+            catch (Exception e)
+            {
+                Snackbar.Add($"Error (Settings): {e.Message}", Severity.Info);
+            }
+        }
+        
+    }
+}

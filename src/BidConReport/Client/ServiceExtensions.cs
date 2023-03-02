@@ -8,7 +8,8 @@ public static class ServiceExtensions
     public static void UseImportFeature(this IServiceCollection services)
     {
         services.AddTransient<IBidConImporterService, BidConImporterService>();
-        //services.AddTransient<IEstimationImportSettingsState, EstimationImportSettingsState>();
+        services.AddTransient<IImportSettingsService, ImportSettingsService>();
+
     }
     public static void UseAuthenticationFeature(this IServiceCollection services)
     {
