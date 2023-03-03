@@ -30,7 +30,7 @@
     public EstimationImportSettings SelectedSetting { get; set; } = EstimationImportSettings.Empty;
     public HashSet<EstimationImportSettings> AllSettings { get; set; } = new();
     public Func<EstimationImportSettings, string> ConvertFunc { get; set; } = s => s.Name;
-
+    
     protected override async Task OnInitializedAsync()
     {
         await GetSettingsAsync();

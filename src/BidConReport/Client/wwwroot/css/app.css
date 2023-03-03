@@ -1,7 +1,9 @@
 .mud-icon-button {
     border-radius: 0;
 }
-
+.mud-switch-base{
+    border-radius: 50%;
+}
 .loading-progress {
     position: relative;
     display: block;
