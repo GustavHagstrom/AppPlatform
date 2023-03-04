@@ -1,4 +1,8 @@
-﻿<MudDivider Light="true" />
+﻿<div class="d-flex justify-end">
+    <MudIconButton Icon="@Icons.Material.Sharp.Add" OnClick="SaveAsNew" Style="height: 40px; width: 40px;"/>
+    <MudIconButton OnClick="SaveAsync" Icon="@Icons.Material.Sharp.Save" Style="height: 40px; width: 40px;" />
+</div>
+<MudDivider Light="true" />
 <MudPaper Class="pa-6" Elevation="0">
     <MudSelect @bind-Value="SelectedSetting"
                T="EstimationImportSettings"
@@ -6,7 +10,8 @@
                ToStringFunc="ConvertFunc"
                Label="@Localizer["Inställningsprofil"]"
                Variant="Variant.Outlined"
-               AnchorOrigin="Origin.BottomCenter">
+               AnchorOrigin="Origin.BottomCenter"
+                Margin="Margin.Dense">
         @foreach (var item in AllSettings)
         {
             <MudSelectItem Value="item" />
@@ -77,5 +82,28 @@
 
             Snackbar.Add($"Error getting all organization settings: {e.Message}", Severity.Error);
         }
+    }
+    public async Task SaveAsNew()
+    {
+        //Settings.Id = 0;
+        //await SaveAsync();
+    }
+    private async Task SaveAsync()
+    {
+        //if (Form is null) return;
+        //await Form!.Validate();
+        //if(Form.IsValid)
+        //{
+        //    try
+        //    {
+        //        await ImportSettingsService.UpsertAsync(Settings);
+        //    }
+        //    catch (Exception e)
+        //    {
+        //        Snackbar.Add($"Error (Settings): {e.Message}", Severity.Info);
+        //    }
+        //    await OnSave.InvokeAsync();
+        //}
+        
     }
 }

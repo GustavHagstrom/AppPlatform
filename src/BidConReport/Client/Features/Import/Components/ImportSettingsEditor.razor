@@ -1,76 +1,36 @@
 ﻿<MudForm Model="Settings" @ref="Form" Style="overflow-y: scroll" Class="pa-6">
-    <div class="d-flex justify-space-between">
-        <MudIconButton Icon="@Icons.Material.Sharp.Add" OnClick="SaveAsNew" />
-        <MudIconButton OnClick="SaveAsync" Icon="@Icons.Material.Sharp.Save" />
-    </div>
+    <MudStack Spacing="2">
         
-    <MudTextField T="string"
-                  Label="Namn"
-                  @bind-Value="Settings!.Name"
-                  Variant="Variant.Text"
-                  For="() => Settings!.Name"
-                  ReadOnly="!EditMode" />
-    <MudTextField T="string"
-                  Label="Kontokod - A-pris faktor"
-                  @bind-Value="Settings!.CostFactorAccount"
-                  Variant="Variant.Text"
-                  For="() => Settings!.CostFactorAccount"
-                  ReadOnly="!EditMode" />
-    <MudTextField T="string"
-                  Label="Kontokod - Nettokalkyl"
-                  @bind-Value="Settings!.NetCostAccount"
-                  Variant="Variant.Text"
-                  For="() => Settings!.NetCostAccount"
-                  ReadOnly="!EditMode" />
-    <MudTextField T="string"
-                  Label="Kontokod - Försäljningspris"
-                  @bind-Value="Settings!.CostBeforeChangesAccount"
-                  Variant="Variant.Text"
-                  For="() => Settings!.CostBeforeChangesAccount"
-                  ReadOnly="!EditMode" />
-    <MudTextField T="string"
-                  Label="Tagg för dolda rader"
-                  @bind-Value="Settings!.HiddenTag"
-                  Variant="Variant.Text"
-                  For="() => Settings!.HiddenTag" 
-                  ReadOnly="!EditMode" />
-    <MudTextField T="string"
-                  Label="Tagg för dolda enhet"
-                  @bind-Value="Settings!.HiddenUnitTag"
-                  Variant="Variant.Text"
-                  For="() => Settings!.HiddenUnitTag"
-                  ReadOnly="!EditMode" />
-    <MudSwitch Class="py-2" @bind-Checked="Settings.UseRevisionAsSelectionTags" Label="@Localizer["Revision som valtagg"]" Color="Color.Primary"/>
+        <ImportSettingsStringPropertyItem Label="@Localizer["Namn"]" Value="@Settings.Name" ReadOnly="!EditMode" />
+        <ImportSettingsStringPropertyItem Label="@Localizer["Kontokod - A-pris faktor"]" Value="@Settings.Name" ReadOnly="!EditMode" />
+        <ImportSettingsStringPropertyItem Label="@Localizer["Kontokod - Nettokalkyl"]" Value="@Settings.Name" ReadOnly="!EditMode" />
+        <ImportSettingsStringPropertyItem Label="@Localizer["Kontokod - Försäljningspris"]" Value="@Settings.Name" ReadOnly="!EditMode" />
+        <ImportSettingsStringPropertyItem Label="@Localizer["Tagg för dolda rader"]" Value="@Settings.Name" ReadOnly="!EditMode" />
+        <ImportSettingsStringPropertyItem Label="@Localizer["Tagg för dold enhet"]" Value="@Settings.Name" ReadOnly="!EditMode" />
 
-    <MudField Label="@Localizer["Valtaggar"]" Variant="Variant.Outlined">
-        
-        <ImportSettingsTaggItem Tagg="{tagg 1}" />
-        <ImportSettingsTaggItem Tagg="{tagg 2}" />
-        <ImportSettingsTaggItem Tagg="{tagg 3}" />
-        @*@foreach (var tagg in Settings.SelectionTags)
-        {
-            <ImportSettingsTaggItem Tagg="@tagg"/>
-        }*@
+        <MudSwitch Class="py-2" @bind-Checked="Settings.UseRevisionAsSelectionTags" Label="@Localizer["Revision som valtagg"]" Color="Color.Primary" />
 
-    </MudField>
-    <MudField Label="@Localizer["Snabbtaggar"]" Variant="Variant.Outlined">
+        <MudField Label="@Localizer["Valtaggar"]" Variant="Variant.Outlined">
+            @foreach (var tagg in Settings.SelectionTags)
+            {
+                <ImportSettingsTaggItem Tagg="@tagg" />
+            }
+            <ImportSettingsAddTaggItem/>
+        </MudField>
 
-        <ImportSettingsTaggItem Tagg="{tagg 1}" />
-        <ImportSettingsTaggItem Tagg="{tagg 2}" />
-        <ImportSettingsTaggItem Tagg="{tagg 3}" />
-        @*@foreach (var tagg in Settings.SelectionTags)
-        {
-        <ImportSettingsTaggItem Tagg="@tagg"/>
-        }*@
-
-    </MudField>
-
+        <MudField Label="@Localizer["Snabbtaggar"]" Variant="Variant.Outlined">
+            @foreach (var tagg in Settings.SelectionTags)
+            {
+                <ImportSettingsTaggItem Tagg="@tagg"/>
+            }
+            <ImportSettingsAddTaggItem />
+        </MudField>
+    </MudStack>
 </MudForm>
 
 
 @code{
 
-    [CascadingParameter] private MudTheme? Theme { get; set; }
     [Inject] public required IStringLocalizer<ImportSettingsEditor> Localizer { get; set; }
     [Inject] public required ISnackbar Snackbar { get; set; }
     [Parameter] public bool EditMode { get; set; } = true;
@@ -78,64 +38,7 @@
     [Parameter] public EventCallback OnSave { get; set; }
 
     [Inject] public required IImportSettingsService ImportSettingsService { get; set; }
-    public string StyleTaggInputField { get; set; } = string.Empty;
-    public string OptionTaggInputField { get; set; } = string.Empty;
     public MudForm? Form { get; set; }
-    public bool CanBeSaved { get; set; } = false;
 
-    protected override void OnAfterRender(bool firstRender)
-    {
-        base.OnAfterRender(firstRender);
-        //var a = new Func<EstimationImportSettings, string>()
-        CanBeSaved = false;
-        //Form.FieldChanged = (e) => CanBeSaved = true;
-    }
-
-    private void AddStyleTagg()
-    {
-        //if (string.IsNullOrEmpty(StyleTaggInputField) || Settings!.QuickTags.Contains(StyleTaggInputField)) return;
-        //Settings.QuickTags.Add(StyleTaggInputField);
-        //StyleTaggInputField = string.Empty;
-        //StateHasChanged();
-    }
-    private void RemoveStyleTagg(string tagg)
-    {
-        //Settings!.QuickTags.Remove(tagg);
-        //StateHasChanged();
-    }
-    private void AddOptionTagg()
-    {
-        //if (string.IsNullOrEmpty(OptionTaggInputField) || Settings!.SelectionTags.Contains(OptionTaggInputField)) return;
-        //Settings.SelectionTags.Add(OptionTaggInputField);
-        //OptionTaggInputField = string.Empty;
-        //StateHasChanged();
-    }
-    private void RemoveOptionTagg(string tagg)
-    {
-        //Settings!.SelectionTags.Remove(tagg);
-        //StateHasChanged();
-    }
-    public async Task SaveAsNew()
-    {
-        Settings.Id = 0;
-        await SaveAsync();
-    }
-    private async Task SaveAsync()
-    {
-        if (Form is null) return;
-        await Form!.Validate();
-        if(Form.IsValid)
-        {
-            try
-            {
-                await ImportSettingsService.UpsertAsync(Settings);
-            }
-            catch (Exception e)
-            {
-                Snackbar.Add($"Error (Settings): {e.Message}", Severity.Info);
-            }
-            await OnSave.InvokeAsync();
-        }
-        
-    }
+    
 }
