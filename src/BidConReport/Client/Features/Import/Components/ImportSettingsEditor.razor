@@ -60,51 +60,51 @@
                   ReadOnly="!EditMode" />
     <MudSwitch Class="py-2" @bind-Checked="Settings.UseRevisionAsSelectionTags" Label="@Localizer["Revision som valtagg"]" Color="Color.Primary"/>
 
-        <MudPaper Elevation="1" Class="d-flex rounded align-center">
+    @*<MudPaper Elevation="1" Class="d-flex rounded align-center">
 
-            @if(EditMode)
-            {
-                <MudPaper Class="rounded-r-0" Elevation="0">
-                <input Placeholder="Tagg" class="ma-0 pl-2 no-outline" style="width: 130px;" @bind="StyleTaggInputField"/>
-                </MudPaper>
-
-                <MudPaper Class="rounded-l-0" Elevation="0" Style="@($"background:{Theme?.Palette.Success};")">
-                    <MudIconButton Variant="Variant.Filled"
-                                Icon="@Icons.Material.Filled.Add"
-                                Class="rounded-l-0"
-                                Style="@($"color:{Theme?.Palette.PrimaryContrastText}; padding: 2px;")"
-                               OnClick="AddStyleTagg" />
-                </MudPaper>
-            }
-            @foreach (var tagg in Settings.QuickTags)
-            {
-                <p>@($"StyleTagg {tagg}. This is a placeholder")</p>
-            }
-
-        </MudPaper>
-
-    <MudPaper Elevation="1" Class="d-flex rounded align-center">
-
-        @if (EditMode)
+        @if(EditMode)
         {
             <MudPaper Class="rounded-r-0" Elevation="0">
-                <input Placeholder="Tagg" class="ma-0 pl-2 no-outline" style="width: 130px;" @bind="StyleTaggInputField" />
+            <input Placeholder="Tagg" class="ma-0 pl-2 no-outline" style="width: 130px;" @bind="StyleTaggInputField"/>
             </MudPaper>
 
             <MudPaper Class="rounded-l-0" Elevation="0" Style="@($"background:{Theme?.Palette.Success};")">
                 <MudIconButton Variant="Variant.Filled"
-                           Icon="@Icons.Material.Filled.Add"
-                           Class="rounded-l-0"
-                           Style="@($"color:{Theme?.Palette.PrimaryContrastText}; padding: 2px;")"
-                           OnClick="AddStyleTagg" />
+                            Icon="@Icons.Material.Filled.Add"
+                            Class="rounded-l-0"
+                            Style="@($"color:{Theme?.Palette.PrimaryContrastText}; padding: 2px;")"
+                            OnClick="AddStyleTagg" />
             </MudPaper>
         }
-        @foreach (var tagg in Settings.SelectionTags)
+        @foreach (var tagg in Settings.QuickTags)
         {
             <p>@($"StyleTagg {tagg}. This is a placeholder")</p>
         }
 
-    </MudPaper>
+    </MudPaper>*@
+
+    <MudField Label="@Localizer["Valtaggar"]" Variant="Variant.Outlined">
+        
+        <ImportSettingsTaggItem Tagg="{tagg 1}" />
+        <ImportSettingsTaggItem Tagg="{tagg 2}" />
+        <ImportSettingsTaggItem Tagg="{tagg 3}" />
+        @*@foreach (var tagg in Settings.SelectionTags)
+        {
+            <ImportSettingsTaggItem Tagg="@tagg"/>
+        }*@
+
+    </MudField>
+    <MudField Label="@Localizer["Snabbtaggar"]" Variant="Variant.Outlined">
+
+        <ImportSettingsTaggItem Tagg="{tagg 1}" />
+        <ImportSettingsTaggItem Tagg="{tagg 2}" />
+        <ImportSettingsTaggItem Tagg="{tagg 3}" />
+        @*@foreach (var tagg in Settings.SelectionTags)
+        {
+        <ImportSettingsTaggItem Tagg="@tagg"/>
+        }*@
+
+    </MudField>
 
 </MudForm>
 

@@ -1,0 +1,11 @@
+﻿<MudTextField @bind-Value="Tagg" Variant="Variant.Filled" Margin="Margin.Dense" Adornment="Adornment.End" AdornmentIcon="@Icons.Material.Sharp.Delete" OnAdornmentClick="DeleteAsync"/>
+
+@code {
+    [Parameter, EditorRequired] public required string Tagg { get; set; }
+    [Parameter] public EventCallback<string> OnDeleteClick { get; set; }
+
+    public async Task DeleteAsync()
+    {
+        await OnDeleteClick.InvokeAsync(Tagg);
+    }
+}
