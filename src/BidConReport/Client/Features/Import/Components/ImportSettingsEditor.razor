@@ -28,24 +28,6 @@
                   Variant="Variant.Text"
                   For="() => Settings!.CostBeforeChangesAccount"
                   ReadOnly="!EditMode" />
-    @*<MudTextField T="string"
-                  Label="Använd revision som valtagg"
-                  @bind-Value="Settings!.UseRevisionAsSelectionTags"
-                  Variant="Variant.Text"
-                  For="() => Settings!.UseRevisionAsSelectionTags"
-                  ReadOnly="!EditMode" />
-    <MudTextField T="string"
-                  Label="Valtaggar"
-                  @bind-Value="Settings!.SelectionTags"
-                  Variant="Variant.Text"
-                  For="() => Settings!.SelectionTags"
-                  ReadOnly="!EditMode" />
-    <MudTextField T="string"
-                  Label="Snabbtaggar"
-                  @bind-Value="Settings!.QuickTags"
-                  Variant="Variant.Text"
-                  For="() => Settings!.QuickTags"
-                  ReadOnly="!EditMode" />*@
     <MudTextField T="string"
                   Label="Tagg för dolda rader"
                   @bind-Value="Settings!.HiddenTag"
@@ -59,29 +41,6 @@
                   For="() => Settings!.HiddenUnitTag"
                   ReadOnly="!EditMode" />
     <MudSwitch Class="py-2" @bind-Checked="Settings.UseRevisionAsSelectionTags" Label="@Localizer["Revision som valtagg"]" Color="Color.Primary"/>
-
-    @*<MudPaper Elevation="1" Class="d-flex rounded align-center">
-
-        @if(EditMode)
-        {
-            <MudPaper Class="rounded-r-0" Elevation="0">
-            <input Placeholder="Tagg" class="ma-0 pl-2 no-outline" style="width: 130px;" @bind="StyleTaggInputField"/>
-            </MudPaper>
-
-            <MudPaper Class="rounded-l-0" Elevation="0" Style="@($"background:{Theme?.Palette.Success};")">
-                <MudIconButton Variant="Variant.Filled"
-                            Icon="@Icons.Material.Filled.Add"
-                            Class="rounded-l-0"
-                            Style="@($"color:{Theme?.Palette.PrimaryContrastText}; padding: 2px;")"
-                            OnClick="AddStyleTagg" />
-            </MudPaper>
-        }
-        @foreach (var tagg in Settings.QuickTags)
-        {
-            <p>@($"StyleTagg {tagg}. This is a placeholder")</p>
-        }
-
-    </MudPaper>*@
 
     <MudField Label="@Localizer["Valtaggar"]" Variant="Variant.Outlined">
         
