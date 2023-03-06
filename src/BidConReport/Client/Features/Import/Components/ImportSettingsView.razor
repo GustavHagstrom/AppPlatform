@@ -3,6 +3,7 @@
     <MudIconButton OnClick="SaveAsync" Icon="@Icons.Material.Sharp.Save" Style="height: 40px; width: 40px;" />
 </div>
 <MudDivider Light="true" />
+
 <MudPaper Class="pa-6" Elevation="0">
     <MudSelect @bind-Value="SelectedSetting"
                T="EstimationImportSettings"
@@ -11,16 +12,21 @@
                Label="@Localizer["Inställningsprofil"]"
                Variant="Variant.Outlined"
                AnchorOrigin="Origin.BottomCenter"
-                Margin="Margin.Dense">
+               Margin="Margin.Dense">
         @foreach (var item in AllSettings)
         {
-            <MudSelectItem Value="item" />
+            <MudSelectItem Value="item"/>
         }
     </MudSelect>
 </MudPaper>
 <MudDivider Light="true" />
 <MudPaper Elevation="0">
-    <ImportSettingsEditor Settings="SelectedSetting" OnSave="GetSettingsAsync" />
+    @if(SelectedSetting is not null)
+    {
+        <MudForm Model="SelectedSetting" @ref="Form" Style="overflow-y: scroll" Class="pa-6">
+            <ImportSettingsEditor Settings="SelectedSetting" />
+        </MudForm>
+    }
 </MudPaper>
 <MudDivider Light="true" />
 
@@ -31,11 +37,12 @@
     [Inject] public required IStringLocalizer<ImportSettingsView> Localizer { get; set; }
     [Inject] public required ISnackbar Snackbar { get; set; }
     [Inject] public required IImportSettingsService ImportSettingsService { get; set; }
-    [Parameter, EditorRequired] public required EstimationImportSettings SelectedSettings { get; set; }
+
     public EstimationImportSettings SelectedSetting { get; set; } = EstimationImportSettings.Empty;
     public HashSet<EstimationImportSettings> AllSettings { get; set; } = new();
     public Func<EstimationImportSettings, string> ConvertFunc { get; set; } = s => s.Name;
-    
+    public MudForm? Form { get; set; }
+
     protected override async Task OnInitializedAsync()
     {
         await GetSettingsAsync();
@@ -50,20 +57,17 @@
     {
         try
         {
-            var standard = await ImportSettingsService.GetStandardAsync();
-            if (standard is not null)
-            {
-                SelectedSettings = AllSettings.Where(s => s.Id == standard.Id).First();
-            }
-            else if(AllSettings.Count > 0)
-            {
-                SelectedSettings = AllSettings.First();
-            }
+            SelectedSetting = await ImportSettingsService.GetStandardAsync();
         }
         catch (Exception e)
         {
 
-            Snackbar.Add($"Standard settings: {e.Message}", Severity.Info);
+            Snackbar.Add(Localizer["Ingen standardinställning hittades"], Severity.Info);
+            var setting = AllSettings.FirstOrDefault();
+            if(setting is not null)
+            {
+                SelectedSetting = setting;
+            }
         }
     }
     public async Task GetAllSettingsAsync()
@@ -104,6 +108,15 @@
         //    }
         //    await OnSave.InvokeAsync();
         //}
-        
+            try
+            {
+                if(SelectedSetting is not null)
+                    await ImportSettingsService.UpsertAsync(SelectedSetting);
+            }
+            catch (Exception e)
+            {
+                Snackbar.Add($"Error (Settings): {e.Message}", Severity.Info);
+            }
+            StateHasChanged();
     }
 }

@@ -1,44 +1,66 @@
-﻿<MudForm Model="Settings" @ref="Form" Style="overflow-y: scroll" Class="pa-6">
-    <MudStack Spacing="2">
-        
-        <ImportSettingsStringPropertyItem Label="@Localizer["Namn"]" Value="@Settings.Name" ReadOnly="!EditMode" />
-        <ImportSettingsStringPropertyItem Label="@Localizer["Kontokod - A-pris faktor"]" Value="@Settings.Name" ReadOnly="!EditMode" />
-        <ImportSettingsStringPropertyItem Label="@Localizer["Kontokod - Nettokalkyl"]" Value="@Settings.Name" ReadOnly="!EditMode" />
-        <ImportSettingsStringPropertyItem Label="@Localizer["Kontokod - Försäljningspris"]" Value="@Settings.Name" ReadOnly="!EditMode" />
-        <ImportSettingsStringPropertyItem Label="@Localizer["Tagg för dolda rader"]" Value="@Settings.Name" ReadOnly="!EditMode" />
-        <ImportSettingsStringPropertyItem Label="@Localizer["Tagg för dold enhet"]" Value="@Settings.Name" ReadOnly="!EditMode" />
+﻿@using System.ComponentModel.DataAnnotations;
 
-        <MudSwitch Class="py-2" @bind-Checked="Settings.UseRevisionAsSelectionTags" Label="@Localizer["Revision som valtagg"]" Color="Color.Primary" />
+<MudStack Spacing="2">
+    <ImportSettingsStringPropertyItem Label="@Localizer["Namn"]" @bind-Value ="Settings.Name" />
+@*    <ImportSettingsStringPropertyItem Label="@Localizer["Kontokod - A-pris faktor"]" Value="@Settings.Name"/>
+    <ImportSettingsStringPropertyItem Label="@Localizer["Kontokod - Nettokalkyl"]" Value="@Settings.Name"/>
+    <ImportSettingsStringPropertyItem Label="@Localizer["Kontokod - Försäljningspris"]" Value="@Settings.Name"/>
+    <ImportSettingsStringPropertyItem Label="@Localizer["Tagg för dolda rader"]" Value="@Settings.Name"/>
+    <ImportSettingsStringPropertyItem Label="@Localizer["Tagg för dold enhet"]" Value="@Settings.Name"/>*@
 
-        <MudField Label="@Localizer["Valtaggar"]" Variant="Variant.Outlined">
-            @foreach (var tagg in Settings.SelectionTags)
-            {
-                <ImportSettingsTaggItem Tagg="@tagg" />
-            }
-            <ImportSettingsAddTaggItem/>
-        </MudField>
+    <MudSwitch Class="py-2" @bind-Checked="Settings.UseRevisionAsSelectionTags" Label="@Localizer["Revision som valtagg"]" Color="Color.Primary" />
 
-        <MudField Label="@Localizer["Snabbtaggar"]" Variant="Variant.Outlined">
-            @foreach (var tagg in Settings.SelectionTags)
-            {
-                <ImportSettingsTaggItem Tagg="@tagg"/>
-            }
-            <ImportSettingsAddTaggItem />
-        </MudField>
-    </MudStack>
-</MudForm>
+    <MudField Label="@Localizer["Valtaggar"]" Variant="Variant.Outlined">
+        @foreach (var tagg in Settings.SelectionTags)
+        {
+            <ImportSettingsTaggItem Tagg="@tagg" OnDeleteClick="DeleteSelectionTag" />
+        }
+        <ImportSettingsAddTaggItem OnAddClick="AddSelectionTag" MaxLength="GetMaxLength(nameof(EstimationImportSettings.SelectionTags))"/>
+    </MudField>
+
+    <MudField Label="@Localizer["Snabbtaggar"]" Variant="Variant.Outlined">
+        @foreach (var tagg in Settings.QuickTags)
+        {
+            <ImportSettingsTaggItem Tagg="@tagg" OnDeleteClick="DeleteQuickTag" />
+        }
+        <ImportSettingsAddTaggItem OnAddClick="AddQuickTag" MaxLength="GetMaxLength(nameof(EstimationImportSettings.QuickTags))" />
+    </MudField>
+</MudStack>
 
 
 @code{
 
     [Inject] public required IStringLocalizer<ImportSettingsEditor> Localizer { get; set; }
-    [Inject] public required ISnackbar Snackbar { get; set; }
-    [Parameter] public bool EditMode { get; set; } = true;
     [Parameter, EditorRequired] public required EstimationImportSettings Settings { get; set; }
-    [Parameter] public EventCallback OnSave { get; set; }
 
-    [Inject] public required IImportSettingsService ImportSettingsService { get; set; }
-    public MudForm? Form { get; set; }
 
+    public void AddSelectionTag(string tag)
+    {
+        Settings.SelectionTags.Add(tag);
+        StateHasChanged();
+    }
+    public void DeleteSelectionTag(string tag)
+    {
+        Settings.SelectionTags.Remove(tag);
+        StateHasChanged();
+    }
+    public void AddQuickTag(string tag)
+    {
+        Settings.QuickTags.Add(tag);
+        StateHasChanged();
+    }
+    public void DeleteQuickTag(string tag)
+    {
+        Settings.QuickTags.Remove(tag);
+        StateHasChanged();
+    }
+    public int GetMaxLength(string propertyName)
+    {
+        var maxLengthAttribute = (MaxLengthAttribute)typeof(EstimationImportSettings)
+            .GetProperty(propertyName)!
+            .GetCustomAttributes(typeof(MaxLengthAttribute), true)
+            .First();
+        return maxLengthAttribute.Length;
+    }
     
 }
