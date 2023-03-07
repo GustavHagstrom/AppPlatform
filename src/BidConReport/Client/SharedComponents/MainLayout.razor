@@ -26,9 +26,8 @@
                 @*    <MudButton OnClick="DrawerToggle" Class="py-0 px-2 align-self-stretch" Style="min-width: 20px" Color="Color.Inherit">
                         <MudIcon Icon="@Icons.Material.Sharp.Menu"/>
                     </MudButton>*@
-                    <a href="/">
-                        <MudText Typo="Typo.h5" Style="@($"color: {Theme.Palette.AppbarText}")">LB Portalen</MudText>
-                    </a>
+                    <MudText Typo="Typo.h5" Style="@($"color: {Theme.Palette.AppbarText}")">LB Portalen</MudText>
+                    
                 </Authorized>
                 <Authorizing>
                     <MudText Typo="Typo.h5" Class="ml-3" Style="@($"color: {Theme.Palette.AppbarText}")">LB Portalen</MudText>
@@ -46,7 +45,8 @@
 
         <MudDrawer @bind-Open="_drawerOpen" ClipMode="DrawerClipMode.Always" Elevation="4">
             <MudNavMenu>
-                <MudNavLink Href="/import" Icon="@Icons.Material.Sharp.Download" IconColor="Color.Primary">Importera från BidCon</MudNavLink>
+                <MudNavLink Href="/dashboard" Icon="@Icons.Material.Sharp.Home" IconColor="Color.Primary">@Localizer["Startsida"]</MudNavLink>
+                <MudNavLink Href="/import" Icon="@Icons.Material.Sharp.Download" IconColor="Color.Primary">@Localizer["Importera från BidCon"]</MudNavLink>
             </MudNavMenu>
         </MudDrawer>
        
@@ -64,6 +64,7 @@
 </CascadingValue>
 @code {
     public MudTheme Theme { get; set; } = CustomThemes.CustomStandardTheme;
+    [Inject] public required IStringLocalizer<MainLayout> Localizer { get; set; }
     bool _drawerOpen = true;
     //MudButton
 
