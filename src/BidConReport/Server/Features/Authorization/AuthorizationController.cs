@@ -27,7 +27,7 @@ public class AuthorizationController : ControllerBase
         var user = await _applicationDbContext.Users
             .Include(u => u.Roles)
             .Where(u => u.Id == userId.Value).FirstOrDefaultAsync(cancellationToken);
-        if(user is null || !user.Roles.Any()) 
+        if(user is null) 
         {
             //Maybe not the correct place to add UserId to the DB?
             var r = await _applicationDbContext.Users.AddAsync(new User { Id = userId.Value, Roles = Array.Empty<Role>() });
