@@ -12,6 +12,17 @@ public class ImportSettingsService : IImportSettingsService
     {
         _httpClientFactory = httpClientFactory;
     }
+
+    public async Task DeleteAsync(int settingsId)
+    {
+        var client = _httpClientFactory.CreateClient(AppConstants.BackendHttpClientName);
+        var result = await client.DeleteAsync($"/api/import/DeleteImportSetting/{settingsId}");
+        if(!result.IsSuccessStatusCode)
+        {
+            throw new Exception($"Error on delete: Status code: {result.StatusCode}");
+        }
+    }
+
     public async Task<ICollection<EstimationImportSettings>> GetAllAsync()
     {
         return await GetAsync<ICollection<EstimationImportSettings>>("/api/import/GetAllImportSettings");

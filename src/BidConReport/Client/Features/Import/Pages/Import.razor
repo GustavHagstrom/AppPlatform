@@ -2,12 +2,8 @@
 @attribute [Authorize]
 
 <MudDrawer @bind-Open="@drawerOpen" ClipMode="DrawerClipMode.Always" Anchor="Anchor.End" Elevation="4">
-@*    <MudDrawerHeader>
-        <MudText Typo="Typo.h6">@Localizer["Inställningar"]</MudText>
-    </MudDrawerHeader>*@
-
     <div>
-        <ImportSettingsView />@*SelectedSettings="Settings" />*@
+        <ImportSettingsView />
     </div>
 </MudDrawer>
 

@@ -55,4 +55,21 @@ public class ImportController : ControllerBase
         return Ok();
 
     }
+    [HttpDelete("DeleteImportSetting/{id}")]
+    public async Task<IActionResult> DeleteImportSetting(int id)
+    {
+        var organizationIdClaim = User.Claims.Where(x => x.Type == AppConstants.OrganizationIdClaimKey).FirstOrDefault();
+        if (organizationIdClaim is null) return Problem();
+
+        var settingToDelete = await _applicationDbContext.EstimationImportSettings.
+            Where(x => x.Id == id && x.OrganizationId == organizationIdClaim.Value)
+            .FirstOrDefaultAsync();
+
+        if(settingToDelete is null) return Problem();
+
+        _applicationDbContext.EstimationImportSettings.Remove(settingToDelete);
+        await _applicationDbContext.SaveChangesAsync();
+        return Ok();
+
+    }
 }

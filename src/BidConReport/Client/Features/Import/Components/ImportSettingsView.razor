@@ -1,7 +1,9 @@
 ﻿<div class="d-flex justify-end">
-    <MudIconButton Icon="@Icons.Material.Sharp.Add" OnClick="SaveAsNew" Style="height: 40px; width: 40px;"/>
-    <MudIconButton OnClick="SaveAsync" Icon="@Icons.Material.Sharp.Save" Style="height: 40px; width: 40px;" />
+    <MudIconButton Icon="@Icons.Material.Sharp.Add" OnClick="CreateNew" Style="height: 40px; width: 40px;"/>
+    <MudIconButton Icon="@Icons.Material.Sharp.Save" OnClick="SaveAsync" Style="height: 40px; width: 40px;" />
+    <MudIconButton Icon="@Icons.Material.Sharp.Delete" OnClick="DeleteAsync" Style="height: 40px; width: 40px;" />
 </div>
+
 <MudDivider Light="true" />
 
 <MudPaper Class="pa-6" Elevation="0">
@@ -19,7 +21,9 @@
         }
     </MudSelect>
 </MudPaper>
+
 <MudDivider Light="true" />
+
 <MudPaper Elevation="0">
     @if(SelectedSetting is not null)
     {
@@ -28,6 +32,7 @@
         </MudForm>
     }
 </MudPaper>
+
 <MudDivider Light="true" />
 
 
@@ -38,8 +43,8 @@
     [Inject] public required ISnackbar Snackbar { get; set; }
     [Inject] public required IImportSettingsService ImportSettingsService { get; set; }
 
-    public EstimationImportSettings SelectedSetting { get; set; } = EstimationImportSettings.Empty;
-    public HashSet<EstimationImportSettings> AllSettings { get; set; } = new();
+    public EstimationImportSettings? SelectedSetting { get; set; } = null;// = null; //= EstimationImportSettings.Empty;
+    public List<EstimationImportSettings> AllSettings { get; set; } = new();
     public Func<EstimationImportSettings, string> ConvertFunc { get; set; } = s => s.Name;
     public MudForm? Form { get; set; }
 
@@ -59,15 +64,10 @@
         {
             SelectedSetting = await ImportSettingsService.GetStandardAsync();
         }
-        catch (Exception e)
+        catch (Exception)
         {
 
             Snackbar.Add(Localizer["Ingen standardinställning hittades"], Severity.Info);
-            var setting = AllSettings.FirstOrDefault();
-            if(setting is not null)
-            {
-                SelectedSetting = setting;
-            }
         }
     }
     public async Task GetAllSettingsAsync()
@@ -76,10 +76,7 @@
         try
         {
             var settings = await ImportSettingsService.GetAllAsync();
-            foreach (var s in settings)
-            {
-                AllSettings.Add(s);
-            }
+            AllSettings.AddRange(settings);
         }
         catch (Exception e)
         {
@@ -87,36 +84,42 @@
             Snackbar.Add($"Error getting all organization settings: {e.Message}", Severity.Error);
         }
     }
-    public async Task SaveAsNew()
+    public void CreateNew()
     {
-        //Settings.Id = 0;
-        //await SaveAsync();
+        SelectedSetting = EstimationImportSettings.Empty;
+        StateHasChanged();
     }
     private async Task SaveAsync()
     {
-        //if (Form is null) return;
-        //await Form!.Validate();
-        //if(Form.IsValid)
-        //{
-        //    try
-        //    {
-        //        await ImportSettingsService.UpsertAsync(Settings);
-        //    }
-        //    catch (Exception e)
-        //    {
-        //        Snackbar.Add($"Error (Settings): {e.Message}", Severity.Info);
-        //    }
-        //    await OnSave.InvokeAsync();
-        //}
-            try
+        try
+        {
+            if(SelectedSetting is not null)
             {
-                if(SelectedSetting is not null)
-                    await ImportSettingsService.UpsertAsync(SelectedSetting);
+                await ImportSettingsService.UpsertAsync(SelectedSetting);
+                await GetAllSettingsAsync();
+                StateHasChanged();
             }
-            catch (Exception e)
+        }
+        catch (Exception e)
+        {
+            Snackbar.Add($"Error (Settings): {e.Message}", Severity.Info);
+        }
+    }
+    private async Task DeleteAsync()
+    {
+        try
+        {
+            if (SelectedSetting is not null)
             {
-                Snackbar.Add($"Error (Settings): {e.Message}", Severity.Info);
+                await ImportSettingsService.DeleteAsync(SelectedSetting.Id);
+                SelectedSetting = null;
+                await GetAllSettingsAsync();
+                StateHasChanged();
             }
-            StateHasChanged();
+        }
+        catch (Exception e)
+        {
+            Snackbar.Add($"Error (Settings): {e.Message}", Severity.Info);
+        }
     }
 }

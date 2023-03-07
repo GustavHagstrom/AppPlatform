@@ -35,7 +35,7 @@ public class EstimationImportSettings
 
 
     [NotMapped]
-    public static readonly EstimationImportSettings Empty = new EstimationImportSettings
+    public static EstimationImportSettings Empty => new EstimationImportSettings
     {
         Name = string.Empty,
         OrganizationId = string.Empty,
