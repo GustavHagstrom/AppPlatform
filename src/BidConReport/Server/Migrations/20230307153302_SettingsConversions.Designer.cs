@@ -4,6 +4,7 @@ using BidConReport.Server.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BidConReport.Server.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230307153302_SettingsConversions")]
+    partial class SettingsConversions
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -146,12 +149,12 @@ namespace BidConReport.Server.Migrations
 
                     b.Property<string>("QuickTags")
                         .IsRequired()
-                        .HasMaxLength(1000)
+                        .HasMaxLength(20)
                         .HasColumnType("NVARCHAR(1000)");
 
                     b.Property<string>("SelectionTags")
                         .IsRequired()
-                        .HasMaxLength(1000)
+                        .HasMaxLength(20)
                         .HasColumnType("NVARCHAR(1000)");
 
                     b.Property<bool>("UseRevisionAsSelectionTags")

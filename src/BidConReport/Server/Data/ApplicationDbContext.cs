@@ -2,6 +2,7 @@
 using BidConReport.Shared.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
+using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using System.Text.Json;
 
 namespace BidConReport.Server.Data;
@@ -54,21 +55,39 @@ public class ApplicationDbContext : DbContext
             .HasColumnType("NVARCHAR(1000)")
             .Metadata.SetValueComparer(_stringCollectionValueComparer);
 
+        //modelBuilder.Entity<EstimationImportSettings>()
+        //    .Property(e => e.QuickTags)
+        //    .HasConversion(
+        //    v => JsonSerializer.Serialize(v, new JsonSerializerOptions()),
+        //    v => (JsonSerializer.Deserialize<ICollection<string>>(v, new JsonSerializerOptions())!))
+        //    .HasColumnType("NVARCHAR(1000)")
+        //    .Metadata.SetValueComparer(_stringCollectionValueComparer);
+        //modelBuilder.Entity<EstimationImportSettings>()
+        //    .Property(e => e.SelectionTags)
+        //    .HasConversion(
+        //    v => JsonSerializer.Serialize(v, new JsonSerializerOptions()),
+        //    v => (JsonSerializer.Deserialize<ICollection<string>>(v, new JsonSerializerOptions())!))
+        //    .HasColumnType("NVARCHAR(1000)")
+        //    .Metadata.SetValueComparer(_stringCollectionValueComparer);
         modelBuilder.Entity<EstimationImportSettings>()
             .Property(e => e.QuickTags)
             .HasConversion(
-            v => JsonSerializer.Serialize(v, new JsonSerializerOptions()),
-            v => (JsonSerializer.Deserialize<ICollection<string>>(v, new JsonSerializerOptions())!))
+                v => string.Join(",", v),
+                v => v.Split(",", StringSplitOptions.RemoveEmptyEntries).ToArray())
             .HasColumnType("NVARCHAR(1000)")
             .Metadata.SetValueComparer(_stringCollectionValueComparer);
         modelBuilder.Entity<EstimationImportSettings>()
             .Property(e => e.SelectionTags)
             .HasConversion(
-            v => JsonSerializer.Serialize(v, new JsonSerializerOptions()),
-            v => (JsonSerializer.Deserialize<ICollection<string>>(v, new JsonSerializerOptions())!))
+                v => string.Join(",", v),
+                v => v.Split(",", StringSplitOptions.RemoveEmptyEntries).ToArray())
             .HasColumnType("NVARCHAR(1000)")
             .Metadata.SetValueComparer(_stringCollectionValueComparer);
     }
-
+    //private ValueConverter tset()
+    //{
+    //    var converter = new ValueConverter();
+    //    converter.
+    //}
     
 }
