@@ -1,46 +1,46 @@
-﻿<div class="d-flex justify-end">
-    <MudIconButton Icon="@Icons.Material.Sharp.Add" OnClick="CreateNew" Style="height: 40px; width: 40px;"/>
-    <MudIconButton Icon="@Icons.Material.Sharp.Save" OnClick="SaveAsync" Style="height: 40px; width: 40px;" />
-    <MudIconButton Icon="@Icons.Material.Sharp.Delete" OnClick="DeleteAsync" Style="height: 40px; width: 40px;" />
+﻿<div class="d-flex justify-end" style="@($"background-color: {Theme.Palette.GrayLighter};")">
+    @if (SelectedSetting is not null)
+    {
+        <MudIconButton Icon="@Icons.Material.Sharp.Save" OnClick="SaveAsync" Style="height: 40px; width: 40px;" />
+        <MudIconButton Icon="@Icons.Material.Sharp.Delete" OnClick="DeleteAsync" Style="height: 40px; width: 40px;" />
+    }
+    <MudIconButton Icon="@Icons.Material.Sharp.Add" OnClick="CreateNew" Style="height: 40px; width: 40px;" />
 </div>
 
-<MudDivider Light="true" />
+<MudStack Spacing="2" Class="pt-6">    
 
-<MudPaper Class="pa-6" Elevation="0">
-    <MudSelect @bind-Value="SelectedSetting"
-               T="EstimationImportSettings"
-               MultiSelection="false"
-               ToStringFunc="ConvertFunc"
-               Label="@Localizer["Inställningsprofil"]"
-               Variant="Variant.Outlined"
-               AnchorOrigin="Origin.BottomCenter"
-               Margin="Margin.Dense">
+    <MudSelect Class="px-6"
+                @bind-Value="SelectedSetting"
+                T="EstimationImportSettings"
+                MultiSelection="false"
+                ToStringFunc="ConvertFunc"
+                Label="@Localizer["Inställningsprofil"]"
+                Variant="Variant.Outlined"
+                AnchorOrigin="Origin.BottomCenter"
+                Margin="Margin.Dense">
         @foreach (var item in AllSettings)
         {
             <MudSelectItem Value="item"/>
         }
     </MudSelect>
-</MudPaper>
 
-<MudDivider Light="true" />
+    <MudSwitch Class="px-6" T="bool" Disabled="SelectedSetting is null || SelectedSetting.Id == 0" Checked="IsStandardSettings(SelectedSetting)" CheckedChanged="OnSelectedSettingsStandardValueChanged" Label="@Localizer["Standardprofil"]" Color="Color.Primary" />
 
-<MudPaper Elevation="0">
     @if(SelectedSetting is not null)
     {
-        <MudForm Model="SelectedSetting" @ref="Form" Style="overflow-y: scroll" Class="pa-6">
-            <ImportSettingsEditor Settings="SelectedSetting" 
-                                  IsStandardProfile="IsStandardSettings(SelectedSetting)"
-                                  OnIsStandardProfileChanged="OnSelectedSettingsStandardValueChanged" />
+        <MudForm Model="SelectedSetting" @ref="Form" Style="overflow-y: scroll" Class="px-6">
+            <ImportSettingsEditor Settings="SelectedSetting"/>
         </MudForm>
     }
-</MudPaper>
 
-<MudDivider Light="true" />
+</MudStack>
+
 
 
 
 
 @code {
+    [CascadingParameter] public required MudTheme Theme { get; set; }
     [Inject] public required IStringLocalizer<ImportSettingsView> Localizer { get; set; }
     [Inject] public required ISnackbar Snackbar { get; set; }
     [Inject] public required IImportSettingsService ImportSettingsService { get; set; }
@@ -51,9 +51,9 @@
     public Func<EstimationImportSettings, string> ConvertFunc { get; set; } = s => s.Name;
     public MudForm? Form { get; set; }
 
-    public bool IsStandardSettings(EstimationImportSettings settings)
+    public bool IsStandardSettings(EstimationImportSettings? settings)
     {
-        if (StandardSetting is null) return false;
+        if (StandardSetting is null || settings is null) return false;
 
         return settings.Id == StandardSetting.Id;
     }
@@ -132,6 +132,7 @@
             {
                 await ImportSettingsService.UpsertAsync(SelectedSetting);
                 await SetAllAndStandardSettings();
+                SelectedSetting = AllSettings.Where(x => x.Name == SelectedSetting.Name).First();
                 StateHasChanged();
             }
         }

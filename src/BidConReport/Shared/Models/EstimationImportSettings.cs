@@ -20,17 +20,17 @@ public class EstimationImportSettings
     [MaxLength(10)]
     public required string NetCostAccount { get; set; }
     [Required]
-    [MaxLength(10)]
+    [MaxLength(20)]
     public required string HiddenTag { get; set; }
     [Required]
-    [MaxLength(10)]
+    [MaxLength(20)]
     public required string HiddenUnitTag { get; set; }
     public required bool UseRevisionAsSelectionTags { get; set; }
     [Required]
-    [MaxLength(20)]
+    [MaxLength(1000)]
     public required ICollection<string> QuickTags { get; set; }
     [Required]
-    [MaxLength(20)]
+    [MaxLength(1000)]
     public required ICollection<string> SelectionTags { get; set; }
 
 

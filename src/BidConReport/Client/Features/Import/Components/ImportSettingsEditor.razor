@@ -2,8 +2,6 @@
 
 <MudStack Spacing="2">
 
-    <MudSwitch T="bool" Checked="IsStandardProfile" CheckedChanged="NotifyStdProfileChanged" Label="@Localizer["Standardprofil"]" Color="Color.Primary" />
-
     <ImportSettingsStringPropertyItem Label="@Localizer["Namn"]" @bind-Value="Settings.Name" />
     <ImportSettingsStringPropertyItem Label="@Localizer["Kontokod - A-pris faktor"]" @bind-Value="@Settings.CostFactorAccount" />
     <ImportSettingsStringPropertyItem Label="@Localizer["Kontokod - Nettokalkyl"]" @bind-Value="@Settings.NetCostAccount" />
@@ -18,7 +16,7 @@
         {
             <ImportSettingsTaggItem Tagg="@tagg" OnDeleteClick="DeleteSelectionTag" />
         }
-        <ImportSettingsAddTaggItem OnAddClick="AddSelectionTag" MaxLength="GetMaxLength(nameof(EstimationImportSettings.SelectionTags))"/>
+        <ImportSettingsAddTaggItem OnAddClick="AddSelectionTag" MaxLength="20"/>
     </MudField>
 
     <MudField Label="@Localizer["Snabbtaggar"]" Variant="Variant.Outlined">
@@ -26,7 +24,7 @@
         {
             <ImportSettingsTaggItem Tagg="@tagg" OnDeleteClick="DeleteQuickTag" />
         }
-        <ImportSettingsAddTaggItem OnAddClick="AddQuickTag" MaxLength="GetMaxLength(nameof(EstimationImportSettings.QuickTags))" />
+        <ImportSettingsAddTaggItem OnAddClick="AddQuickTag" MaxLength="20" />
     </MudField>
 
 </MudStack>
@@ -36,13 +34,7 @@
 
     [Inject] public required IStringLocalizer<ImportSettingsEditor> Localizer { get; set; }
     [Parameter, EditorRequired] public required EstimationImportSettings Settings { get; set; }
-    [Parameter] public bool IsStandardProfile { get; set; } = false;
-    [Parameter] public EventCallback<bool> OnIsStandardProfileChanged { get; set; }
 
-    public async Task NotifyStdProfileChanged(bool isChecked)
-    {
-        await OnIsStandardProfileChanged.InvokeAsync(isChecked);
-    }
     public void AddSelectionTag(string tag)
     {
         Settings.SelectionTags.Add(tag);
@@ -62,14 +54,5 @@
     {
         Settings.QuickTags.Remove(tag);
         StateHasChanged();
-    }
-    public int GetMaxLength(string propertyName)
-    {
-        var maxLengthAttribute = (MaxLengthAttribute)typeof(EstimationImportSettings)
-            .GetProperty(propertyName)!
-            .GetCustomAttributes(typeof(MaxLengthAttribute), true)
-            .First();
-        return maxLengthAttribute.Length;
-    }
-    
+    }    
 }
