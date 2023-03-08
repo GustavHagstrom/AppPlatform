@@ -2,7 +2,7 @@
 
 <MudStack Spacing="2">
 
-    <MudSwitch Checked="IsStandardProfile" @onchange="NotifyStdProfileChanged" Label="@Localizer["Standardprofil"]" Color="Color.Primary" />
+    <MudSwitch T="bool" Checked="IsStandardProfile" CheckedChanged="NotifyStdProfileChanged" Label="@Localizer["Standardprofil"]" Color="Color.Primary" />
 
     <ImportSettingsStringPropertyItem Label="@Localizer["Namn"]" @bind-Value="Settings.Name" />
     <ImportSettingsStringPropertyItem Label="@Localizer["Kontokod - A-pris faktor"]" @bind-Value="@Settings.CostFactorAccount" />
@@ -39,9 +39,9 @@
     [Parameter] public bool IsStandardProfile { get; set; } = false;
     [Parameter] public EventCallback<bool> OnIsStandardProfileChanged { get; set; }
 
-    public async Task NotifyStdProfileChanged(ChangeEventArgs args)
+    public async Task NotifyStdProfileChanged(bool isChecked)
     {
-        await OnIsStandardProfileChanged.InvokeAsync((bool)args.Value!);
+        await OnIsStandardProfileChanged.InvokeAsync(isChecked);
     }
     public void AddSelectionTag(string tag)
     {

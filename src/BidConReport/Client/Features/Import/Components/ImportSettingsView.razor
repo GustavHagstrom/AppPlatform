@@ -28,7 +28,9 @@
     @if(SelectedSetting is not null)
     {
         <MudForm Model="SelectedSetting" @ref="Form" Style="overflow-y: scroll" Class="pa-6">
-            <ImportSettingsEditor Settings="SelectedSetting" />
+            <ImportSettingsEditor Settings="SelectedSetting" 
+                                  IsStandardProfile="IsStandardSettings(SelectedSetting)"
+                                  OnIsStandardProfileChanged="OnSelectedSettingsStandardValueChanged" />
         </MudForm>
     }
 </MudPaper>
@@ -39,50 +41,82 @@
 
 
 @code {
-    //TODO implement callback ONstdprofile changed
     [Inject] public required IStringLocalizer<ImportSettingsView> Localizer { get; set; }
     [Inject] public required ISnackbar Snackbar { get; set; }
     [Inject] public required IImportSettingsService ImportSettingsService { get; set; }
 
-    public EstimationImportSettings? SelectedSetting { get; set; } = null;// = null; //= EstimationImportSettings.Empty;
+    public EstimationImportSettings? SelectedSetting { get; set; } = null;
+    public EstimationImportSettings? StandardSetting { get; set; } = null;
     public List<EstimationImportSettings> AllSettings { get; set; } = new();
     public Func<EstimationImportSettings, string> ConvertFunc { get; set; } = s => s.Name;
     public MudForm? Form { get; set; }
 
+    public bool IsStandardSettings(EstimationImportSettings settings)
+    {
+        if (StandardSetting is null) return false;
+
+        return settings.Id == StandardSetting.Id;
+    }
+    public async Task OnSelectedSettingsStandardValueChanged(bool isStandard)
+    {
+        if (SelectedSetting is not null)
+        {
+            try
+            {
+                if(isStandard)
+                {
+                    await ImportSettingsService.SaveAsStandardAsync(SelectedSetting);
+                }
+                else
+                {
+                    await ImportSettingsService.SaveAsStandardAsync(null);
+                }
+
+            }
+            catch (Exception e)
+            {
+                Snackbar.Add(Localizer[$"Misslyckades spara som standard. Error: {e.Message}"], Severity.Error);
+            }
+            await SetAllAndStandardSettings();
+            StateHasChanged();
+        }
+    }
     protected override async Task OnInitializedAsync()
     {
-        await GetSettingsAsync();
-    }
-    public async Task GetSettingsAsync()
-    {
-        await GetAllSettingsAsync();
-        await GetStandardSettingsAsync();
+        await SetAllAndStandardSettings();
+        SelectedSetting = StandardSetting;
+        if(SelectedSetting is null)
+        {
+            Snackbar.Add(Localizer["Ingen standardinställning hittades"], Severity.Info);
+        }
         StateHasChanged();
     }
-    public async Task GetStandardSettingsAsync()
+    public async Task SetAllAndStandardSettings()
+    {
+        AllSettings = (await GetAllSettingsAsync()).ToList();
+        StandardSetting = await GetStandardSettingsAsync();
+    }
+    public async Task<EstimationImportSettings?> GetStandardSettingsAsync()
     {
         try
         {
-            SelectedSetting = await ImportSettingsService.GetStandardAsync();
+            return await ImportSettingsService.GetStandardAsync();
         }
         catch (Exception)
         {
-
-            Snackbar.Add(Localizer["Ingen standardinställning hittades"], Severity.Info);
+            return null;
         }
     }
-    public async Task GetAllSettingsAsync()
+    public async Task<ICollection<EstimationImportSettings>> GetAllSettingsAsync()
     {
-        AllSettings.Clear();
         try
         {
-            var settings = await ImportSettingsService.GetAllAsync();
-            AllSettings.AddRange(settings);
+            return await ImportSettingsService.GetAllAsync();
         }
         catch (Exception e)
         {
-
             Snackbar.Add($"Error getting all organization settings: {e.Message}", Severity.Error);
+            return Array.Empty<EstimationImportSettings>();
         }
     }
     public void CreateNew()
@@ -97,7 +131,7 @@
             if(SelectedSetting is not null)
             {
                 await ImportSettingsService.UpsertAsync(SelectedSetting);
-                await GetAllSettingsAsync();
+                await SetAllAndStandardSettings();
                 StateHasChanged();
             }
         }
@@ -114,7 +148,7 @@
             {
                 await ImportSettingsService.DeleteAsync(SelectedSetting.Id);
                 SelectedSetting = null;
-                await GetAllSettingsAsync();
+                await SetAllAndStandardSettings();
                 StateHasChanged();
             }
         }

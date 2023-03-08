@@ -1,5 +1,6 @@
 ﻿using BidConReport.Shared;
 using BidConReport.Shared.Models;
+using Syncfusion.DocIO.DLS;
 using System.Net.Http.Json;
 
 namespace BidConReport.Client.Features.Import.Services;
@@ -31,6 +32,16 @@ public class ImportSettingsService : IImportSettingsService
     public async Task<EstimationImportSettings> GetStandardAsync()
     {
         return await GetAsync<EstimationImportSettings>("/api/import/GetStandardImportSettings");
+    }
+
+    public async Task SaveAsStandardAsync(EstimationImportSettings? settings)
+    {
+        var client = _httpClientFactory.CreateClient(AppConstants.BackendHttpClientName);
+        var result = await client.PostAsJsonAsync($"/api/import/SetAsStandard", settings);
+        if (!result.IsSuccessStatusCode)
+        {
+            throw new Exception(result.ReasonPhrase);
+        }
     }
 
     public async Task UpsertAsync(EstimationImportSettings settings)

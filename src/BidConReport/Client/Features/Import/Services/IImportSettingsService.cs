@@ -8,4 +8,5 @@ public interface IImportSettingsService
     Task<EstimationImportSettings> GetStandardAsync();
     Task UpsertAsync(EstimationImportSettings settings);
     Task DeleteAsync(int settingsId);
+    Task SaveAsStandardAsync(EstimationImportSettings? settings);
 }
