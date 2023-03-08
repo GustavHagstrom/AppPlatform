@@ -16,18 +16,18 @@
 <MudContainer MaxWidth="MaxWidth.Large" Class="my-2">
     <MudPaper Square="true" Elevation="4">
         <MudTabs Centered="true" KeepPanelsAlive="true">
-
-            <MudTabPanel Text="Utforska" Icon="@Icons.Material.Sharp.Folder">
-                <MudDivider Light="true" />
-                <EstimationExplorer ItemTree="ItemTree" IsRefreshing="IsRefreshing" Height="calc(100vh - 145px)" />
-            </MudTabPanel>
-
-            <MudTabPanel Text="Lista" Icon="@Icons.Material.Sharp.Search">
+            
+            <MudTabPanel Text="@Localizer["Sök"]" Icon="@Icons.Material.Sharp.Search">
                 <MudDivider Light="true" />
                 <EstimationList ItemTree="ItemTree" IsRefreshing="IsRefreshing" Height="calc(100vh - 145px)" />
             </MudTabPanel>
 
-            <MudTabPanel Text="Valda" Icon="@Icons.Material.Sharp.CheckBox" BadgeData="ItemTree?.SelectedEstimations()?.Count()">
+            <MudTabPanel Text="@Localizer["Utforska"]" Icon="@Icons.Material.Sharp.Folder">
+                <MudDivider Light="true" />
+                <EstimationExplorer ItemTree="ItemTree" IsRefreshing="IsRefreshing" Height="calc(100vh - 145px)" />
+            </MudTabPanel>      
+
+            <MudTabPanel Text="@Localizer["Valda"]" Icon="@Icons.Material.Sharp.CheckBox" BadgeData="ItemTree?.SelectedEstimations()?.Count()">
                 <MudDivider Light="true" />
                 <EstimationSelectionList ItemTree="ItemTree" IsRefreshing="IsRefreshing" Height="calc(100vh - 145px)" />
             </MudTabPanel>
