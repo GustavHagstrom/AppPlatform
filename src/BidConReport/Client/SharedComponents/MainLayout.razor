@@ -18,29 +18,13 @@
 
         <MudAppBar Dense="false" DisableGutters="true">
 
-            <AuthorizeView>
-                <Authorized>
-                    @*<MudIconButton Icon="@Icons.Material.Sharp.Menu" Color="Color.Inherit" OnClick="DrawerToggle" Class="align-self-stretch" Style="height: 35px; width: 35px;"/>*@
-                    <MudIconButton Icon="@Icons.Material.Sharp.Menu" Color="Color.Inherit" OnClick="DrawerToggle" Class="align-self-stretch"/>
-                    @*<MudButton Color="Color.Inherit" Edge="Edge.Start" OnClick="@((e) => DrawerToggle())" Class="ml-0">*@
-                @*    <MudButton OnClick="DrawerToggle" Class="py-0 px-2 align-self-stretch" Style="min-width: 20px" Color="Color.Inherit">
-                        <MudIcon Icon="@Icons.Material.Sharp.Menu"/>
-                    </MudButton>*@
-                    <MudText Typo="Typo.h5" Style="@($"color: {Theme.Palette.AppbarText}")">LB Portalen</MudText>
-                    
-                </Authorized>
-                <Authorizing>
-                    <MudText Typo="Typo.h5" Class="ml-3" Style="@($"color: {Theme.Palette.AppbarText}")">LB Portalen</MudText>
-                </Authorizing>
-                <NotAuthorized>
-                    <a href="/">
-                        <MudText Typo="Typo.h5" Class="ml-3" Style="@($"color: {Theme.Palette.AppbarText}")">LB Portalen</MudText>
-                    </a>
-                </NotAuthorized>
-            </AuthorizeView>
+            <MudIconButton Icon="@Icons.Material.Sharp.Menu" Color="Color.Inherit" OnClick="DrawerToggle" Class="align-self-stretch"/>
+            <MudText Typo="Typo.h5" Class="ml-3" Style="@($"color: {Theme.Palette.AppbarText}")">LB Portalen</MudText>
 
             <MudSpacer />
+
             <LoginDisplay />
+
         </MudAppBar>
 
         <MudDrawer @bind-Open="_drawerOpen" ClipMode="DrawerClipMode.Always" Elevation="4">
@@ -55,9 +39,11 @@
             <div>
                 @Body
             </div>
+
             <MudScrollToTop>
                 <MudIconButton Variant="Variant.Filled" Size="Size.Large" Class="rounded-circle pa-2" Icon="@Icons.Material.Sharp.ArrowUpward" Color="Color.Success"/>
             </MudScrollToTop>
+
         </MudMainContent>
     </MudLayout>
 
