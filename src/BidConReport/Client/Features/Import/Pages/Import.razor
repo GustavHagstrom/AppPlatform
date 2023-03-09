@@ -66,13 +66,29 @@
     }
     private async Task DownloadAsync()
     {
+        if (ItemTree is null)
+        {
+            return;
+        }
         if(Settings is null)
         {
             Snackbar.Add("Settings is null", Severity.Info);
+            return;
         }
         else
         {
             Snackbar.Add("Settings is not null", Severity.Info);
+        }
+
+        try
+        {
+            var selectedIds = ItemTree.SelectedEstimations()!.Select(x => x.Id);
+            var estiamtions = await _importer.GetEstimationsAsync(ItemTree.SelectedEstimations()!.Select(x => x.Id), Settings);
+            Snackbar.Add(Localizer[$"{estiamtions.Count()} kalkyler hämtades"], Severity.Info);
+        }
+        catch (Exception)
+        {
+            Snackbar.Add(Localizer["Misslyckades att importera kalkyler"], Severity.Error);
         }
         //var estimations = new List<Estimation>();
         //foreach (var e in ItemTree?.SelectedEstimations()!)
