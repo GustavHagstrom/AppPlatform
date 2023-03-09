@@ -15,84 +15,148 @@ public class ImportController : ControllerBase
     {
         _applicationDbContext = applicationDbContext;
     }
-    [HttpGet("GetAllImportSettings")]
-    public async Task<IActionResult> GetAllImportSettings()
+    [HttpGet("GetImportSettingsForOrganization")]
+    public async Task<IActionResult> GetImportSettingsForOrganization()
     {
         var organizationIdClaim = ControllerHelper.GetOrganizationClaim(User);
-        if (organizationIdClaim is null) return Problem();
+        if (organizationIdClaim is null)
+        {
+            return Problem();
+        }
 
-        var settings = await _applicationDbContext.EstimationImportSettings.Where(s => s.OrganizationId == organizationIdClaim.Value).ToArrayAsync();
+        var settings = await _applicationDbContext.EstimationImportSettings
+            .Where(s => s.OrganizationId == organizationIdClaim.Value)
+            .ToArrayAsync();
         return Ok(settings);
     }
     [HttpGet("GetStandardImportSettings")]
     public async Task<IActionResult> GetStandardImportSettings()
     {
         var userIdClaim = ControllerHelper.GetUserIdClaim(User);
-        if (userIdClaim is null) return NotFound();
+        if (userIdClaim is null)
+        {
+            return NotFound(new { message = "User not found." });
+        }
 
-        var user = await _applicationDbContext.Users.Include(u => u.StandardSettings).Where(u => u.Id == userIdClaim.Value).FirstOrDefaultAsync();
-        if (user is null || user.StandardSettings is null) return NotFound();
+        var user = await _applicationDbContext.Users
+            .Include(u => u.StandardSettings)
+            .FirstOrDefaultAsync(u => u.Id == userIdClaim.Value);
+        if (user is null || user.StandardSettings is null)
+        {
+            return NotFound(new { message = "Standard import settings not found for this user." });
+        }
         return Ok(user.StandardSettings);
     }
-    [HttpPost("UpsertImportSettings")]
-    public async Task<IActionResult> UpsertImportSettings(EstimationImportSettings settings)
+    [HttpPost("UpdateOrCreateImportSettings")]
+    public async Task<IActionResult> UpdateOrCreateImportSettings(EstimationImportSettings settings)
     {
+        if (!ModelState.IsValid)
+        {
+            return BadRequest(ModelState);
+        }
+
         var organizationIdClaim = ControllerHelper.GetOrganizationClaim(User);
-        if (organizationIdClaim is null) return Problem();
+        if (organizationIdClaim is null)
+        {
+            return Problem();
+        }
 
         settings.OrganizationId = organizationIdClaim.Value;
-        var dbSettings = await _applicationDbContext.EstimationImportSettings
-            .Where(s => s.OrganizationId == organizationIdClaim.Value && s.Id == settings.Id)
-            .FirstOrDefaultAsync();
-        if (dbSettings is null)
+
+        var existingSettings = await _applicationDbContext.EstimationImportSettings
+            .FirstOrDefaultAsync(s => s.OrganizationId == settings.OrganizationId && s.Id == settings.Id);
+
+        if (existingSettings is null)
         {
             await _applicationDbContext.EstimationImportSettings.AddAsync(settings);
         }
         else
         {
-            dbSettings = settings;
+            _applicationDbContext.EstimationImportSettings.Attach(existingSettings);
+            _applicationDbContext.Entry(existingSettings).CurrentValues.SetValues(settings);
         }
-        await _applicationDbContext.SaveChangesAsync();
-        return Ok();
 
+        try
+        {
+            await _applicationDbContext.SaveChangesAsync();
+        }
+        catch (DbUpdateException ex)
+        {
+            // Log the exception or handle it appropriately.
+            return Problem(detail: "An error occurred while saving the data.");
+        }
+
+        return Ok(settings);
     }
     [HttpDelete("DeleteImportSetting/{id}")]
     public async Task<IActionResult> DeleteImportSetting(int id)
     {
         var organizationIdClaim = ControllerHelper.GetOrganizationClaim(User);
-        if (organizationIdClaim is null) return Problem();
+        if (organizationIdClaim is null)
+        {
+            return Problem(detail: "Unable to determine the organization for the user.");
+        }
 
-        var settingToDelete = await _applicationDbContext.EstimationImportSettings.
-            Where(x => x.Id == id && x.OrganizationId == organizationIdClaim.Value)
+        var importSetting = await _applicationDbContext.EstimationImportSettings
+            .Where(x => x.Id == id && x.OrganizationId == organizationIdClaim.Value)
             .FirstOrDefaultAsync();
 
-        if(settingToDelete is null) return Problem();
+        if (importSetting is null)
+        {
+            return NotFound(new { message = "Import setting not found." });
+        }
 
-        _applicationDbContext.EstimationImportSettings.Remove(settingToDelete);
-        await _applicationDbContext.SaveChangesAsync();
-        return Ok();
+        try
+        {
+            _applicationDbContext.EstimationImportSettings.Remove(importSetting);
+            await _applicationDbContext.SaveChangesAsync();
+            return Ok(new { message = "Import setting deleted successfully." });
+        }
+        catch (Exception ex)
+        {
+            // Log the exception or handle it appropriately.
+            return Problem(detail: "An error occurred while deleting the import setting.");
+        }
     }
     [HttpPost("SetAsStandard")]
-    public async Task<IActionResult> SetAsStandard(EstimationImportSettings? postedSetting)
+    public async Task<IActionResult> SetAsStandard(EstimationImportSettings? importSetting)
     {
+        if (!ModelState.IsValid)
+        {
+            return BadRequest(ModelState);
+        }
         var userIdClaim = ControllerHelper.GetUserIdClaim(User);
-        if (userIdClaim is null) return Problem("userIdClaim is null");
-
-        var user = await _applicationDbContext.Users.Include(u => u.StandardSettings).Where(u => u.Id == userIdClaim.Value).FirstOrDefaultAsync();
-        if(user is null) return Problem("user is null");
-
-        if (postedSetting is null)
+        if (userIdClaim is null)
         {
-            user.StandardSettings = null;
+            return NotFound(new { message = "User not found." });
         }
-        else
+
+        var currentUser = await _applicationDbContext.Users
+            .Include(u => u.StandardSettings)
+            .FirstOrDefaultAsync(u => u.Id == userIdClaim.Value);
+
+        if (currentUser is null)
         {
-            var setting = await _applicationDbContext.EstimationImportSettings.Where(s => s.Id == postedSetting.Id).FirstOrDefaultAsync();
-            if (setting is null) return Problem("setting is null");
-            user.StandardSettings = setting;
+            return NotFound(new { message = "User not found." });
         }
-        
-        await _applicationDbContext.SaveChangesAsync();
-        return Ok();
+
+        if (importSetting is not null)
+        {
+            importSetting = await _applicationDbContext.EstimationImportSettings
+            .FirstOrDefaultAsync(s => s.Id == importSetting.Id);
+        }
+
+        currentUser.StandardSettings = importSetting;
+
+        try
+        {
+            await _applicationDbContext.SaveChangesAsync();
+            return Ok();
+        }
+        catch (Exception ex)
+        {
+            // Log the exception or handle it appropriately.
+            return Problem(detail: "An error occurred while setting the standard import setting.");
+        }
     }
 }

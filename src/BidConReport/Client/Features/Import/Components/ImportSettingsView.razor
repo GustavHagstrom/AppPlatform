@@ -40,12 +40,22 @@
 
 
 @code {
+    private EstimationImportSettings? _selectedSetting;
+
     [CascadingParameter] public required MudTheme Theme { get; set; }
     [Inject] public required IStringLocalizer<ImportSettingsView> Localizer { get; set; }
     [Inject] public required ISnackbar Snackbar { get; set; }
     [Inject] public required IImportSettingsService ImportSettingsService { get; set; }
 
-    public EstimationImportSettings? SelectedSetting { get; set; } = null;
+    public EstimationImportSettings? SelectedSetting
+    {
+        get => _selectedSetting; set
+        {
+            _selectedSetting = value;
+            SelectedSettingChanged.InvokeAsync(value);
+        }
+    }
+    [Parameter] public EventCallback<EstimationImportSettings> SelectedSettingChanged { get; set; }
     public EstimationImportSettings? StandardSetting { get; set; } = null;
     public List<EstimationImportSettings> AllSettings { get; set; } = new();
     public Func<EstimationImportSettings, string> ConvertFunc { get; set; } = s => s.Name;
@@ -73,9 +83,9 @@
                 }
 
             }
-            catch (Exception e)
+            catch (Exception)
             {
-                Snackbar.Add(Localizer[$"Misslyckades spara som standard. Error: {e.Message}"], Severity.Error);
+                Snackbar.Add(Localizer[$"Misslyckades updatera standardval för inställningsprofil"], Severity.Error);
             }
             await SetAllAndStandardSettings();
             StateHasChanged();
@@ -85,10 +95,6 @@
     {
         await SetAllAndStandardSettings();
         SelectedSetting = StandardSetting;
-        if(SelectedSetting is null)
-        {
-            Snackbar.Add(Localizer["Ingen standardinställning hittades"], Severity.Info);
-        }
         StateHasChanged();
     }
     public async Task SetAllAndStandardSettings()
@@ -104,6 +110,7 @@
         }
         catch (Exception)
         {
+            Snackbar.Add(Localizer["Ingen standardinställning hittades"], Severity.Info);
             return null;
         }
     }
@@ -113,9 +120,9 @@
         {
             return await ImportSettingsService.GetAllAsync();
         }
-        catch (Exception e)
+        catch (Exception)
         {
-            Snackbar.Add($"Error getting all organization settings: {e.Message}", Severity.Error);
+            Snackbar.Add(Localizer["Misslyckades att hämta inställningsprofiler"], Severity.Error);
             return Array.Empty<EstimationImportSettings>();
         }
     }
@@ -136,9 +143,9 @@
                 StateHasChanged();
             }
         }
-        catch (Exception e)
+        catch (Exception)
         {
-            Snackbar.Add($"Error (Settings): {e.Message}", Severity.Info);
+            Snackbar.Add(Localizer["Misslyckades att spara inställningsprofil"], Severity.Error);
         }
     }
     private async Task DeleteAsync()
@@ -153,9 +160,9 @@
                 StateHasChanged();
             }
         }
-        catch (Exception e)
+        catch (Exception)
         {
-            Snackbar.Add($"Error (Settings): {e.Message}", Severity.Info);
+            Snackbar.Add(Localizer["Misslyckades att ta bort inställningsprofil"], Severity.Error);
         }
     }
 }

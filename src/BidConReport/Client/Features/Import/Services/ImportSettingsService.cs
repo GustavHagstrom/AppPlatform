@@ -1,6 +1,5 @@
 ﻿using BidConReport.Shared;
 using BidConReport.Shared.Models;
-using Syncfusion.DocIO.DLS;
 using System.Net.Http.Json;
 
 namespace BidConReport.Client.Features.Import.Services;
@@ -16,55 +15,83 @@ public class ImportSettingsService : IImportSettingsService
 
     public async Task DeleteAsync(int settingsId)
     {
-        var client = _httpClientFactory.CreateClient(AppConstants.BackendHttpClientName);
-        var result = await client.DeleteAsync($"/api/import/DeleteImportSetting/{settingsId}");
-        if(!result.IsSuccessStatusCode)
+        try
         {
-            throw new Exception($"Error on delete: Status code: {result.StatusCode}");
+            var client = _httpClientFactory.CreateClient(AppConstants.BackendHttpClientName);
+            var result = await client.DeleteAsync($"/api/import/DeleteImportSetting/{settingsId}");
+            result.EnsureSuccessStatusCode();
+        }
+        catch (HttpRequestException ex)
+        {
+            throw new Exception($"Failed to delete import settings: {ex.Message}");
         }
     }
 
     public async Task<ICollection<EstimationImportSettings>> GetAllAsync()
     {
-        return await GetAsync<ICollection<EstimationImportSettings>>("/api/import/GetAllImportSettings");
+        try
+        {
+            var client = _httpClientFactory.CreateClient(AppConstants.BackendHttpClientName);
+            var requestUri = "/api/import/GetImportSettingsForOrganization";
+            var response = await client.GetAsync(requestUri);
+            response.EnsureSuccessStatusCode();
+
+            var settings = await response.Content.ReadFromJsonAsync<ICollection<EstimationImportSettings>>();
+            return settings ?? throw new Exception("Response was null");
+        }
+        catch (HttpRequestException ex)
+        {
+            throw new Exception($"Failed to retrieve import settings: {ex.Message}");
+        }
     }
 
     public async Task<EstimationImportSettings> GetStandardAsync()
     {
-        return await GetAsync<EstimationImportSettings>("/api/import/GetStandardImportSettings");
+        
+        try
+        {
+            var client = _httpClientFactory.CreateClient(AppConstants.BackendHttpClientName);
+            var requestUri = "/api/import/GetStandardImportSettings";
+            var result = await client.GetAsync(requestUri);
+            result.EnsureSuccessStatusCode();
+
+            var content = await result.Content.ReadFromJsonAsync<EstimationImportSettings>();
+            return content!;
+        }
+        catch (HttpRequestException ex)
+        {
+            // Log the exception or handle it in some other way.
+            throw new Exception($"Failed to retrieve standard import settings: {ex.Message}");
+        }
     }
 
     public async Task SaveAsStandardAsync(EstimationImportSettings? settings)
     {
-        var client = _httpClientFactory.CreateClient(AppConstants.BackendHttpClientName);
-        var result = await client.PostAsJsonAsync($"/api/import/SetAsStandard", settings);
-        if (!result.IsSuccessStatusCode)
+        try
         {
-            throw new Exception(result.ReasonPhrase);
+            var client = _httpClientFactory.CreateClient(AppConstants.BackendHttpClientName);
+            var result = await client.PostAsJsonAsync("/api/import/SetAsStandard", settings);
+            result.EnsureSuccessStatusCode();
+        }
+        catch (HttpRequestException ex)
+        {
+            // Log the exception or handle it appropriately.
+            throw new Exception("An error occurred while saving the standard import setting.", ex);
         }
     }
 
     public async Task UpsertAsync(EstimationImportSettings settings)
     {
-        var client = _httpClientFactory.CreateClient(AppConstants.BackendHttpClientName);
-        var result = await client.PostAsJsonAsync("/api/import/UpsertImportSettings", settings);
-        if (!result.IsSuccessStatusCode)
+        try
         {
-            throw new Exception(result.ReasonPhrase);
+            var client = _httpClientFactory.CreateClient(AppConstants.BackendHttpClientName);
+            var result = await client.PostAsJsonAsync("/api/import/UpdateOrCreateImportSettings", settings);
+            result.EnsureSuccessStatusCode();
         }
-    }
-    private async Task<T> GetAsync<T>(string requestUri)
-    {
-        var client = _httpClientFactory.CreateClient(AppConstants.BackendHttpClientName);
-        var result = await client.GetAsync(requestUri);
-        if (result.IsSuccessStatusCode)
+        catch (Exception ex) when (ex is HttpRequestException || ex is OperationCanceledException)
         {
-            var content = await result.Content.ReadFromJsonAsync<T>();
-            return content!;
-        }
-        else
-        {
-            throw new Exception(result.ReasonPhrase);
+            // Log the exception or handle it appropriately.
+            throw new Exception("An error occurred while saving import setting.", ex);
         }
     }
 }

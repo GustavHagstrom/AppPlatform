@@ -3,7 +3,7 @@
 
 <MudDrawer @bind-Open="@drawerOpen" ClipMode="DrawerClipMode.Always" Anchor="Anchor.End" Elevation="4">
     <div>
-        <ImportSettingsView />
+        <ImportSettingsView SelectedSettingChanged="OnSettingsSelectionChanged" />
     </div>
 </MudDrawer>
 
@@ -42,7 +42,7 @@
     [Inject] public required IStringLocalizer<Import> Localizer { get; set; }
     [Inject] public required IBidConImporterService _importer { get; set; }
     [Inject] public required ISnackbar Snackbar { get; set; }
-    public EstimationImportSettings Settings { get; set; } = EstimationImportSettings.Empty;
+    public EstimationImportSettings? Settings { get; set; }
     public DbTreeItem? ItemTree { get; set; }
     public bool IsRefreshing { get; set; } = true;
     public bool drawerOpen = true;
@@ -60,9 +60,20 @@
         //await _settingsState.LoadPreferedSettingsAsync();
         await GetEstimationItemTreeAsync();
     }
-    private Task DownloadAsync()
+    public async Task OnSettingsSelectionChanged(EstimationImportSettings? settings)
     {
-        throw new NotImplementedException();
+        Settings = settings;
+    }
+    private async Task DownloadAsync()
+    {
+        if(Settings is null)
+        {
+            Snackbar.Add("Settings is null", Severity.Info);
+        }
+        else
+        {
+            Snackbar.Add("Settings is not null", Severity.Info);
+        }
         //var estimations = new List<Estimation>();
         //foreach (var e in ItemTree?.SelectedEstimations()!)
         //{
