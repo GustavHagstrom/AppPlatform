@@ -49,16 +49,16 @@ public class DbTreeItem
             }
         }
     }
-    public IEnumerable<DbTreeItem>? SelectedEstimations()
+    public IEnumerable<DbTreeItem> SelectedEstimations()
     {
         return GetAllEstimations().Where(x => x.IsSelected == true);
     }
-    public IEnumerable<DbTreeItem>? Search(string filterString)
+    public IEnumerable<DbTreeItem> Search(string filterString)
     {
         var parameters = filterString.Split(" ");
         return GetAllEstimations().Where(x => AllParametersExists(x, parameters));
     }
-    private bool AllParametersExists(DbTreeItem estimationItem, IEnumerable<string> parameters)
+    private static bool AllParametersExists(DbTreeItem estimationItem, IEnumerable<string> parameters)
     {
         foreach (var parameter in parameters)
         {

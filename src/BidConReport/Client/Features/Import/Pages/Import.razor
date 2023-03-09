@@ -60,45 +60,53 @@
         //await _settingsState.LoadPreferedSettingsAsync();
         await GetEstimationItemTreeAsync();
     }
-    public async Task OnSettingsSelectionChanged(EstimationImportSettings? settings)
+    public void OnSettingsSelectionChanged(EstimationImportSettings? settings)
     {
         Settings = settings;
     }
     private async Task DownloadAsync()
     {
-        if (ItemTree is null)
+        if (ItemTree is null || Settings is null)
         {
             return;
-        }
-        if(Settings is null)
-        {
-            Snackbar.Add("Settings is null", Severity.Info);
-            return;
-        }
-        else
-        {
-            Snackbar.Add("Settings is not null", Severity.Info);
         }
 
         try
         {
-            var selectedIds = ItemTree.SelectedEstimations()!.Select(x => x.Id);
-            var estiamtions = await _importer.GetEstimationsAsync(ItemTree.SelectedEstimations()!.Select(x => x.Id), Settings);
-            Snackbar.Add(Localizer[$"{estiamtions.Count()} kalkyler hämtades"], Severity.Info);
+            var selectedEstimations = ItemTree.SelectedEstimations();
+            var count = selectedEstimations.Count();
+            var numberOfIterations = 0;
+            var importetEstimations = new List<Estimation>();
+            var erros = new List<string>();
+            foreach (var estimation in selectedEstimations)
+            {
+                try
+                {
+                    var result = await _importer.GetEstimationAsync(estimation.Id, Settings);
+                    if (result.Value is not null)
+                    {
+                        importetEstimations.Add(result.Value);
+                    }
+                    else
+                    {
+                        erros.Add(result.ErrorMessage!);
+                    }
+
+                }
+                catch (Exception e)
+                {
+                    erros.Add($"Unexpected error when importing {estimation.Name}. Excpetion: {e.Message}");
+                }
+                numberOfIterations += 1;
+            }
+            Snackbar.Add($"{importetEstimations.Count}/{count} av valda kalkyler hämtades", Severity.Info);
+            Snackbar.Add($"Errors: \n{string.Join("\n", erros)}", Severity.Error);
+
         }
         catch (Exception)
         {
             Snackbar.Add(Localizer["Misslyckades att importera kalkyler"], Severity.Error);
         }
-        //var estimations = new List<Estimation>();
-        //foreach (var e in ItemTree?.SelectedEstimations()!)
-        //{
-        //    var result = await _importer.GetEstimationAsync(e.Id, _settingsState.CurrentSettings!);
-        //    if(result.Value is not null)
-        //    {
-        //        estimations.Add(result.Value);
-        //    }
-        //}
     }
     private async Task GetEstimationItemTreeAsync()
     {

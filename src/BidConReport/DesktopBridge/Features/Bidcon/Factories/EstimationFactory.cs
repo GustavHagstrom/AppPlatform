@@ -53,13 +53,16 @@ public class EstimationFactory : IEstimationFactory
     }
     private IEnumerable<LockedCategory> CreateLockedCategories(BidCon.SDK.Estimation estimation)
     {
-        foreach (var category in estimation.LockedStages.Items)
+        if (estimation.LockedStages is not null)
         {
-            yield return new LockedCategory
+            foreach (var category in estimation.LockedStages.Items)
             {
-                Name = category.Name,
-                LockedStages = CreateLockedStages(category).ToList(),
-            };
+                yield return new LockedCategory
+                {
+                    Name = category.Name,
+                    LockedStages = CreateLockedStages(category).ToList(),
+                };
+            }
         }
     }
 

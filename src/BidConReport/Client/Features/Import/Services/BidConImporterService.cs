@@ -29,7 +29,7 @@ public class BidConImporterService : IBidConImporterService
             return new BidConImportResult<DbFolder> { ErrorMessage= e.Message };
         }
     }
-    private async Task<BidConImportResult<Estimation>> GetEstimationAsync(string id, EstimationImportSettings settings)
+    public async Task<BidConImportResult<Estimation>> GetEstimationAsync(string id, EstimationImportSettings settings)
     {
         
         try

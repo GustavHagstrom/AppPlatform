@@ -50,6 +50,7 @@ builder.Services.AddLocalization();
 
 builder.Services.UseImportFeature();
 builder.Services.UseAuthenticationFeature();
+builder.Services.UseSharedStateContainers();
 
 builder.Services.AddMsalAuthentication(options =>
 {

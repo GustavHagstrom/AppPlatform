@@ -49,6 +49,7 @@ public class BidconController : ControllerBase
         catch (Exception e)
         {
             result.ErrorMessage = e.Message;
+            //result.ErrorMessage = "server error";
         }
         return await Task.FromResult(Ok(result));
     }

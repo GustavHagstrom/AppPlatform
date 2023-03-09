@@ -1,5 +1,6 @@
 ﻿using BidConReport.Client.Features.Authentication;
 using BidConReport.Client.Features.Import.Services;
+using BidConReport.Client.Shared.StateContainers;
 
 namespace BidConReport.Client;
 
@@ -14,5 +15,9 @@ public static class ServiceExtensions
     public static void UseAuthenticationFeature(this IServiceCollection services)
     {
 
+    }
+    public static void UseSharedStateContainers(this IServiceCollection services)
+    {
+        services.AddScoped<ImportedEstimationsContainer>();
     }
 }
