@@ -1,0 +1,17 @@
+﻿@page "/publish"
+
+<PageToolbar>
+    <MudIconButton Icon="@Icons.Material.Sharp.Download" Style="height: 40px; width: 40px;" />
+    <MudIconButton Icon="@Icons.Material.Sharp.Refresh" Style="height: 40px; width: 40px;" />
+    <MudIconButton Icon="@Icons.Material.Sharp.Settings" Style="height: 40px; width: 40px;" />
+</PageToolbar>
+
+@foreach (var item in EstimationsContainer.ImportedEstimations)
+{
+    <MudText Typo="Typo.h6">@item.ToString()</MudText>
+}
+
+
+@code{
+    [Inject] public required ImportedEstimationsContainer EstimationsContainer { get; set; }
+}
