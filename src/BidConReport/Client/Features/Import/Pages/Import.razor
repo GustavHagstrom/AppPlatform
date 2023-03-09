@@ -41,7 +41,9 @@
     [CascadingParameter] public required MudTheme Theame { get; set; }
     [Inject] public required IStringLocalizer<Import> Localizer { get; set; }
     [Inject] public required IBidConImporterService _importer { get; set; }
+    [Inject] public required ImportedEstimationsContainer ImportedEstimationsContainer { get; set; }
     [Inject] public required ISnackbar Snackbar { get; set; }
+    [Inject] public required NavigationManager Navigation { get; set; }
     public EstimationImportSettings? Settings { get; set; }
     public DbTreeItem? ItemTree { get; set; }
     public bool IsRefreshing { get; set; } = true;
@@ -73,10 +75,10 @@
 
         try
         {
+            ImportedEstimationsContainer.ImportedEstimations.Clear();
             var selectedEstimations = ItemTree.SelectedEstimations();
             var count = selectedEstimations.Count();
             var numberOfIterations = 0;
-            var importetEstimations = new List<Estimation>();
             var erros = new List<string>();
             foreach (var estimation in selectedEstimations)
             {
@@ -85,7 +87,7 @@
                     var result = await _importer.GetEstimationAsync(estimation.Id, Settings);
                     if (result.Value is not null)
                     {
-                        importetEstimations.Add(result.Value);
+                        ImportedEstimationsContainer.ImportedEstimations.Add(result.Value);
                     }
                     else
                     {
@@ -99,9 +101,9 @@
                 }
                 numberOfIterations += 1;
             }
-            Snackbar.Add($"{importetEstimations.Count}/{count} av valda kalkyler hämtades", Severity.Info);
+            Snackbar.Add($"{ImportedEstimationsContainer.ImportedEstimations.Count}/{count} av valda kalkyler hämtades", Severity.Info);
             Snackbar.Add($"Errors: \n{string.Join("\n", erros)}", Severity.Error);
-
+            Navigation.NavigateTo("/publish");
         }
         catch (Exception)
         {
