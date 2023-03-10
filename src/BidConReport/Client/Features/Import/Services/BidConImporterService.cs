@@ -1,5 +1,6 @@
 ﻿using BidConReport.Shared;
 using BidConReport.Shared.Models;
+using System;
 using System.Net.Http.Json;
 
 namespace BidConReport.Client.Features.Import.Services;
@@ -52,9 +53,34 @@ public class BidConImporterService : IBidConImporterService
         return _httpClientFactory.CreateClient(AppConstants.BidConApiHttpClientName);
     }
 
-    public async Task<IEnumerable<BidConImportResult<Estimation>>> GetEstimationsAsync(IEnumerable<string> ids, EstimationImportSettings settings)
+    public async Task<IEnumerable<BidConImportResult<Estimation>>> GetEstimationsAsync(IEnumerable<string> ids, EstimationImportSettings settings, IProgress<int> progress)
     {
-        var tasks = ids.Select(id => GetEstimationAsync(id, settings));
+        var batchSize = 1;
+        var semaphore = new SemaphoreSlim(batchSize);
+
+        var tasks = new List<Task<BidConImportResult<Estimation>>>();
+        for (var i = 0; i < ids.Count(); i++)
+        {
+            await semaphore.WaitAsync();
+            tasks.Add(Task.Run(async () =>
+            {
+                try
+                {
+                    var result = await GetEstimationAsync(ids.ElementAt(i), settings);
+                    if (progress != null)
+                    {
+                        var percentComplete = (i + 1) * 100 / ids.Count();
+                        progress.Report(percentComplete);
+                    }
+                    return result;
+                }
+                finally
+                {
+                    semaphore.Release();
+                }
+            }));
+        }
+
         return await Task.WhenAll(tasks);
     }
 }

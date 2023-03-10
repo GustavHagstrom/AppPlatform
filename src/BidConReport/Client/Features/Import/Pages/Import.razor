@@ -75,34 +75,19 @@
 
         try
         {
-            ImportedEstimationsContainer.ImportedEstimations.Clear();
-            var selectedEstimations = ItemTree.SelectedEstimations();
-            var count = selectedEstimations.Count();
-            var numberOfIterations = 0;
-            var erros = new List<string>();
-            foreach (var estimation in selectedEstimations)
-            {
-                try
-                {
-                    var result = await _importer.GetEstimationAsync(estimation.Id, Settings);
-                    if (result.Value is not null)
-                    {
-                        ImportedEstimationsContainer.ImportedEstimations.Add(result.Value);
-                    }
-                    else
-                    {
-                        erros.Add(result.ErrorMessage!);
-                    }
+            var selectedEstimations = ItemTree.SelectedEstimations().Select(x => x.Id);
+            var result = await _importer.GetEstimationsAsync(selectedEstimations, Settings, new Progress<int>());
 
-                }
-                catch (Exception e)
-                {
-                    erros.Add($"Unexpected error when importing {estimation.Name}. Excpetion: {e.Message}");
-                }
-                numberOfIterations += 1;
-            }
-            Snackbar.Add($"{ImportedEstimationsContainer.ImportedEstimations.Count}/{count} av valda kalkyler hämtades", Severity.Info);
-            Snackbar.Add($"Errors: \n{string.Join("\n", erros)}", Severity.Error);
+            ImportedEstimationsContainer.ImportedEstimations = result
+                .Where(x => x.Value is not null)
+                .Select(x => x.Value)
+                .ToArray()!;
+            var errors = result
+                .Where(x => x.ErrorMessage is not null)
+                .Select(x => x.ErrorMessage)!;
+
+            Snackbar.Add($"{ImportedEstimationsContainer.ImportedEstimations.Count}/{selectedEstimations.Count()} av valda kalkyler hämtades", Severity.Info);
+            Snackbar.Add($"Errors: \n{string.Join("\n", errors)}", Severity.Error);
             Navigation.NavigateTo("/publish");
         }
         catch (Exception)
