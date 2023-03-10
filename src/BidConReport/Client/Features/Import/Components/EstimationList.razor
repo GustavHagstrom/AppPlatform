@@ -13,13 +13,19 @@
     
         @if (IsRefreshing == false && ItemTree is not null)
         {
-            <Virtualize Items="ItemTree!.Search(Filter)!.OrderBy(x => x.Name).ToHashSet()">
-                <div class="d-flex">
-                    <MudCheckBox @bind-Checked="context.IsSelected" />
-                    <MudIcon Icon="@Icons.Material.Sharp.Article" Color="@Color.Tertiary" Class="align-self-center ml-3" />
-                    <MudText Class="align-self-center ml-2">@context.Name</MudText>
-                </div>
-            </Virtualize>
+            <table class="striped">
+                <tbody>
+                    <Virtualize Items="ItemTree!.Search(Filter)!.OrderBy(x => x.Name).ToHashSet()">
+                        <tr class="d-flex">
+                            <td class="d-flex flex-grow-1">
+                                <MudCheckBox @bind-Checked="context.IsSelected" />
+                                <MudIcon Icon="@Icons.Material.Sharp.Article" Color="@Color.Tertiary" Class="align-self-center ml-3" />
+                                <MudText Class="align-self-center ml-2">@context.Name</MudText>
+                            </td>
+                        </tr>
+                    </Virtualize>
+                </tbody>
+            </table>
         }
     </div>
     
