@@ -76,7 +76,7 @@
         try
         {
             var selectedEstimations = ItemTree.SelectedEstimations().Select(x => x.Id);
-            var result = await _importer.GetEstimationsAsync(selectedEstimations, Settings, new Progress<int>());
+            var result = await _importer.GetEstimationsAsync(selectedEstimations, Settings);
 
             ImportedEstimationsContainer.ImportedEstimations = result
                 .Where(x => x.Value is not null)
@@ -90,9 +90,9 @@
             Snackbar.Add($"Errors: \n{string.Join("\n", errors)}", Severity.Error);
             Navigation.NavigateTo("/publish");
         }
-        catch (Exception)
+        catch (Exception e)
         {
-            Snackbar.Add(Localizer["Misslyckades att importera kalkyler"], Severity.Error);
+            Snackbar.Add(Localizer[$"Misslyckades att importera kalkyler. Error: {e.Message}"], Severity.Error);
         }
     }
     private async Task GetEstimationItemTreeAsync()

@@ -17,8 +17,10 @@
     <MudLayout>
 
         <MudAppBar Dense="false" DisableGutters="true">
-
-            <MudIconButton Icon="@Icons.Material.Sharp.Menu" Color="Color.Inherit" OnClick="DrawerToggle" Class="align-self-stretch"/>
+            <MudButton Class="px-3 align-self-stretch" Style="min-width: 20px" OnClick="DrawerToggle" >
+                <MudIcon Icon="@Icons.Material.Sharp.Menu" Style="@($"color: {Theme.Palette.AppbarText}")" />
+            </MudButton>
+            @*<MudIconButton Icon="@Icons.Material.Sharp.Menu" Color="Color.Inherit" OnClick="DrawerToggle" Class="align-self-stretch"/>*@
             <MudText Typo="Typo.h5" Class="ml-3" Style="@($"color: {Theme.Palette.AppbarText}")">LB Portalen</MudText>
 
             <MudSpacer />

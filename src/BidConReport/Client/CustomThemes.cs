@@ -287,7 +287,7 @@ public static class CustomThemes
             HoverOpacity = 0.12,
             GrayDefault = "#9E9E9E",
             GrayLight = "#BDBDBD",
-            GrayLighter = "#E0E0E0",
+            GrayLighter = "#f2f2f2",
             GrayDark = "#757575",
             GrayDarker = "#616161",
             OverlayDark = "rgba(33,33,33,0.4980392156862745)",

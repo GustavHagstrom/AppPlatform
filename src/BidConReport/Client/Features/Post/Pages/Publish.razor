@@ -6,12 +6,41 @@
     <MudIconButton Icon="@Icons.Material.Sharp.Settings" Style="height: 40px; width: 40px;" />
 </PageToolbar>
 
-@foreach (var item in EstimationsContainer.ImportedEstimations)
-{
-    <MudText Typo="Typo.h6">@item.ToString()</MudText>
-}
+
+<MudContainer MaxWidth="MaxWidth.Large">
+    <MudPaper Square="true" Elevation="4" Class="my-2" >
+        <MudPaper Square="true" Elevation="0">
+            <MudCheckBox Checked="true" />
+            <MudDivider Light="true"/>
+        </MudPaper>
+        <div style="overflow-y: scroll; position: relative; height: calc(100vh - 145px)">
+            <table class="striped">
+                <tbody>
+                    <Virtualize Items="EstimationsContainer.ImportedEstimations">
+                        <tr class="d-flex">
+                            <td class="d-flex flex-grow-1">
+                                <MudCheckBox Checked="true" />
+                                <MudIcon Icon="@Icons.Material.Sharp.Article" Color="@Color.Tertiary" Class="align-self-center ml-3" />
+                                <MudText Class="align-self-center ml-2">@context</MudText>
+                            </td>
+                            <td>
+                                <MudIconButton Icon="@Icons.Material.Sharp.Search" Size="Size.Medium" />
+                            </td>
+                        </tr>
+                    </Virtualize>
+                </tbody>
+            </table>
+        </div>
+        
+    </MudPaper>
+
+    
+    
+</MudContainer>
+
 
 
 @code{
+    [CascadingParameter] public required MudTheme Theame { get; set; }
     [Inject] public required ImportedEstimationsContainer EstimationsContainer { get; set; }
 }
