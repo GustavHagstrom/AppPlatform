@@ -17,19 +17,23 @@
             </table>
         </MudPaper>
 
-        <MudPaper Class="mb-4" Style="height: 100px; overflow-y: scroll">
-            <table class="striped">
-                <tbody>
-                    <Virtualize Items="Errors">
-                        <tr class="d-flex">
-                            <td class="d-flex flex-grow-1">
-                                <MudText Class="align-self-center">@context</MudText>
-                            </td>
-                        </tr>
-                    </Virtualize>
-                </tbody>
-            </table>
-        </MudPaper>
+        @if (Errors.Any())
+        {
+            <MudPaper Class="mb-4 border-2 border-solid mud-border-error" Style="height: 100px; overflow-y: scroll">
+                <table class="striped">
+                    <tbody>
+                        <Virtualize Items="Errors">
+                            <tr class="d-flex">
+                                <td class="d-flex flex-grow-1">
+                                    <MudText Class="align-self-center">@context</MudText>
+                                </td>
+                            </tr>
+                        </Virtualize>
+                    </tbody>
+                </table>
+            </MudPaper>
+        }
+        
         
         <MudProgressLinear Value="CurrentCount * 100 / TotalEstimationCount" Size="Size.Large" Color="Color.Success">
             <MudText>@($"{CurrentCount}/{TotalEstimationCount}")</MudText>
@@ -37,15 +41,18 @@
 
     </DialogContent>
     <DialogActions>
-        <MudButton OnClick="Cancel">@Localizer["Avbryt"]</MudButton>
-        <MudButton Disabled="CurrentCount != TotalEstimationCount" Color="Color.Primary" OnClick="Submit">@Localizer["Ok"]</MudButton>
+            <div Class="pr-4 pb-2">
+            <MudButton OnClick="Cancel" Variant="Variant.Filled" Color="Color.Error">@Localizer["Avbryt"]</MudButton>
+            <MudButton Disabled="CurrentCount != TotalEstimationCount" Variant="Variant.Filled" Color="Color.Success" OnClick="Submit">@Localizer["Ok"]</MudButton>
+        </div>           
     </DialogActions>
 </MudDialog>
 
-@code {
+    @code {
     [CascadingParameter] public required MudDialogInstance MudDialog { get; set; }
     [Parameter] public required Progress<BidConImportResult<Estimation>> Progress { get; set; }
     [Parameter] public required int TotalEstimationCount { get; set; }
+    [Parameter] public required CancellationTokenSource CancelTokenSource { get; set; }
     [Inject] public required IStringLocalizer<DownloadDialog> Localizer { get; set; }
     [Inject] public required NavigationManager Navigation { get; set; }
 
@@ -57,7 +64,6 @@
     protected override void OnInitialized()
     {
         Progress.ProgressChanged += OnProgressReport;
-
     }
     void OnProgressReport(object? source, BidConImportResult<Estimation>? result)
     {
@@ -82,5 +88,10 @@
     {
         Navigation.NavigateTo("/publish");
     }
-    void Cancel() => MudDialog.Cancel();
+    void Cancel()
+    {
+        CancelTokenSource.Cancel();
+        MudDialog.Cancel();
+    }
+
 }

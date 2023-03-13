@@ -48,7 +48,7 @@ public class BidconController : ControllerBase
         }
         catch (Exception e)
         {
-            result.ErrorMessage = $"Error @{request.Estimation}. Message: {e.Message}";
+            result.ErrorMessage = $"{request.Estimation}: {e.Message}";
             //result.ErrorMessage = "server error";
         }
         return await Task.FromResult(Ok(result));
