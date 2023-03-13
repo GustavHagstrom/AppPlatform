@@ -3,7 +3,7 @@
 namespace BidConReport.Client.Features.Import.Services;
 public interface IBidConImporterService
 {
-    Task<IEnumerable<BidConImportResult<Estimation>>> GetEstimationsAsync(IEnumerable<string> ids, EstimationImportSettings settings, IProgress<BidConImportResult<Estimation>>? progress = null);
-    Task<BidConImportResult<Estimation>> GetEstimationAsync(string ids, EstimationImportSettings settings);
+    Task<IEnumerable<BidConImportResult<Estimation>>> GetEstimationsAsync(IEnumerable<DbEstimation> estimations, EstimationImportSettings settings, IProgress<BidConImportResult<Estimation>>? progress = null);
+    Task<BidConImportResult<Estimation>> GetEstimationAsync(BidconImportRequest request);
     Task<BidConImportResult<DbFolder>> GetFoldersAsync();
 }

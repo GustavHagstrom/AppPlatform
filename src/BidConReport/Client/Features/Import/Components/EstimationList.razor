@@ -15,7 +15,7 @@
         {
             <table class="striped">
                 <tbody>
-                    <Virtualize Items="ItemTree!.Search(Filter)!.OrderBy(x => x.Name).ToHashSet()">
+                    <Virtualize Items="ItemTree!.SearchEstimations(Filter)!.OrderBy(x => x.Name).ToHashSet()">
                         <tr class="d-flex">
                             <td class="d-flex flex-grow-1">
                                 <MudCheckBox @bind-Checked="context.IsSelected" />

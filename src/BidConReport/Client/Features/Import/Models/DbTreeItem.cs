@@ -4,6 +4,7 @@ namespace BidConReport.Client.Features.Import.Models;
 public class DbTreeItem
 {
     private bool _isSelected;
+    
 
     public DbTreeItem(DbFolder dbFolder, bool isSelected = false)
     {
@@ -19,7 +20,9 @@ public class DbTreeItem
         _isSelected = isSelected;
         Id = dbEstimation.Id;
         Name = dbEstimation.ToString();
+        DbEstimation = dbEstimation;
     }
+    public DbEstimation? DbEstimation { get; set; }
     public DbTreeItemType Type { get; private set; }
     public bool IsSelected
     {
@@ -33,7 +36,6 @@ public class DbTreeItem
     public string Id { get; private set; } = string.Empty;
     public string Name { get; private set; } = string.Empty;
     public HashSet<DbTreeItem> Items { get; private set; } = new();
-    //public event Action? SelectionChanged;
     public Action? SelectionChanged { get; set; }
     public IEnumerable<DbTreeItem> GetAllEstimations()
     {
@@ -53,7 +55,7 @@ public class DbTreeItem
     {
         return GetAllEstimations().Where(x => x.IsSelected == true);
     }
-    public IEnumerable<DbTreeItem> Search(string filterString)
+    public IEnumerable<DbTreeItem> SearchEstimations(string filterString)
     {
         var parameters = filterString.Split(" ");
         return GetAllEstimations().Where(x => AllParametersExists(x, parameters));

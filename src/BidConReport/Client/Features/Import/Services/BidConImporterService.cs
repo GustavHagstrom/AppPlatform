@@ -30,12 +30,12 @@ public class BidConImporterService : IBidConImporterService
             return new BidConImportResult<DbFolder> { ErrorMessage= e.Message };
         }
     }
-    public async Task<BidConImportResult<Estimation>> GetEstimationAsync(string id, EstimationImportSettings settings)
+    public async Task<BidConImportResult<Estimation>> GetEstimationAsync(BidconImportRequest request)
     {
         
         try
         {
-            var result = await GetHttpClient().PostAsJsonAsync($"bidcon/getestimation/{id}", settings);
+            var result = await GetHttpClient().PostAsJsonAsync($"bidcon/getestimation", request);
             result.EnsureSuccessStatusCode();
             return (await result.Content.ReadFromJsonAsync<BidConImportResult<Estimation>>())!;
         }
@@ -53,21 +53,21 @@ public class BidConImporterService : IBidConImporterService
         return _httpClientFactory.CreateClient(AppConstants.BidConApiHttpClientName);
     }
 
-    public async Task<IEnumerable<BidConImportResult<Estimation>>> GetEstimationsAsync(IEnumerable<string> ids, EstimationImportSettings settings, IProgress<BidConImportResult<Estimation>>? progress = null)
+    public async Task<IEnumerable<BidConImportResult<Estimation>>> GetEstimationsAsync(IEnumerable<DbEstimation> estimations, EstimationImportSettings settings, IProgress<BidConImportResult<Estimation>>? progress = null)
     {
         var batchSize = 1;
         var semaphore = new SemaphoreSlim(batchSize);
 
         var count = 1;
         var tasks = new List<Task<BidConImportResult<Estimation>>>();
-        foreach (var id in ids) 
+        foreach (var estimation in estimations) 
         {
             await semaphore.WaitAsync();
             tasks.Add(Task.Run(async () =>
             {
                 try
                 {
-                    var result = await GetEstimationAsync(id, settings);
+                    var result = await GetEstimationAsync(new BidconImportRequest { Estimation = estimation, Settings = settings});
                     progress?.Report(result);
                     //var percentComplete = count * 100 / ids.Count();
                     //progress?.Report(percentComplete);

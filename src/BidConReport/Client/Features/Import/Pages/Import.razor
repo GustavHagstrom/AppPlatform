@@ -85,7 +85,7 @@
 
         try
         {
-            var selectedEstimations = ItemTree.SelectedEstimations().Select(x => x.Id).ToList();
+            var selectedEstimations = ItemTree.SelectedEstimations().Select(x => x.DbEstimation!).ToList();
             var progress = new Progress<BidConImportResult<Estimation>>();
             var options = new DialogOptions()
             {
@@ -105,13 +105,6 @@
                 .Where(x => x.Value is not null)
                 .Select(x => x.Value)
                 .ToArray()!;
-            //var errors = result
-            //    .Where(x => x.ErrorMessage is not null)
-            //    .Select(x => x.ErrorMessage)!;
-
-            //Snackbar.Add($"{ImportedEstimationsContainer.ImportedEstimations.Count}/{selectedEstimations.Count()} av valda kalkyler hämtades", Severity.Info);
-            //Snackbar.Add($"Errors: \n{string.Join("\n", errors)}", Severity.Error);
-            //Navigation.NavigateTo("/publish");
         }
         catch (Exception e)
         {
@@ -134,9 +127,5 @@
         }
         IsRefreshing = false;
         StateHasChanged();
-    }
-    private void EditSettings()
-    {
-
     }
 }

@@ -36,19 +36,19 @@ public class BidconController : ControllerBase
         }
         return await Task.FromResult(Ok(result));
     }
-    [HttpPost("GetEstimation/{id}")]
-    public async Task<IActionResult> GetEstimation(string id, [FromBody] EstimationImportSettings settings, CancellationToken cancellationToken)
+    [HttpPost("GetEstimation")]
+    public async Task<IActionResult> GetEstimation([FromBody] BidconImportRequest request, CancellationToken cancellationToken)
     {
         //TODO implement error message 
         var result = new BidConImportResult<Estimation>();
         try
         {
-            var estimation = _bidConImporter.GetEstimation(id);
-            result.Value = _bidconDataConverter.ConvertEstimation(estimation, settings);
+            var estimation = _bidConImporter.GetEstimation(request.Estimation.Id);
+            result.Value = _bidconDataConverter.ConvertEstimation(estimation, request.Settings);
         }
         catch (Exception e)
         {
-            result.ErrorMessage = $"Error @{id}. Message: {e.Message}";
+            result.ErrorMessage = $"Error @{request.Estimation}. Message: {e.Message}";
             //result.ErrorMessage = "server error";
         }
         return await Task.FromResult(Ok(result));
