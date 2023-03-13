@@ -1,18 +1,32 @@
 ﻿@page "/publish"
 
+@*<MudPopoverProvider>
+    
+</MudPopoverProvider>*@
+
+
 <PageToolbar>
     <MudIconButton Icon="@Icons.Material.Sharp.Download" Style="height: 40px; width: 40px;" />
     <MudIconButton Icon="@Icons.Material.Sharp.Share" Style="height: 40px; width: 40px;" />
-    <MudIconButton Icon="@Icons.Material.Sharp.Settings" Style="height: 40px; width: 40px;" />
+    <MudIconButton OnClick="ToggleDrawer" Icon="@Icons.Material.Sharp.Settings" Style="height: 40px; width: 40px;" />
 </PageToolbar>
 
+<MudDrawer Open="ShowDrawer" ClipMode="DrawerClipMode.Always" Anchor="Anchor.End" Elevation="4">
 
-<MudContainer MaxWidth="MaxWidth.Large">
-    <MudPaper Square="true" Elevation="4" Class="my-2" >
-        <MudPaper Square="true" Elevation="0">
+</MudDrawer>
+
+<MudContainer MaxWidth="MaxWidth.Large" >
+
+    
+
+    <MudPaper Square="true" Elevation="4" Class="my-2">
+        <MudPopover Open="ShowPopOver" RelativeWidth="true" Style="height: calc(100vh - 105px)" Elevation="0">
+            <MudButton OnClick="TogglePopOver">Close</MudButton>
+        </MudPopover>
+        <div>
             <MudCheckBox Checked="true" Class="span-40" />
-            <MudDivider Light="true"/>
-        </MudPaper>
+            <MudDivider Light="true" Style="margin-right: -12px"/>
+        </div>
         <div style="overflow-y: scroll; position: relative; height: calc(100vh - 145px)">
             <table class="striped">
                 <tbody>
@@ -24,7 +38,7 @@
                                 <MudText Class="align-self-center ml-2">@context</MudText>
                             </td>
                             <td>
-                                <MudIconButton Icon="@Icons.Material.Sharp.Search" Size="Size.Medium" />
+                                <MudIconButton Icon="@Icons.Material.Sharp.Search" Size="Size.Medium" OnClick="TogglePopOver" />
                             </td>
                         </tr>
                     </Virtualize>
@@ -41,6 +55,12 @@
 
 
 @code{
+    bool ShowPopOver { get; set; } = false;
+    bool ShowDrawer { get; set; } = true;
+
     [CascadingParameter] public required MudTheme Theame { get; set; }
     [Inject] public required ImportedEstimationsContainer EstimationsContainer { get; set; }
+
+    public void TogglePopOver() => ShowPopOver = !ShowPopOver;
+    public void ToggleDrawer() => ShowDrawer = !ShowDrawer;
 }
