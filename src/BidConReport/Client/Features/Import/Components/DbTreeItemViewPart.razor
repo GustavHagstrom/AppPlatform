@@ -1,20 +1,20 @@
 ﻿
 <div class="d-flex" style="@($"margin-left: {IndentLevel * 48}px")">
-    <div style="width: 48px; height: 48px;">
+    @*<div style="width: 48px; height: 48px;">*@
         @if(IsNested)
         {
             @if (IsExpanded)
             {
-                <MudIconButton Icon="@Icons.Material.Sharp.KeyboardArrowDown" OnClick="ToggleExpansion" />
+                <MudIconButton Icon="@Icons.Material.Sharp.KeyboardArrowDown" OnClick="ToggleExpansion" Class="pa-2"/>
             }
             else
             {
-                <MudIconButton Icon="@Icons.Material.Sharp.KeyboardArrowRight" OnClick="ToggleExpansion" />
+            <MudIconButton Icon="@Icons.Material.Sharp.KeyboardArrowRight" OnClick="ToggleExpansion" Class="pa-2" />
             }
         }
-    </div>
+   @* </div>*@
     
-    <MudCheckBox @bind-Checked="TreeItem!.IsSelected" />
+    <MudCheckBox @bind-Checked="TreeItem!.IsSelected" Class="span-40" />
     @if (TreeItem!.Type == DbTreeItemType.Folder)
     {
         <MudIcon Icon="@Icons.Material.Sharp.Folder" Class="align-self-center ml-3" />

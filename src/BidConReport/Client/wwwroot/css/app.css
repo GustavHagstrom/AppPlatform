@@ -10,12 +10,14 @@ table.striped th {
 table.striped tr:nth-child(even) {
     background-color: #f2f2f2;
 }
-/*.mud-icon-button {
-    border-radius: 0;
+table.striped .mud-icon-button {
+    padding: 8px;
 }
-.mud-switch-base{
-    border-radius: 50%;
-}*/
+.span-40 span{
+    padding: 8px;
+}
+
+
 .loading-progress {
     position: relative;
     display: block;

@@ -53,7 +53,7 @@ public class BidConImporterService : IBidConImporterService
         return _httpClientFactory.CreateClient(AppConstants.BidConApiHttpClientName);
     }
 
-    public async Task<IEnumerable<BidConImportResult<Estimation>>> GetEstimationsAsync(IEnumerable<string> ids, EstimationImportSettings settings, IProgress<int>? progress = null)
+    public async Task<IEnumerable<BidConImportResult<Estimation>>> GetEstimationsAsync(IEnumerable<string> ids, EstimationImportSettings settings, IProgress<BidConImportResult<Estimation>>? progress = null)
     {
         var batchSize = 1;
         var semaphore = new SemaphoreSlim(batchSize);
@@ -68,8 +68,9 @@ public class BidConImporterService : IBidConImporterService
                 try
                 {
                     var result = await GetEstimationAsync(id, settings);
-                    var percentComplete = count * 100 / ids.Count();
-                    progress?.Report(percentComplete);
+                    progress?.Report(result);
+                    //var percentComplete = count * 100 / ids.Count();
+                    //progress?.Report(percentComplete);
                     return result;
                 }
                 finally

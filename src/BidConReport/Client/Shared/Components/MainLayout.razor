@@ -32,11 +32,10 @@
         <MudDrawer @bind-Open="_drawerOpen" ClipMode="DrawerClipMode.Always" Elevation="4">
             <MudNavMenu>
                 <MudNavLink Href="/dashboard" Icon="@Icons.Material.Sharp.Home" IconColor="Color.Primary">@Localizer["Startsida"]</MudNavLink>
-                <MudNavLink Href="/import" Icon="@Icons.Material.Sharp.Download" IconColor="Color.Primary">@Localizer["Importera från BidCon"]</MudNavLink>
+                <MudNavLink Href="/import" Icon="@Icons.Material.Sharp.Article" IconColor="Color.Tertiary">@Localizer["Importera från BidCon"]</MudNavLink>
             </MudNavMenu>
         </MudDrawer>
        
-
         <MudMainContent>
             <div>
                 @Body

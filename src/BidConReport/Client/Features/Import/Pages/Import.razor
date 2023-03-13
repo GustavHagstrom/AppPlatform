@@ -1,8 +1,13 @@
 ﻿@page "/import"
 @attribute [Authorize]
 
+@*<MudOverlay Visible="IsDownloading" DarkBackground="true" Absolute="false" ZIndex="9999">
+    <DownloadProgress OnCancel="() => IsDownloading = false" />
+</MudOverlay>*@
+
+
 <PageToolbar>
-    <MudIconButton Icon="@Icons.Material.Sharp.Download" OnClick="DownloadAsync" Style="height: 40px; width: 40px;" />
+    <MudIconButton Icon="@Icons.Material.Sharp.Start" OnClick="DownloadAsync" Style="height: 40px; width: 40px;" />
     <MudIconButton Icon="@Icons.Material.Sharp.Refresh" OnClick="GetEstimationItemTreeAsync" Style="height: 40px; width: 40px;" />
     <MudIconButton Icon="@Icons.Material.Sharp.Settings" OnClick="ToggleDrawer" Style="height: 40px; width: 40px;" />
 </PageToolbar>
@@ -38,12 +43,17 @@
 </MudContainer>
 
 @code{
+    public bool IsDownloading { get; set; } = true;
+
+
     [CascadingParameter] public required MudTheme Theame { get; set; }
+    [Inject] public required IDialogService DialogService { get; set; }
     [Inject] public required IStringLocalizer<Import> Localizer { get; set; }
     [Inject] public required IBidConImporterService _importer { get; set; }
     [Inject] public required ImportedEstimationsContainer ImportedEstimationsContainer { get; set; }
     [Inject] public required ISnackbar Snackbar { get; set; }
-    [Inject] public required NavigationManager Navigation { get; set; }
+    //[Inject] public required NavigationManager Navigation { get; set; }
+
     public EstimationImportSettings? Settings { get; set; }
     public DbTreeItem? ItemTree { get; set; }
     public bool IsRefreshing { get; set; } = true;
@@ -75,20 +85,33 @@
 
         try
         {
-            var selectedEstimations = ItemTree.SelectedEstimations().Select(x => x.Id);
-            var result = await _importer.GetEstimationsAsync(selectedEstimations, Settings);
+            var selectedEstimations = ItemTree.SelectedEstimations().Select(x => x.Id).ToList();
+            var progress = new Progress<BidConImportResult<Estimation>>();
+            var options = new DialogOptions()
+            {
+                MaxWidth = MaxWidth.Small,
+                CloseButton = false,
+                NoHeader = true,
+                DisableBackdropClick = true,
+
+            };
+            var parameters = new DialogParameters();
+            parameters.Add(nameof(DownloadDialog.Progress), progress);
+            parameters.Add(nameof(DownloadDialog.TotalEstimationCount), selectedEstimations.Count);
+            DialogService.Show<DownloadDialog>(string.Empty, parameters, options);
+            var result = await _importer.GetEstimationsAsync(selectedEstimations, Settings, progress);
 
             ImportedEstimationsContainer.ImportedEstimations = result
                 .Where(x => x.Value is not null)
                 .Select(x => x.Value)
                 .ToArray()!;
-            var errors = result
-                .Where(x => x.ErrorMessage is not null)
-                .Select(x => x.ErrorMessage)!;
+            //var errors = result
+            //    .Where(x => x.ErrorMessage is not null)
+            //    .Select(x => x.ErrorMessage)!;
 
-            Snackbar.Add($"{ImportedEstimationsContainer.ImportedEstimations.Count}/{selectedEstimations.Count()} av valda kalkyler hämtades", Severity.Info);
-            Snackbar.Add($"Errors: \n{string.Join("\n", errors)}", Severity.Error);
-            Navigation.NavigateTo("/publish");
+            //Snackbar.Add($"{ImportedEstimationsContainer.ImportedEstimations.Count}/{selectedEstimations.Count()} av valda kalkyler hämtades", Severity.Info);
+            //Snackbar.Add($"Errors: \n{string.Join("\n", errors)}", Severity.Error);
+            //Navigation.NavigateTo("/publish");
         }
         catch (Exception e)
         {

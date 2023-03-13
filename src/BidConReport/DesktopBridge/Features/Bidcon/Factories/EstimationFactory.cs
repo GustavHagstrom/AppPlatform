@@ -200,7 +200,10 @@ public class EstimationFactory : IEstimationFactory
     }
     private static List<Resource> GetResources(BidCon.SDK.EstimationItem estimationItem)
     {
+        
         var resources = new List<Resource>();
+        if (estimationItem is null) return resources;
+
         if (estimationItem is Resource resource)
         {
             resources.Add(resource);
