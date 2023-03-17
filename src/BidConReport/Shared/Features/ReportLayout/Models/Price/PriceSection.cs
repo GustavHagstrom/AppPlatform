@@ -7,7 +7,6 @@ public class PriceSection : ILayoutSection
     public string ChangesDescription { get; set; } = string.Empty;
     public string PriceWithChangesDescription { get; set; } = string.Empty;
     public string Comment { get; set; } = string.Empty;
-    public string Font { get; set; } = string.Empty;
-    public string FontSize { get; set; } = string.Empty;
-    public string FontWeight { get; set; } = string.Empty;
+    public FontProperties PriceFont { get; set; } = FontProperties.Default;
+    public FontProperties CommentFont { get; set; } = FontProperties.Default;
 }

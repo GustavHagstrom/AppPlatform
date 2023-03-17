@@ -25,7 +25,7 @@ public class Estimation
     public required DateTime CreationDate { get; set; }
     public DateTime? ExpirationDate { get; set; }
     [NotMapped]
-    public required DateTime PrintDate { get; set; }
+    public DateTime? PrintDate { get; set; }
     public required ICollection<string> QuickTags { get; set; }
     public required ICollection<string> SelectionTags { get; set; }
     public required ICollection<EstimationItem> Items { get; set; }
