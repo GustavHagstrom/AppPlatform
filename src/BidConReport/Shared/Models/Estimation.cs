@@ -15,11 +15,17 @@ public class Estimation
     public required string Name { get; set; }
     [MaxLength(50)]
     public string? Description { get; set; }
+    [MaxLength(50)]
+    public string? Representative { get; set; }
+    [MaxLength(50)]
+    public string? Supervisor { get; set; }
     [MaxLength(10)]
     public required string Currency { get; set; }
     public required double CostBeforeChanges { get; set; }
     public required DateTime CreationDate { get; set; }
     public DateTime? ExpirationDate { get; set; }
+    [NotMapped]
+    public required DateTime PrintDate { get; set; }
     public required ICollection<string> QuickTags { get; set; }
     public required ICollection<string> SelectionTags { get; set; }
     public required ICollection<EstimationItem> Items { get; set; }

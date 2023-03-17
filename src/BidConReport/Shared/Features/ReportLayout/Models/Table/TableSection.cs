@@ -1,12 +1,12 @@
 ﻿using BidConReport.Shared.Models;
 
-namespace SharedLibrary.ExportPresentation.Layout;
-public class TableDefinition
+namespace BidConReport.Shared.Features.ReportLayout.Models.Table;
+public class TableSection : ILayoutSection
 {
-	public TableDefinition()
-	{
-		Columns = new List<CheckableItem<ColumnDefinition>>
-		{
+    public TableSection()
+    {
+        Columns = new List<CheckableItem<ColumnDefinition>>
+        {
             new CheckableItem<ColumnDefinition>(true, new ColumnDefinition{ Type = "Name"}),
             new CheckableItem<ColumnDefinition>(true, new ColumnDefinition{ Type = "Quantity"}),
             new CheckableItem<ColumnDefinition>(true, new ColumnDefinition{ Type = "DisplayedQuantity"}),
@@ -17,7 +17,8 @@ public class TableDefinition
             new CheckableItem<ColumnDefinition>(true, new ColumnDefinition{ Type = "RegulatedUnitCost"}),
             new CheckableItem<ColumnDefinition>(true, new ColumnDefinition{ Type = "Comment"}),
         };
-	}
+    }
+    public int LayoutOrder { get; set; }
     public bool IsEnabled { get; set; } = true;
     public List<CheckableItem<ColumnDefinition>> Columns { get; set; }
 }

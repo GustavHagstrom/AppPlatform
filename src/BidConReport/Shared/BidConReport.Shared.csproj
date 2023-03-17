@@ -22,10 +22,4 @@
     <PackageReference Include="Syncfusion.XlsIORenderer.Net.Core" Version="20.4.0.51" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="ExportPresentation\Files\Pdf\" />
-    <Folder Include="ExportPresentation\Files\Word\" />
-    <Folder Include="Features\" />
-  </ItemGroup>
-
 </Project>

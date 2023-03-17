@@ -1,6 +1,7 @@
-﻿namespace SharedLibrary.ExportPresentation.Layout;
-public class PriceDefinition
+﻿namespace BidConReport.Shared.Features.ReportLayout.Models.Price;
+public class PriceSection : ILayoutSection
 {
+    public int LayoutOrder { get; set; }
     public bool IsEnabled { get; set; } = true;
     public string PriceWithoutChangesDescription { get; set; } = string.Empty;
     public string ChangesDescription { get; set; } = string.Empty;

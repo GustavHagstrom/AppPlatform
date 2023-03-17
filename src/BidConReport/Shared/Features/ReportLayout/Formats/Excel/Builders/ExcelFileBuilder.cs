@@ -1,9 +1,9 @@
-﻿using BidConReport.Shared.Models;
-using SharedLibrary.ExportPresentation.Layout;
+﻿using BidConReport.Shared.Features.ReportLayout.Models;
+using BidConReport.Shared.Models;
 using Syncfusion.XlsIO;
 using Syncfusion.XlsIORenderer;
 
-namespace BidConReport.Shared.ExportPresentation.Files.Excel.Builders;
+namespace BidConReport.Shared.Features.ReportLayout.Formats.Excel.Builders;
 public class ExcelFileBuilder : IExcelFileBuilder
 {
     private readonly IExcelHeaderBuilder _excelHeaderBuilder;
@@ -60,24 +60,24 @@ public class ExcelFileBuilder : IExcelFileBuilder
 
     private void AddContent(Estimation estimation, LayoutDefinition layoutDefinition, IWorksheet sheet)
     {
-        _excelHeaderBuilder.AddHeader(sheet);
-        foreach (var sectionType in layoutDefinition.LayoutOrder)
-        {
-            switch (sectionType)
-            {
-                case LayoutSectionType.Title:
-                    _excelTitleBuilder.AddTitle(sheet);
-                    break;
-                case LayoutSectionType.GeneralInformation:
-                    _excelGeneralInformationBuilder.AddGeneralInformation(sheet);
-                    break;
-                case LayoutSectionType.Price:
-                    _excelPriceBuilder.AddPrice(sheet);
-                    break;
-                case LayoutSectionType.Table:
-                    _excelTableBuilder.AddTable(sheet);
-                    break;
-            }
-        }
+        //_excelHeaderBuilder.AddHeader(sheet);
+        //foreach (var sectionType in layoutDefinition.Sections)
+        //{
+        //    switch (sectionType)
+        //    {
+        //        case LayoutSectionType.Title:
+        //            _excelTitleBuilder.AddTitle(sheet);
+        //            break;
+        //        case LayoutSectionType.GeneralInformation:
+        //            _excelGeneralInformationBuilder.AddGeneralInformation(sheet);
+        //            break;
+        //        case LayoutSectionType.Price:
+        //            _excelPriceBuilder.AddPrice(sheet);
+        //            break;
+        //        case LayoutSectionType.Table:
+        //            _excelTableBuilder.AddTable(sheet);
+        //            break;
+        //    }
+        //}
     }
 }

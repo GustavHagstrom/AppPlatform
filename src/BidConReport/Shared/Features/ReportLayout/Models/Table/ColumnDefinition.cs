@@ -1,4 +1,4 @@
-﻿namespace SharedLibrary.ExportPresentation.Layout;
+﻿namespace BidConReport.Shared.Features.ReportLayout.Models.Table;
 public class ColumnDefinition
 {
     public string Type { get; set; } = string.Empty;

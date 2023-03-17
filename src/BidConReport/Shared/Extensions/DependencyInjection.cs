@@ -1,4 +1,4 @@
-﻿using BidConReport.Shared.ExportPresentation.Files.Excel.Builders;
+﻿using BidConReport.Shared.Features.ReportLayout.Formats.Excel.Builders;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace BidConReport.Shared.Extensions;
