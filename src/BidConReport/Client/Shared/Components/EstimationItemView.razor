@@ -1,0 +1,43 @@
+﻿@using BidConReport.Shared.Features.ReportLayout.Models.Table;
+
+<MudDivider Light="true"/>
+<MudGrid Spacing="0">
+    @foreach (var column in ParentComponent.Layout.TableSection.Columns)
+    {
+        <MudItem xs="column.Width">
+            @if(Item.ItemType == EstimationItemType.Group )
+            {
+                <MudText Style="@ParentComponent.CreateFontStyle(column.GroupFont)">@DataSourceFunctions[column.DataSource].Invoke(Item)</MudText>
+            }
+            else if (Item.ItemType == EstimationItemType.Part)
+            {
+                <MudText Style="@ParentComponent.CreateFontStyle(column.PartFont)">@DataSourceFunctions[column.DataSource].Invoke(Item)</MudText>
+            }
+            else
+            {
+                <MudText Style="@ParentComponent.CreateFontStyle(column.CelleFont)">@DataSourceFunctions[column.DataSource].Invoke(Item)</MudText>
+            }
+        
+        </MudItem>
+    }
+</MudGrid>
+
+@foreach (var subitem in Item.Items)
+{
+    <EstimationItemView Item="subitem"/>
+}
+
+@code {
+    [Parameter, EditorRequired] public required EstimationItem Item { get; set; }
+    [CascadingParameter] public required EstimationPreview ParentComponent { get; set; }
+    Dictionary<ColumnDataSource, Func<EstimationItem, string>> DataSourceFunctions { get; set; } = new()
+    {
+        { ColumnDataSource.RowNumber, e => e.RowNumber.ToString() },
+        { ColumnDataSource.Name, e => e.Name },
+        { ColumnDataSource.Unit, e => e.Unit },
+        { ColumnDataSource.DisplayedUnit, e => e.DisplayedUnit },
+        { ColumnDataSource.Quantity, e => e.Quantity.ToString() },
+        { ColumnDataSource.DisplayedQuantity, e => e.DisplayedQuantity },
+        { ColumnDataSource.Comment, e => e.Comment },
+    };
+}

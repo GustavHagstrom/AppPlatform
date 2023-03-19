@@ -1,20 +1,49 @@
-﻿using BidConReport.Shared.Features.ReportLayout.Models.Table;
-using BidConReport.Shared.Models;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace BidConReport.Shared.Features.ReportLayout.Models.Table;
 public class ColumnDefinition
 {
     public bool IsActive { get; set; }
     public ColumnDataSource DataSource { get; set; }
-    public FontProperties TitleFont { get; set; } = FontProperties.Default;
-    public FontProperties GroupFont { get; set; } = FontProperties.Default;
-    public FontProperties PartFont { get; set; } = FontProperties.Default;
-    public FontProperties CelleFont { get; set; } = FontProperties.Default;
+    public FontProperties TitleFont { get; set; } = DefaultTitleFont();
+    public FontProperties GroupFont { get; set; } = DefaultGroupFont();
+    public FontProperties PartFont { get; set; } = DefaultPartFont();
+    public FontProperties CelleFont { get; set; } = DefaultCellFont();
     [MaxLength(50)]
     public string Title { get; set; } = string.Empty;
     [Range(1,12)]
     public int Width { get; set; }
+
+
+
+    private static FontProperties DefaultTitleFont()
+    {
+        var font = FontProperties.Default;
+        font.Bold = true;
+        font.FontSize = 16;
+        return font;
+    }
+    private static FontProperties DefaultGroupFont()
+    {
+        var font = FontProperties.Default;
+        font.Bold = true;
+        font.FontSize = 20;
+        return font;
+    }
+    private static FontProperties DefaultPartFont()
+    {
+        var font = FontProperties.Default;
+        font.Bold = true;
+        font.FontSize = 11;
+        return font;
+    }
+    private static FontProperties DefaultCellFont()
+    {
+        var font = FontProperties.Default;
+        font.Bold = false;
+        font.FontSize = 11;
+        return font;
+    }
 
 }
 public enum ColumnDataSource
@@ -27,5 +56,4 @@ public enum ColumnDataSource
     DisplayedQuantity,
     Comment,
 }
-
 

@@ -4,8 +4,8 @@ public class GeneralInformationSection : ILayoutSection
     public bool IsEnabled { get; set; } = true;
     public List<GeneralInformationItem> Items { get; set; } = new();
     public int LayoutOrder { get; set; }
-    public FontProperties TitleFont { get; set; } = FontProperties.Default;
-    public FontProperties ValueFont { get; set; } = FontProperties.Default;
+    public FontProperties TitleFont { get; set; } = DefaultTitleFont();
+    public FontProperties ValueFont { get; set; } = DefaultValueFont();
     public static GeneralInformationSection Default => new()
     {
         Items = new List<GeneralInformationItem>
@@ -20,8 +20,21 @@ public class GeneralInformationSection : ILayoutSection
             new(true, GeneralInformationType.Currency, "Currency"),
         },
     };
+    private static FontProperties DefaultTitleFont()
+    {
+        var font = FontProperties.Default;
+        font.Bold = true;
+        font.FontSize = 11;
+        return font;
+    }
+    private static FontProperties DefaultValueFont()
+    {
+        var font = FontProperties.Default;
+        font.FontSize = 11;
+        return font;
+    }
 }
-public record GeneralInformationItem(bool Active, GeneralInformationType Type, string DisplayName);
+public record GeneralInformationItem(bool IsEnabled, GeneralInformationType Type, string Title);
 public enum GeneralInformationType
 {
     Name,

@@ -23,7 +23,8 @@
 
         @if (SelectedEstimation is not null)
         {
-            <MudPopover Open="ShowPreviewPopOver" RelativeWidth="true" Style="height: calc(100vh - 105px)" Elevation="0">
+            @*<MudPopover Open="ShowPreviewPopOver" RelativeWidth="true" Style="overflow-y: scroll; height: calc(100vh - 105px)" Elevation="0">*@
+            <MudPopover Open="ShowPreviewPopOver" RelativeWidth="true" Elevation="0">
 
                 <div class="d-flex">
                     <MudIcon Icon="@Icons.Material.Sharp.Search" Class="mx-2 align-self-center" />
@@ -34,7 +35,7 @@
                     </MudButton>
                 </div>
                 <MudDivider Light="true"/>
-                <div class="pa-2">
+                    <div class="pa-2" style="overflow-y: scroll; height: calc(100vh - 145px)">
                         <EstimationPreview Estimation="SelectedEstimation" />
                 </div>
             

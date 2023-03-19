@@ -45,6 +45,7 @@ table.striped .mud-icon-button {
     text-align: center;
     font-weight: bold;
     inset: calc(20vh + 3.25rem) 0 auto 0.2rem;
+    font-family: Arial;
 }
 
 .loading-progress-text:after {

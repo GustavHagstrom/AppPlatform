@@ -1,16 +1,104 @@
-﻿<h3>Title</h3>
+﻿@using BidConReport.Shared.Features.ReportLayout.Models.GeneralInformation;
+
+<CascadingValue Value="this">
 
 
-@foreach (var item in Estimation.Items)
-{
-    <MudText Typo="Typo.subtitle2">@item.Name</MudText>
-}
+    @if (Layout.TitleSection.IsEnabled)
+    {
+        <div class="mb-6">
+            <MudText Style="@CreateFontStyle(Layout.TitleSection.Font)">@Layout.TitleSection.Title</MudText>
+        </div>
+    }
 
+    @if(Layout.GeneralInformationSection.IsEnabled)
+    {
+        <div class="mb-6">
+            @foreach (var item in Layout.GeneralInformationSection.Items)
+            {
+                @if (item.IsEnabled)
+                {
+                    <div class="mb-2">
+                        <MudText Style="@CreateFontStyle(Layout.GeneralInformationSection.TitleFont)">@item.Title</MudText>
+                        <MudText Style="@CreateFontStyle(Layout.GeneralInformationSection.ValueFont)">@GeneralInformationFunctions[item.Type].Invoke(Estimation)</MudText>
+                    </div>
+                }
+            } 
+        </div>
+    }
+
+    @if (Layout.PriceSection.IsEnabled)
+    {
+        <div class="mb-6">
+            <div class="d-flex">
+                <MudSpacer/>
+                <MudText Style="@CreateFontStyle(Layout.PriceSection.CommentFont)">@Layout.PriceSection.Comment</MudText>
+            </div>
+            <MudDivider />
+            <div class="d-flex">
+                <MudText Style="@CreateFontStyle(Layout.PriceSection.PriceFont)">@Layout.PriceSection.PriceWithoutChangesDescription</MudText>
+                <MudSpacer />
+                <MudText Style="@CreateFontStyle(Layout.PriceSection.PriceFont)">@Estimation.CostBeforeChanges.ToString("N0")</MudText>
+            </div>
+            <MudDivider />
+            <div class="d-flex">
+                <MudText Style="@CreateFontStyle(Layout.PriceSection.PriceFont)">@Layout.PriceSection.ChangesDescription</MudText>
+                <MudSpacer />
+                <MudText Style="@CreateFontStyle(Layout.PriceSection.PriceFont)">0</MudText>
+            </div>
+            <MudDivider />
+            <div class="d-flex">
+                <MudText Style="@CreateFontStyle(Layout.PriceSection.PriceFont)">@Layout.PriceSection.PriceWithChangesDescription</MudText>
+                <MudSpacer />
+                <MudText Style="@CreateFontStyle(Layout.PriceSection.PriceFont)">@Estimation.CostBeforeChanges.ToString("N0")</MudText>
+            </div>
+            <MudDivider/>
+        </div>
+    }
+
+    @if (Layout.TableSection.IsEnabled)
+    {
+        <div class="mb-6">
+            <EstimationItemTableView/>
+        </div>
+    }
+
+</CascadingValue>
 
 @code {
     [Parameter, EditorRequired] public required Estimation Estimation { get; set; }
+    public LayoutDefinition Layout { get; set; } = new();
+    public Dictionary<GeneralInformationType, Func<Estimation, string>> GeneralInformationFunctions { get; set; } = new()
+    {
+        { GeneralInformationType.Name, e => e.Name },
+        { GeneralInformationType.Description, e => e.Description ?? string.Empty },
+        { GeneralInformationType.CreationDate, e => e.CreationDate.ToString("yyyy-MM-dd") },
+        { GeneralInformationType.ExpirationDate, e => e.ExpirationDate?.ToString("yyyy-MM-dd") ?? string.Empty },
+        { GeneralInformationType.PrintDate, e => DateTime.Now.ToString("yyyy-MM-dd") },
+        { GeneralInformationType.Supervisor, e => e.Supervisor ?? string.Empty },
+        { GeneralInformationType.Representative, e => e.Representative ?? string.Empty },
+        { GeneralInformationType.Currency, e => e.Currency },
+    };
+
     void testui()
     {
         //Estimation.Items.First().Name
     }
+    public string CreateFontStyle(FontProperties properties)
+    {
+        var builder = new System.Text.StringBuilder($"font-family: {properties.FontName}; font-size: {properties.FontSize}px; ");
+        if (properties.Bold)
+        {
+            builder.Append("font-weight: bold; ");
+        }
+        if (properties.Italic)
+        {
+            builder.Append("font-style: italic; ");
+        }
+        if (properties.Underline)
+        {
+            builder.Append("text-decoration-line: underline; ");
+        }
+        return builder.ToString();
+    }
+
 }

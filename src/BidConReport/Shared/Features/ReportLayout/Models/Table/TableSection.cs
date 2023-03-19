@@ -14,7 +14,7 @@ public class TableSection : ILayoutSection
             new ColumnDefinition{ DataSource = ColumnDataSource.RowNumber, Width = 1 },
             new ColumnDefinition{ DataSource = ColumnDataSource.Quantity, Width = 1 },
             new ColumnDefinition{ DataSource = ColumnDataSource.DisplayedQuantity, Width = 1 },
-            new ColumnDefinition{ DataSource = ColumnDataSource.Comment, Width = 3 },
+            new ColumnDefinition{ DataSource = ColumnDataSource.Comment, Width = 2 },
             new ColumnDefinition{ DataSource = ColumnDataSource.DisplayedUnit, Width = 1 },
             new ColumnDefinition{ DataSource = ColumnDataSource.Unit, Width = 1 },
         }
