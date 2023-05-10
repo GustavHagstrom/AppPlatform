@@ -1,0 +1,30 @@
+﻿
+@inherits LayoutComponentBase
+
+<MudThemeProvider @ref="_themeProvider" Theme="CustomThemes.CollieStandard" />
+<MudDialogProvider />
+<MudSnackbarProvider />
+
+
+<div class="pr-2 d-flex align-stretch mud-theme-primary mud-elevation-2" style="height: 40px;">
+    <MudText Class="px-2 align-self-center" Typo="Typo.h6">Collie</MudText>
+    @*<MudDivider Light="false" Vertical="true"/>*@
+    <MudChip Href="/" Variant="Variant.Text" Label="true" Color="Color.Inherit">@Localizer["Inköp"]</MudChip>
+    <MudButton Href="/inkop" Variant="Variant.Text" Color="Color.Inherit">@Localizer["Inköp"]</MudButton>
+    <MudSpacer/>
+    <LoginDisplay />
+</div>
+
+<div class="px-2">
+    @Body
+</div>
+
+@code{
+    public required MudThemeProvider _themeProvider { get; set; }
+    [Inject] public required IStringLocalizer<MainLayout> Localizer { get; set; }
+
+    //private string GetActiveClass(DocsBasePage page)
+    //{
+    //    return page == LayoutService.GetDocsBasePage(NavigationManager.Uri) ? "mud-chip-text mud-chip-color-primary mx-1 px-3" : "mx-1 px-3";
+    //}
+}
