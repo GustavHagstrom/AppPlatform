@@ -20,25 +20,27 @@
 </div>
 
 @code{
-    public required MudThemeProvider _themeProvider { get; set; }
+    public MudThemeProvider? _themeProvider { get; set; }
     [Inject] public required IStringLocalizer<MainLayout> Localizer { get; set; }
     [Inject] public required NavigationManager NavManager { get; set; }
 
     private string GetSelectedPageStyle(string href)
     {
-        if(href.Take(1).ToString() == "/")
-        {
-            href = href.Skip(1).ToString()!;
-        }
-        var path = NavManager.Uri.Replace(NavManager.BaseUri, string.Empty);
-        if(path == href)
-        {
-            return $"background-color: var(--mud-palette-primary-darken);";
-        }
-        else
-        {
-            return "";
-        }
+        return string.Empty;
+        //if(href.FirstOrDefault() == '/')
+        //{
+        //    href = href[1..];
+        //}
+        //var path = NavManager.Uri.Replace(NavManager.BaseUri, string.Empty);
+
+        //if (path[0..href.Length] == href)
+        //{
+        //    return $"background-color: var(--mud-palette-primary-darken);";
+        //}
+        //else
+        //{
+        //    return "";
+        //}
         
     }
 }
