@@ -10,17 +10,18 @@ public class TempTests
     //[Test]
     [TestCase("mypage/lol")]
     [TestCase("/mypage/lol")]
+    [TestCase("")]
     public void TempTest1(string href)
     {
-        string uri = "http://www.google.se/mypage/lol/1/";
-        var actualPath = uri.Replace("http://www.google.se/", string.Empty);
+        //string uri = "http://www.google.se/mypage/lol/1/";
+        //var actualPath = uri.Replace("http://www.google.se/", string.Empty);
 
-        if (href.FirstOrDefault() == '/')
-        {
-            href = href[1..];
-        }
+        //if (href.FirstOrDefault() == '/')
+        //{
+        //    href = href[1..];
+        //}
         
 
-        Assert.That(actualPath[0..href.Length], Is.EqualTo(href));
+        Assert.That(href[0..href.Length], Is.EqualTo(href));
     }
 }

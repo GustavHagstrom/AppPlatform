@@ -1,16 +1,18 @@
-﻿
-@inherits LayoutComponentBase
+﻿@inherits LayoutComponentBase
 
-<MudThemeProvider @ref="_themeProvider" Theme="CustomThemes.CollieStandard" />
+<MudThemeProvider Theme="CustomThemes.CollieStandard" />
 <MudDialogProvider />
 <MudSnackbarProvider />
 
 
 <div class="pr-2 d-flex align-stretch mud-theme-primary mud-elevation-2" style="height: 40px;">
-    <MudText Class="px-2 align-self-center" Typo="Typo.h6">Collie</MudText>
-    @*<MudDivider Light="false" Vertical="true"/>*@
-    <MudButton Href="/" Variant="Variant.Text" Color="Color.Inherit" Style="@GetSelectedPageStyle("/")">@Localizer["Inköp"]</MudButton>
-    <MudButton Href="/inkop" Variant="Variant.Text" Color="Color.Inherit" Style="@GetSelectedPageStyle("/inkop")">@Localizer["Inköp"]</MudButton>
+    <MudText Class="pl-4 pr-2 align-self-center" Typo="Typo.h6">Collie</MudText>
+    <MudDivider Light="false" Vertical="true" FlexItem="true" Class="my-2 mx-4"/>
+    <MudButton Href="/dashboard" Class="px-4" Variant="Variant.Text" Color="Color.Inherit" Style="@GetSelectedPageStyle("/dashboard")" StartIcon="@Icons.Material.Sharp.Dashboard">@Localizer["Instrumentpanel"]</MudButton>
+    <MudButton Href="/orders" Class="px-4" Variant="Variant.Text" Color="Color.Inherit" Style="@GetSelectedPageStyle("/orders")" StartIcon="@Icons.Material.Sharp.ShoppingCart">@Localizer["Inköp"]</MudButton>
+    <MudButton Href="/projects" Class="px-4" Variant="Variant.Text" Color="Color.Inherit" Style="@GetSelectedPageStyle("/projects")" StartIcon="@Icons.Material.Sharp.RocketLaunch">@Localizer["Projekt"]</MudButton>
+    <MudButton Href="/suppliers" Class="px-4" Variant="Variant.Text" Color="Color.Inherit" Style="@GetSelectedPageStyle("/suppliers")" StartIcon="@Icons.Material.Sharp.LocalShipping">@Localizer["Leverantörer"]</MudButton>
+    <MudButton Href="/settings" Class="px-4" Variant="Variant.Text" Color="Color.Inherit" Style="@GetSelectedPageStyle("/settings")" StartIcon="@Icons.Material.Sharp.Settings">@Localizer["Inställningar"]</MudButton>
     <MudSpacer/>
     <LoginDisplay />
 </div>
@@ -20,27 +22,19 @@
 </div>
 
 @code{
-    public MudThemeProvider? _themeProvider { get; set; }
     [Inject] public required IStringLocalizer<MainLayout> Localizer { get; set; }
     [Inject] public required NavigationManager NavManager { get; set; }
 
     private string GetSelectedPageStyle(string href)
     {
-        return string.Empty;
-        //if(href.FirstOrDefault() == '/')
-        //{
-        //    href = href[1..];
-        //}
-        //var path = NavManager.Uri.Replace(NavManager.BaseUri, string.Empty);
-
-        //if (path[0..href.Length] == href)
-        //{
-        //    return $"background-color: var(--mud-palette-primary-darken);";
-        //}
-        //else
-        //{
-        //    return "";
-        //}
+        if (NavManager.IsIncludedInCurrentUri(href))
+        {
+            return "background-color: var(--mud-palette-primary-darken);";
+        }
+        else
+        {
+            return string.Empty;
+        }
         
     }
 }
