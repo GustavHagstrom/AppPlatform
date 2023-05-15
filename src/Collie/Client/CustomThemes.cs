@@ -8,9 +8,12 @@ public static class CustomThemes
     {
         Palette = new PaletteLight
         {
-            Primary = Colors.Blue.Darken1,
-            PrimaryLighten = Colors.Blue.Lighten1,
-            PrimaryDarken = Colors.Blue.Darken2,
+            //Primary = Colors.Blue.Darken1,
+            //PrimaryLighten = Colors.Blue.Lighten1,
+            //PrimaryDarken = Colors.Blue.Darken2,
+            Primary = Colors.Blue.Darken2,
+            PrimaryLighten = Colors.Blue.Darken1,
+            PrimaryDarken = Colors.Blue.Darken3,
         },
         PaletteDark = new PaletteDark
         {

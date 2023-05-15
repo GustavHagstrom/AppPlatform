@@ -4,17 +4,14 @@
 
 <AuthorizeView>
     <Authorized>
-        Hello, @context.User.Identity?.Name!
-        <button class="nav-link btn btn-link" @onclick="BeginLogOut">Log out</button>
+        <MudText Typo="Typo.subtitle2" Class="align-self-center">@context.User.Identity?.Name</MudText>
+        <MudButton Href="authentication/logout" Class="px-4" Variant="Variant.Text" Color="Color.Inherit" StartIcon="@Icons.Material.Sharp.Logout">@Localizer["Logga ut"]</MudButton>
     </Authorized>
     <NotAuthorized>
-        <a class="mud-theme-primary" href="authentication/login">Log in</a>
+        <MudButton Href="authentication/login" Class="px-4" Variant="Variant.Text" Color="Color.Inherit" StartIcon="@Icons.Material.Sharp.Login">@Localizer["Logga in"]</MudButton>
     </NotAuthorized>
 </AuthorizeView>
 
 @code{
-    public void BeginLogOut()
-    {
-        Navigation.NavigateToLogout("authentication/logout");
-    }
+    [Inject] public required IStringLocalizer<LoginDisplay> Localizer { get; set; }
 }

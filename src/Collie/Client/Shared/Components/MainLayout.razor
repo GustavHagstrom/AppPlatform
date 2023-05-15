@@ -5,31 +5,54 @@
 <MudSnackbarProvider />
 
 
-<div class="pr-2 d-flex align-stretch mud-theme-primary mud-elevation-2" style="height: 40px;">
-    <MudText Class="pl-4 pr-2 align-self-center" Typo="Typo.h6">Collie</MudText>
-    <MudDivider Light="false" Vertical="true" FlexItem="true" Class="my-2 mx-4"/>
-    <MudButton Href="/dashboard" Class="px-4" Variant="Variant.Text" Color="Color.Inherit" Style="@GetSelectedPageStyle("/dashboard")" StartIcon="@Icons.Material.Sharp.Dashboard">@Localizer["Instrumentpanel"]</MudButton>
-    <MudButton Href="/orders" Class="px-4" Variant="Variant.Text" Color="Color.Inherit" Style="@GetSelectedPageStyle("/orders")" StartIcon="@Icons.Material.Sharp.ShoppingCart">@Localizer["Inköp"]</MudButton>
-    <MudButton Href="/projects" Class="px-4" Variant="Variant.Text" Color="Color.Inherit" Style="@GetSelectedPageStyle("/projects")" StartIcon="@Icons.Material.Sharp.RocketLaunch">@Localizer["Projekt"]</MudButton>
-    <MudButton Href="/suppliers" Class="px-4" Variant="Variant.Text" Color="Color.Inherit" Style="@GetSelectedPageStyle("/suppliers")" StartIcon="@Icons.Material.Sharp.LocalShipping">@Localizer["Leverantörer"]</MudButton>
-    <MudButton Href="/settings" Class="px-4" Variant="Variant.Text" Color="Color.Inherit" Style="@GetSelectedPageStyle("/settings")" StartIcon="@Icons.Material.Sharp.Settings">@Localizer["Inställningar"]</MudButton>
+<div class="d-flex align-stretch mud-elevation-3" style="height: @AppBarHeight; position: fixed; width: 100%; z-index: 1000; background-color: var(--mud-palette-background); color: var(--mud-palette-primary)">
+    
+    <h1 Class="px-4 align-self-center mud-primary-text">Collie</h1>
+    <MudDivider Light="false" Vertical="true" FlexItem="true" Class="my-2 mr-2" />
+
+    <MudTooltip Text="@Localizer["Intrumentpanel"]" RootClass="align-self-center">
+        <MudButton Href="/dashboard" Class="py-1 px-3" Variant="Variant.Text" Color="Color.Inherit" Style="@($"{GetSelectedPageStyle("/dashboard")}; min-width: 10px")">
+            <MudIcon Icon="@Icons.Material.Sharp.Dashboard" />
+        </MudButton>
+    </MudTooltip>
+    <MudTooltip Text="@Localizer["Inköp"]" RootClass="align-self-center">
+        <MudButton Href="/orders" Class="py-1 px-3" Variant="Variant.Text" Color="Color.Inherit" Style="@($"{GetSelectedPageStyle("/orders")}; min-width: 10px")">
+            <MudIcon Icon="@Icons.Material.Sharp.ShoppingCart" />
+        </MudButton>
+    </MudTooltip>
+    <MudTooltip Text="@Localizer["Projekt"]" RootClass="align-self-center">
+        <MudButton Href="/projects" Class="py-1 px-3" Variant="Variant.Text" Color="Color.Inherit" Style="@($"{GetSelectedPageStyle("/projects")}; min-width: 10px")">
+        <MudIcon Icon="@Icons.Material.Sharp.House" />
+    </MudButton>
+    </MudTooltip>
+    <MudTooltip Text="@Localizer["Leverantörer"]" RootClass="align-self-center">
+        <MudButton Href="/suppliers" Class="py-1 px-3" Variant="Variant.Text" Color="Color.Inherit" Style="@($"{GetSelectedPageStyle("/suppliers")}; min-width: 10px")">
+            <MudIcon Icon="@Icons.Material.Sharp.LocalShipping" />
+        </MudButton>
+    </MudTooltip>
+    <MudTooltip Text="@Localizer["Inställningar"]" RootClass="align-self-center">
+        <MudButton Href="/settings" Class="py-1 px-3" Variant="Variant.Text" Color="Color.Inherit" Style="@($"{GetSelectedPageStyle("/settings")}; min-width: 10px")">
+            <MudIcon Icon="@Icons.Material.Sharp.Settings" />
+        </MudButton>
+    </MudTooltip>
     <MudSpacer/>
     <LoginDisplay />
 </div>
 
-<div class="px-2">
+<div style="position: fixed; height: calc(100% - @AppBarHeight); width: 100%; overflow: scroll; top: @AppBarHeight; background-color: var(--mud-palette-background-grey);">
     @Body
 </div>
 
 @code{
     [Inject] public required IStringLocalizer<MainLayout> Localizer { get; set; }
     [Inject] public required NavigationManager NavManager { get; set; }
+    public string AppBarHeight { get; set; } = "50px";
 
     private string GetSelectedPageStyle(string href)
     {
         if (NavManager.IsIncludedInCurrentUri(href))
         {
-            return "background-color: var(--mud-palette-primary-darken);";
+            return $"background-color: var(--mud-palette-action-disabled-background); color: var(--mud-palette-primary);";
         }
         else
         {
