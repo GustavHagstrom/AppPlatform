@@ -3,48 +3,24 @@
 <PageLayout>
     <NavigationContent>
         <MudStack Spacing="0">
-            <MudButton OnClick="() => SelectedView = ViewSelection.One" Class="py-1 justify-start" Variant="Variant.Text" StartIcon="@Icons.Material.Sharp.AccountBox" Style="@SelectedViewStyle(ViewSelection.One)">View 1</MudButton>
-            <MudButton OnClick="() => SelectedView = ViewSelection.Two" Class="py-1 justify-start" Variant="Variant.Text" StartIcon="@Icons.Material.Sharp.Dock" Style="@SelectedViewStyle(ViewSelection.Two)">View 2</MudButton>
-            <MudButton OnClick="() => SelectedView = ViewSelection.Three" Class="py-1 justify-start" Variant="Variant.Text" StartIcon="@Icons.Material.Sharp.Key" Style="@SelectedViewStyle(ViewSelection.Three)">View 3</MudButton>
+            <MudButton Href="orders/OrderSubPage1" Class="py-1 px-3 justify-start" Variant="Variant.Text" StartIcon="@Icons.Material.Sharp.AccountBox" Style="@StyleService.CreateNavigationButtonStyle("orders/OrderSubPage1")">Status</MudButton>
+            <MudButton Href="orders/OrderSubPage2" Class="py-1 px-3 justify-start" Variant="Variant.Text" StartIcon="@Icons.Material.Sharp.AccountBox" Style="@StyleService.CreateNavigationButtonStyle("orders/OrderSubPage2")">Status</MudButton>
+            <MudButton Href="orders/OrderSubPage3" Class="py-1 px-3 justify-start" Variant="Variant.Text" StartIcon="@Icons.Material.Sharp.AccountBox" Style="@StyleService.CreateNavigationButtonStyle("orders/OrderSubPage3")">Status</MudButton>
         </MudStack>
-        
     </NavigationContent>
     <ChildContent>
-        @switch (SelectedView)
+        @if (ChildContent is not null)
         {
-            case ViewSelection.One:
-                <View1/>
-                break;
-            case ViewSelection.Two:
-                <View2 />
-                break;
-            case ViewSelection.Three:
-                <View3 />
-                break;
-            default:
-                break;
+            @ChildContent
+        }
+        else
+        {
+            <div>this is from the /orders page</div>
         }
     </ChildContent>
 </PageLayout>
 
-@code{
-    private enum ViewSelection
-    {
-        One,
-        Two,
-        Three
-    }
-    private ViewSelection SelectedView { get; set; } = ViewSelection.One;
-    private string SelectedViewStyle(ViewSelection viewSelection)
-    {
-        if (viewSelection == SelectedView)
-        {
-            return $"background-color: var(--mud-palette-action-disabled-background); color: var(--mud-palette-primary);";
-        }
-        else
-        {
-            return string.Empty;
-        }
-
-    }
+@code {
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+    [Inject] public required StyleService StyleService { get; set; }
 }
