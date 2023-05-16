@@ -1,6 +1,6 @@
 ﻿@inherits LayoutComponentBase
 
-<MudThemeProvider Theme="CustomThemes.CollieStandard" />
+<MudThemeProvider Theme="CustomThemes.CollieStandard" IsDarkMode="false" DefaultScrollbar="true" />
 <MudDialogProvider />
 <MudSnackbarProvider />
 
@@ -37,7 +37,7 @@
     <LoginDisplay />
 </div>
 
-<div style="position: fixed; height: calc(100% - @AppBarHeight); width: 100%; overflow: scroll; top: @AppBarHeight; background-color: var(--mud-palette-background-grey);">
+<div style="position: fixed; height: calc(100% - @AppBarHeight); width: 100%; top: @AppBarHeight; background-color: var(--mud-palette-background-grey);">
     @Body
 </div>
 

@@ -1,8 +1,11 @@
-﻿<div class="d-flex pa-4" style="height: 100%;">
-    <div style="min-width: 150px;">
-        @NavigationContent
-    </div>
-    <div class="ml-4" style="height: 100%; width: 100%; overflow: scroll">
+﻿<div class="d-flex" style="height: 100%;">
+    @if(NavigationContent is not null)
+    {
+        <div class="pa-4" style="height: 100%; overflow: auto">
+            @NavigationContent
+        </div>
+    }
+    <div class="py-4" style="height: 100%; width: 100%; overflow: auto">
         @ChildContent
     </div>
 </div>
