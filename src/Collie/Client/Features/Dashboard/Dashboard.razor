@@ -1,8 +1,9 @@
 ﻿@page "/dashboard"
 
-<PageLayout>
-    <MudContainer Class="mt-8 px-8" MaxWidth="MaxWidth.False">
-        <MudGrid>
+<PageLayout >
+    <ChildContent>
+        <MudContainer MaxWidth="MaxWidth.False" Class="pa-0">
+            <MudGrid>
             <MudItem xs="12" sm="6" md="4">
                 <MudPaper Elevation="2" Class="pa-4" Style="height: 200px;"></MudPaper>
             </MudItem>
@@ -35,5 +36,6 @@
                 <MudPaper Elevation="2" Class="pa-4" Style="height: 200px;"></MudPaper>
             </MudItem>
         </MudGrid>
-    </MudContainer>
+        </MudContainer>
+    </ChildContent>
 </PageLayout>

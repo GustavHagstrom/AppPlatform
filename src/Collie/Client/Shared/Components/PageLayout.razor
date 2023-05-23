@@ -1,11 +1,12 @@
 ﻿<div class="d-flex" style="height: 100%;">
     @if(NavigationContent is not null)
     {
-        <div class="pa-4" style="height: 100%; overflow: auto">
+        <div class="pa-4" style="height: 100%;">
             @NavigationContent
         </div>
+        <MudDivider Vertical="true"/>
     }
-    <div class="py-4" style="height: 100%; width: 100%; overflow: auto">
+    <div class="pa-4" style="height: 100%; width: 100%; overflow: auto">
         @ChildContent
     </div>
 </div>

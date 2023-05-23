@@ -11,6 +11,7 @@ public class StyleService
     {
         _navigationManager = navigationManager;
     }
+    public string AppBarHeight { get; set; } = "50px";
     public string CreateNavigationButtonStyle(string relativeButtonLink)
     {
         if (_navigationManager.IsIncludedInCurrentUri(relativeButtonLink))

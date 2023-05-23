@@ -10,7 +10,7 @@ public static class NavigationManagerExtensions
         {
             url = url[1..];
         }
-        var path = navManager.Uri.Replace(navManager.BaseUri, string.Empty);
-        return path.StartsWith(url);
+        var path = navManager.Uri.Replace(navManager.BaseUri, string.Empty).ToLower();
+        return path.StartsWith(url.ToLower());
     }
 }
