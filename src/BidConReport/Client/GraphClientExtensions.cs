@@ -1,34 +1,39 @@
-﻿using System.Net.Http.Headers;
-using Microsoft.AspNetCore.Components.WebAssembly.Authentication;
+﻿using Microsoft.AspNetCore.Components.WebAssembly.Authentication;
 using Microsoft.Authentication.WebAssembly.Msal.Models;
 using Microsoft.Graph;
+using Microsoft.IdentityModel.Tokens;
+using Microsoft.Kiota.Abstractions;
+using Microsoft.Kiota.Abstractions.Authentication;
+using IAccessTokenProvider =
+    Microsoft.AspNetCore.Components.WebAssembly.Authentication.IAccessTokenProvider;
 
-namespace BidConReport.Client;
-public static class GraphClientExtensions
+internal static class GraphClientExtensions
 {
     public static IServiceCollection AddGraphClient(
-        this IServiceCollection services, string? baseUrl, List<string>? scopes)
+            this IServiceCollection services, string? baseUrl, List<string>? scopes)
     {
+        if (string.IsNullOrEmpty(baseUrl) || scopes.IsNullOrEmpty())
+        {
+            return services;
+        }
+
         services.Configure<RemoteAuthenticationOptions<MsalProviderOptions>>(
             options =>
             {
                 scopes?.ForEach((scope) =>
                 {
-                    options.ProviderOptions.AdditionalScopesToConsent.Add(scope);
+                    options.ProviderOptions.DefaultAccessTokenScopes.Add(scope);
                 });
             });
 
         services.AddScoped<IAuthenticationProvider, GraphAuthenticationProvider>();
 
-        services.AddScoped<IHttpProvider, HttpClientHttpProvider>(sp =>
-            new HttpClientHttpProvider(new HttpClient()));
-
         services.AddScoped(sp =>
         {
             return new GraphServiceClient(
-                baseUrl,
+                new HttpClient(),
                 sp.GetRequiredService<IAuthenticationProvider>(),
-                sp.GetRequiredService<IHttpProvider>());
+                baseUrl);
         });
 
         return services;
@@ -47,49 +52,22 @@ public static class GraphClientExtensions
 
         public IAccessTokenProvider TokenProvider { get; }
 
-        public async Task AuthenticateRequestAsync(HttpRequestMessage request)
+        public async Task AuthenticateRequestAsync(RequestInformation request,
+            Dictionary<string, object>? additionalAuthenticationContext = null,
+            CancellationToken cancellationToken = default)
         {
             var result = await TokenProvider.RequestAccessToken(
                 new AccessTokenRequestOptions()
                 {
-                    Scopes = config.GetSection("MicrosoftGraph:Scopes").Get<string[]>()
+                    Scopes =
+                        config.GetSection("MicrosoftGraph:Scopes").Get<string[]>()
                 });
 
             if (result.TryGetToken(out var token))
             {
-                request.Headers.Authorization ??= new AuthenticationHeaderValue(
-                    "Bearer", token.Value);
+                request.Headers.Add("Authorization",
+                    $"{CoreConstants.Headers.Bearer} {token.Value}");
             }
-        }
-    }
-
-    private class HttpClientHttpProvider : IHttpProvider
-    {
-        private readonly HttpClient _client;
-
-        public HttpClientHttpProvider(HttpClient client)
-        {
-            _client = client;
-        }
-
-        public ISerializer Serializer { get; } = new Serializer();
-
-        public TimeSpan OverallTimeout { get; set; } = TimeSpan.FromSeconds(300);
-
-        public Task<HttpResponseMessage> SendAsync(HttpRequestMessage request)
-        {
-            return _client.SendAsync(request);
-        }
-
-        public Task<HttpResponseMessage> SendAsync(HttpRequestMessage request,
-            HttpCompletionOption completionOption,
-            CancellationToken cancellationToken)
-        {
-            return _client.SendAsync(request, completionOption, cancellationToken);
-        }
-
-        public void Dispose()
-        {
         }
     }
 }

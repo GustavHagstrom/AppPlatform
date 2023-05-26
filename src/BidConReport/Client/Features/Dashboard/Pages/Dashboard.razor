@@ -64,13 +64,13 @@
     {
         //var me = await GraphClient.Me.Request().GetAsync();
         //var p = me.Photo;
-        var photo = await GraphClient.Me.Photo.Request().GetAsync();
-        if(photo.Height is not null)
+        var photo = await GraphClient.Me.Photo.GetAsync();
+        if(photo!.Height is not null)
         {
             using (var ms = new MemoryStream())
             {
-                var photoStream = await GraphClient.Me.Photo.Content.Request().GetAsync();
-                photoStream.CopyTo(ms);
+                var photoStream = await GraphClient.Me.Photo.Content.GetAsync();
+                photoStream!.CopyTo(ms);
                 var photoBytes = ms.ToArray();
                 var photoBase64 = Convert.ToBase64String(photoBytes);
                 ImageString = $"data:image/png;base64,{photoBase64}";

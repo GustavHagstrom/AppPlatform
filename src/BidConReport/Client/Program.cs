@@ -23,11 +23,8 @@ builder.Services.AddHttpClient(AppConstants.BackendHttpClientName, client => cli
 builder.Services.AddScoped(sp => sp.GetRequiredService<IHttpClientFactory>().CreateClient(AppConstants.BackendHttpClientName));
 
 
-var baseUrl = string.Join("/",
-    builder.Configuration.GetSection("MicrosoftGraph")["BaseUrl"],
-    builder.Configuration.GetSection("MicrosoftGraph")["Version"]);
-var scopes = builder.Configuration.GetSection("MicrosoftGraph:Scopes")
-    .Get<List<string>>();
+var baseUrl = builder.Configuration.GetSection("MicrosoftGraph")["BaseUrl"];
+var scopes = builder.Configuration.GetSection("MicrosoftGraph:Scopes").Get<List<string>>();
 builder.Services.AddGraphClient(baseUrl, scopes);
 
 
@@ -58,6 +55,5 @@ builder.Services.AddMsalAuthentication(options =>
     options.ProviderOptions.DefaultAccessTokenScopes.Add(builder.Configuration.GetSection("ServerApi")["Scopes"]!);
     options.ProviderOptions.LoginMode = "redirect";
 });
-builder.Services.AddScoped<AuthenticationStateProvider, CustomAuthStateProvider>();
 
 await builder.Build().RunAsync();

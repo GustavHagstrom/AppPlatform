@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Components.WebAssembly.Authentication;
 using Microsoft.AspNetCore.Components;
 using MudBlazor;
 using Microsoft.Graph;
+using Microsoft.AspNetCore.Components.Authorization;
 
 namespace BidConReport.Client.Features.Authentication.Components;
 
@@ -12,6 +13,7 @@ public partial class LoginDisplay : IRecipient<AuthenticationChangedMessage>
     [Inject] public required GraphServiceClient GraphClient { get; set; }
     [Inject] public required NavigationManager NavigationManager { get; set; }
     [CascadingParameter] public required MudTheme Theme { get; set; }
+    [Inject] public required AuthenticationStateProvider AuthenticationStateProvider { get; set; }
     public bool IsOpen { get; set; } = false;
     public string PhotoString { get; set; } = string.Empty;
 
@@ -52,12 +54,15 @@ public partial class LoginDisplay : IRecipient<AuthenticationChangedMessage>
     }
     public async Task GetPhotoStringAsync()
     {
-        var photo = await GraphClient.Me.Photo.Request().GetAsync();
-        if (!photo.AdditionalData.ContainsKey("error"))
+        var state = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+        if (state is null) return;
+        if (state.User.Identity!.IsAuthenticated == false) return;
+        var photo = await GraphClient.Me.Photo.GetAsync();
+        if (!photo!.AdditionalData.ContainsKey("error"))
         {
             var ms = new MemoryStream();
-            var photoStream = await GraphClient.Me.Photo.Content.Request().GetAsync();
-            photoStream.CopyTo(ms);
+            var photoStream = await GraphClient.Me.Photo.Content.GetAsync();
+            photoStream!.CopyTo(ms);
             var photoBytes = ms.ToArray();
             var photoBase64 = Convert.ToBase64String(photoBytes);
             PhotoString = $"data:image/png;base64,{photoBase64}";

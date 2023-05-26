@@ -1,0 +1,17 @@
+﻿@using Microsoft.AspNetCore.Components.Authorization
+@using Microsoft.AspNetCore.Components.WebAssembly.Authentication
+@inject NavigationManager Navigation
+
+<AuthorizeView>
+    <Authorized>
+        <MudText Typo="Typo.subtitle2" Class="align-self-center">@context.User.Identity?.Name</MudText>
+        <MudButton Href="authentication/logout" Class="px-4" Variant="Variant.Text" Color="Color.Inherit" StartIcon="@Icons.Material.Sharp.Logout">@Localizer["Logga ut"]</MudButton>
+    </Authorized>
+    <NotAuthorized>
+        <MudButton Href="authentication/login" Class="px-4" Variant="Variant.Text" Color="Color.Inherit" StartIcon="@Icons.Material.Sharp.Login">@Localizer["Logga in"]</MudButton>
+    </NotAuthorized>
+</AuthorizeView>
+
+@code{
+    [Inject] public required IStringLocalizer<LoginDisplay> Localizer { get; set; }
+}

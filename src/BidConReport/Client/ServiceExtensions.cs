@@ -1,6 +1,7 @@
 ﻿using BidConReport.Client.Features.Authentication;
 using BidConReport.Client.Features.Import.Services;
 using BidConReport.Client.Shared.StateContainers;
+using Microsoft.AspNetCore.Components.Authorization;
 
 namespace BidConReport.Client;
 
@@ -10,11 +11,10 @@ public static class ServiceExtensions
     {
         services.AddTransient<IBidConImporterService, BidConImporterService>();
         services.AddTransient<IImportSettingsService, ImportSettingsService>();
-
     }
     public static void UseAuthenticationFeature(this IServiceCollection services)
     {
-
+        services.AddScoped<AuthenticationStateProvider, CustomAuthStateProvider>();
     }
     public static void UseSharedStateContainers(this IServiceCollection services)
     {
