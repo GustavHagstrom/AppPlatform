@@ -18,6 +18,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\SharedWebLibrary\SharedWebLibrary.csproj" />
     <ProjectReference Include="..\Shared\Collie.Shared.csproj" />
   </ItemGroup>
 

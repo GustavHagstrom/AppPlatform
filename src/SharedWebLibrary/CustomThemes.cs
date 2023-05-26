@@ -1,6 +1,6 @@
 ﻿using MudBlazor;
 
-namespace Collie.Client;
+namespace SharedWebLibrary;
 
 public static class CustomThemes
 {
@@ -21,7 +21,7 @@ public static class CustomThemes
         LayoutProperties = new LayoutProperties
         {
             DefaultBorderRadius = "0",
-            
+
         },
         PseudoCss = new PseudoCss
         {
@@ -29,7 +29,7 @@ public static class CustomThemes
         },
         Shadows = new Shadow
         {
-            
+
         },
         Typography = new Typography
         {

@@ -13,47 +13,20 @@
                        CloseOnEscapeKey="true" />
     <MudSnackbarProvider />
 
-
-    <MudLayout>
-
-        <MudAppBar Dense="false" DisableGutters="true">
-            <MudButton Class="px-3 align-self-stretch" Style="min-width: 20px" OnClick="DrawerToggle" >
-                <MudIcon Icon="@Icons.Material.Sharp.Menu" Style="@($"color: {Theme.Palette.AppbarText}")" />
-            </MudButton>
-            @*<MudIconButton Icon="@Icons.Material.Sharp.Menu" Color="Color.Inherit" OnClick="DrawerToggle" Class="align-self-stretch"/>*@
-            <MudText Typo="Typo.h5" Class="ml-3" Style="@($"color: {Theme.Palette.AppbarText}")">LB Portalen</MudText>
-
-            <MudSpacer />
-
-            <LoginDisplay />
-
-        </MudAppBar>
-
-        <MudDrawer @bind-Open="_drawerOpen" ClipMode="DrawerClipMode.Always" Elevation="4">
-            <MudNavMenu>
-                <MudNavLink Href="/dashboard" Icon="@Icons.Material.Sharp.Home" IconColor="Color.Primary">@Localizer["Startsida"]</MudNavLink>
-                <MudNavLink Href="/import" Icon="@Icons.Material.Sharp.Article" IconColor="Color.Tertiary">@Localizer["Importera från BidCon"]</MudNavLink>
-            </MudNavMenu>
-        </MudDrawer>
-       
-        <MudMainContent>
-            <div>
-                @Body
-            </div>
-
-            <MudScrollToTop>
-                <MudIconButton Variant="Variant.Filled" Size="Size.Large" Class="rounded-circle pa-2" Icon="@Icons.Material.Sharp.ArrowUpward" Color="Color.Success"/>
-            </MudScrollToTop>
-
-        </MudMainContent>
-    </MudLayout>
+    <AppBar Height="50px">
+        <a href="dashboard" class="align-self-center"><h1 Class="px-4 mud-primary-text">BidCon rapport</h1></a>
+    </AppBar>
+    <div style="position: fixed; height: calc(100% - 50px); width: 100%; top: 50px; background-color: var(--mud-palette-background-grey);">
+        @Body
+    </div>
+    
 
 
 
 
 </CascadingValue>
 @code {
-    public MudTheme Theme { get; set; } = CustomThemes.CustomStandardTheme;
+    public MudTheme Theme { get; set; } = SharedWebLibrary.CustomThemes.CollieStandard;
     [Inject] public required IStringLocalizer<MainLayout> Localizer { get; set; }
     bool _drawerOpen = true;
     //MudButton
