@@ -3,7 +3,7 @@
 
 <CascadingValue Value="Theme">
 
-    <MudThemeProvider Theme="Theme" />
+    <MudThemeProvider Theme="CustomThemes.CollieStandard" IsDarkMode="false" DefaultScrollbar="true" />
     <MudDialogProvider FullWidth="true"
                        MaxWidth="MaxWidth.ExtraSmall"
                        CloseButton="true"
@@ -15,6 +15,17 @@
 
     <AppBar Height="50px">
         <a href="dashboard" class="align-self-center"><h1 Class="px-4 mud-primary-text">BidCon rapport</h1></a>
+        <MudDivider Light="false" Vertical="true" FlexItem="true" Class="my-2 mr-2" />
+        <MudTooltip Text="@Localizer["Startsida"]" RootClass="align-self-center">
+            <MudButton Href="/dashboard" Class="py-1 px-3" Variant="Variant.Text" Color="Color.Inherit" Style="@StyleService.CreateNavigationButtonStyle("dashboard")">
+                <MudIcon Icon="@Icons.Material.Sharp.Dashboard" />
+            </MudButton>
+        </MudTooltip>
+        <MudTooltip Text="@Localizer["Importera från BidCon"]" RootClass="align-self-center">
+            <MudButton Href="/import" Class="py-1 px-3" Variant="Variant.Text" Color="Color.Inherit" Style="@StyleService.CreateNavigationButtonStyle("import")">
+                <MudIcon Icon="@Icons.Material.Sharp.Article" />
+            </MudButton>
+        </MudTooltip>
     </AppBar>
     <div style="position: fixed; height: calc(100% - 50px); width: 100%; top: 50px; background-color: var(--mud-palette-background-grey);">
         @Body
@@ -26,13 +37,8 @@
 
 </CascadingValue>
 @code {
-    public MudTheme Theme { get; set; } = SharedWebLibrary.CustomThemes.CollieStandard;
     [Inject] public required IStringLocalizer<MainLayout> Localizer { get; set; }
-    bool _drawerOpen = true;
-    //MudButton
+    [Inject] public required StyleService StyleService { get; set; }
 
-    void DrawerToggle()
-    {
-        _drawerOpen = !_drawerOpen;
-    }
+    public MudTheme Theme { get; set; } = CustomThemes.CollieStandard;
 }

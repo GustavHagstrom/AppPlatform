@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Microsoft.Extensions.Localization;
 using MudBlazor;
 using MudBlazor.Services;
+using SharedWebLibrary;
 
 var builder = WebAssemblyHostBuilder.CreateDefault(args);
 builder.RootComponents.Add<App>("#app");
@@ -48,6 +49,7 @@ builder.Services.AddLocalization();
 builder.Services.UseImportFeature();
 builder.Services.UseAuthenticationFeature();
 builder.Services.UseSharedStateContainers();
+builder.Services.UseSharedWebLibrary();
 
 builder.Services.AddMsalAuthentication(options =>
 {

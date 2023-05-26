@@ -1,7 +1,7 @@
-﻿using Collie.Client.Extensions;
-using Microsoft.AspNetCore.Components;
+﻿using Microsoft.AspNetCore.Components;
+using SharedWebLibrary.Extensions;
 
-namespace Collie.Client.Shared.Helpers;
+namespace SharedWebLibrary.Services;
 
 public class StyleService
 {
@@ -12,11 +12,12 @@ public class StyleService
         _navigationManager = navigationManager;
     }
     public string AppBarHeight { get; set; } = "50px";
+    public string ActivePageStyle { get; set; } = "background-color: var(--mud-palette-action-disabled-background); color: var(--mud-palette-primary); min-width: 10px";
     public string CreateNavigationButtonStyle(string relativeButtonLink)
     {
         if (_navigationManager.IsIncludedInCurrentUri(relativeButtonLink))
         {
-            return $"background-color: var(--mud-palette-action-disabled-background); color: var(--mud-palette-primary); min-width: 10px";
+            return ActivePageStyle;
         }
         else
         {

@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Components;
 
-namespace Collie.Client.Extensions;
+namespace SharedWebLibrary.Extensions;
 
 public static class NavigationManagerExtensions
 {

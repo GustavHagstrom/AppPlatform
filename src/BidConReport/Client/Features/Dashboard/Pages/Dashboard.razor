@@ -1,84 +1,64 @@
 ﻿@page "/dashboard"
 @attribute [Authorize]
-@inject GraphServiceClient GraphClient
 
+<PageLayout >
+    <MudGrid Class="pt-4 px-4">
+        <MudItem>
+            <MudPaper Elevation="2">
+                <CurrentSession />
+            </MudPaper>
+        </MudItem>
+        <MudItem xs="12" sm="6" md="4">
+            <MudPaper Elevation="2" Class="pa-4" Style="height: 200px;">
+            </MudPaper>
+        </MudItem>
+        <MudItem xs="12" sm="12" md="4">
+            <MudPaper Elevation="2" Class="pa-4" Style="height: 200px;">
+                <h6>@ImageString</h6>
+            </MudPaper>
+        </MudItem>
+        <MudItem xs="12" sm="6">
+            <MudGrid>
+                <MudItem xs="12">
+                    <MudPaper Elevation="2" Class="pa-4" Style="min-height: 200px;">
+                        <MudButton OnClick="Click">Test</MudButton>
+                        <MudText Typo="Typo.h6">@Result</MudText>
+                    </MudPaper>
+                </MudItem>
+                <MudItem xs="12">
+                    <MudPaper Elevation="2" Class="pa-4" Style="height: 200px;"></MudPaper>
+                </MudItem>
+            </MudGrid>
+        </MudItem>
+        <MudItem xs="12" sm="6">
+            <MudPaper Elevation="2" Class="pa-4" Style="height: 100%"></MudPaper>
+        </MudItem>
+        <MudItem xs="12" sm="6" md="4">
+            <MudPaper Elevation="2" Class="pa-4" Style="height: 200px;"></MudPaper>
+        </MudItem>
+        <MudItem xs="12" sm="6" md="4">
+            <MudPaper Elevation="2" Class="pa-4" Style="height: 200px;"></MudPaper>
+        </MudItem>
+        <MudItem xs="12" sm="12" md="4">
+            <MudPaper Elevation="2" Class="pa-4" Style="height: 200px;"></MudPaper>
+        </MudItem>
+    </MudGrid>
+    
+</PageLayout>
 
-<MudGrid Class="pt-4 px-4">
-    <MudItem>
-        <MudPaper Elevation="2">
-            <CurrentSession />
-        </MudPaper>
-    </MudItem>
-    <MudItem xs="12" sm="6" md="4">
-        <MudPaper Elevation="2" Class="pa-4" Style="height: 200px;">
-        </MudPaper>
-    </MudItem>
-    <MudItem xs="12" sm="12" md="4">
-        <MudPaper Elevation="2" Class="pa-4" Style="height: 200px;">
-            <h6>@ImageString</h6>
-        </MudPaper>
-    </MudItem>
-    <MudItem xs="12" sm="6">
-        <MudGrid>
-            <MudItem xs="12">
-                <MudPaper Elevation="2" Class="pa-4" Style="min-height: 200px;">
-                    <MudButton OnClick="Click">Test</MudButton>
-                    <MudText Typo="Typo.h6">@Result</MudText>
-                </MudPaper>
-            </MudItem>
-            <MudItem xs="12">
-                <MudPaper Elevation="2" Class="pa-4" Style="height: 200px;"></MudPaper>
-            </MudItem>
-        </MudGrid>
-    </MudItem>
-    <MudItem xs="12" sm="6">
-        <MudPaper Elevation="2" Class="pa-4" Style="height: 100%"></MudPaper>
-    </MudItem>
-    <MudItem xs="12" sm="6" md="4">
-        <MudPaper Elevation="2" Class="pa-4" Style="height: 200px;"></MudPaper>
-    </MudItem>
-    <MudItem xs="12" sm="6" md="4">
-        <MudPaper Elevation="2" Class="pa-4" Style="height: 200px;"></MudPaper>
-    </MudItem>
-    <MudItem xs="12" sm="12" md="4">
-        <MudPaper Elevation="2" Class="pa-4" Style="height: 200px;"></MudPaper>
-    </MudItem>
-</MudGrid>
 
 
 @code {
     [Inject] public required HttpClient HttpClient { get; set; }
     public required string Result { get; set; } = "";
     public required string ImageString { get; set; } = "";
-    protected override async Task OnInitializedAsync()
-    {
-        await GetPhoto();
-    }
+
     public async Task Click()
     {
         var result = await HttpClient.GetAsync("/api/authorization/roles");
         Result = await result.Content.ReadAsStringAsync();
         StateHasChanged();
     }
-    public async Task GetPhoto()
-    {
-        //var me = await GraphClient.Me.Request().GetAsync();
-        //var p = me.Photo;
-        var photo = await GraphClient.Me.Photo.GetAsync();
-        if(photo!.Height is not null)
-        {
-            using (var ms = new MemoryStream())
-            {
-                var photoStream = await GraphClient.Me.Photo.Content.GetAsync();
-                photoStream!.CopyTo(ms);
-                var photoBytes = ms.ToArray();
-                var photoBase64 = Convert.ToBase64String(photoBytes);
-                ImageString = $"data:image/png;base64,{photoBase64}";
-            }
-        }
-        
 
-        StateHasChanged();
-    }
 }
 
