@@ -21,6 +21,7 @@ builder.Services.AddHttpClient(AppConstants.BidConApiHttpClientName, client =>
 });
 builder.Services.AddHttpClient(AppConstants.BackendHttpClientName, client => client.BaseAddress = new Uri(builder.HostEnvironment.BaseAddress))
     .AddHttpMessageHandler<BaseAddressAuthorizationMessageHandler>();
+
 builder.Services.AddScoped(sp => sp.GetRequiredService<IHttpClientFactory>().CreateClient(AppConstants.BackendHttpClientName));
 
 

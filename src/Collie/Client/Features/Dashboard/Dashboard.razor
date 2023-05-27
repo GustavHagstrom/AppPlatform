@@ -1,14 +1,37 @@
 ﻿@page "/dashboard"
+@using System.Security.Claims;
+@using Collie.Shared;
 
 <PageLayout >
     <ChildContent>
         <MudContainer MaxWidth="MaxWidth.False" Class="pa-0">
             <MudGrid>
             <MudItem xs="12" sm="6" md="4">
-                <MudPaper Elevation="2" Class="pa-4" Style="height: 200px;"></MudPaper>
+                <MudPaper Elevation="2" Class="pa-4" Style="min-height: 200px;">
+                    @foreach (var item in Claims)
+                    {
+                        <h4>@item.Type</h4>
+                        <h6 class="mb-2">@item.Value</h6>
+                    }
+                </MudPaper>
             </MudItem>
             <MudItem xs="12" sm="6" md="4">
-                <MudPaper Elevation="2" Class="pa-4" Style="height: 200px;"></MudPaper>
+                <MudPaper Elevation="2" Class="pa-4" Style="min-height: 200px;">
+                        <AuthorizeView>
+                            <Authorized>
+                                <dl>
+                                    @foreach (var claim in @context.User.Claims)
+                                    {
+                                        <h4>@claim.Type</h4>
+                                        <h6>@claim.Value</h6>
+                                    }
+                                </dl>
+                            </Authorized>
+                            <NotAuthorized>
+                                <h3>No session</h3>
+                            </NotAuthorized>
+                        </AuthorizeView>
+                </MudPaper>
             </MudItem>
             <MudItem xs="12" sm="12" md="4">
                 <MudPaper Elevation="2" Class="pa-4" Style="height: 200px;"></MudPaper>
@@ -39,3 +62,27 @@
         </MudContainer>
     </ChildContent>
 </PageLayout>
+
+@code{
+
+    [Inject] public required HttpClient _httpClient { get; set; }
+    public List<ClaimStrings> Claims { get; set; } = new List<ClaimStrings>();
+    public string Data { get; set; } = string.Empty;
+    protected override async Task OnInitializedAsync()
+    {
+        var result = await _httpClient.GetAsync("api/test/Claims");
+        result.EnsureSuccessStatusCode();
+
+        //var data = await result.Content.ReadAsStringAsync();
+        var claims = await result.Content.ReadFromJsonAsync<List<ClaimStrings>>();
+        if (claims is not null)
+        {
+            //Data = data;
+            Claims.Clear();
+            Claims.AddRange(claims);
+            StateHasChanged();
+        }   
+        
+        
+    }
+}
