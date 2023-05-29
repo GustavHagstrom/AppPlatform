@@ -27,12 +27,9 @@ public partial class LoginDisplay : IRecipient<AuthenticationChangedMessage>
     }
     public void ToggleOpen()
     {
-        if (IsOpen)
-            IsOpen = false;
-        else
-            IsOpen = true;
+        IsOpen = !IsOpen;
     }
-    public string GetInitials(string? name)
+    public static string GetInitials(string? name)
     {
         if (name is null) return string.Empty;
         var names = name.Split(" ");

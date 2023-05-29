@@ -1,5 +1,5 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
-using SharedWebLibrary.Services;
+using SharedWebLibrary.Shared.Services;
 
 namespace SharedWebLibrary;
 public static class ServiceExtensions

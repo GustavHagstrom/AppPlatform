@@ -2,17 +2,22 @@
 @using System.Security.Claims;
 @using Collie.Shared;
 
-<PageLayout >
+<PageLayout>
     <ChildContent>
         <MudContainer MaxWidth="MaxWidth.False" Class="pa-0">
             <MudGrid>
             <MudItem xs="12" sm="6" md="4">
                 <MudPaper Elevation="2" Class="pa-4" Style="min-height: 200px;">
-                    @foreach (var item in Claims)
-                    {
-                        <h4>@item.Type</h4>
-                        <h6 class="mb-2">@item.Value</h6>
-                    }
+                    <AuthorizeView>
+                        <Authorized>git status
+                            @foreach (var item in GetClaims())
+                            {
+                                <h4>@item.Type</h4>
+                                <h6 class="mb-2">@item.Value</h6>
+                            }
+                        </Authorized>
+                    </AuthorizeView>
+                    
                 </MudPaper>
             </MudItem>
             <MudItem xs="12" sm="6" md="4">
@@ -66,9 +71,9 @@
 @code{
 
     [Inject] public required HttpClient _httpClient { get; set; }
-    public List<ClaimStrings> Claims { get; set; } = new List<ClaimStrings>();
     public string Data { get; set; } = string.Empty;
-    protected override async Task OnInitializedAsync()
+
+    public async Task<List<ClaimStrings>> GetClaimsAsync()
     {
         var result = await _httpClient.GetAsync("api/test/Claims");
         result.EnsureSuccessStatusCode();
@@ -77,12 +82,27 @@
         var claims = await result.Content.ReadFromJsonAsync<List<ClaimStrings>>();
         if (claims is not null)
         {
-            //Data = data;
-            Claims.Clear();
-            Claims.AddRange(claims);
-            StateHasChanged();
-        }   
-        
-        
+            return claims;
+        }
+        else
+        {
+            return new List<ClaimStrings>();
+        }
+    }
+    public  List<ClaimStrings> GetClaims()
+    {
+        var result = _httpClient.GetAsync("api/test/Claims").Result;
+        result.EnsureSuccessStatusCode();
+
+        //var data = await result.Content.ReadAsStringAsync();
+        var claims = result.Content.ReadFromJsonAsync<List<ClaimStrings>>().Result;
+        if (claims is not null)
+        {
+            return claims;
+        }
+        else
+        {
+            return new List<ClaimStrings>();
+        }
     }
 }

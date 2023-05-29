@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Components;
 using SharedWebLibrary.Extensions;
 
-namespace SharedWebLibrary.Services;
+namespace SharedWebLibrary.Shared.Services;
 
 public class StyleService
 {
