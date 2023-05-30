@@ -1,13 +1,13 @@
-﻿using BidConReport.Shared;
-using Microsoft.AspNetCore.Components;
+﻿using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.WebAssembly.Authentication;
 using Microsoft.Authentication.WebAssembly.Msal.Models;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.JSInterop;
 using System.Net.Http.Json;
 using System.Security.Claims;
 
-namespace BidConReport.Client.Features.Authentication;
+namespace SharedWasmLibrary.Features.Authentication;
 
 public class CustomAuthStateProvider : RemoteAuthenticationService<RemoteAuthenticationState, RemoteUserAccount, MsalProviderOptions>
 {
@@ -17,27 +17,36 @@ public class CustomAuthStateProvider : RemoteAuthenticationService<RemoteAuthent
     {
         _httpClientFactory = httpClientFactory;
     }
+
     protected override async ValueTask<ClaimsPrincipal> GetAuthenticatedUser()
     {
+        var client = _httpClientFactory.CreateClient("Backend");
         var user = await base.GetAuthenticatedUser();
-        var identity = user.Identity;
+        var identity = user.Identity as ClaimsIdentity;
         if (identity is not null && identity.IsAuthenticated)
         {
-            var client = _httpClientFactory.CreateClient(AppConstants.BackendHttpClientName);
-            var response = await client.GetAsync("/api/authorization/roles");
-            if(response.IsSuccessStatusCode)
+            try
             {
-                var roles = await response.Content.ReadFromJsonAsync<ICollection<string>>();
-                if(roles is not null)
+                var response = await client.GetAsync("/api/authorization/claims");
+                if (response.IsSuccessStatusCode)
                 {
-                    List<Claim> roleClaims = new();
-                    foreach (var role in roles)
+                    var value = await response.Content.ReadAsStringAsync();
+                    var claimValues = await response.Content.ReadFromJsonAsync<IEnumerable<KeyValuePair<string, string>>>();
+                    if (claimValues is not null)
                     {
-                        roleClaims.Add(new Claim(ClaimTypes.Role, role));
+                        foreach (var claimValue in claimValues)
+                        {
+                            identity?.AddClaim(new Claim(claimValue.Key, claimValue.Value));
+                        }
                     }
-                    user.AddIdentity(new ClaimsIdentity(roleClaims));
                 }
             }
+            catch (Exception)
+            {
+                //handle this ??
+                throw;
+            }
+            
         }
         return user;
     }

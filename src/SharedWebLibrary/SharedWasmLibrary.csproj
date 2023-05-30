@@ -6,6 +6,13 @@
     <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Compile Remove="Features\Authentication\Pages\**" />
+    <Content Remove="Features\Authentication\Pages\**" />
+    <EmbeddedResource Remove="Features\Authentication\Pages\**" />
+    <None Remove="Features\Authentication\Pages\**" />
+  </ItemGroup>
+
 
   <ItemGroup>
     <SupportedPlatform Include="browser" />
@@ -15,13 +22,10 @@
     <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="7.0.5" />
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="7.0.5" />
     <PackageReference Include="Microsoft.Authentication.WebAssembly.Msal" Version="7.0.5" />
+    <PackageReference Include="Microsoft.Extensions.Http" Version="7.0.0" />
     <PackageReference Include="Microsoft.Extensions.Localization" Version="7.0.5" />
     <PackageReference Include="Microsoft.Graph" Version="5.12.0" />
     <PackageReference Include="MudBlazor" Version="6.3.1" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Features\Authentication\Pages\" />
   </ItemGroup>
 
 </Project>

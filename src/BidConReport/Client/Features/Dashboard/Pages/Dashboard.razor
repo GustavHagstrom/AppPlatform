@@ -55,7 +55,7 @@
 
     public async Task Click()
     {
-        var result = await HttpClient.GetAsync("/api/authorization/roles");
+        var result = await HttpClient.GetAsync("/api/authorization/claims");
         Result = await result.Content.ReadAsStringAsync();
         StateHasChanged();
     }

@@ -14,7 +14,7 @@ public static class ServiceExtensions
     }
     public static void UseAuthenticationFeature(this IServiceCollection services)
     {
-        services.AddScoped<AuthenticationStateProvider, CustomAuthStateProvider>();
+        //services.AddScoped<AuthenticationStateProvider, CustomAuthStateProvider>();
     }
     public static void UseSharedStateContainers(this IServiceCollection services)
     {

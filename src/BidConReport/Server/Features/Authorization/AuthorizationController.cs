@@ -3,6 +3,7 @@ using BidConReport.Server.Features.Authorization.Models;
 using BidConReport.Shared;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Security.Claims;
 
 namespace BidConReport.Server.Features.Authorization;
 [Route("api/[controller]")]
@@ -36,5 +37,27 @@ public class AuthorizationController : ControllerBase
         }
 
         return Ok(user.Roles.Select(r => r.Name));
+    }
+    [HttpGet("Claims")]
+    public async Task<IActionResult> GetClaims(CancellationToken cancellationToken)
+    {
+        var userId = User.Claims.Where(x => x.Type == AppConstants.UserIdClaimKey).FirstOrDefault();
+        if (userId == null)
+        {
+            return Ok(Array.Empty<string>());
+        }
+
+        var user = await _applicationDbContext.Users
+            .Include(u => u.Roles)
+            .Where(u => u.Id == userId.Value).FirstOrDefaultAsync(cancellationToken);
+        if (user is null)
+        {
+            //Maybe not the correct place to add UserId to the DB?
+            var r = await _applicationDbContext.Users.AddAsync(new User { Id = userId.Value, Roles = Array.Empty<Role>() });
+            await _applicationDbContext.SaveChangesAsync();
+            return Ok(Array.Empty<string>());
+        }
+        var claims = user.Roles.Select((value) => new KeyValuePair<string, string>(ClaimTypes.Role, value.Name));
+        return Ok(claims);
     }
 }

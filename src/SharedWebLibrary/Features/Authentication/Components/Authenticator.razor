@@ -1,7 +1,4 @@
-﻿@using Microsoft.AspNetCore.Components.WebAssembly.Authentication
-
-
-<RemoteAuthenticatorView Action="@Action" OnLogInSucceeded="TriggerAppwideStateHasChanged" OnLogOutSucceeded="TriggerAppwideStateHasChanged">
+﻿<RemoteAuthenticatorView Action="@Action">
     <LoggingIn>
         <span>LoggingIn</span>
     </LoggingIn>
@@ -14,15 +11,16 @@
     <CompletingLoggingIn>
         <span>CompletingLoggingIn</span>
     </CompletingLoggingIn>
-    <LogInFailed>
-        <span>Login failed. Reason: @context</span>
-    </LogInFailed>
     <LogOut>
         <span>Logout from the application</span>
     </LogOut>
     <CompletingLogOut>
         <span>CompletingLogOut</span>
     </CompletingLogOut>
+
+    <LogInFailed>
+        <span>Login failed. Reason: @context</span>
+    </LogInFailed>
     <LogOutFailed>
         <span>Logout failed. Reason: @context</span>
     </LogOutFailed>
@@ -30,11 +28,5 @@
 
 
 @code{
-    [Inject] public required IAuthStateTrigger AuthStateTrigger { get; set; }
     [Parameter, EditorRequired] public string? Action { get; set; }
-
-    public async Task TriggerAppwideStateHasChanged()
-    {
-        await AuthStateTrigger.TriggerAuthStateChangedAsync();
-    }
 }
