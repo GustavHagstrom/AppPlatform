@@ -30,11 +30,11 @@
 
 
 @code{
-    [CascadingParameter] public Action? AppStateChanged { get; set; }
-    [Parameter] public string? Action { get; set; }
-    public void TriggerAppwideStateHasChanged()
+    [Inject] public required IAuthStateTrigger AuthStateTrigger { get; set; }
+    [Parameter, EditorRequired] public string? Action { get; set; }
+
+    public async Task TriggerAppwideStateHasChanged()
     {
-        AppStateChanged?.Invoke();
-        //WeakReferenceMessenger.Default.Send(new AuthenticationChangedMessage(isLoggedIn));
+        await AuthStateTrigger.TriggerAuthStateChangedAsync();
     }
 }

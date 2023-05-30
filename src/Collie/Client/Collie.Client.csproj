@@ -14,11 +14,12 @@
     <PackageReference Include="Microsoft.Authentication.WebAssembly.Msal" Version="7.0.5" />
     <PackageReference Include="Microsoft.Extensions.Http" Version="7.0.0" />
     <PackageReference Include="Microsoft.Extensions.Localization" Version="7.0.5" />
+    <PackageReference Include="Microsoft.Graph" Version="5.12.0" />
     <PackageReference Include="MudBlazor" Version="6.3.1" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\SharedWebLibrary\SharedWebLibrary.csproj" />
+    <ProjectReference Include="..\..\SharedWebLibrary\SharedWasmLibrary.csproj" />
     <ProjectReference Include="..\Shared\Collie.Shared.csproj" />
   </ItemGroup>
 

@@ -8,7 +8,6 @@ namespace Collie.Server.Features.Test;
 [ApiController]
 public class TestController : ControllerBase
 {
-    [AllowAnonymous]
     [HttpGet("Claims")]
     public IActionResult GetClaims(CancellationToken cancellationToken)
     {

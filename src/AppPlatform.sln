@@ -23,9 +23,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BidConReport.Server", "BidC
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BidConReport.Shared", "BidConReport\Shared\BidConReport.Shared.csproj", "{671755AE-99ED-4397-9EDF-9D5DD70DD055}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HostingWebApp", "HostingWebApp\HostingWebApp.csproj", "{F51F6002-0B8B-4340-8FFA-C47B5B7A931D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HostingWebApp", "HostingWebApp\HostingWebApp.csproj", "{F51F6002-0B8B-4340-8FFA-C47B5B7A931D}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SharedWebLibrary", "SharedWebLibrary\SharedWebLibrary.csproj", "{F00AF5D0-FCE6-475E-9D4E-C4D742769265}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SharedWasmLibrary", "SharedWebLibrary\SharedWasmLibrary.csproj", "{F00AF5D0-FCE6-475E-9D4E-C4D742769265}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

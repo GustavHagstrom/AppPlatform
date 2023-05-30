@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Components.Authorization;
 
 namespace BidConReport.Client.Features.Authentication.Components;
 
-public partial class LoginDisplay : IRecipient<AuthenticationChangedMessage>
+public partial class LoginDisplayOriginal : IRecipient<AuthenticationChangedMessage>
 {
     [Inject] public required GraphServiceClient GraphClient { get; set; }
     [Inject] public required NavigationManager NavigationManager { get; set; }

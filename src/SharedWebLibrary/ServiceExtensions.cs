@@ -1,11 +1,26 @@
-﻿using Microsoft.Extensions.DependencyInjection;
-using SharedWebLibrary.Shared.Services;
+﻿using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using SharedWasmLibrary.Features.Authentication;
+using SharedWasmLibrary.Shared.Services;
 
-namespace SharedWebLibrary;
+namespace SharedWasmLibrary;
 public static class ServiceExtensions
 {
-    public static void UseSharedWebLibrary(this IServiceCollection services)
+    public static void UseSharedWasmLibrary(this WebAssemblyHostBuilder builder)
     {
-        services.AddTransient<StyleService>();
+        builder.Services.AddMsalAuthentication(options =>
+        {
+            builder.Configuration.Bind("AzureAd", options.ProviderOptions.Authentication);
+            options.ProviderOptions.DefaultAccessTokenScopes.Add(builder.Configuration.GetSection("ServerApi")["Scopes"]!);
+            //options.ProviderOptions.LoginMode = "redirect";
+        });
+
+        builder.Services.AddTransient<StyleService>();
+        builder.Services.AddScoped<IAuthStateTrigger, AuthStateTrigger>();
+
+        var baseUrl = builder.Configuration.GetSection("MicrosoftGraph")["BaseUrl"];
+        var scopes = builder.Configuration.GetSection("MicrosoftGraph:Scopes").Get<List<string>>();
+        builder.Services.AddGraphClient(baseUrl, scopes);
     }
 }

@@ -1,10 +1,10 @@
 ﻿using MudBlazor;
 
-namespace SharedWebLibrary;
+namespace SharedWasmLibrary;
 
 public static class CustomThemes
 {
-    public static MudTheme CollieStandard => new()
+    public static MudTheme PlatformStandard => new()
     {
         Palette = new PaletteLight
         {
@@ -21,6 +21,8 @@ public static class CustomThemes
         LayoutProperties = new LayoutProperties
         {
             DefaultBorderRadius = "0",
+            DrawerWidthRight = "300px",
+            DrawerWidthLeft = "300px",
 
         },
         PseudoCss = new PseudoCss
@@ -34,6 +36,8 @@ public static class CustomThemes
         Typography = new Typography
         {
             Button = new Button { TextTransform = "none" },
+            H5 = new H5 { FontWeight = 600 },
+            H6 = new H6 { FontWeight = 600 },
         },
         ZIndex = new ZIndex
         {

@@ -4,7 +4,7 @@
 <CascadingValue Value="Theme">
     <CascadingValue Value="StateHasChanged">
 
-        <MudThemeProvider Theme="CustomThemes.CollieStandard" IsDarkMode="false" DefaultScrollbar="true" />
+        <MudThemeProvider Theme="CustomThemes.PlatformStandard" IsDarkMode="false" DefaultScrollbar="true" />
         <MudDialogProvider FullWidth="true"
                             MaxWidth="MaxWidth.ExtraSmall"
                             CloseButton="true"
@@ -41,5 +41,5 @@
     [Inject] public required IStringLocalizer<MainLayout> Localizer { get; set; }
     [Inject] public required StyleService StyleService { get; set; }
 
-    public MudTheme Theme { get; set; } = CustomThemes.CollieStandard;
+    public MudTheme Theme { get; set; } = CustomThemes.PlatformStandard;
 }

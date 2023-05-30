@@ -1,14 +1,11 @@
 using BidConReport.Client;
-using BidConReport.Client.Features.Authentication;
 using BidConReport.Shared;
-using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Authentication;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
-using Microsoft.Extensions.Localization;
 using MudBlazor;
 using MudBlazor.Services;
-using SharedWebLibrary;
+using SharedWasmLibrary;
 
 var builder = WebAssemblyHostBuilder.CreateDefault(args);
 builder.RootComponents.Add<App>("#app");
@@ -23,12 +20,6 @@ builder.Services.AddHttpClient(AppConstants.BackendHttpClientName, client => cli
 
 builder.Services.AddScoped(sp => sp.GetRequiredService<IHttpClientFactory>().CreateClient(AppConstants.BackendHttpClientName));
 
-
-var baseUrl = builder.Configuration.GetSection("MicrosoftGraph")["BaseUrl"];
-var scopes = builder.Configuration.GetSection("MicrosoftGraph:Scopes").Get<List<string>>();
-builder.Services.AddGraphClient(baseUrl, scopes);
-
-
 builder.Services.AddMudServices(config =>
 {
     config.SnackbarConfiguration.PositionClass = Defaults.Classes.Position.BottomCenter;
@@ -42,20 +33,11 @@ builder.Services.AddMudServices(config =>
 
 });
 
-
 builder.Services.AddLocalization();
-
-
 builder.Services.UseImportFeature();
 builder.Services.UseAuthenticationFeature();
 builder.Services.UseSharedStateContainers();
-builder.Services.UseSharedWebLibrary();
+builder.UseSharedWasmLibrary();
 
-builder.Services.AddMsalAuthentication(options =>
-{
-    builder.Configuration.Bind("AzureAd", options.ProviderOptions.Authentication);
-    options.ProviderOptions.DefaultAccessTokenScopes.Add(builder.Configuration.GetSection("ServerApi")["Scopes"]!);
-    options.ProviderOptions.LoginMode = "redirect";
-});
 
 await builder.Build().RunAsync();
