@@ -1,7 +1,7 @@
 ﻿@page "/import"
 @*@attribute [Authorize]*@
 
-<MudDrawer @bind-Open="@drawerOpen" ClipMode="DrawerClipMode.Always" Anchor="Anchor.End" Elevation="4">
+<MudDrawer @bind-Open="@drawerOpen" ClipMode="DrawerClipMode.Docked" Anchor="Anchor.End" Elevation="4">
     <div>
         <ImportSettingsView SelectedSettingChanged="OnSettingsSelectionChanged" />
     </div>
@@ -12,10 +12,14 @@
         <MudIconButton Icon="@Icons.Material.Sharp.Start" OnClick="DownloadAsync" Style="height: 40px; width: 40px;" />
         <MudIconButton Icon="@Icons.Material.Sharp.Refresh" OnClick="GetEstimationItemTreeAsync" Style="height: 40px; width: 40px;" />
         <MudIconButton Icon="@Icons.Material.Sharp.Settings" OnClick="ToggleDrawer" Style="height: 40px; width: 40px;" />
+
+        
     </ToolbarContent>
 
 
     <ChildContent>
+        
+
         <MudContainer MaxWidth="MaxWidth.Medium" Style="height: 100%" Class="px-0">
             
             <MudPaper Square="true" Elevation="4" Style="height: 100%">
@@ -64,7 +68,7 @@
     public EstimationImportSettings? Settings { get; set; }
     public DbTreeItem? ItemTree { get; set; }
     public bool IsRefreshing { get; set; } = true;
-    public bool drawerOpen = true;
+    public bool drawerOpen = false;
 
     void ToggleDrawer()
     {

@@ -11,6 +11,9 @@ public static class CustomThemes
             Primary = Colors.Blue.Darken2,
             PrimaryLighten = Colors.Blue.Darken1,
             PrimaryDarken = Colors.Blue.Darken3,
+            Tertiary = "#fed932",
+            TertiaryLighten = "#ffdc51",
+            TertiaryDarken = "#fbbd00",
         },
         PaletteDark = new PaletteDark
         {
@@ -23,6 +26,7 @@ public static class CustomThemes
             DefaultBorderRadius = "0",
             DrawerWidthRight = "300px",
             DrawerWidthLeft = "300px",
+            AppbarHeight = "0",
 
         },
         PseudoCss = new PseudoCss

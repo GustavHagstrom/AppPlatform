@@ -1,3 +1,6 @@
+:root {
+    --bidcon-color: #fed932
+}
 
 table.striped {
     border-collapse: collapse;

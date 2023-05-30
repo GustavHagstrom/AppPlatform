@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using SharedWasmLibrary.Features.Authentication;
 using SharedWasmLibrary.Shared.Services;
 
 namespace SharedWasmLibrary;
@@ -17,7 +16,6 @@ public static class ServiceExtensions
         });
 
         builder.Services.AddTransient<StyleService>();
-        builder.Services.AddScoped<IAuthStateTrigger, AuthStateTrigger>();
 
         var baseUrl = builder.Configuration.GetSection("MicrosoftGraph")["BaseUrl"];
         var scopes = builder.Configuration.GetSection("MicrosoftGraph:Scopes").Get<List<string>>();

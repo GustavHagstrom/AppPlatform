@@ -1,4 +1,5 @@
 ﻿@using Microsoft.Graph;
+@implements IDisposable
 
 <AuthorizeView>
     <Authorized>
@@ -18,9 +19,13 @@
             }
         </MudButton>
         <MudPopover Class="pa-4" Open="PopOverIsVisible" AnchorOrigin="Origin.BottomRight" TransformOrigin="Origin.TopRight">
-            <h3 class="align-self-center">@context.User.Identity?.Name</h3>
-            <h5 class="align-self-center">@context.User.Claims.Where(x => x.Type == "preferred_username").Select(x => x.Value).FirstOrDefault() </h5>
-            <MudButton OnClick="LogOut" Class="px-4" Variant="Variant.Text" Color="Color.Inherit" StartIcon="@Icons.Material.Sharp.Logout">@Localizer["Logga ut"]</MudButton>
+            <MudStack Spacing="1">
+                <h3 class="align-self-center">@context.User.Identity?.Name</h3>
+                <h5 class="align-self-center">@context.User.Claims.Where(x => x.Type == "preferred_username").Select(x => x.Value).FirstOrDefault() </h5>
+                <div class="d-flex">
+                    <MudButton OnClick="LogOut" Class="px-4 flex-grow-1" Variant="Variant.Outlined" Color="Color.Inherit" StartIcon="@Icons.Material.Sharp.Logout">@Localizer["Logga ut"]</MudButton>
+                </div>
+            </MudStack>            
         </MudPopover>
 
     </Authorized>
@@ -31,26 +36,27 @@
 
 @code{
     [Inject] public required IStringLocalizer<LoginDisplay> Localizer { get; set; }
-    [Inject] public required IAuthStateTrigger AuthStateTrigger { get; set; }
     [Inject] public required GraphServiceClient GraphClient { get; set; }
     [Inject] public required AuthenticationStateProvider AuthStateProvider { get; set; }
     [Inject] public required NavigationManager NavManager { get; set; }
 
     public bool PopOverIsVisible { get; set; } = false;
     public string? PhotoString { get; set; }
-
+    public void Dispose()
+    {
+        AuthStateProvider.AuthenticationStateChanged -= OnAuthStateChangedAsync;
+    }
     protected override void OnInitialized()
     {
-        AuthStateTrigger.SetTriggerAction(OnInitializedAsync);
+        AuthStateProvider.AuthenticationStateChanged += OnAuthStateChangedAsync;
     }
-    protected override async Task OnInitializedAsync()
+    private async void OnAuthStateChangedAsync(Task<AuthenticationState> task)
     {
-        var identity = (await AuthStateProvider.GetAuthenticationStateAsync()).User.Identity;
+        var identity = (await task).User.Identity;
         if (identity is not null && identity.IsAuthenticated)
         {
             await GetPhotoStringAsync();
         }
-
     }
     public void LogOut()
     {

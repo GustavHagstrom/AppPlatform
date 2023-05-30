@@ -28,7 +28,7 @@
 
     @if(SelectedSetting is not null)
     {
-        <MudForm Model="SelectedSetting" @ref="Form" Style="overflow-y: scroll" Class="px-6">
+        <MudForm Model="SelectedSetting" @ref="Form" Style="overflow-y: auto" Class="px-6">
             <ImportSettingsEditor Settings="SelectedSetting"/>
         </MudForm>
     }
