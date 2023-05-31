@@ -1,6 +1,6 @@
 ﻿using BidConReport.Server.Data;
 using BidConReport.Shared;
-using BidConReport.Shared.Models;
+using BidConReport.Shared.Entities;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 

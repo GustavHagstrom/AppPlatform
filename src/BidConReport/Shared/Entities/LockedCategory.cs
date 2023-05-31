@@ -1,4 +1,4 @@
-﻿namespace BidConReport.Shared.Models;
+﻿namespace BidConReport.Shared.Entities;
 public class LockedCategory
 {
     public required string Name { get; set; }

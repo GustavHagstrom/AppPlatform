@@ -1,5 +1,5 @@
 ﻿using BidConReport.Shared;
-using BidConReport.Shared.Models;
+using BidConReport.Shared.Entities;
 using System;
 using System.Net.Http.Json;
 

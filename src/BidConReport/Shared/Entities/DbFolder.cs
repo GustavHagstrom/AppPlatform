@@ -1,6 +1,6 @@
 ﻿using Syncfusion.DocIO.DLS;
 
-namespace BidConReport.Shared.Models;
+namespace BidConReport.Shared.Entities;
 public class DbFolder
 {
     public required string Name { get; set; }

@@ -1,4 +1,4 @@
-﻿using BidConReport.Shared.Models;
+﻿using BidConReport.Shared.Entities;
 
 namespace BidConReport.Shared.Features.ReportLayout.Table;
 public class TableSection : ILayoutSection

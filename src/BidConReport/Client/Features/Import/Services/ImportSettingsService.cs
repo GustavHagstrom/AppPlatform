@@ -1,5 +1,5 @@
 ﻿using BidConReport.Shared;
-using BidConReport.Shared.Models;
+using BidConReport.Shared.Entities;
 using System.Net.Http.Json;
 
 namespace BidConReport.Client.Features.Import.Services;

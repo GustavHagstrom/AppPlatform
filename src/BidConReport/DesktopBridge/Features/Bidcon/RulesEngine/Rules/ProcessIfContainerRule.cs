@@ -1,5 +1,5 @@
 ﻿using BidCon.SDK;
-using BidConReport.Shared.Models;
+using BidConReport.Shared.Entities;
 
 namespace BidConReport.DesktopBridge.Features.Bidcon.RulesEngine.Rules;
 public class ProcessIfContainerRule : IEstimationItemRule

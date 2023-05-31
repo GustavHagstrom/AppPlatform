@@ -1,4 +1,4 @@
-﻿using BidConReport.Shared.Models;
+﻿using BidConReport.Shared.Entities;
 
 namespace BidConReport.Client.Shared.StateContainers;
 

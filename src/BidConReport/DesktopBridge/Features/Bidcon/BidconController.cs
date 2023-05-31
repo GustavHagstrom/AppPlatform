@@ -1,5 +1,5 @@
 ﻿using BidConReport.DesktopBridge.Features.Bidcon.Services;
-using BidConReport.Shared.Models;
+using BidConReport.Shared.Entities;
 using Microsoft.AspNetCore.Mvc;
 using System.Data.SqlClient;
 

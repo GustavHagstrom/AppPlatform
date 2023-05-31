@@ -9,7 +9,7 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
         .EnableTokenAcquisitionToCallDownstreamApi()
             .AddMicrosoftGraph(builder.Configuration.GetSection("MicrosoftGraph"))
             .AddInMemoryTokenCaches();
-//.AddMicrosoftGraph(builder.Configuration.GetSection("MicrosoftGraph"))
+
 builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages();
 

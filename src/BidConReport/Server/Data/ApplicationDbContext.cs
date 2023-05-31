@@ -1,5 +1,5 @@
 ﻿using BidConReport.Server.Features.Authorization.Models;
-using BidConReport.Shared.Models;
+using BidConReport.Shared.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;

@@ -1,7 +1,7 @@
 ﻿using BidCon.MM.Properties;
 using BidCon.SDK;
 using BidConReport.DesktopBridge.Features.Bidcon.RulesEngine;
-using BidConReport.Shared.Models;
+using BidConReport.Shared.Entities;
 using Syncfusion.DocIO.DLS;
 using System.Runtime.CompilerServices;
 
@@ -16,7 +16,7 @@ public class EstimationFactory : IEstimationFactory
     {
         _rulesEngine = rulesEngine;
     }
-    public Shared.Models.Estimation Create(BidCon.SDK.Estimation estimation, EstimationImportSettings settings)
+    public Shared.Entities.Estimation Create(BidCon.SDK.Estimation estimation, EstimationImportSettings settings)
     {
         Settings = settings;
 
@@ -26,7 +26,7 @@ public class EstimationFactory : IEstimationFactory
         var costBeforeChanges = GetSummarySheetResourceAccountValue(settings.CostBeforeChangesAccount, estimation);
         var endPageNetCost = GetSummarySheetResourceAccountValue(settings.NetCostAccount, estimation);
 
-        return new Shared.Models.Estimation
+        return new Shared.Entities.Estimation
         {
             Id = Guid.NewGuid(),
             BidConId = estimation.ID.ToString(),
@@ -78,9 +78,9 @@ public class EstimationFactory : IEstimationFactory
         }
     }
 
-    private List<Shared.Models.EstimationItem> CreateEstimationItemsRecursivly(BidCon.SDK.EstimationItem[] items, Shared.Models.EstimationItem? parent = null, int row = 0)//, int? parentRow = null)
+    private List<Shared.Entities.EstimationItem> CreateEstimationItemsRecursivly(BidCon.SDK.EstimationItem[] items, Shared.Entities.EstimationItem? parent = null, int row = 0)//, int? parentRow = null)
     {
-        var returnlist = new List<Shared.Models.EstimationItem>();
+        var returnlist = new List<Shared.Entities.EstimationItem>();
         foreach (var item in items)
         {
             if (_rulesEngine.ShouldBeProcessed(item, Settings!))
@@ -94,18 +94,18 @@ public class EstimationFactory : IEstimationFactory
         return returnlist;
     }
 
-    private List<Shared.Models.EstimationItem> GetSubItems(BidCon.SDK.EstimationItem item, int row, Shared.Models.EstimationItem? parent = null)
+    private List<Shared.Entities.EstimationItem> GetSubItems(BidCon.SDK.EstimationItem item, int row, Shared.Entities.EstimationItem? parent = null)
     {
-        var subItems = new List<Shared.Models.EstimationItem>();
+        var subItems = new List<Shared.Entities.EstimationItem>();
         if (item.ItemType == BidCon.SDK.EstimationItemType.Part || item.ItemType == BidCon.SDK.EstimationItemType.Group)
         {
             subItems.AddRange(CreateEstimationItemsRecursivly(item.Items, parent, row));
         }
         return subItems;
     }
-    private Shared.Models.EstimationItem CreateSimpleEstimationItem(BidCon.SDK.EstimationItem item, int row, Shared.Models.EstimationItem? parent = null)
+    private Shared.Entities.EstimationItem CreateSimpleEstimationItem(BidCon.SDK.EstimationItem item, int row, Shared.Entities.EstimationItem? parent = null)
     {
-        return new Shared.Models.EstimationItem
+        return new Shared.Entities.EstimationItem
         {
             Id = Guid.NewGuid(),
             Comment = string.Empty,
@@ -116,7 +116,7 @@ public class EstimationFactory : IEstimationFactory
             //Parent = parent,
             ChangedToRowNumber = row,
             //Items = GetSubItems(item),
-            ItemType = (Shared.Models.EstimationItemType)Enum.Parse(typeof(Shared.Models.EstimationItemType), item.ItemType.ToString()),
+            ItemType = (Shared.Entities.EstimationItemType)Enum.Parse(typeof(Shared.Entities.EstimationItemType), item.ItemType.ToString()),
             Quantity = item.Quantity,
             //RegulatedQuantity = item.Quantity - item.OriginalQuantity,
             DisplayedQuantity = GetDisplayedQuantity(item),
@@ -126,7 +126,7 @@ public class EstimationFactory : IEstimationFactory
             //RegulatedUnitCost = GetUnitCost(item.RegulatedCost),
             Name = item.Name,
             Tags = GetTags(item).ToArray(),
-            Items = new HashSet<Shared.Models.EstimationItem>()
+            Items = new HashSet<Shared.Entities.EstimationItem>()
             //Revision = item.Revision?.Code,
             //QuickTags = GetTagsFromRemark(item, Settings!.QuickTags).ToArray(),
             //SelectionTags = GetSelectionTags(item),// GetTags(item, Settings!.OptionTags).ToArray(),

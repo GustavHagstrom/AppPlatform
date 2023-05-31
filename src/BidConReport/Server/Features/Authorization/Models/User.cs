@@ -1,4 +1,4 @@
-﻿using BidConReport.Shared.Models;
+﻿using BidConReport.Shared.Entities;
 using System.ComponentModel.DataAnnotations;
 
 namespace BidConReport.Server.Features.Authorization.Models;

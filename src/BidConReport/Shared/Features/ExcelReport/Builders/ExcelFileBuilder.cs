@@ -1,5 +1,5 @@
 ﻿using BidConReport.Shared.Features.ReportLayout;
-using BidConReport.Shared.Models;
+using BidConReport.Shared.Entities;
 using Syncfusion.XlsIO;
 using Syncfusion.XlsIORenderer;
 

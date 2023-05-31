@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace BidConReport.Shared.Models;
+namespace BidConReport.Shared.Entities;
 
 public class Estimation
 {
