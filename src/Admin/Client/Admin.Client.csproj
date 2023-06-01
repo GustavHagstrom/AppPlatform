@@ -18,7 +18,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Shared Libraries\LicenseLibrary\LicenseLibrary.csproj" />
     <ProjectReference Include="..\..\Shared Libraries\SharedWasmLibrary\SharedWasmLibrary.csproj" />
     <ProjectReference Include="..\Shared\Admin.Shared.csproj" />
   </ItemGroup>
