@@ -5,7 +5,6 @@
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <ServiceWorkerAssetsManifest>service-worker-assets.js</ServiceWorkerAssetsManifest>
-    <UserSecretsId>c59e4db8-6b00-466d-b0de-02649c91c61e</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>
@@ -19,16 +18,13 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\Shared Libraries\LicenseLibrary\LicenseLibrary.csproj" />
     <ProjectReference Include="..\..\Shared Libraries\SharedWasmLibrary\SharedWasmLibrary.csproj" />
-    <ProjectReference Include="..\Shared\Collie.Shared.csproj" />
+    <ProjectReference Include="..\Shared\Admin.Shared.csproj" />
   </ItemGroup>
 
   <ItemGroup>
     <ServiceWorker Include="wwwroot\service-worker.js" PublishedContent="wwwroot\service-worker.published.js" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Shared\Services\" />
   </ItemGroup>
 
 </Project>

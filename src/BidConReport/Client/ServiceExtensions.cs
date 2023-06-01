@@ -12,10 +12,6 @@ public static class ServiceExtensions
         services.AddTransient<IBidConImporterService, BidConImporterService>();
         services.AddTransient<IImportSettingsService, ImportSettingsService>();
     }
-    public static void UseAuthenticationFeature(this IServiceCollection services)
-    {
-        //services.AddScoped<AuthenticationStateProvider, CustomAuthStateProvider>();
-    }
     public static void UseSharedStateContainers(this IServiceCollection services)
     {
         services.AddScoped<ImportedEstimationsContainer>();

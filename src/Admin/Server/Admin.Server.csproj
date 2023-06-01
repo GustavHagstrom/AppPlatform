@@ -4,7 +4,7 @@
     <TargetFramework>net7.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
-    <UserSecretsId>Collie.Server-93561a1d-21b2-471e-8127-6529c53cb7d0</UserSecretsId>
+    <UserSecretsId>Admin.Server-eae83784-45f1-4064-9911-e52ded015935</UserSecretsId>
     <WebProject_DirectoryAccessLevelKey>0</WebProject_DirectoryAccessLevelKey>
   </PropertyGroup>
 
@@ -15,8 +15,8 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\Shared Libraries\LicenseLibrary\LicenseLibrary.csproj" />
-    <ProjectReference Include="..\Client\Collie.Client.csproj" />
-    <ProjectReference Include="..\Shared\Collie.Shared.csproj" />
+    <ProjectReference Include="..\Client\Admin.Client.csproj" />
+    <ProjectReference Include="..\Shared\Admin.Shared.csproj" />
   </ItemGroup>
 
   <ItemGroup>

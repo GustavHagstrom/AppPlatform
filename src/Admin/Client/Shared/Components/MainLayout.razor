@@ -1,0 +1,25 @@
+﻿@inherits LayoutComponentBase
+
+<MudThemeProvider Theme="CustomThemes.PlatformStandard" IsDarkMode="false" DefaultScrollbar="true" />
+<MudDialogProvider />
+<MudSnackbarProvider />
+
+<AppBar Height="@StyleService.AppBarHeight">
+    <a href="dashboard" class="align-self-center"><h1 Class="px-4 mud-primary-text">Admin</h1></a>
+    <MudDivider Light="false" Vertical="true" FlexItem="true" Class="my-2 mr-2" />
+    <MudTooltip Text="@Localizer["Intrumentpanel"]" RootClass="align-self-center">
+        <MudButton Href="/dashboard" Class="py-1 px-3" Variant="Variant.Text" Color="Color.Inherit" Style="@StyleService.CreateNavigationButtonStyle("dashboard")">
+            <MudIcon Icon="@Icons.Material.Sharp.Dashboard" />
+        </MudButton>
+    </MudTooltip>
+</AppBar>
+
+<div style="position: fixed; height: calc(100% - @StyleService.AppBarHeight); width: 100%; top: @StyleService.AppBarHeight; background-color: var(--mud-palette-background-grey);">
+    @Body
+</div>
+
+@code{
+
+    [Inject] public required IStringLocalizer<MainLayout> Localizer { get; set; }
+    [Inject] public required StyleService StyleService { get; set; }
+}

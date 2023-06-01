@@ -20,7 +20,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\SharedWebLibrary\SharedWasmLibrary.csproj" />
+    <ProjectReference Include="..\..\Shared Libraries\SharedWasmLibrary\SharedWasmLibrary.csproj" />
     <ProjectReference Include="..\Shared\BidConReport.Shared.csproj" />
   </ItemGroup>
 

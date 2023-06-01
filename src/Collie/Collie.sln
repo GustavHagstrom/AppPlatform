@@ -11,6 +11,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Collie.Shared", "Shared\Col
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Collie.Tests", "Tests\Collie.Tests.csproj", "{9FB0E970-EA52-4AFB-863B-5A362875F5F4}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LicenseLibrary", "..\Shared Libraries\LicenseLibrary\LicenseLibrary.csproj", "{61E06204-FE15-486C-B508-4887D9E546F5}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SharedWasmLibrary", "..\Shared Libraries\SharedWasmLibrary\SharedWasmLibrary.csproj", "{1DD58EA4-CC85-45A8-B0FD-F319849BD16E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +37,14 @@ Global
 		{9FB0E970-EA52-4AFB-863B-5A362875F5F4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9FB0E970-EA52-4AFB-863B-5A362875F5F4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9FB0E970-EA52-4AFB-863B-5A362875F5F4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{61E06204-FE15-486C-B508-4887D9E546F5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{61E06204-FE15-486C-B508-4887D9E546F5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{61E06204-FE15-486C-B508-4887D9E546F5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{61E06204-FE15-486C-B508-4887D9E546F5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1DD58EA4-CC85-45A8-B0FD-F319849BD16E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1DD58EA4-CC85-45A8-B0FD-F319849BD16E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1DD58EA4-CC85-45A8-B0FD-F319849BD16E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1DD58EA4-CC85-45A8-B0FD-F319849BD16E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
