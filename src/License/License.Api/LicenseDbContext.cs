@@ -1,12 +1,16 @@
-﻿using LicenseLibrary.Entities;
+﻿using License.Api.Entities;
 using Microsoft.EntityFrameworkCore;
 
 namespace LicenseLibrary;
-public class LicenceDbContext : DbContext
+public class LicenseDbContext : DbContext
 {
+    public LicenseDbContext(DbContextOptions<LicenseDbContext> options) : base (options)
+    {
+    }
+
     public DbSet<User> Users { get; set; }
     public DbSet<Role> Roles { get; set; }
-    public DbSet<License> Licenses { get; set; }
+    public DbSet<AppLicense> Licenses { get; set; }
     public DbSet<Application> Applications { get; set; }
     public DbSet<Organization> Organizations { get; set; }
 
@@ -27,12 +31,12 @@ public class LicenceDbContext : DbContext
             .WithMany(a => a.Roles)
             .HasForeignKey(r => r.ApplicationId);
 
-        modelBuilder.Entity<License>()
+        modelBuilder.Entity<AppLicense>()
             .HasOne(l => l.Application)
             .WithMany(a => a.Licenses)
             .HasForeignKey(l => l.ApplicationId);
 
-        modelBuilder.Entity<License>()
+        modelBuilder.Entity<AppLicense>()
             .HasOne(l => l.Organization)
             .WithMany(o => o.Licenses)
             .HasForeignKey(l => l.OrganizationId);

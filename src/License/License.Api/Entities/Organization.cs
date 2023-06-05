@@ -1,4 +1,4 @@
-﻿namespace LicenseLibrary.Entities;
+﻿namespace License.Api.Entities;
 public class Organization
 {
     public int Id { get; set; }
@@ -6,5 +6,5 @@ public class Organization
     // Other organization properties
 
     public ICollection<User> Users { get; set; }
-    public ICollection<License> Licenses { get; set; }
+    public ICollection<AppLicense> Licenses { get; set; }
 }

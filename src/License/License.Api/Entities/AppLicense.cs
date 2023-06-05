@@ -1,5 +1,5 @@
-﻿namespace LicenseLibrary.Entities;
-public class License
+﻿namespace License.Api.Entities;
+public class AppLicense
 {
     public int Id { get; set; }
     // License properties

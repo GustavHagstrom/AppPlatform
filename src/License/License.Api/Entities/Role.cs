@@ -1,4 +1,4 @@
-﻿namespace LicenseLibrary.Entities;
+﻿namespace License.Api.Entities;
 public class Role
 {
     public int Id { get; set; }
