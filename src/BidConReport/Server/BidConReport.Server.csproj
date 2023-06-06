@@ -24,7 +24,6 @@
 
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Shared Libraries\LicenseLibrary\LicenseLibrary.csproj" />
     <ProjectReference Include="..\Client\BidConReport.Client.csproj" />
     <ProjectReference Include="..\Shared\BidConReport.Shared.csproj" />
   </ItemGroup>

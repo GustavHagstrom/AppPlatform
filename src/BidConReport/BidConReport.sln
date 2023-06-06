@@ -11,8 +11,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BidConReport.Server", "Serv
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BidConReport.Shared", "Shared\BidConReport.Shared.csproj", "{BC214352-3AE5-40DE-96D7-281F0D9F4684}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LicenseLibrary", "..\Shared Libraries\LicenseLibrary\LicenseLibrary.csproj", "{5B28E783-BDA5-4B06-89FC-28AE25AB7F83}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SharedWasmLibrary", "..\Shared Libraries\SharedWasmLibrary\SharedWasmLibrary.csproj", "{327D2F5A-7568-4153-98E6-42B4BC790BBA}"
 EndProject
 Global
@@ -37,10 +35,6 @@ Global
 		{BC214352-3AE5-40DE-96D7-281F0D9F4684}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BC214352-3AE5-40DE-96D7-281F0D9F4684}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BC214352-3AE5-40DE-96D7-281F0D9F4684}.Release|Any CPU.Build.0 = Release|Any CPU
-		{5B28E783-BDA5-4B06-89FC-28AE25AB7F83}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{5B28E783-BDA5-4B06-89FC-28AE25AB7F83}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{5B28E783-BDA5-4B06-89FC-28AE25AB7F83}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{5B28E783-BDA5-4B06-89FC-28AE25AB7F83}.Release|Any CPU.Build.0 = Release|Any CPU
 		{327D2F5A-7568-4153-98E6-42B4BC790BBA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{327D2F5A-7568-4153-98E6-42B4BC790BBA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{327D2F5A-7568-4153-98E6-42B4BC790BBA}.Release|Any CPU.ActiveCfg = Release|Any CPU

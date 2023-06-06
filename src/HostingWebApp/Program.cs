@@ -24,6 +24,11 @@ builder.Services.AddAuthorization(options =>
 builder.Services.AddRazorPages()
     .AddMicrosoftIdentityUI();
 
+builder.Services.AddServerSideBlazor();
+
+builder.Services.AddLocalization();
+
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -44,6 +49,7 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapRazorPages();
+app.MapBlazorHub();
 app.MapControllers();
 
 app.Run();
