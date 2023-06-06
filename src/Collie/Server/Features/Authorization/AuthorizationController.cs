@@ -14,6 +14,10 @@ public class AuthorizationController : ControllerBase
             new KeyValuePair<string, string>("ClaimType1", "Value1"),
             new KeyValuePair<string, string>("ClaimType2", "Value2")
         };
+        foreach (var claim in User.Claims)
+        {
+            claims.Add(new KeyValuePair<string, string>(claim.Type, claim.Value));
+        }
         return Ok(claims);
     }
 }
