@@ -11,8 +11,7 @@ public class AuthorizationController : ControllerBase
     {
         var claims = new List<KeyValuePair<string, string>>
         {
-            new KeyValuePair<string, string>("ClaimType1", "Value1"),
-            new KeyValuePair<string, string>("ClaimType2", "Value2")
+            new KeyValuePair<string, string>("CustomClaimType", "CustomClaimValue"),
         };
         foreach (var claim in User.Claims)
         {

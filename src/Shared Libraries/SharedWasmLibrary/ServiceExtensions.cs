@@ -3,14 +3,13 @@ using Microsoft.AspNetCore.Components.WebAssembly.Authentication;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Options;
 using SharedWasmLibrary.Features.Authentication;
 using SharedWasmLibrary.Shared.Services;
 
 namespace SharedWasmLibrary;
 public static class ServiceExtensions
 {
-    public static void UseSharedWasmLibrary(this WebAssemblyHostBuilder builder)
+    public static void UseSharedWasmLibrary(this WebAssemblyHostBuilder builder, AppSeedModel applicationSeed)
     {
         builder.Services.AddMsalAuthentication(options =>
         {
