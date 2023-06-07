@@ -41,6 +41,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "License", "License", "{DABA
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "License.Api", "License\License.Api\License.Api.csproj", "{D4E354F9-F046-4464-AB1D-0971B60452DD}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SharedPlatformLibrary", "SharedPlatformLibrary\SharedPlatformLibrary.csproj", "{061A0CDA-C6F8-481A-B757-44BDF4170526}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -103,6 +105,10 @@ Global
 		{D4E354F9-F046-4464-AB1D-0971B60452DD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D4E354F9-F046-4464-AB1D-0971B60452DD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D4E354F9-F046-4464-AB1D-0971B60452DD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{061A0CDA-C6F8-481A-B757-44BDF4170526}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{061A0CDA-C6F8-481A-B757-44BDF4170526}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{061A0CDA-C6F8-481A-B757-44BDF4170526}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{061A0CDA-C6F8-481A-B757-44BDF4170526}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -121,6 +127,7 @@ Global
 		{44EAE908-A2ED-4973-AB3C-5631E3C1AA0D} = {5730E619-315D-410E-BE2E-9CCD8A65D110}
 		{B54D7BC7-A5DB-4464-BD24-971B4E71710E} = {1BC1C62C-17E7-44BF-A895-BF15472D62D8}
 		{D4E354F9-F046-4464-AB1D-0971B60452DD} = {DABA1554-1113-47C0-B948-60B8F7029200}
+		{061A0CDA-C6F8-481A-B757-44BDF4170526} = {1BC1C62C-17E7-44BF-A895-BF15472D62D8}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {6E90DC8A-48FE-4E1A-93DE-F049D278F5A4}
