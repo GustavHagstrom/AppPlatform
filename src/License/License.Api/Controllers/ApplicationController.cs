@@ -2,6 +2,7 @@
 using License.Api.Entities;
 using LicenseLibrary;
 using Microsoft.EntityFrameworkCore;
+using SharedPlatformLibrary.Enteties;
 
 namespace License.Api.Controllers;
 [Route("api/[controller]")]
@@ -16,8 +17,8 @@ public class ApplicationController : ControllerBase
         _dbContext = dbContext;
         _logger = logger;
     }
-    [HttpPost("SeedApp")]
-    public async Task<IActionResult> SeedApp([FromBody]AppSeedModel dataSeedModel)
+    [HttpPost("Seed")]
+    public async Task<IActionResult> Seed([FromBody]AppSeedModel dataSeedModel)
     {
         try
         {
@@ -56,7 +57,5 @@ public class ApplicationController : ControllerBase
             _logger.LogCritical(e, message);
             return Problem(message);
         }
-        
-        
     }
 }

@@ -1,4 +1,4 @@
-﻿namespace SharedWasmLibrary;
+﻿namespace SharedPlatformLibrary.Enteties;
 public class AppSeedModel
 {
     public required string ApplicationName { get; set; }
