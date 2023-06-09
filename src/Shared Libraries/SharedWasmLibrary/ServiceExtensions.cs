@@ -4,7 +4,6 @@ using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using SharedWasmLibrary.Features.Authentication;
-using SharedWasmLibrary.Shared.Enteties;
 using SharedWasmLibrary.Shared.Services;
 
 namespace SharedWasmLibrary;
