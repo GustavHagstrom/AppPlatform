@@ -9,7 +9,7 @@ using SharedWasmLibrary.Shared.Services;
 namespace SharedWasmLibrary;
 public static class ServiceExtensions
 {
-    public static void UseSharedWasmLibrary(this WebAssemblyHostBuilder builder)//, AppSeedModel applicationSeed)
+    public static void UseSharedWasmLibrary(this WebAssemblyHostBuilder builder, string backendClaimsEndpoint)//, AppSeedModel applicationSeed)
     {
         builder.Services.AddMsalAuthentication(options =>
         {
@@ -18,7 +18,8 @@ public static class ServiceExtensions
             //options.ProviderOptions.LoginMode = "redirect";
         });
 
-        builder.Services.AddHttpClient("Backend", client => client.BaseAddress = new Uri(builder.HostEnvironment.BaseAddress))
+        builder.Services.AddHttpClient("ClaimsClient", client => 
+            client.BaseAddress = new Uri($"{builder.HostEnvironment.BaseAddress}{backendClaimsEndpoint}"))
             .AddHttpMessageHandler<BaseAddressAuthorizationMessageHandler>();
 
         builder.Services.AddTransient<StyleService>();

@@ -20,14 +20,14 @@ public class CustomAuthStateProvider : RemoteAuthenticationService<RemoteAuthent
 
     protected override async ValueTask<ClaimsPrincipal> GetAuthenticatedUser()
     {
-        var client = _httpClientFactory.CreateClient("Backend");
+        var client = _httpClientFactory.CreateClient("ClaimsClient");
         var user = await base.GetAuthenticatedUser();
         var identity = user.Identity as ClaimsIdentity;
         if (identity is not null && identity.IsAuthenticated)
         {
             try
             {
-                var response = await client.GetAsync("/api/authorization/claims");
+                var response = await client.GetAsync(string.Empty);// "/api/authorization/claims");
                 if (response.IsSuccessStatusCode)
                 {
                     var value = await response.Content.ReadAsStringAsync();

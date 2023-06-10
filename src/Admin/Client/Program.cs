@@ -17,6 +17,6 @@ builder.Services.AddHttpClient("Admin.ServerAPI", client => client.BaseAddress =
 builder.Services.AddScoped(sp => sp.GetRequiredService<IHttpClientFactory>().CreateClient("Admin.ServerAPI"));
 builder.Services.AddMudServices();
 builder.Services.AddLocalization();
-builder.UseSharedWasmLibrary();
+//builder.UseSharedWasmLibrary();
 
 await builder.Build().RunAsync();

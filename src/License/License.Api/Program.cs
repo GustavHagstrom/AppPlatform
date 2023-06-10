@@ -1,3 +1,4 @@
+using License.Api;
 using LicenseLibrary;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
@@ -20,6 +21,11 @@ builder.Services.AddSwaggerGen();
 var connectionString = builder.Configuration.GetConnectionString("Default");
 builder.Services.AddDbContext<LicenseDbContext>(options =>
     options.UseSqlServer(connectionString));
+
+builder.Services.UseClaimsFeature();
+builder.Services.UseSeedFeature();
+
+
 
 var app = builder.Build();
 

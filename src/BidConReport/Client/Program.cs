@@ -36,7 +36,7 @@ builder.Services.AddMudServices(config =>
 builder.Services.AddLocalization();
 builder.Services.UseImportFeature();
 builder.Services.UseSharedStateContainers();
-builder.UseSharedWasmLibrary();
+builder.UseSharedWasmLibrary("api/authorization/claims");
 
 
 await builder.Build().RunAsync();

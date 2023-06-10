@@ -17,6 +17,6 @@ builder.Services.AddHttpClient("Collie.ServerAPI", client => client.BaseAddress 
 builder.Services.AddScoped(sp => sp.GetRequiredService<IHttpClientFactory>().CreateClient("Collie.ServerAPI"));
 builder.Services.AddMudServices();
 builder.Services.AddLocalization();
-builder.UseSharedWasmLibrary();
+builder.UseSharedWasmLibrary("api/authorization/claims");
 
 await builder.Build().RunAsync();

@@ -1,7 +1,9 @@
-﻿namespace License.Api.Entities;
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace License.Api.Shared.Enteties;
 public class Organization
 {
-    public int Id { get; set; }
+    [Key]
     public required string Name { get; set; }
     // Other organization properties
 

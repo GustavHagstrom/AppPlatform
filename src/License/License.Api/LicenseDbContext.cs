@@ -1,4 +1,4 @@
-﻿using License.Api.Entities;
+﻿using License.Api.Shared.Enteties;
 using Microsoft.EntityFrameworkCore;
 
 namespace LicenseLibrary;
@@ -24,22 +24,22 @@ public class LicenseDbContext : DbContext
         modelBuilder.Entity<Organization>()
             .HasMany(o => o.Users)
             .WithOne(u => u.Organization)
-            .HasForeignKey(u => u.OrganizationId);
+            .HasForeignKey(u => u.OrganizationName);
 
         modelBuilder.Entity<Role>()
             .HasOne(r => r.Application)
             .WithMany(a => a.Roles)
-            .HasForeignKey(r => r.ApplicationId);
+            .HasForeignKey(r => r.ApplicationName);
 
         modelBuilder.Entity<AppLicense>()
             .HasOne(l => l.Application)
             .WithMany(a => a.Licenses)
-            .HasForeignKey(l => l.ApplicationId);
+            .HasForeignKey(l => l.ApplicationName);
 
         modelBuilder.Entity<AppLicense>()
             .HasOne(l => l.Organization)
             .WithMany(o => o.Licenses)
-            .HasForeignKey(l => l.OrganizationId);
+            .HasForeignKey(l => l.OrganizationName);
 
         base.OnModelCreating(modelBuilder);
     }
