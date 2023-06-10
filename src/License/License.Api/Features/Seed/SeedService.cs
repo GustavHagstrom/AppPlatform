@@ -15,8 +15,6 @@ public class SeedService : ISeedService
     }
     public async Task SeedAplicationDataAsync(AppSeedModel seedModel)
     {
-        await _dbContext.Database.EnsureCreatedAsync();
-        await EnsureMigratedAsync();
         var application = await _dbContext.Applications.Where(x => x.Name == seedModel.ApplicationName).FirstOrDefaultAsync();
         bool changesMade = false;
         if (application is null)
@@ -37,15 +35,6 @@ public class SeedService : ISeedService
         if (changesMade)
         {
             await _dbContext.SaveChangesAsync();
-        }
-    }
-    private async Task EnsureMigratedAsync()
-    {
-        var appliedMigrations = await _dbContext.Database.GetAppliedMigrationsAsync();
-        var allMigrations = _dbContext.Database.GetMigrations();
-        if (allMigrations.Except(appliedMigrations).Any())
-        {
-            await _dbContext.Database.MigrateAsync();
         }
     }
 }
