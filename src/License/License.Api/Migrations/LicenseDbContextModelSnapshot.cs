@@ -38,9 +38,13 @@ namespace License.Api.Migrations
                     b.Property<DateTime>("EndDate")
                         .HasColumnType("datetime2");
 
+                    b.Property<int>("MaxUserCount")
+                        .HasColumnType("int");
+
                     b.Property<string>("OrganizationName")
                         .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.HasKey("Id");
 
@@ -65,7 +69,8 @@ namespace License.Api.Migrations
             modelBuilder.Entity("License.Api.Shared.Enteties.Organization", b =>
                 {
                     b.Property<string>("Name")
-                        .HasColumnType("nvarchar(450)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.HasKey("Name");
 
@@ -82,12 +87,12 @@ namespace License.Api.Migrations
 
                     b.Property<string>("ApplicationName")
                         .IsRequired()
-                        .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.HasKey("Id");
 
@@ -99,17 +104,32 @@ namespace License.Api.Migrations
             modelBuilder.Entity("License.Api.Shared.Enteties.User", b =>
                 {
                     b.Property<string>("Id")
-                        .HasColumnType("nvarchar(450)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
-                    b.Property<string>("OrganizationName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<int>("LicenseId")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("OrganizationName");
+                    b.HasIndex("LicenseId");
 
                     b.ToTable("Users");
+                });
+
+            modelBuilder.Entity("OrganizationUser", b =>
+                {
+                    b.Property<string>("OrganizationsName")
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<string>("UsersId")
+                        .HasColumnType("nvarchar(50)");
+
+                    b.HasKey("OrganizationsName", "UsersId");
+
+                    b.HasIndex("UsersId");
+
+                    b.ToTable("UserOrganizations", (string)null);
                 });
 
             modelBuilder.Entity("RoleUser", b =>
@@ -118,7 +138,7 @@ namespace License.Api.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("UsersId")
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("nvarchar(50)");
 
                     b.HasKey("RolesId", "UsersId");
 
@@ -138,7 +158,7 @@ namespace License.Api.Migrations
                     b.HasOne("License.Api.Shared.Enteties.Organization", "Organization")
                         .WithMany("Licenses")
                         .HasForeignKey("OrganizationName")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.Navigation("Application");
@@ -151,7 +171,7 @@ namespace License.Api.Migrations
                     b.HasOne("License.Api.Shared.Enteties.Application", "Application")
                         .WithMany("Roles")
                         .HasForeignKey("ApplicationName")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.Navigation("Application");
@@ -159,13 +179,28 @@ namespace License.Api.Migrations
 
             modelBuilder.Entity("License.Api.Shared.Enteties.User", b =>
                 {
-                    b.HasOne("License.Api.Shared.Enteties.Organization", "Organization")
+                    b.HasOne("License.Api.Shared.Enteties.AppLicense", "License")
                         .WithMany("Users")
-                        .HasForeignKey("OrganizationName")
+                        .HasForeignKey("LicenseId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Organization");
+                    b.Navigation("License");
+                });
+
+            modelBuilder.Entity("OrganizationUser", b =>
+                {
+                    b.HasOne("License.Api.Shared.Enteties.Organization", null)
+                        .WithMany()
+                        .HasForeignKey("OrganizationsName")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("License.Api.Shared.Enteties.User", null)
+                        .WithMany()
+                        .HasForeignKey("UsersId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("RoleUser", b =>
@@ -183,6 +218,11 @@ namespace License.Api.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("License.Api.Shared.Enteties.AppLicense", b =>
+                {
+                    b.Navigation("Users");
+                });
+
             modelBuilder.Entity("License.Api.Shared.Enteties.Application", b =>
                 {
                     b.Navigation("Licenses");
@@ -193,8 +233,6 @@ namespace License.Api.Migrations
             modelBuilder.Entity("License.Api.Shared.Enteties.Organization", b =>
                 {
                     b.Navigation("Licenses");
-
-                    b.Navigation("Users");
                 });
 #pragma warning restore 612, 618
         }
