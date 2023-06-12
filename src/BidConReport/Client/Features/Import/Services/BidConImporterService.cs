@@ -1,5 +1,4 @@
-﻿using BidConReport.Shared;
-using BidConReport.Shared.Entities;
+﻿using BidConReport.Shared.Entities;
 using System;
 using System.Net.Http.Json;
 
@@ -50,7 +49,7 @@ public class BidConImporterService : IBidConImporterService
     }
     private HttpClient GetHttpClient()
     {
-        return _httpClientFactory.CreateClient(AppConstants.BidConApiHttpClientName);
+        return _httpClientFactory.CreateClient(HttpClientNames.DesktopBridgeAddress);
     }
 
     public async Task<IEnumerable<BidConImportResult<Estimation>>> GetEstimationsAsync(IEnumerable<DbEstimation> estimations, EstimationImportSettings settings, CancellationToken cancelToken, IProgress<BidConImportResult<Estimation>>? progress = null)

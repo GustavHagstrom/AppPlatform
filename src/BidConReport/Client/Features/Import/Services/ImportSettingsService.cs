@@ -1,5 +1,4 @@
-﻿using BidConReport.Shared;
-using BidConReport.Shared.Entities;
+﻿using BidConReport.Shared.Entities;
 using System.Net.Http.Json;
 
 namespace BidConReport.Client.Features.Import.Services;
@@ -17,7 +16,7 @@ public class ImportSettingsService : IImportSettingsService
     {
         try
         {
-            var client = _httpClientFactory.CreateClient(AppConstants.BackendHttpClientName);
+            var client = _httpClientFactory.CreateClient(HttpClientNames.BackendHttpClientName);
             var result = await client.DeleteAsync($"/api/import/DeleteImportSetting/{settingsId}");
             result.EnsureSuccessStatusCode();
         }
@@ -31,7 +30,7 @@ public class ImportSettingsService : IImportSettingsService
     {
         try
         {
-            var client = _httpClientFactory.CreateClient(AppConstants.BackendHttpClientName);
+            var client = _httpClientFactory.CreateClient(HttpClientNames.BackendHttpClientName);
             var requestUri = "/api/import/GetImportSettingsForOrganization";
             var response = await client.GetAsync(requestUri);
             response.EnsureSuccessStatusCode();
@@ -50,7 +49,7 @@ public class ImportSettingsService : IImportSettingsService
         
         try
         {
-            var client = _httpClientFactory.CreateClient(AppConstants.BackendHttpClientName);
+            var client = _httpClientFactory.CreateClient(HttpClientNames.BackendHttpClientName);
             var requestUri = "/api/import/GetStandardImportSettings";
             var result = await client.GetAsync(requestUri);
             result.EnsureSuccessStatusCode();
@@ -69,7 +68,7 @@ public class ImportSettingsService : IImportSettingsService
     {
         try
         {
-            var client = _httpClientFactory.CreateClient(AppConstants.BackendHttpClientName);
+            var client = _httpClientFactory.CreateClient(HttpClientNames.BackendHttpClientName);
             var result = await client.PostAsJsonAsync("/api/import/SetAsStandard", settings);
             result.EnsureSuccessStatusCode();
         }
@@ -84,7 +83,7 @@ public class ImportSettingsService : IImportSettingsService
     {
         try
         {
-            var client = _httpClientFactory.CreateClient(AppConstants.BackendHttpClientName);
+            var client = _httpClientFactory.CreateClient(HttpClientNames.BackendHttpClientName);
             var result = await client.PostAsJsonAsync("/api/import/UpdateOrCreateImportSettings", settings);
             result.EnsureSuccessStatusCode();
         }
