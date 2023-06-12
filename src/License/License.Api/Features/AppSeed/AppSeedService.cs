@@ -4,12 +4,12 @@ using Microsoft.EntityFrameworkCore;
 using SharedPlatformLibrary.Enteties;
 using System.Runtime.CompilerServices;
 
-namespace License.Api.Features.Seed;
-public class SeedService : ISeedService
+namespace License.Api.Features.AppSeed;
+public class AppSeedService : IAppSeedService
 {
     private readonly LicenseDbContext _dbContext;
 
-    public SeedService(LicenseDbContext dbContext)
+    public AppSeedService(LicenseDbContext dbContext)
     {
         _dbContext = dbContext;
     }

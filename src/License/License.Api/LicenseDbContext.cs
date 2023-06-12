@@ -16,14 +16,16 @@ public class LicenseDbContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        base.OnModelCreating(modelBuilder);
+
         modelBuilder.Entity<User>()
             .HasMany(u => u.Roles)
             .WithMany(r => r.Users)
             .UsingEntity(j => j.ToTable("UserRoles"));
         modelBuilder.Entity<User>()
-            .HasOne(u => u.License)
+            .HasMany(u => u.Licenses)
             .WithMany(r => r.Users)
-            .HasForeignKey(x => x.LicenseId);
+            .UsingEntity(j => j.ToTable("UserLicenses"));
         modelBuilder.Entity<User>()
             .HasMany(u => u.Organizations)
             .WithMany(o => o.Users)
@@ -43,10 +45,6 @@ public class LicenseDbContext : DbContext
             .HasOne(r => r.Application)
             .WithMany(a => a.Roles)
             .HasForeignKey(r => r.ApplicationName)
-            .OnDelete(DeleteBehavior.NoAction);
-
-
-
-        base.OnModelCreating(modelBuilder);
+            .OnDelete(DeleteBehavior.NoAction);        
     }
 }

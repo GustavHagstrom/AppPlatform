@@ -7,6 +7,6 @@ public class Application
     [Key]
     [StringLength(50)]
     public required string Name { get; set; }
-    public ICollection<Role> Roles { get; set; }
-    public ICollection<AppLicense> Licenses { get; set; }
+    public ICollection<Role> Roles { get; set; } = Array.Empty<Role>();
+    public ICollection<AppLicense> Licenses { get; set; } = Array.Empty<AppLicense>();
 }

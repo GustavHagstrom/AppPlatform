@@ -5,20 +5,20 @@ using Microsoft.EntityFrameworkCore;
 using SharedPlatformLibrary.Enteties;
 using System.Linq;
 
-namespace License.Api.Features.Seed;
+namespace License.Api.Features.AppSeed;
 [Route("api/[controller]")]
 [ApiController]
-public class SeedController : ControllerBase
+public class AppSeedController : ControllerBase
 {
-    private readonly ISeedService _seedService;
-    private readonly ILogger<SeedController> _logger;
+    private readonly IAppSeedService _seedService;
+    private readonly ILogger<AppSeedController> _logger;
 
-    public SeedController(ISeedService seedService, ILogger<SeedController> logger)
+    public AppSeedController(IAppSeedService seedService, ILogger<AppSeedController> logger)
     {
         _seedService = seedService;
         _logger = logger;
     }
-    [HttpPost("AppSeed")]
+    [HttpPost]
     public async Task<IActionResult> AppSeed([FromBody] AppSeedModel seedModel)
     {
         try

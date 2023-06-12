@@ -5,10 +5,10 @@ public class Role
 {
     public int Id { get; set; }
     [StringLength(50)]
-    public string Name { get; set; }
-    public ICollection<User> Users { get; set; }
+    public required string Name { get; set; }
+    public ICollection<User> Users { get; set; } = Array.Empty<User>();
     [StringLength(50)]
-    public Application Application { get; set; }
-    public string ApplicationName { get; set; }
+    public Application? Application { get; set; }
+    public required string ApplicationName { get; set; }
     
 }

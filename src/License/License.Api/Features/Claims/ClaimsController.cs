@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Identity.Web;
+using SharedPlatformLibrary.Constants;
 
 namespace License.Api.Features.Claims;
 [Route("api/[controller]")]
@@ -21,12 +22,14 @@ public class ClaimsController : ControllerBase
         try
         {
             var userId = User.Claims.Where(x => x.Type == ClaimConstants.ObjectId).Select(x => x.Value).FirstOrDefault();
+            var organizationName = User.Claims.Where(x => x.Type == CustomClaimConstants.Organization).Select(x => x.Value).FirstOrDefault();
             ArgumentNullException.ThrowIfNull(userId);
-            return Ok(await _claimService.GetCustomClaims(userId, applicationName));
+            ArgumentNullException.ThrowIfNull(organizationName);
+            return Ok(await _claimService.GetCustomClaims(userId, applicationName, organizationName));
         }
         catch (ArgumentNullException e)
         {
-            _logger.LogWarning(e, "userId might be null");
+            _logger.LogWarning(e, "userId or organization name might be null");
             return Problem("UserId might be null");
         }
         catch (Exception e)
