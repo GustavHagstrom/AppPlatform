@@ -1,23 +1,31 @@
 ﻿using BidConReport.Server.Data;
-using BidConReport.Server.Features.Authorization.Models;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Identity.Web;
+using System.Net.Http.Headers;
 
 namespace BidConReport.Server.Features.Claims;
 [Route("api/[controller]")]
 [ApiController]
 public class ClaimsController : ControllerBase
 {
-    private readonly ApplicationDbContext _applicationDbContext;
+    private readonly IClaimsProvider _claimsProvider;
 
-    public ClaimsController(ApplicationDbContext applicationDbContext)
+    public ClaimsController(IClaimsProvider claimsProvider)
     {
-        _applicationDbContext = applicationDbContext;
+        _claimsProvider = claimsProvider;
     }
     [HttpGet]
     public async Task<IActionResult> GetClaims(CancellationToken cancellationToken)
     {
-        throw new NotImplementedException();
+        try
+        {
+            var result = await _claimsProvider.GetClaimsAsync();
+            return Ok(result);
+        }
+        catch (Exception)
+        {
+
+            throw;
+        }
     }
 }

@@ -1,5 +1,7 @@
-﻿namespace License.Api.Features.Claims;
+﻿using SharedPlatformLibrary.Enteties;
+
+namespace License.Api.Features.Claims;
 public interface IClaimService
 {
-    Task<ICollection<KeyValuePair<string, string>>> GetCustomClaims(string userId, string applicationName, string organizationName);
+    Task<ICollection<ClaimModel>> GetCustomClaims(string userId, string applicationName, string organizationName);
 }

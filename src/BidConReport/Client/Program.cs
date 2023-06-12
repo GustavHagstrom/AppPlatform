@@ -1,4 +1,5 @@
 using BidConReport.Client;
+using BidConReport.Shared.Constants;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Authentication;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
@@ -35,7 +36,7 @@ builder.Services.AddMudServices(config =>
 builder.Services.AddLocalization();
 builder.Services.UseImportFeature();
 builder.Services.UseSharedStateContainers();
-builder.UseSharedWasmLibrary("api/authorization/claims");
+builder.UseSharedWasmLibrary(BackendApiEndpoints.Claims);
 
 
 await builder.Build().RunAsync();

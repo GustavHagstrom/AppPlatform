@@ -6,4 +6,8 @@ public static class CommonConstants
     /// probably cannot be changed once in production
     /// </summary>
     public const string ApplicationName = "BidconReport";
+    /// <summary>
+    /// This is used in the licenseDb and probably a bad idea to change once in production
+    /// </summary>
+    public static readonly string[] AppRoles = { "admin", "creator", "reader", "guest" };
 }

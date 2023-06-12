@@ -1,6 +1,7 @@
 ﻿using LicenseLibrary;
 using Microsoft.EntityFrameworkCore;
 using SharedPlatformLibrary.Constants;
+using SharedPlatformLibrary.Enteties;
 using System.Security.Claims;
 
 namespace License.Api.Features.Claims;
@@ -12,7 +13,7 @@ public class ClaimService : IClaimService
     {
         _dbContext = dbContext;
     }
-    public  async Task<ICollection<KeyValuePair<string, string>>> GetCustomClaims(string userId, string applicationName, string organizationName)
+    public  async Task<ICollection<ClaimModel>> GetCustomClaims(string userId, string applicationName, string organizationName)
     {
         var user = await _dbContext.Users
             .Where(x => x.Id == userId)
@@ -21,16 +22,16 @@ public class ClaimService : IClaimService
             .Include(x => x.Licenses)
             .FirstOrDefaultAsync();
 
-        var claims = new List<KeyValuePair<string, string>>();
+        var claims = new List<ClaimModel>();
         if (user is not null)
         {
             var roles = user.Roles
-                .Select(x => new KeyValuePair<string, string>(ClaimTypes.Role, x.Name));
+                .Select(x => new ClaimModel(ClaimTypes.Role, x.Name));
             var orgs = user.Organizations
-                .Select(x => new KeyValuePair<string, string>(CustomClaimConstants.Organization, x.Name));
+                .Select(x => new ClaimModel(CustomClaimConstants.Organization, x.Name));
             var licenses = user.Licenses
                 .Where(x => x.OrganizationName == organizationName && x.ApplicationName == applicationName) 
-                .Select(x => new KeyValuePair<string, string>(CustomClaimConstants.License, x.Id.ToString()));
+                .Select(x => new ClaimModel(CustomClaimConstants.License, x.Id.ToString()));
 
             claims.AddRange(roles);
             claims.AddRange(orgs);
