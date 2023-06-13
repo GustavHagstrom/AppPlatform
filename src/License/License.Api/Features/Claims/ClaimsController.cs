@@ -1,7 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.Identity.Web;
-using SharedPlatformLibrary.Constants;
+﻿using Microsoft.AspNetCore.Mvc;
+using SharedPlatformLibrary.HttpRequests;
 
 namespace License.Api.Features.Claims;
 [Route("api/[controller]")]
@@ -16,16 +14,12 @@ public class ClaimsController : ControllerBase
         _claimService = claimService;
         _logger = logger;
     }
-    [HttpGet]
-    public async Task<IActionResult> Get([FromQuery] string applicationName)
+    [HttpPost]
+    public async Task<IActionResult> Get([FromBody] ClaimsRequestBody claimsRequestBody)
     {
         try
         {
-            var userId = User.Claims.Where(x => x.Type == ClaimConstants.ObjectId).Select(x => x.Value).FirstOrDefault();
-            var organizationName = User.Claims.Where(x => x.Type == CustomClaimConstants.Organization).Select(x => x.Value).FirstOrDefault();
-            ArgumentNullException.ThrowIfNull(userId);
-            ArgumentNullException.ThrowIfNull(organizationName);
-            return Ok(await _claimService.GetCustomClaims(userId, applicationName, organizationName));
+            return Ok(await _claimService.GetCustomClaims(claimsRequestBody));
         }
         catch (ArgumentNullException e)
         {

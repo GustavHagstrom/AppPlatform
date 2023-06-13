@@ -44,8 +44,8 @@ public static class DatabaseSeed
         var licenseClient = scope.ServiceProvider.GetRequiredService<HttpClient>();
         var seedModel = new AppSeedModel
         {
-            ApplicationName = CommonConstants.ApplicationName,
-            Roles = CommonConstants.AppRoles,
+            ApplicationName = CommonAppConstants.ApplicationName,
+            Roles = CommonAppConstants.AppRoles,
         };
         var result = licenseClient.PostAsJsonAsync(LicenseApiEndpoints.ApplicationSeed, seedModel).Result;
     }

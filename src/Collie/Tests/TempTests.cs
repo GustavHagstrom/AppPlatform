@@ -20,4 +20,12 @@ public class TempTests
     //    var decryptedPass = new StreamReader(new CryptoStream(new MemoryStream(array), dESCryptoServiceProvider.CreateDecryptor(eNCRYPTION_KEY, rgbIV), CryptoStreamMode.Read)).ReadToEnd();
     //    Assert.That(decryptedPass, Is.EqualTo("lol"));
     //}
+    [Test]
+    [TestCase("test/test")]
+    [TestCase("/test/test")]
+    public void TempTest1(string url)
+    {
+        var uri = new Uri(url);
+        Assert.That(url, Is.EqualTo(url));
+    }
 }

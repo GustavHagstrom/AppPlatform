@@ -1,5 +1,5 @@
 ﻿namespace BidConReport.Shared.Constants;
-public static class CommonConstants
+public static class CommonAppConstants
 {
     /// <summary>
     /// This is used as a primary key in the LicenseDb and 

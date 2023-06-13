@@ -1,9 +1,7 @@
 ﻿using BidConReport.Shared.Constants;
-using Microsoft.AspNetCore.Authentication;
 using SharedPlatformLibrary.Constants;
 using SharedPlatformLibrary.Enteties;
-using System.Net.Http;
-using System.Net.Http.Headers;
+using SharedPlatformLibrary.HttpRequests;
 
 namespace BidConReport.Server.Features.Claims;
 
@@ -15,11 +13,14 @@ public class ClaimsProvider : IClaimsProvider
     {
         _httpClient = httpClient;
     }
-    public async Task<ICollection<ClaimModel>> GetClaimsAsync()
+    public async Task<ICollection<ClaimModel>> GetClaimsAsync(string userId)
     {
 
         var claims = new List<ClaimModel>();
-        var claimResult = await _httpClient.GetFromJsonAsync<ICollection<ClaimModel>>($"{LicenseApiEndpoints.Claims}?applicationName={CommonConstants.ApplicationName}");
+        var requestBody = new ClaimsRequestBody(userId, CommonAppConstants.ApplicationName);
+        var result = await _httpClient.PostAsJsonAsync(LicenseApiEndpoints.Claims, requestBody);
+        result.EnsureSuccessStatusCode();
+        var claimResult = await result.Content.ReadFromJsonAsync<ICollection<ClaimModel>>();
         if (claimResult is not null)
         {
             claims.AddRange(claimResult);

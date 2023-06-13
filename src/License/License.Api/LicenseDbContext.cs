@@ -30,6 +30,10 @@ public class LicenseDbContext : DbContext
             .HasMany(u => u.Organizations)
             .WithMany(o => o.Users)
             .UsingEntity(j => j.ToTable("UserOrganizations"));
+        modelBuilder.Entity<User>()
+            .HasOne(u => u.CurrentOrganization)
+            .WithMany()
+            .HasForeignKey(u => u.CurrentOrganizationName);
 
         modelBuilder.Entity<AppLicense>()
             .HasOne(l => l.Application)

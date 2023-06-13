@@ -3,5 +3,5 @@
 namespace BidConReport.Server.Features.Claims;
 public interface IClaimsProvider
 {
-    Task<ICollection<ClaimModel>> GetClaimsAsync();
+    Task<ICollection<ClaimModel>> GetClaimsAsync(string userId);
 }

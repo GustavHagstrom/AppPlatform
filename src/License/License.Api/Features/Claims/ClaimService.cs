@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using SharedPlatformLibrary.Constants;
 using SharedPlatformLibrary.Enteties;
+using SharedPlatformLibrary.HttpRequests;
 using System.Security.Claims;
 
 namespace License.Api.Features.Claims;
@@ -13,10 +14,10 @@ public class ClaimService : IClaimService
     {
         _dbContext = dbContext;
     }
-    public  async Task<ICollection<ClaimModel>> GetCustomClaims(string userId, string applicationName, string organizationName)
+    public  async Task<ICollection<ClaimModel>> GetCustomClaims(ClaimsRequestBody claimsRequestBody)
     {
         var user = await _dbContext.Users
-            .Where(x => x.Id == userId)
+            .Where(x => x.Id == claimsRequestBody.UserId)
             .Include(x => x.Roles)
             .Include(x => x.Organizations)
             .Include(x => x.Licenses)
@@ -28,11 +29,15 @@ public class ClaimService : IClaimService
             var roles = user.Roles
                 .Select(x => new ClaimModel(ClaimTypes.Role, x.Name));
             var orgs = user.Organizations
-                .Select(x => new ClaimModel(CustomClaimConstants.Organization, x.Name));
+                .Select(x => new ClaimModel(CustomClaimTypes.Organization, x.Name));
             var licenses = user.Licenses
-                .Where(x => x.OrganizationName == organizationName && x.ApplicationName == applicationName) 
-                .Select(x => new ClaimModel(CustomClaimConstants.License, x.Id.ToString()));
+                .Where(x => x.OrganizationName == user.CurrentOrganizationName && x.ApplicationName == claimsRequestBody.ApplicationName) 
+                .Select(x => new ClaimModel(CustomClaimTypes.License, x.Id.ToString()));
 
+            if (user.CurrentOrganizationName is not null)
+            {
+                claims.Add(new ClaimModel(CustomClaimTypes.CurrentOrganization, user.CurrentOrganizationName));
+            }
             claims.AddRange(roles);
             claims.AddRange(orgs);
             claims.AddRange(licenses);
