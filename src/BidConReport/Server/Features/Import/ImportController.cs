@@ -39,13 +39,13 @@ public class ImportController : ControllerBase
         }
 
         var user = await _applicationDbContext.Users
-            .Include(u => u.StandardSettings)
+            .Include(u => u.StandardEstimationSettings)
             .FirstOrDefaultAsync(u => u.Id == userIdClaim.Value);
-        if (user is null || user.StandardSettings is null)
+        if (user is null || user.StandardEstimationSettings is null)
         {
             return NotFound(new { message = "Standard import settings not found for this user." });
         }
-        return Ok(user.StandardSettings);
+        return Ok(user.StandardEstimationSettings);
     }
     [HttpPost("UpdateOrCreateImportSettings")]
     public async Task<IActionResult> UpdateOrCreateImportSettings(EstimationImportSettings settings)
@@ -132,7 +132,7 @@ public class ImportController : ControllerBase
         }
 
         var currentUser = await _applicationDbContext.Users
-            .Include(u => u.StandardSettings)
+            .Include(u => u.StandardEstimationSettings)
             .FirstOrDefaultAsync(u => u.Id == userIdClaim.Value);
 
         if (currentUser is null)
@@ -146,7 +146,7 @@ public class ImportController : ControllerBase
             .FirstOrDefaultAsync(s => s.Id == importSetting.Id);
         }
 
-        currentUser.StandardSettings = importSetting;
+        currentUser.StandardEstimationSettings = importSetting;
 
         try
         {

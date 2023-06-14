@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace BidConReport.Server.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialMigration : Migration
+    public partial class Initialmigration : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -22,11 +22,11 @@ namespace BidConReport.Server.Migrations
                     CostFactorAccount = table.Column<string>(type: "nvarchar(10)", maxLength: 10, nullable: false),
                     CostBeforeChangesAccount = table.Column<string>(type: "nvarchar(10)", maxLength: 10, nullable: false),
                     NetCostAccount = table.Column<string>(type: "nvarchar(10)", maxLength: 10, nullable: false),
-                    HiddenTag = table.Column<string>(type: "nvarchar(10)", maxLength: 10, nullable: false),
-                    HiddenUnitTag = table.Column<string>(type: "nvarchar(10)", maxLength: 10, nullable: false),
+                    HiddenTag = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
+                    HiddenUnitTag = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
                     UseRevisionAsSelectionTags = table.Column<bool>(type: "bit", nullable: false),
-                    QuickTags = table.Column<string>(type: "NVARCHAR(1000)", nullable: false),
-                    SelectionTags = table.Column<string>(type: "NVARCHAR(1000)", nullable: false)
+                    QuickTags = table.Column<string>(type: "NVARCHAR(1000)", maxLength: 1000, nullable: false),
+                    SelectionTags = table.Column<string>(type: "NVARCHAR(1000)", maxLength: 1000, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -42,6 +42,8 @@ namespace BidConReport.Server.Migrations
                     OrganizationId = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     Name = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     Description = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
+                    Representative = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
+                    Supervisor = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
                     Currency = table.Column<string>(type: "nvarchar(10)", maxLength: 10, nullable: false),
                     CostBeforeChanges = table.Column<double>(type: "float", nullable: false),
                     CreationDate = table.Column<DateTime>(type: "datetime2", nullable: false),
@@ -55,29 +57,18 @@ namespace BidConReport.Server.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Roles",
-                columns: table => new
-                {
-                    Name = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Roles", x => x.Name);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Users",
                 columns: table => new
                 {
                     Id = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    StandardSettingsId = table.Column<int>(type: "int", nullable: true)
+                    StandardEstimationSettingsId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Users", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Users_EstimationImportSettings_StandardSettingsId",
-                        column: x => x.StandardSettingsId,
+                        name: "FK_Users_EstimationImportSettings_StandardEstimationSettingsId",
+                        column: x => x.StandardEstimationSettingsId,
                         principalTable: "EstimationImportSettings",
                         principalColumn: "Id");
                 });
@@ -116,30 +107,6 @@ namespace BidConReport.Server.Migrations
                         principalColumn: "Id");
                 });
 
-            migrationBuilder.CreateTable(
-                name: "RoleUser",
-                columns: table => new
-                {
-                    RolesName = table.Column<string>(type: "nvarchar(20)", nullable: false),
-                    UserId = table.Column<string>(type: "nvarchar(50)", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_RoleUser", x => new { x.RolesName, x.UserId });
-                    table.ForeignKey(
-                        name: "FK_RoleUser_Roles_RolesName",
-                        column: x => x.RolesName,
-                        principalTable: "Roles",
-                        principalColumn: "Name",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_RoleUser_Users_UserId",
-                        column: x => x.UserId,
-                        principalTable: "Users",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
             migrationBuilder.CreateIndex(
                 name: "IX_EstimationItem_EstimationId",
                 table: "EstimationItem",
@@ -151,14 +118,9 @@ namespace BidConReport.Server.Migrations
                 column: "EstimationItemId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_RoleUser_UserId",
-                table: "RoleUser",
-                column: "UserId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Users_StandardSettingsId",
+                name: "IX_Users_StandardEstimationSettingsId",
                 table: "Users",
-                column: "StandardSettingsId");
+                column: "StandardEstimationSettingsId");
         }
 
         /// <inheritdoc />
@@ -168,16 +130,10 @@ namespace BidConReport.Server.Migrations
                 name: "EstimationItem");
 
             migrationBuilder.DropTable(
-                name: "RoleUser");
+                name: "Users");
 
             migrationBuilder.DropTable(
                 name: "Estimations");
-
-            migrationBuilder.DropTable(
-                name: "Roles");
-
-            migrationBuilder.DropTable(
-                name: "Users");
 
             migrationBuilder.DropTable(
                 name: "EstimationImportSettings");

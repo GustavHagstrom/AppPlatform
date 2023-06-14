@@ -1,4 +1,4 @@
-﻿using BidConReport.Server.Features.Authorization.Models;
+﻿using BidConReport.Server.Shared.Enteties;
 using BidConReport.Shared.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
@@ -20,17 +20,15 @@ public class ApplicationDbContext : DbContext
     public DbSet<EstimationImportSettings> EstimationImportSettings { get; set; }
     public DbSet<Estimation> Estimations { get; set; }
     public DbSet<User> Users { get; set; }
-    public DbSet<Role> Roles { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
 
         modelBuilder.Entity<User>()
-            .HasMany(u => u.Roles)
-            .WithMany();
-        modelBuilder.Entity<Role>()
-            .HasKey(r => r.Name);
+            .HasOne(u => u.StandardEstimationSettings)
+            .WithMany()
+            .HasForeignKey(u => u.StandardEstimationSettingsId);
 
         modelBuilder.Entity<Estimation>()
             .Property(e => e.QuickTags)
@@ -55,20 +53,6 @@ public class ApplicationDbContext : DbContext
             .HasColumnType("NVARCHAR(1000)")
             .Metadata.SetValueComparer(_stringCollectionValueComparer);
 
-        //modelBuilder.Entity<EstimationImportSettings>()
-        //    .Property(e => e.QuickTags)
-        //    .HasConversion(
-        //    v => JsonSerializer.Serialize(v, new JsonSerializerOptions()),
-        //    v => (JsonSerializer.Deserialize<ICollection<string>>(v, new JsonSerializerOptions())!))
-        //    .HasColumnType("NVARCHAR(1000)")
-        //    .Metadata.SetValueComparer(_stringCollectionValueComparer);
-        //modelBuilder.Entity<EstimationImportSettings>()
-        //    .Property(e => e.SelectionTags)
-        //    .HasConversion(
-        //    v => JsonSerializer.Serialize(v, new JsonSerializerOptions()),
-        //    v => (JsonSerializer.Deserialize<ICollection<string>>(v, new JsonSerializerOptions())!))
-        //    .HasColumnType("NVARCHAR(1000)")
-        //    .Metadata.SetValueComparer(_stringCollectionValueComparer);
         modelBuilder.Entity<EstimationImportSettings>()
             .Property(e => e.QuickTags)
             .HasConversion(
@@ -84,10 +68,5 @@ public class ApplicationDbContext : DbContext
             .HasColumnType("NVARCHAR(1000)")
             .Metadata.SetValueComparer(_stringCollectionValueComparer);
     }
-    //private ValueConverter tset()
-    //{
-    //    var converter = new ValueConverter();
-    //    converter.
-    //}
     
 }

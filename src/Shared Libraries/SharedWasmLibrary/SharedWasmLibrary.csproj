@@ -32,4 +32,8 @@
     <Folder Include="Shared\Enteties\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\..\SharedPlatformLibrary\SharedPlatformLibrary.csproj" />
+  </ItemGroup>
+
 </Project>

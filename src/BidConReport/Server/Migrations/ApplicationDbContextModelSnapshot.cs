@@ -17,39 +17,28 @@ namespace BidConReport.Server.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "7.0.3")
+                .HasAnnotation("ProductVersion", "7.0.5")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("BidConReport.Server.Features.Authorization.Models.Role", b =>
-                {
-                    b.Property<string>("Name")
-                        .HasMaxLength(20)
-                        .HasColumnType("nvarchar(20)");
-
-                    b.HasKey("Name");
-
-                    b.ToTable("Roles");
-                });
-
-            modelBuilder.Entity("BidConReport.Server.Features.Authorization.Models.User", b =>
+            modelBuilder.Entity("BidConReport.Server.Shared.Enteties.User", b =>
                 {
                     b.Property<string>("Id")
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
-                    b.Property<int?>("StandardSettingsId")
+                    b.Property<int?>("StandardEstimationSettingsId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("StandardSettingsId");
+                    b.HasIndex("StandardEstimationSettingsId");
 
                     b.ToTable("Users");
                 });
 
-            modelBuilder.Entity("BidConReport.Shared.Models.Estimation", b =>
+            modelBuilder.Entity("BidConReport.Shared.Entities.Estimation", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -92,16 +81,24 @@ namespace BidConReport.Server.Migrations
                         .IsRequired()
                         .HasColumnType("NVARCHAR(1000)");
 
+                    b.Property<string>("Representative")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
                     b.Property<string>("SelectionTags")
                         .IsRequired()
                         .HasColumnType("NVARCHAR(1000)");
+
+                    b.Property<string>("Supervisor")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.HasKey("Id");
 
                     b.ToTable("Estimations");
                 });
 
-            modelBuilder.Entity("BidConReport.Shared.Models.EstimationImportSettings", b =>
+            modelBuilder.Entity("BidConReport.Shared.Entities.EstimationImportSettings", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -162,7 +159,7 @@ namespace BidConReport.Server.Migrations
                     b.ToTable("EstimationImportSettings");
                 });
 
-            modelBuilder.Entity("BidConReport.Shared.Models.EstimationItem", b =>
+            modelBuilder.Entity("BidConReport.Shared.Entities.EstimationItem", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -226,62 +223,32 @@ namespace BidConReport.Server.Migrations
                     b.ToTable("EstimationItem");
                 });
 
-            modelBuilder.Entity("RoleUser", b =>
+            modelBuilder.Entity("BidConReport.Server.Shared.Enteties.User", b =>
                 {
-                    b.Property<string>("RolesName")
-                        .HasColumnType("nvarchar(20)");
-
-                    b.Property<string>("UserId")
-                        .HasColumnType("nvarchar(50)");
-
-                    b.HasKey("RolesName", "UserId");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("RoleUser");
-                });
-
-            modelBuilder.Entity("BidConReport.Server.Features.Authorization.Models.User", b =>
-                {
-                    b.HasOne("BidConReport.Shared.Models.EstimationImportSettings", "StandardSettings")
+                    b.HasOne("BidConReport.Shared.Entities.EstimationImportSettings", "StandardEstimationSettings")
                         .WithMany()
-                        .HasForeignKey("StandardSettingsId");
+                        .HasForeignKey("StandardEstimationSettingsId");
 
-                    b.Navigation("StandardSettings");
+                    b.Navigation("StandardEstimationSettings");
                 });
 
-            modelBuilder.Entity("BidConReport.Shared.Models.EstimationItem", b =>
+            modelBuilder.Entity("BidConReport.Shared.Entities.EstimationItem", b =>
                 {
-                    b.HasOne("BidConReport.Shared.Models.Estimation", null)
+                    b.HasOne("BidConReport.Shared.Entities.Estimation", null)
                         .WithMany("Items")
                         .HasForeignKey("EstimationId");
 
-                    b.HasOne("BidConReport.Shared.Models.EstimationItem", null)
+                    b.HasOne("BidConReport.Shared.Entities.EstimationItem", null)
                         .WithMany("Items")
                         .HasForeignKey("EstimationItemId");
                 });
 
-            modelBuilder.Entity("RoleUser", b =>
-                {
-                    b.HasOne("BidConReport.Server.Features.Authorization.Models.Role", null)
-                        .WithMany()
-                        .HasForeignKey("RolesName")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("BidConReport.Server.Features.Authorization.Models.User", null)
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("BidConReport.Shared.Models.Estimation", b =>
+            modelBuilder.Entity("BidConReport.Shared.Entities.Estimation", b =>
                 {
                     b.Navigation("Items");
                 });
 
-            modelBuilder.Entity("BidConReport.Shared.Models.EstimationItem", b =>
+            modelBuilder.Entity("BidConReport.Shared.Entities.EstimationItem", b =>
                 {
                     b.Navigation("Items");
                 });

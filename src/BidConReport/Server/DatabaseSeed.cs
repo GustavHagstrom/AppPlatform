@@ -1,7 +1,4 @@
-﻿using BidConReport.Server.Data;
-using BidConReport.Server.Features.Authorization.Models;
-using BidConReport.Shared.Constants;
-using Microsoft.EntityFrameworkCore;
+﻿using BidConReport.Shared.Constants;
 using SharedPlatformLibrary.Constants;
 using SharedPlatformLibrary.Enteties;
 
@@ -21,32 +18,34 @@ public static class DatabaseSeed
     private static void SeedApplicationDb(IServiceScope scope)
     {
         //Should be logged
-        var context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
-        var roles = context.Roles.Where(r => true).ToArray();
-        var requiredRoles = new string[] { "admin", "creator" };
-        var changesMade = false;
-        foreach (var requiredRole in requiredRoles)
-        {
-            if (!roles.Select(r => r.Name).Contains(requiredRole))
-            {
-                changesMade = true;
-                context.Roles.Add(new Role { Name = requiredRole });
-            }
-        }
-        if (changesMade)
-        {
-            context.SaveChanges();
-        }
+
+        //var context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+        //var roles = context.Roles.Where(r => true).ToArray();
+        //var requiredRoles = new string[] { "admin", "creator" };
+        //var changesMade = false;
+        //foreach (var requiredRole in requiredRoles)
+        //{
+        //    if (!roles.Select(r => r.Name).Contains(requiredRole))
+        //    {
+        //        changesMade = true;
+        //        context.Roles.Add(new Role { Name = requiredRole });
+        //    }
+        //}
+        //if (changesMade)
+        //{
+        //    context.SaveChanges();
+        //}
     }
     private static void SeedLicenseDb(IServiceScope scope)
     {
         //Should be logged
-        var licenseClient = scope.ServiceProvider.GetRequiredService<HttpClient>();
-        var seedModel = new AppSeedModel
-        {
-            ApplicationName = CommonAppConstants.ApplicationName,
-            Roles = CommonAppConstants.AppRoles,
-        };
-        var result = licenseClient.PostAsJsonAsync(LicenseApiEndpoints.ApplicationSeed, seedModel).Result;
+
+        //var licenseClient = scope.ServiceProvider.GetRequiredService<HttpClient>();
+        //var seedModel = new AppSeedModel
+        //{
+        //    ApplicationName = CommonAppConstants.ApplicationName,
+        //    Roles = CommonAppConstants.AppRoles,
+        //};
+        //var result = licenseClient.PostAsJsonAsync(LicenseApiEndpoints.ApplicationSeed, seedModel).Result;
     }
 }

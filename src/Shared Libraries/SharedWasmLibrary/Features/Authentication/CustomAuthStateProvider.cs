@@ -4,6 +4,7 @@ using Microsoft.Authentication.WebAssembly.Msal.Models;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.JSInterop;
+using SharedPlatformLibrary.Enteties;
 using System.Net.Http.Json;
 using System.Security.Claims;
 
@@ -30,13 +31,12 @@ public class CustomAuthStateProvider : RemoteAuthenticationService<RemoteAuthent
                 var response = await client.GetAsync(string.Empty);// "/api/authorization/claims");
                 if (response.IsSuccessStatusCode)
                 {
-                    var value = await response.Content.ReadAsStringAsync();
-                    var claimValues = await response.Content.ReadFromJsonAsync<IEnumerable<KeyValuePair<string, string>>>();
-                    if (claimValues is not null)
+                    var claimModels = await response.Content.ReadFromJsonAsync<ICollection<ClaimModel>>();
+                    if (claimModels is not null)
                     {
-                        foreach (var claimValue in claimValues)
+                        foreach (var claimModel in claimModels)
                         {
-                            identity?.AddClaim(new Claim(claimValue.Key, claimValue.Value));
+                            identity?.AddClaim(new Claim(claimModel.Type, claimModel.Value));
                         }
                     }
                 }
