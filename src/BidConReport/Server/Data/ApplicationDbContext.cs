@@ -20,15 +20,21 @@ public class ApplicationDbContext : DbContext
     public DbSet<EstimationImportSettings> EstimationImportSettings { get; set; }
     public DbSet<Estimation> Estimations { get; set; }
     public DbSet<User> Users { get; set; }
+    public DbSet<UserOrganization> UserOrganizations { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
 
         modelBuilder.Entity<User>()
-            .HasOne(u => u.StandardEstimationSettings)
-            .WithMany()
-            .HasForeignKey(u => u.StandardEstimationSettingsId);
+            .HasOne(u => u.CurrentUserOrganization)
+            .WithOne()
+            .HasForeignKey<User>(u => u.CurrentUserOrganizationId);
+
+        modelBuilder.Entity<UserOrganization>()
+            .HasOne(u => u.User)
+            .WithMany(u => u.UserOrganizations)
+            .HasForeignKey(u => u.UserId);
 
         modelBuilder.Entity<Estimation>()
             .Property(e => e.QuickTags)

@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace BidConReport.Server.Migrations
 {
     /// <inheritdoc />
-    public partial class Initialmigration : Migration
+    public partial class InitialMigration : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -57,23 +57,6 @@ namespace BidConReport.Server.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Users",
-                columns: table => new
-                {
-                    Id = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    StandardEstimationSettingsId = table.Column<int>(type: "int", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Users", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Users_EstimationImportSettings_StandardEstimationSettingsId",
-                        column: x => x.StandardEstimationSettingsId,
-                        principalTable: "EstimationImportSettings",
-                        principalColumn: "Id");
-                });
-
-            migrationBuilder.CreateTable(
                 name: "EstimationItem",
                 columns: table => new
                 {
@@ -107,6 +90,44 @@ namespace BidConReport.Server.Migrations
                         principalColumn: "Id");
                 });
 
+            migrationBuilder.CreateTable(
+                name: "UserOrganizations",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    UserId = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    OrganizationId = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    StandardEstimationSettingsId = table.Column<int>(type: "int", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_UserOrganizations", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_UserOrganizations_EstimationImportSettings_StandardEstimationSettingsId",
+                        column: x => x.StandardEstimationSettingsId,
+                        principalTable: "EstimationImportSettings",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Users",
+                columns: table => new
+                {
+                    Id = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    IsDarkMode = table.Column<bool>(type: "bit", nullable: false),
+                    CurrentUserOrganizationId = table.Column<int>(type: "int", maxLength: 50, nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Users", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Users_UserOrganizations_CurrentUserOrganizationId",
+                        column: x => x.CurrentUserOrganizationId,
+                        principalTable: "UserOrganizations",
+                        principalColumn: "Id");
+                });
+
             migrationBuilder.CreateIndex(
                 name: "IX_EstimationItem_EstimationId",
                 table: "EstimationItem",
@@ -118,25 +139,56 @@ namespace BidConReport.Server.Migrations
                 column: "EstimationItemId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Users_StandardEstimationSettingsId",
-                table: "Users",
+                name: "IX_UserOrganizations_StandardEstimationSettingsId",
+                table: "UserOrganizations",
                 column: "StandardEstimationSettingsId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_UserOrganizations_UserId",
+                table: "UserOrganizations",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Users_CurrentUserOrganizationId",
+                table: "Users",
+                column: "CurrentUserOrganizationId",
+                unique: true,
+                filter: "[CurrentUserOrganizationId] IS NOT NULL");
+
+            migrationBuilder.AddForeignKey(
+                name: "FK_UserOrganizations_Users_UserId",
+                table: "UserOrganizations",
+                column: "UserId",
+                principalTable: "Users",
+                principalColumn: "Id",
+                onDelete: ReferentialAction.Cascade);
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropTable(
-                name: "EstimationItem");
+            migrationBuilder.DropForeignKey(
+                name: "FK_UserOrganizations_EstimationImportSettings_StandardEstimationSettingsId",
+                table: "UserOrganizations");
+
+            migrationBuilder.DropForeignKey(
+                name: "FK_UserOrganizations_Users_UserId",
+                table: "UserOrganizations");
 
             migrationBuilder.DropTable(
-                name: "Users");
+                name: "EstimationItem");
 
             migrationBuilder.DropTable(
                 name: "Estimations");
 
             migrationBuilder.DropTable(
                 name: "EstimationImportSettings");
+
+            migrationBuilder.DropTable(
+                name: "Users");
+
+            migrationBuilder.DropTable(
+                name: "UserOrganizations");
         }
     }
 }

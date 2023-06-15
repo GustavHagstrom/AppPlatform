@@ -1,5 +1,6 @@
 using BidConReport.Server;
 using BidConReport.Server.Data;
+using BidConReport.Server.Middlewares;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Components.WebAssembly.Authentication;
 using Microsoft.EntityFrameworkCore;
@@ -35,6 +36,7 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 });
 
 builder.Services.UseClaimsFeature();
+builder.Services.UseImportFeature();
 
 var app = builder.Build();
 
@@ -49,7 +51,7 @@ else
     // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }
-DatabaseSeed.EnsureSeedData(app);
+//DatabaseSeed.EnsureSeedData(app);
 
 app.UseHttpsRedirection();
 
@@ -61,6 +63,7 @@ app.UseRouting();
 app.UseAuthorization();
 
 //app.UseSharedLibraryMiddleware();
+app.UseMiddleware<LazyUserMiddleware>();
 
 app.MapRazorPages();
 app.MapControllers().RequireAuthorization();

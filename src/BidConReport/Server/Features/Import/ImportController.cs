@@ -1,162 +1,113 @@
-﻿using BidConReport.Server.Data;
-using BidConReport.Shared;
-using BidConReport.Shared.Entities;
+﻿using BidConReport.Shared.Entities;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
+using Microsoft.Identity.Web;
 
 namespace BidConReport.Server.Features.Import;
 [Route("api/[controller]")]
 [ApiController]
 public class ImportController : ControllerBase
 {
-    private readonly ApplicationDbContext _applicationDbContext;
+    private readonly IImportSettingsService _importSettingsService;
+    private readonly ILogger<ImportController> _logger;
 
-    public ImportController(ApplicationDbContext applicationDbContext)
+    public ImportController( IImportSettingsService importSettingsService, ILogger<ImportController> logger)
     {
-        _applicationDbContext = applicationDbContext;
+        _importSettingsService = importSettingsService;
+        _logger = logger;
     }
     [HttpGet("GetImportSettingsForOrganization")]
     public async Task<IActionResult> GetImportSettingsForOrganization()
     {
-        var organizationIdClaim = ControllerHelper.GetOrganizationClaim(User);
-        if (organizationIdClaim is null)
+        try
         {
-            return Problem();
+            var userId = User.Claims.Where(x => x.Type == ClaimConstants.ObjectId).FirstOrDefault()?.Value;
+            ArgumentNullException.ThrowIfNull(userId);
+            var result = await _importSettingsService.GetCurrentOrganizationSettingsAsync(userId);
+            return Ok(result);
         }
-
-        var settings = await _applicationDbContext.EstimationImportSettings
-            .Where(s => s.OrganizationId == organizationIdClaim.Value)
-            .ToArrayAsync();
-        return Ok(settings);
+        catch (ArgumentNullException e)
+        {
+            _logger.LogError(e, "UserId was null");
+            return Problem("UserId was null");
+        }
+        catch (Exception e)
+        {
+            _logger.LogError(e, "Unexpected server error");
+            return Problem("Unexpected server error");
+        }
     }
     [HttpGet("GetStandardImportSettings")]
     public async Task<IActionResult> GetStandardImportSettings()
     {
-        var userIdClaim = ControllerHelper.GetUserIdClaim(User);
-        if (userIdClaim is null)
+        try
         {
-            return NotFound(new { message = "User not found." });
+            var userId = User.Claims.Where(x => x.Type == ClaimConstants.ObjectId).FirstOrDefault()?.Value;
+            ArgumentNullException.ThrowIfNull(userId);
+            var settings = await _importSettingsService.GetCurrentsDefaultSettingsAsync(userId);
+            ArgumentNullException.ThrowIfNull(settings);
+            return Ok(settings);
         }
-
-        var user = await _applicationDbContext.Users
-            .Include(u => u.StandardEstimationSettings)
-            .FirstOrDefaultAsync(u => u.Id == userIdClaim.Value);
-        if (user is null || user.StandardEstimationSettings is null)
+        catch(ArgumentNullException e)
         {
-            return NotFound(new { message = "Standard import settings not found for this user." });
+            _logger.LogError(e, "UserId or ImportSettings was null");
+            return Problem("UserId or ImportSettings was null");
         }
-        return Ok(user.StandardEstimationSettings);
+        catch (Exception e)
+        {
+            _logger.LogError(e, "Unexpected server error");
+            return Problem("Unexpected server error");
+        }
     }
     [HttpPost("UpdateOrCreateImportSettings")]
     public async Task<IActionResult> UpdateOrCreateImportSettings(EstimationImportSettings settings)
     {
-        if (!ModelState.IsValid)
-        {
-            return BadRequest(ModelState);
-        }
-
-        var organizationIdClaim = ControllerHelper.GetOrganizationClaim(User);
-        if (organizationIdClaim is null)
-        {
-            return Problem();
-        }
-
-        settings.OrganizationId = organizationIdClaim.Value;
-
-        var existingSettings = await _applicationDbContext.EstimationImportSettings
-            .FirstOrDefaultAsync(s => s.OrganizationId == settings.OrganizationId && s.Id == settings.Id);
-
-        if (existingSettings is null)
-        {
-            await _applicationDbContext.EstimationImportSettings.AddAsync(settings);
-        }
-        else
-        {
-            _applicationDbContext.EstimationImportSettings.Attach(existingSettings);
-            _applicationDbContext.Entry(existingSettings).CurrentValues.SetValues(settings);
-        }
-
+        //TODO: add role constraint, maybe admin?? IF update also check for organization
         try
         {
-            await _applicationDbContext.SaveChangesAsync();
+            await _importSettingsService.UpsertImportSettingsAsync(settings);
+            return Ok();
         }
-        catch (DbUpdateException ex)
+        catch (Exception e)
         {
-            // Log the exception or handle it appropriately.
-            return Problem(detail: "An error occurred while saving the data.");
+            _logger.LogError(e, "Unexpected server error");
+            return Problem("Unexpected server error");
         }
-
-        return Ok(settings);
     }
     [HttpDelete("DeleteImportSetting/{id}")]
     public async Task<IActionResult> DeleteImportSetting(int id)
     {
-        var organizationIdClaim = ControllerHelper.GetOrganizationClaim(User);
-        if (organizationIdClaim is null)
-        {
-            return Problem(detail: "Unable to determine the organization for the user.");
-        }
-
-        var importSetting = await _applicationDbContext.EstimationImportSettings
-            .Where(x => x.Id == id && x.OrganizationId == organizationIdClaim.Value)
-            .FirstOrDefaultAsync();
-
-        if (importSetting is null)
-        {
-            return NotFound(new { message = "Import setting not found." });
-        }
-
+        //TODO: add role constraint and check that the user belongs to the organization the settings applies to
         try
         {
-            _applicationDbContext.EstimationImportSettings.Remove(importSetting);
-            await _applicationDbContext.SaveChangesAsync();
-            return Ok(new { message = "Import setting deleted successfully." });
+            await _importSettingsService.DeleteSettingsAsync(id);
+            return Ok();
         }
-        catch (Exception ex)
+        catch (Exception e)
         {
-            // Log the exception or handle it appropriately.
-            return Problem(detail: "An error occurred while deleting the import setting.");
+            _logger.LogError(e, "Unexpected server error");
+            return Problem("Unexpected server error");
         }
     }
     [HttpPost("SetAsStandard")]
-    public async Task<IActionResult> SetAsStandard(EstimationImportSettings? importSetting)
+    public async Task<IActionResult> SetAsStandard(int? settingsId)
     {
-        if (!ModelState.IsValid)
-        {
-            return BadRequest(ModelState);
-        }
-        var userIdClaim = ControllerHelper.GetUserIdClaim(User);
-        if (userIdClaim is null)
-        {
-            return NotFound(new { message = "User not found." });
-        }
-
-        var currentUser = await _applicationDbContext.Users
-            .Include(u => u.StandardEstimationSettings)
-            .FirstOrDefaultAsync(u => u.Id == userIdClaim.Value);
-
-        if (currentUser is null)
-        {
-            return NotFound(new { message = "User not found." });
-        }
-
-        if (importSetting is not null)
-        {
-            importSetting = await _applicationDbContext.EstimationImportSettings
-            .FirstOrDefaultAsync(s => s.Id == importSetting.Id);
-        }
-
-        currentUser.StandardEstimationSettings = importSetting;
-
+        //TODO: check for organization
         try
         {
-            await _applicationDbContext.SaveChangesAsync();
+            var userId = User.Claims.Where(x => x.Type == ClaimConstants.ObjectId).FirstOrDefault()?.Value;
+            ArgumentNullException.ThrowIfNull(userId);
+            await _importSettingsService.SetAsUserDefault(userId, settingsId);
             return Ok();
         }
-        catch (Exception ex)
+        catch (ArgumentNullException e)
         {
-            // Log the exception or handle it appropriately.
-            return Problem(detail: "An error occurred while setting the standard import setting.");
+            _logger.LogError(e, "Required values were null");
+            return Problem("Required values were null");
+        }
+        catch (Exception e)
+        {
+            _logger.LogError(e, "Unexpected server error");
+            return Problem("Unexpected server error");
         }
     }
 }

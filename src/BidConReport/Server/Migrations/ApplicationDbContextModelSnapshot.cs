@@ -28,14 +28,50 @@ namespace BidConReport.Server.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
+                    b.Property<int?>("CurrentUserOrganizationId")
+                        .HasMaxLength(50)
+                        .HasColumnType("int");
+
+                    b.Property<bool>("IsDarkMode")
+                        .HasColumnType("bit");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CurrentUserOrganizationId")
+                        .IsUnique()
+                        .HasFilter("[CurrentUserOrganizationId] IS NOT NULL");
+
+                    b.ToTable("Users");
+                });
+
+            modelBuilder.Entity("BidConReport.Server.Shared.Enteties.UserOrganization", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("OrganizationId")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
                     b.Property<int?>("StandardEstimationSettingsId")
                         .HasColumnType("int");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.HasKey("Id");
 
                     b.HasIndex("StandardEstimationSettingsId");
 
-                    b.ToTable("Users");
+                    b.HasIndex("UserId");
+
+                    b.ToTable("UserOrganizations");
                 });
 
             modelBuilder.Entity("BidConReport.Shared.Entities.Estimation", b =>
@@ -225,11 +261,28 @@ namespace BidConReport.Server.Migrations
 
             modelBuilder.Entity("BidConReport.Server.Shared.Enteties.User", b =>
                 {
+                    b.HasOne("BidConReport.Server.Shared.Enteties.UserOrganization", "CurrentUserOrganization")
+                        .WithOne()
+                        .HasForeignKey("BidConReport.Server.Shared.Enteties.User", "CurrentUserOrganizationId");
+
+                    b.Navigation("CurrentUserOrganization");
+                });
+
+            modelBuilder.Entity("BidConReport.Server.Shared.Enteties.UserOrganization", b =>
+                {
                     b.HasOne("BidConReport.Shared.Entities.EstimationImportSettings", "StandardEstimationSettings")
                         .WithMany()
                         .HasForeignKey("StandardEstimationSettingsId");
 
+                    b.HasOne("BidConReport.Server.Shared.Enteties.User", "User")
+                        .WithMany("UserOrganizations")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.Navigation("StandardEstimationSettings");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("BidConReport.Shared.Entities.EstimationItem", b =>
@@ -241,6 +294,11 @@ namespace BidConReport.Server.Migrations
                     b.HasOne("BidConReport.Shared.Entities.EstimationItem", null)
                         .WithMany("Items")
                         .HasForeignKey("EstimationItemId");
+                });
+
+            modelBuilder.Entity("BidConReport.Server.Shared.Enteties.User", b =>
+                {
+                    b.Navigation("UserOrganizations");
                 });
 
             modelBuilder.Entity("BidConReport.Shared.Entities.Estimation", b =>
