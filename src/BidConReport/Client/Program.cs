@@ -36,7 +36,7 @@ builder.Services.AddMudServices(config =>
 builder.Services.AddLocalization();
 builder.Services.UseImportFeature();
 builder.Services.UseSharedStateContainers();
-builder.UseSharedWasmLibrary(BackendApiEndpoints.Claims);
+builder.UseSharedWasmLibrary(BackendApiEndpoints.ClaimEnpoints.Get);
 
 
 await builder.Build().RunAsync();

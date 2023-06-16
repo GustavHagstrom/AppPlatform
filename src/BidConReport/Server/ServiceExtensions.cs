@@ -7,14 +7,9 @@ internal static class ServiceExtensions
 {
     public static void UseAllServices(this IServiceCollection services)
     {
-        //services.UseClaimsFeature();
         services.UseImportFeature();
         services.UseSharedServices();
     }
-    //public static void UseClaimsFeature(this IServiceCollection services)
-    //{
-
-    //}
     public static void UseImportFeature(this IServiceCollection services)
     {
         services.AddTransient<IImportSettingsService, ImportSettingsService>();

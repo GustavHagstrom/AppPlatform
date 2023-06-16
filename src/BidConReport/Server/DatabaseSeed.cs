@@ -11,30 +11,8 @@ public static class DatabaseSeed
         //Should be logged
         using (var scope = app.Services.GetRequiredService<IServiceScopeFactory>().CreateScope())
         {
-            SeedApplicationDb(scope);
             SeedLicenseDb(scope);
         }
-    }
-    private static void SeedApplicationDb(IServiceScope scope)
-    {
-        //Should be logged
-
-        //var context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
-        //var roles = context.Roles.Where(r => true).ToArray();
-        //var requiredRoles = new string[] { "admin", "creator" };
-        //var changesMade = false;
-        //foreach (var requiredRole in requiredRoles)
-        //{
-        //    if (!roles.Select(r => r.Name).Contains(requiredRole))
-        //    {
-        //        changesMade = true;
-        //        context.Roles.Add(new Role { Name = requiredRole });
-        //    }
-        //}
-        //if (changesMade)
-        //{
-        //    context.SaveChanges();
-        //}
     }
     private static void SeedLicenseDb(IServiceScope scope)
     {
