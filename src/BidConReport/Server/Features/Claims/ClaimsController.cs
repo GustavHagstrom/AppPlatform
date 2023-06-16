@@ -1,7 +1,10 @@
 ﻿using BidConReport.Server.Data;
+using BidConReport.Server.Shared.Services;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Identity.Web;
+using SharedPlatformLibrary.Constants;
+using SharedPlatformLibrary.Enteties;
 using System.Net.Http.Headers;
 
 namespace BidConReport.Server.Features.Claims;
@@ -9,35 +12,27 @@ namespace BidConReport.Server.Features.Claims;
 [ApiController]
 public class ClaimsController : ControllerBase
 {
-    private readonly IClaimsProvider _claimsProvider;
     private readonly ILogger<ClaimsController> _logger;
 
-    public ClaimsController(IClaimsProvider claimsProvider, ILogger<ClaimsController> logger)
+    public ClaimsController(ILogger<ClaimsController> logger)
     {
-        _claimsProvider = claimsProvider;
         _logger = logger;
     }
     [HttpGet]
-    public async Task<IActionResult> GetClaims(CancellationToken cancellationToken)
+    public IActionResult GetClaims()
     {
         try
         {
-            var userId = User.Claims
-                .Where(x => x.Type == ClaimConstants.ObjectId)
-                .Select(x => x.Value)
-                .FirstOrDefault();
-            ArgumentNullException.ThrowIfNull(userId);
-            var result = await _claimsProvider.GetClaimsAsync(userId);
-            return Ok(result);
+            var customTypes = CustomClaimTypes.GetAllTypesAsCollection();
+            var claims = User.Claims
+                .Where(x => customTypes.Contains(x.Type))
+                .Select(x => new ClaimModel(x.Type, x.Value))
+                .ToArray();
+            return Ok(claims);
         }
-        catch (ArgumentNullException e)
+        catch (Exception e)
         {
-            _logger.LogError(e, "UserId may be null");
-            throw;
-        }
-        catch (Exception)
-        {
-
+            _logger.LogError(e, "Unexpected error when getting claims");
             throw;
         }
     }

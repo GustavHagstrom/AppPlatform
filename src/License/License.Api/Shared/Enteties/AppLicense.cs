@@ -9,8 +9,7 @@ public class AppLicense
     [StringLength(50)]
     public required string ApplicationName { get; set; }
     public required Application Application { get; set; }
-    [StringLength(50)]
-    public required string OrganizationName { get; set; }
+    public int OrganizationId { get; set; }
     public required Organization Organization { get; set; }
     public required DateTime EndDate { get; set; }
 }

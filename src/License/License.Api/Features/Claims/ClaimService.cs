@@ -29,14 +29,15 @@ public class ClaimService : IClaimService
             var roles = user.Roles
                 .Select(x => new ClaimModel(ClaimTypes.Role, x.Name));
             var orgs = user.Organizations
-                .Select(x => new ClaimModel(CustomClaimTypes.Organization, x.Name));
+                .Select(x => new ClaimModel(CustomClaimTypes.OrganizationMemberOf, x.Id.ToString()));
             var licenses = user.Licenses
-                .Where(x => x.OrganizationName == user.CurrentOrganizationName && x.ApplicationName == claimsRequestBody.ApplicationName) 
+                .Where(x => x.OrganizationId == user.CurrentOrganizationId && x.ApplicationName == claimsRequestBody.ApplicationName) 
                 .Select(x => new ClaimModel(CustomClaimTypes.License, x.Id.ToString()));
 
-            if (user.CurrentOrganizationName is not null)
+            var currentOrgId = user.CurrentOrganizationId.ToString();
+            if (currentOrgId is not null)
             {
-                claims.Add(new ClaimModel(CustomClaimTypes.CurrentOrganization, user.CurrentOrganizationName));
+                claims.Add(new ClaimModel(CustomClaimTypes.CurrentOrganization, currentOrgId));
             }
             claims.AddRange(roles);
             claims.AddRange(orgs);

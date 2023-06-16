@@ -3,7 +3,7 @@ using SharedPlatformLibrary.Constants;
 using SharedPlatformLibrary.Enteties;
 using SharedPlatformLibrary.HttpRequests;
 
-namespace BidConReport.Server.Features.Claims;
+namespace BidConReport.Server.Shared.Services;
 
 public class ClaimsProvider : IClaimsProvider
 {

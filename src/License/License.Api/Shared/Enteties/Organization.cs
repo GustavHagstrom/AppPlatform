@@ -3,7 +3,7 @@
 namespace License.Api.Shared.Enteties;
 public class Organization
 {
-    [Key]
+    public int Id { get; set; }
     [StringLength(50)]
     public required string Name { get; set; }
     public ICollection<User> Users { get; set; } = Array.Empty<User>();

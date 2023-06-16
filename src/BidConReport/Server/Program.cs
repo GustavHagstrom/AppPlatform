@@ -35,8 +35,7 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("Default"));
 });
 
-builder.Services.UseClaimsFeature();
-builder.Services.UseImportFeature();
+builder.Services.UseAllServices();
 
 var app = builder.Build();
 
@@ -63,6 +62,7 @@ app.UseRouting();
 app.UseAuthorization();
 
 //app.UseSharedLibraryMiddleware();
+app.UseMiddleware<CustomClaimsMiddleware>();
 app.UseMiddleware<LazyUserMiddleware>();
 
 app.MapRazorPages();

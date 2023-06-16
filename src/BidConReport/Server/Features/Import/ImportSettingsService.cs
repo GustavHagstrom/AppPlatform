@@ -12,34 +12,20 @@ public class ImportSettingsService : IImportSettingsService
     {
         _dbContext = dbContext;
     }
-    public async Task<EstimationImportSettings?> GetCurrentsDefaultSettingsAsync(string userId)
+    public async Task<EstimationImportSettings?> GetDefaultSettingsAsync(string userId, string organizationId)
     {
-        var user = await _dbContext.Users.FindAsync(userId);
-        if (user is null || user.CurrentUserOrganizationId is null)
-        {
-            return null;
-        }
-        var currentUserOrg = await _dbContext.UserOrganizations
+        var userOrg = await _dbContext.UserOrganizations
+            .Where(x => x.UserId == userId && x.OrganizationId == organizationId)
             .Include(x => x.StandardEstimationSettings)
-            .FirstOrDefaultAsync(x => x.Id == user.CurrentUserOrganizationId);
-
-        return currentUserOrg?.StandardEstimationSettings;
-    }
-    public async Task<ICollection<EstimationImportSettings>> GetCurrentOrganizationSettingsAsync(string userId)
-    {
-        var settings = new List<EstimationImportSettings>();
-        var user = await _dbContext.Users
-            .Include(x => x.CurrentUserOrganization)
-            .Where(x => x.Id == userId)
             .FirstOrDefaultAsync();
-        if (user is null || user.CurrentUserOrganization is null)
-        {
-            return settings;
-        }
-        var result = await _dbContext.EstimationImportSettings
-            .Where(x => x.OrganizationId == user.CurrentUserOrganization.OrganizationId)
+
+        return userOrg?.StandardEstimationSettings;
+    }
+    public async Task<ICollection<EstimationImportSettings>> GetOrganizationSettingsAsync(string organizationId)
+    {        
+        var settings = await _dbContext.EstimationImportSettings
+            .Where(x => x.OrganizationId == organizationId)
             .ToArrayAsync();
-        settings.AddRange(result);
 
         return settings;
     }
@@ -66,15 +52,13 @@ public class ImportSettingsService : IImportSettingsService
             await _dbContext.SaveChangesAsync();
         }
     }
-    public async Task SetAsUserDefault(string userId, int? settingsId)
+    public async Task SetAsUserDefault(string userId, string organizationId, int? settingsId)
     {
-        var user = await _dbContext.Users
-            .Include(x => x.CurrentUserOrganization)
-            .FirstOrDefaultAsync(x => x.Id == userId);
-        ArgumentNullException.ThrowIfNull(user);
-        ArgumentNullException.ThrowIfNull(user.CurrentUserOrganization);
+        var userOrg = await _dbContext.UserOrganizations
+            .FirstOrDefaultAsync(x => x.UserId == userId && x.OrganizationId == organizationId);
+        ArgumentNullException.ThrowIfNull(userOrg);
 
-        user.CurrentUserOrganization.StandardEstimationSettingsId = settingsId;
+        userOrg.StandardEstimationSettingsId = settingsId;
         await _dbContext.SaveChangesAsync();
     }
 }

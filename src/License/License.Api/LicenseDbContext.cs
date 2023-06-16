@@ -33,7 +33,7 @@ public class LicenseDbContext : DbContext
         modelBuilder.Entity<User>()
             .HasOne(u => u.CurrentOrganization)
             .WithMany()
-            .HasForeignKey(u => u.CurrentOrganizationName);
+            .HasForeignKey(u => u.CurrentOrganizationId);
 
         modelBuilder.Entity<AppLicense>()
             .HasOne(l => l.Application)
@@ -42,7 +42,7 @@ public class LicenseDbContext : DbContext
         modelBuilder.Entity<AppLicense>()
             .HasOne(l => l.Organization)
             .WithMany(o => o.Licenses)
-            .HasForeignKey(l => l.OrganizationName)
+            .HasForeignKey(l => l.OrganizationId)
             .OnDelete(DeleteBehavior.NoAction);
 
         modelBuilder.Entity<Role>()

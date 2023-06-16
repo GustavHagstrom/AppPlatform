@@ -1,6 +1,7 @@
 ﻿using BidConReport.Shared.Entities;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Identity.Web;
+using SharedPlatformLibrary.Constants;
 
 namespace BidConReport.Server.Features.Import;
 [Route("api/[controller]")]
@@ -20,15 +21,15 @@ public class ImportController : ControllerBase
     {
         try
         {
-            var userId = User.Claims.Where(x => x.Type == ClaimConstants.ObjectId).FirstOrDefault()?.Value;
-            ArgumentNullException.ThrowIfNull(userId);
-            var result = await _importSettingsService.GetCurrentOrganizationSettingsAsync(userId);
+            var currentOrgId = User.Claims.Where(x => x.Type == CustomClaimTypes.CurrentOrganization).FirstOrDefault()?.Value;
+            ArgumentNullException.ThrowIfNull(currentOrgId);
+            var result = await _importSettingsService.GetOrganizationSettingsAsync(currentOrgId);
             return Ok(result);
         }
         catch (ArgumentNullException e)
         {
-            _logger.LogError(e, "UserId was null");
-            return Problem("UserId was null");
+            _logger.LogError(e, "CurrentOrganization claim was not found");
+            return Problem("CurrentOrganization claim was not found");
         }
         catch (Exception e)
         {
@@ -42,15 +43,16 @@ public class ImportController : ControllerBase
         try
         {
             var userId = User.Claims.Where(x => x.Type == ClaimConstants.ObjectId).FirstOrDefault()?.Value;
+            var currentOrgId = User.Claims.Where(x => x.Type == CustomClaimTypes.CurrentOrganization).FirstOrDefault()?.Value;
             ArgumentNullException.ThrowIfNull(userId);
-            var settings = await _importSettingsService.GetCurrentsDefaultSettingsAsync(userId);
-            ArgumentNullException.ThrowIfNull(settings);
+            ArgumentNullException.ThrowIfNull(currentOrgId);
+            var settings = await _importSettingsService.GetDefaultSettingsAsync(userId, currentOrgId);
             return Ok(settings);
         }
         catch(ArgumentNullException e)
         {
-            _logger.LogError(e, "UserId or ImportSettings was null");
-            return Problem("UserId or ImportSettings was null");
+            _logger.LogError(e, "UserId claim or CurrentOrganization claim was null");
+            return Problem("UserId claim or CurrentOrganization claim was null");
         }
         catch (Exception e)
         {
@@ -95,14 +97,16 @@ public class ImportController : ControllerBase
         try
         {
             var userId = User.Claims.Where(x => x.Type == ClaimConstants.ObjectId).FirstOrDefault()?.Value;
+            var currentOrgId = User.Claims.Where(x => x.Type == CustomClaimTypes.CurrentOrganization).FirstOrDefault()?.Value;
             ArgumentNullException.ThrowIfNull(userId);
-            await _importSettingsService.SetAsUserDefault(userId, settingsId);
+            ArgumentNullException.ThrowIfNull(currentOrgId);
+            await _importSettingsService.SetAsUserDefault(userId, currentOrgId, settingsId);
             return Ok();
         }
         catch (ArgumentNullException e)
         {
-            _logger.LogError(e, "Required values were null");
-            return Problem("Required values were null");
+            _logger.LogError(e, "UserId claim or CurrentOrganization claim was null");
+            return Problem("UserId claim or CurrentOrganization claim was null");
         }
         catch (Exception e)
         {

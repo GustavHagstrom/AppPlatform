@@ -26,10 +26,6 @@ public class ApplicationDbContext : DbContext
     {
         base.OnModelCreating(modelBuilder);
 
-        modelBuilder.Entity<User>()
-            .HasOne(u => u.CurrentUserOrganization)
-            .WithOne()
-            .HasForeignKey<User>(u => u.CurrentUserOrganizationId);
 
         modelBuilder.Entity<UserOrganization>()
             .HasOne(u => u.User)

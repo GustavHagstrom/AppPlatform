@@ -9,5 +9,5 @@ public class User
     public ICollection<Organization> Organizations { get; set; } = Array.Empty<Organization>();
     public ICollection<AppLicense> Licenses { get; set; } = Array.Empty<AppLicense>();
     public Organization? CurrentOrganization { get; set; }
-    public string? CurrentOrganizationName { get; set; }
+    public int? CurrentOrganizationId { get; set; }
 }
