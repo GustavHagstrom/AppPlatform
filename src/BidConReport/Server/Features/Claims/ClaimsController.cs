@@ -19,7 +19,7 @@ public class ClaimsController : ControllerBase
         _logger = logger;
     }
     [HttpGet]
-    public IActionResult GetClaims()
+    public IActionResult Get()
     {
         try
         {

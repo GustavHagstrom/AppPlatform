@@ -11,6 +11,6 @@ public class UserOrganization
     public User? User { get; set; }
     [StringLength(50)]
     public required string OrganizationId { get; set; }
-    public int? StandardEstimationSettingsId { get; set; }
-    public EstimationImportSettings? StandardEstimationSettings { get; set; }
+    public int? DefaultEstimationSettingsId { get; set; }
+    public EstimationImportSettings? DefaultEstimationSettings { get; set; }
 }

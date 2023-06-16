@@ -7,20 +7,20 @@ using SharedPlatformLibrary.Constants;
 namespace BidConReport.Server.Features.Import;
 [Route("api/[controller]")]
 [ApiController]
-public class ImportController : ControllerBase
+public class ImportSettingsController : ControllerBase
 {
     private readonly IImportSettingsService _importSettingsService;
-    private readonly ILogger<ImportController> _logger;
+    private readonly ILogger<ImportSettingsController> _logger;
 
-    public ImportController(IImportSettingsService importSettingsService, ILogger<ImportController> logger)
+    public ImportSettingsController(IImportSettingsService importSettingsService, ILogger<ImportSettingsController> logger)
     //public ImportController(ApplicationDbContext dbContext, ILogger<ImportController> logger)
     {
         _importSettingsService = importSettingsService;
         //_importSettingsService = new ImportSettingsService(dbContext);
         _logger = logger;
     }
-    [HttpGet("GetImportSettingsForOrganization")]
-    public async Task<IActionResult> GetImportSettingsForOrganization()
+    [HttpGet("All")]
+    public async Task<IActionResult> All()
     {
         try
         {
@@ -40,8 +40,8 @@ public class ImportController : ControllerBase
             return Problem("Unexpected server error");
         }
     }
-    [HttpGet("GetStandardImportSettings")]
-    public async Task<IActionResult> GetStandardImportSettings()
+    [HttpGet("Default")]
+    public async Task<IActionResult> Default()
     {
         try
         {
@@ -63,8 +63,8 @@ public class ImportController : ControllerBase
             return Problem("Unexpected server error");
         }
     }
-    [HttpPost("UpdateOrCreateImportSettings")]
-    public async Task<IActionResult> UpdateOrCreateImportSettings([FromBody] EstimationImportSettings settings)
+    [HttpPost("Upsert")]
+    public async Task<IActionResult> Upsert([FromBody] EstimationImportSettings settings)
     {
         //TODO: add role constraint, maybe admin?? IF update also check for organization
         try
@@ -78,8 +78,8 @@ public class ImportController : ControllerBase
             return Problem("Unexpected server error");
         }
     }
-    [HttpDelete("DeleteImportSetting/{id}")]
-    public async Task<IActionResult> DeleteImportSetting(int id)
+    [HttpDelete("Delete/{id}")]
+    public async Task<IActionResult> Delete(int id)
     {
         //TODO: add role constraint and check that the user belongs to the organization the settings applies to
         try
@@ -93,8 +93,8 @@ public class ImportController : ControllerBase
             return Problem("Unexpected server error");
         }
     }
-    [HttpPost("SetAsStandard")]
-    public async Task<IActionResult> SetAsStandard(int? settingsId)
+    [HttpPost("SetDefault")]
+    public async Task<IActionResult> SetDefault(int? settingsId)
     {
         //TODO: check for organization
         try

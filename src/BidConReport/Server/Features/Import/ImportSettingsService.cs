@@ -16,10 +16,10 @@ public class ImportSettingsService : IImportSettingsService
     {
         var userOrg = await _dbContext.UserOrganizations
             .Where(x => x.UserId == userId && x.OrganizationId == organizationId)
-            .Include(x => x.StandardEstimationSettings)
+            .Include(x => x.DefaultEstimationSettings)
             .FirstOrDefaultAsync();
 
-        return userOrg?.StandardEstimationSettings;
+        return userOrg?.DefaultEstimationSettings;
     }
     public async Task<ICollection<EstimationImportSettings>> GetOrganizationSettingsAsync(string organizationId)
     {        
@@ -58,7 +58,7 @@ public class ImportSettingsService : IImportSettingsService
             .FirstOrDefaultAsync(x => x.UserId == userId && x.OrganizationId == organizationId);
         ArgumentNullException.ThrowIfNull(userOrg);
 
-        userOrg.StandardEstimationSettingsId = settingsId;
+        userOrg.DefaultEstimationSettingsId = settingsId;
         await _dbContext.SaveChangesAsync();
     }
 }
