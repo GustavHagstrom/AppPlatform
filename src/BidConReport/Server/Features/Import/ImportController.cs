@@ -1,4 +1,5 @@
-﻿using BidConReport.Shared.Entities;
+﻿using BidConReport.Server.Data;
+using BidConReport.Shared.Entities;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Identity.Web;
 using SharedPlatformLibrary.Constants;
@@ -11,9 +12,11 @@ public class ImportController : ControllerBase
     private readonly IImportSettingsService _importSettingsService;
     private readonly ILogger<ImportController> _logger;
 
-    public ImportController( IImportSettingsService importSettingsService, ILogger<ImportController> logger)
+    public ImportController(IImportSettingsService importSettingsService, ILogger<ImportController> logger)
+    //public ImportController(ApplicationDbContext dbContext, ILogger<ImportController> logger)
     {
         _importSettingsService = importSettingsService;
+        //_importSettingsService = new ImportSettingsService(dbContext);
         _logger = logger;
     }
     [HttpGet("GetImportSettingsForOrganization")]
@@ -49,7 +52,7 @@ public class ImportController : ControllerBase
             var settings = await _importSettingsService.GetDefaultSettingsAsync(userId, currentOrgId);
             return Ok(settings);
         }
-        catch(ArgumentNullException e)
+        catch (ArgumentNullException e)
         {
             _logger.LogError(e, "UserId claim or CurrentOrganization claim was null");
             return Problem("UserId claim or CurrentOrganization claim was null");
@@ -61,7 +64,7 @@ public class ImportController : ControllerBase
         }
     }
     [HttpPost("UpdateOrCreateImportSettings")]
-    public async Task<IActionResult> UpdateOrCreateImportSettings(EstimationImportSettings settings)
+    public async Task<IActionResult> UpdateOrCreateImportSettings([FromBody] EstimationImportSettings settings)
     {
         //TODO: add role constraint, maybe admin?? IF update also check for organization
         try

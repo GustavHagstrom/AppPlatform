@@ -6,10 +6,12 @@ namespace BidConReport.Client.Features.Import.Services;
 public class ImportSettingsService : IImportSettingsService
 {
     private readonly IHttpClientFactory _httpClientFactory;
+    private readonly ILogger<ImportSettingsService> _logger;
 
-    public ImportSettingsService(IHttpClientFactory httpClientFactory)
+    public ImportSettingsService(IHttpClientFactory httpClientFactory, ILogger<ImportSettingsService> logger)
     {
         _httpClientFactory = httpClientFactory;
+        _logger = logger;
     }
 
     public async Task DeleteAsync(int settingsId)
@@ -85,12 +87,19 @@ public class ImportSettingsService : IImportSettingsService
         {
             var client = _httpClientFactory.CreateClient(HttpClientNames.BackendHttpClientName);
             var result = await client.PostAsJsonAsync("/api/import/UpdateOrCreateImportSettings", settings);
+            //var test = "test";
+            //var result = await client.PostAsJsonAsync("/api/import/UpdateOrCreateImportSettings", test);
             result.EnsureSuccessStatusCode();
         }
         catch (Exception ex) when (ex is HttpRequestException || ex is OperationCanceledException)
         {
             // Log the exception or handle it appropriately.
             throw new Exception("An error occurred while saving import setting.", ex);
+        }
+        catch (Exception e)
+        {
+            _logger.LogError(e, "Undexpeced error", e.Message);
+            throw;
         }
     }
 }

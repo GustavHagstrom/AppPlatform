@@ -36,13 +36,13 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 });
 
 builder.Services.UseAllServices();
-
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
     app.UseWebAssemblyDebugging();
+
 }
 else
 {
@@ -61,7 +61,6 @@ app.UseRouting();
 
 app.UseAuthorization();
 
-//app.UseSharedLibraryMiddleware();
 app.UseMiddleware<CustomClaimsMiddleware>();
 app.UseMiddleware<LazyUserMiddleware>();
 
