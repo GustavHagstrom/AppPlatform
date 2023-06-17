@@ -27,6 +27,7 @@ builder.Services.AddScoped(sp =>
     return client;
 });
 
+builder.Services.AddSwaggerGen();
 builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages();
 
@@ -43,7 +44,8 @@ var app = builder.Build();
 if (app.Environment.IsDevelopment())
 {
     app.UseWebAssemblyDebugging();
-
+    app.UseSwagger();
+    app.UseSwaggerUI();
 }
 else
 {
@@ -62,7 +64,7 @@ app.UseRouting();
 
 app.UseAuthorization();
 
-app.UseMiddleware<CustomClaimsMiddleware>();
+
 app.UseMiddleware<LazyUserMiddleware>();
 
 app.MapRazorPages();

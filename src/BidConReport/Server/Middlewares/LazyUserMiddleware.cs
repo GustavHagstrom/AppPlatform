@@ -1,8 +1,10 @@
 ﻿using BidConReport.Server.Data;
 using BidConReport.Server.Shared.Enteties;
+using BidConReport.Server.Shared.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Identity.Web;
 using SharedPlatformLibrary.Constants;
+using System.Security.Claims;
 
 namespace BidConReport.Server.Middlewares;
 
@@ -24,20 +26,8 @@ public class LazyUserMiddleware
         {
             using (var scope = _serviceProvider.CreateScope())
             {
-                var dbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
-                var userId = context.User.Claims.Where(x => x.Type == ClaimConstants.TenantId).FirstOrDefault()?.Value;
-                var organizationIds = context.User.Claims
-                    .Where(x => x.Type == CustomClaimTypes.OrganizationMemberOf)
-                    .Select(x => x.Value)
-                    .ToArray();
-                if (userId is not null)
-                {
-                    await AddNewUserToDbIfNeeded(userId, dbContext);
-                }
-                if (userId is not null && organizationIds is not null)
-                {
-                    await AddUnlistedUserOrgsIfNeeded(userId, organizationIds, dbContext);
-                }
+                await SetUserClaims(scope, context);
+                await LazyUser(scope, context);
             }
         }
         catch (Exception e)
@@ -45,6 +35,34 @@ public class LazyUserMiddleware
             _logger.LogCritical(e, "Error in lazyusermiddleware");
         }
         await _next.Invoke(context);
+    }
+    private async Task SetUserClaims(IServiceScope scope, HttpContext context)
+    {
+        var claimsProvider = scope.ServiceProvider.GetRequiredService<IClaimsProvider>();
+        var userId = context.User.Claims.Where(x => x.Type == ClaimConstants.TenantId).FirstOrDefault()?.Value;
+        if (userId is not null)
+        {
+            var customClaims = await claimsProvider.GetClaimsAsync(userId);
+            var identidy = context.User.Identity as ClaimsIdentity;
+            identidy?.AddClaims(customClaims.Select(x => new Claim(x.Type, x.Value)));
+        }
+    }
+    private async Task LazyUser(IServiceScope scope, HttpContext context)
+    {
+        var dbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+        var userId = context.User.Claims.Where(x => x.Type == ClaimConstants.ObjectId).FirstOrDefault()?.Value;
+        var organizationIds = context.User.Claims
+            .Where(x => x.Type == CustomClaimTypes.OrganizationMemberOf)
+            .Select(x => x.Value)
+            .ToArray();
+        if (userId is not null)
+        {
+            await AddNewUserToDbIfNeeded(userId, dbContext);
+        }
+        if (userId is not null && organizationIds is not null)
+        {
+            await AddUnlistedUserOrgsIfNeeded(userId, organizationIds, dbContext);
+        }
     }
     private async Task AddNewUserToDbIfNeeded(string userId, ApplicationDbContext dbContext)
     {

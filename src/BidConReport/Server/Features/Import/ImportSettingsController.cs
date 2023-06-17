@@ -95,7 +95,7 @@ public class ImportSettingsController : ControllerBase
         }
     }
     [HttpPost("SetDefault")]
-    public async Task<IActionResult> SetDefault([FromBody] int? settingsId)
+    public async Task<IActionResult> SetDefault([FromBody] EstimationImportSettings? settings)
     {
         //TODO: check for organization
         try
@@ -104,7 +104,7 @@ public class ImportSettingsController : ControllerBase
             var currentOrgId = User.Claims.Where(x => x.Type == CustomClaimTypes.CurrentOrganization).FirstOrDefault()?.Value;
             ArgumentNullException.ThrowIfNull(userId);
             ArgumentNullException.ThrowIfNull(currentOrgId);
-            await _importSettingsService.SetAsUserDefault(userId, currentOrgId, settingsId);
+            await _importSettingsService.SetAsUserDefault(userId, currentOrgId, settings?.Id);
             return Ok();
         }
         catch (ArgumentNullException e)
