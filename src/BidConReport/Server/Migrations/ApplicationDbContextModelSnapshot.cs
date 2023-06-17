@@ -145,12 +145,10 @@ namespace BidConReport.Server.Migrations
                         .HasColumnType("nvarchar(10)");
 
                     b.Property<string>("HiddenTag")
-                        .IsRequired()
                         .HasMaxLength(20)
                         .HasColumnType("nvarchar(20)");
 
                     b.Property<string>("HiddenUnitTag")
-                        .IsRequired()
                         .HasMaxLength(20)
                         .HasColumnType("nvarchar(20)");
 
@@ -170,12 +168,10 @@ namespace BidConReport.Server.Migrations
                         .HasColumnType("nvarchar(50)");
 
                     b.Property<string>("QuickTags")
-                        .IsRequired()
                         .HasMaxLength(1000)
                         .HasColumnType("NVARCHAR(1000)");
 
                     b.Property<string>("SelectionTags")
-                        .IsRequired()
                         .HasMaxLength(1000)
                         .HasColumnType("NVARCHAR(1000)");
 

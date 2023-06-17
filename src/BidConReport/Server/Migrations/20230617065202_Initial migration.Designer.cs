@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BidConReport.Server.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230615141842_Initial Migration")]
-    partial class InitialMigration
+    [Migration("20230617065202_Initial migration")]
+    partial class Initialmigration
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -31,18 +31,10 @@ namespace BidConReport.Server.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
-                    b.Property<int?>("CurrentUserOrganizationId")
-                        .HasMaxLength(50)
-                        .HasColumnType("int");
-
                     b.Property<bool>("IsDarkMode")
                         .HasColumnType("bit");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("CurrentUserOrganizationId")
-                        .IsUnique()
-                        .HasFilter("[CurrentUserOrganizationId] IS NOT NULL");
 
                     b.ToTable("Users");
                 });
@@ -55,13 +47,13 @@ namespace BidConReport.Server.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<int?>("DefaultEstimationSettingsId")
+                        .HasColumnType("int");
+
                     b.Property<string>("OrganizationId")
                         .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
-
-                    b.Property<int?>("StandardEstimationSettingsId")
-                        .HasColumnType("int");
 
                     b.Property<string>("UserId")
                         .IsRequired()
@@ -70,7 +62,7 @@ namespace BidConReport.Server.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("StandardEstimationSettingsId");
+                    b.HasIndex("DefaultEstimationSettingsId");
 
                     b.HasIndex("UserId");
 
@@ -156,12 +148,10 @@ namespace BidConReport.Server.Migrations
                         .HasColumnType("nvarchar(10)");
 
                     b.Property<string>("HiddenTag")
-                        .IsRequired()
                         .HasMaxLength(20)
                         .HasColumnType("nvarchar(20)");
 
                     b.Property<string>("HiddenUnitTag")
-                        .IsRequired()
                         .HasMaxLength(20)
                         .HasColumnType("nvarchar(20)");
 
@@ -181,12 +171,10 @@ namespace BidConReport.Server.Migrations
                         .HasColumnType("nvarchar(50)");
 
                     b.Property<string>("QuickTags")
-                        .IsRequired()
                         .HasMaxLength(1000)
                         .HasColumnType("NVARCHAR(1000)");
 
                     b.Property<string>("SelectionTags")
-                        .IsRequired()
                         .HasMaxLength(1000)
                         .HasColumnType("NVARCHAR(1000)");
 
@@ -262,20 +250,11 @@ namespace BidConReport.Server.Migrations
                     b.ToTable("EstimationItem");
                 });
 
-            modelBuilder.Entity("BidConReport.Server.Shared.Enteties.User", b =>
-                {
-                    b.HasOne("BidConReport.Server.Shared.Enteties.UserOrganization", "CurrentUserOrganization")
-                        .WithOne()
-                        .HasForeignKey("BidConReport.Server.Shared.Enteties.User", "CurrentUserOrganizationId");
-
-                    b.Navigation("CurrentUserOrganization");
-                });
-
             modelBuilder.Entity("BidConReport.Server.Shared.Enteties.UserOrganization", b =>
                 {
-                    b.HasOne("BidConReport.Shared.Entities.EstimationImportSettings", "StandardEstimationSettings")
+                    b.HasOne("BidConReport.Shared.Entities.EstimationImportSettings", "DefaultEstimationSettings")
                         .WithMany()
-                        .HasForeignKey("StandardEstimationSettingsId");
+                        .HasForeignKey("DefaultEstimationSettingsId");
 
                     b.HasOne("BidConReport.Server.Shared.Enteties.User", "User")
                         .WithMany("UserOrganizations")
@@ -283,7 +262,7 @@ namespace BidConReport.Server.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("StandardEstimationSettings");
+                    b.Navigation("DefaultEstimationSettings");
 
                     b.Navigation("User");
                 });

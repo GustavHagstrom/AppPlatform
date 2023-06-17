@@ -1,4 +1,5 @@
-﻿<div class="d-flex justify-end mud-elevation-1" style="background-color: var(--mud-palette-table-lines);">
+﻿@using SharedPlatformLibrary.Constants;
+<div class="d-flex justify-end mud-elevation-1" style="background-color: var(--mud-palette-table-lines);">
     @if (SelectedSetting is not null)
     {
         <MudIconButton Icon="@Icons.Material.Sharp.Save" OnClick="SaveAsync" Style="height: 40px; width: 40px;" />
@@ -46,6 +47,7 @@
     [Inject] public required IStringLocalizer<ImportSettingsView> Localizer { get; set; }
     [Inject] public required ISnackbar Snackbar { get; set; }
     [Inject] public required IImportSettingsService ImportSettingsService { get; set; }
+    [Inject] public required AuthenticationStateProvider AuthStateProvider { get; set; }
 
     public EstimationImportSettings? SelectedSetting
     {
@@ -56,16 +58,31 @@
         }
     }
     [Parameter] public EventCallback<EstimationImportSettings> SelectedSettingChanged { get; set; }
-    public EstimationImportSettings? StandardSetting { get; set; } = null;
+    public EstimationImportSettings? DefaultSetting { get; set; } = null;
     public List<EstimationImportSettings> AllSettings { get; set; } = new();
     public Func<EstimationImportSettings, string> ConvertFunc { get; set; } = s => s.Name;
     public MudForm? Form { get; set; }
 
+    public async Task SetSelectedSettingsAsync(EstimationImportSettings? settings)
+    {
+        if(settings is not null)
+        {
+            var state = await AuthStateProvider.GetAuthenticationStateAsync();
+            var orgId = state.User.Claims.Where(x => x.Type == CustomClaimTypes.CurrentOrganization).FirstOrDefault()?.Value;
+            if(orgId is not null)
+            {
+                settings.OrganizationId = orgId;
+            }
+        }
+        SelectedSetting = settings;
+        StateHasChanged();
+    }
+
     public bool IsStandardSettings(EstimationImportSettings? settings)
     {
-        if (StandardSetting is null || settings is null) return false;
+        if (DefaultSetting is null || settings is null) return false;
 
-        return settings.Id == StandardSetting.Id;
+        return settings.Id == DefaultSetting.Id;
     }
     public async Task OnSelectedSettingsStandardValueChanged(bool isStandard)
     {
@@ -94,13 +111,12 @@
     protected override async Task OnInitializedAsync()
     {
         await SetAllAndStandardSettings();
-        SelectedSetting = StandardSetting;
-        StateHasChanged();
+        await SetSelectedSettingsAsync(DefaultSetting);
     }
     public async Task SetAllAndStandardSettings()
     {
         AllSettings = (await GetAllSettingsAsync()).ToList();
-        StandardSetting = await GetStandardSettingsAsync();
+        DefaultSetting = await GetStandardSettingsAsync();
     }
     public async Task<EstimationImportSettings?> GetStandardSettingsAsync()
     {
@@ -126,10 +142,9 @@
             return Array.Empty<EstimationImportSettings>();
         }
     }
-    public void CreateNew()
+    public async void CreateNew()
     {
-        SelectedSetting = EstimationImportSettings.Empty;
-        StateHasChanged();
+        await SetSelectedSettingsAsync(EstimationImportSettings.Empty);
     }
     private async Task SaveAsync()
     {
@@ -139,8 +154,8 @@
             {
                 await ImportSettingsService.UpsertAsync(SelectedSetting);
                 await SetAllAndStandardSettings();
-                SelectedSetting = AllSettings.Where(x => x.Name == SelectedSetting.Name).First();
-                StateHasChanged();
+                var settingToSelect = AllSettings.Where(x => x.Name == SelectedSetting.Name).First();
+                await SetSelectedSettingsAsync(settingToSelect);
             }
         }
         catch (Exception)
@@ -155,7 +170,7 @@
             if (SelectedSetting is not null)
             {
                 await ImportSettingsService.DeleteAsync(SelectedSetting.Id);
-                SelectedSetting = null;
+                await SetSelectedSettingsAsync(null);
                 await SetAllAndStandardSettings();
                 StateHasChanged();
             }

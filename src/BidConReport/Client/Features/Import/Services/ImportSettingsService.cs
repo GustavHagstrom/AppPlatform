@@ -72,7 +72,7 @@ public class ImportSettingsService : IImportSettingsService
         try
         {
             var client = _httpClientFactory.CreateClient(HttpClientNames.BackendHttpClientName);
-            var result = await client.PostAsJsonAsync(BackendApiEndpoints.ImportEndpoints.SetDefault, settings?.Id);
+            var result = await client.PostAsJsonAsync(BackendApiEndpoints.ImportEndpoints.SetDefault, new { settingsId = settings?.Id });
             result.EnsureSuccessStatusCode();
         }
         catch (HttpRequestException ex)

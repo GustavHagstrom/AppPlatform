@@ -66,7 +66,7 @@ app.UseMiddleware<CustomClaimsMiddleware>();
 app.UseMiddleware<LazyUserMiddleware>();
 
 app.MapRazorPages();
-app.MapControllers().RequireAuthorization();
+app.MapControllers();
 app.MapFallbackToFile("index.html");
 
 app.Run();

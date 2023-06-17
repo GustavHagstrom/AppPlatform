@@ -13,23 +13,23 @@ public static class BackendApiEndpoints
         /// <summary>
         /// Get request. Returns all ImportSettings associated with current Organization
         /// </summary>
-        public const string All = "api/import/All";
+        public const string All = "api/ImportSettings/All";
         /// <summary>
         /// Get request. Returns the default ImportSetting for current organization if there is one
         /// </summary>
-        public const string Default = "api/import/Default";
+        public const string Default = "api/ImportSettings/Default";
         /// <summary>
         /// Post request. Upsert importsettings from json body
         /// </summary>
-        public const string Upsert = "api/import/Upsert";
+        public const string Upsert = "api/ImportSettings/Upsert";
         /// <summary>
         /// Delete request. Deletes importsettings. Parameter appended as /{id} in the request Uri
         /// </summary>
-        public const string Delete = "api/import/Delete";
+        public const string Delete = "api/ImportSettings/Delete";
         /// <summary>
         /// Post request. Set importSettings as default. id as json body. Id may be null resulting in no default settings.
         /// </summary>
-        public const string SetDefault = "api/import/SetDefault";
+        public const string SetDefault = "api/ImportSettings/SetDefault";
     }
 }
 

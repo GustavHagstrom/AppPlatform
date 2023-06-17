@@ -1,5 +1,6 @@
 ﻿using BidConReport.Server.Data;
 using BidConReport.Shared.Entities;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Identity.Web;
 using SharedPlatformLibrary.Constants;
@@ -63,7 +64,7 @@ public class ImportSettingsController : ControllerBase
             return Problem("Unexpected server error");
         }
     }
-    [HttpPost("Upsert")]
+    [HttpPost("upsert")]
     public async Task<IActionResult> Upsert([FromBody] EstimationImportSettings settings)
     {
         //TODO: add role constraint, maybe admin?? IF update also check for organization
@@ -94,7 +95,7 @@ public class ImportSettingsController : ControllerBase
         }
     }
     [HttpPost("SetDefault")]
-    public async Task<IActionResult> SetDefault(int? settingsId)
+    public async Task<IActionResult> SetDefault([FromBody] int? settingsId)
     {
         //TODO: check for organization
         try
