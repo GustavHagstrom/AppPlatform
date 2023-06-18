@@ -28,7 +28,7 @@ public class CustomAuthStateProvider : RemoteAuthenticationService<RemoteAuthent
         {
             try
             {
-                var response = await client.GetAsync(string.Empty);// "/api/authorization/claims");
+                var response = await client.GetAsync(string.Empty);
                 if (response.IsSuccessStatusCode)
                 {
                     var claimModels = await response.Content.ReadFromJsonAsync<ICollection<ClaimModel>>();

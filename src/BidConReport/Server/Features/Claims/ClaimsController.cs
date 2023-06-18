@@ -28,6 +28,7 @@ public class ClaimsController : ControllerBase
                 .Where(x => customTypes.Contains(x.Type))
                 .Select(x => new ClaimModel(x.Type, x.Value))
                 .ToArray();
+            _logger.LogInformation("returning claims from server");
             return Ok(claims);
         }
         catch (Exception e)

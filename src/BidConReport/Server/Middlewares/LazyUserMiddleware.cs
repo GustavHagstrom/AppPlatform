@@ -4,6 +4,7 @@ using BidConReport.Server.Shared.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Identity.Web;
 using SharedPlatformLibrary.Constants;
+using System.Diagnostics;
 using System.Security.Claims;
 
 namespace BidConReport.Server.Middlewares;
@@ -24,10 +25,20 @@ public class LazyUserMiddleware
     {
         try
         {
+            Stopwatch stopwatch = Stopwatch.StartNew();
+            stopwatch.Start();
             using (var scope = _serviceProvider.CreateScope())
             {
+                stopwatch.Stop();
+                _logger.LogInformation($"{stopwatch.ElapsedMilliseconds}ms elapse while creating serviceScope");
+                stopwatch.Restart();
                 await SetUserClaims(scope, context);
+                stopwatch.Stop();
+                _logger.LogInformation($"{stopwatch.ElapsedMilliseconds}ms elapse while setting user claims");
+                stopwatch.Restart();
                 await LazyUser(scope, context);
+                _logger.LogInformation($"{stopwatch.ElapsedMilliseconds}ms elapse while running lazy user");
+                stopwatch.Stop();
             }
         }
         catch (Exception e)
