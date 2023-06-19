@@ -41,7 +41,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "License", "License", "{DABA
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "License.Api", "License\License.Api\License.Api.csproj", "{D4E354F9-F046-4464-AB1D-0971B60452DD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SharedPlatformLibrary", "SharedPlatformLibrary\SharedPlatformLibrary.csproj", "{061A0CDA-C6F8-481A-B757-44BDF4170526}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SharedPlatformLibrary", "SharedPlatformLibrary\SharedPlatformLibrary.csproj", "{061A0CDA-C6F8-481A-B757-44BDF4170526}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

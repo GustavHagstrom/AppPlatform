@@ -1,19 +1,19 @@
 ﻿@page "/import"
 @*@attribute [Authorize]*@
 
-<MudDrawer @bind-Open="@drawerOpen" ClipMode="DrawerClipMode.Docked" Anchor="Anchor.End" Elevation="4">
+@*<MudDrawer @bind-Open="@drawerOpen" ClipMode="DrawerClipMode.Docked" Anchor="Anchor.End" Elevation="4">
     <div>
         <ImportSettingsView SelectedSettingChanged="OnSettingsSelectionChanged" />
     </div>
-</MudDrawer>
+</MudDrawer>*@
 
 <PageLayout ToolbarHeight="40px"> 
     <ToolbarContent>
         <MudIconButton Icon="@Icons.Material.Sharp.Start" OnClick="DownloadAsync" Style="height: 40px; width: 40px;" />
         <MudIconButton Icon="@Icons.Material.Sharp.Refresh" OnClick="GetEstimationItemTreeAsync" Style="height: 40px; width: 40px;" />
-        <MudIconButton Icon="@Icons.Material.Sharp.Settings" OnClick="ToggleDrawer" Style="height: 40px; width: 40px;" />
+        @*<MudIconButton Icon="@Icons.Material.Sharp.Settings" OnClick="ToggleDrawer" Style="height: 40px; width: 40px;" />*@
+        <ImportSettingsPicker SelectedSettingChanged="OnSettingsSelectionChanged" />
 
-        
     </ToolbarContent>
 
 

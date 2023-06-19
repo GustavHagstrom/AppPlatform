@@ -1,0 +1,148 @@
+﻿<div class="d-flex align-stretch">
+@*    <MudSelect Class="px-6"
+               @bind-Value="SelectedSetting"
+               T="EstimationImportSettings"
+               MultiSelection="false"
+               ToStringFunc="(s) => s.Name"
+               Label="@Localizer["Importeringsprofil"]"
+               Variant="Variant.Outlined"
+               AnchorOrigin="Origin.BottomLeft"
+               Margin="Margin.Dense">
+        @foreach (var item in SettingsList)
+        {
+            <MudSelectItem Value="item">
+                <MudToggleIconButton Icon="@Icons.Material.Sharp.StarBorder" ToggledIcon="@Icons.Material.Sharp.Star"/>
+            </MudSelectItem>
+        }
+    </MudSelect>*@
+    
+    <div class="d-flex align-stretch">
+        <MudButton Variant="Variant.Text" Class="pa-0 d-flex align-stretch" OnClick="() => PopOverIsVisible = !PopOverIsVisible">
+            @*<MudText Typo="Typo.subtitle2">@SelectedSetting?.Name</MudText>*@
+            <div style="min-width: 120px" class="@CreateSelectorClass()">
+                <MudText Typo="Typo.subtitle2" Class="align-self-end">ss</MudText>
+                <MudSpacer/>
+                <MudIcon Size="Size.Small" Icon="@Icons.Material.Sharp.ArrowDropDown" Class="align-self-end" />
+            </div>
+        </MudButton>
+        <MudPopover Class="py-1" Open="PopOverIsVisible" AnchorOrigin="Origin.BottomRight" TransformOrigin="Origin.TopRight">
+            <MudStack Spacing="1">
+                @foreach (var item in SettingsList)
+                {
+                    <MudButton Class="d-flex" Variant="Variant.Text">
+                        <MudText Typo="Typo.subtitle2">@item.Name</MudText>
+                        <MudToggleIconButton Class="" Icon="@Icons.Material.Sharp.StarBorder" ToggledIcon="@Icons.Material.Sharp.Star" />
+                    </MudButton>
+                    <MudButton Class="d-flex" Variant="Variant.Text">
+                        <MudText Typo="Typo.subtitle2">@item.Name</MudText>
+                        <MudToggleIconButton Class="" Icon="@Icons.Material.Sharp.StarBorder" ToggledIcon="@Icons.Material.Sharp.Star" />
+                    </MudButton>
+                    <MudButton Class="d-flex" Variant="Variant.Text">
+                        <MudText Typo="Typo.subtitle2">@item.Name</MudText>
+                        <MudToggleIconButton Class="" Icon="@Icons.Material.Sharp.StarBorder" ToggledIcon="@Icons.Material.Sharp.Star" />
+                    </MudButton>
+                }
+            </MudStack>
+        </MudPopover>
+    </div>
+    <MudToggleIconButton Icon="@Icons.Material.Sharp.StarBorder" ToggledIcon="@Icons.Material.Sharp.Star" Style="height: 40px; width: 40px;" />
+    <MudIconButton Icon="@Icons.Material.Sharp.Edit" Style="height: 40px; width: 40px;" />
+    <MudIconButton Icon="@Icons.Material.Sharp.Add" Style="height: 40px; width: 40px;" />
+    
+    
+
+</div>
+@code {
+    [Parameter] public EventCallback<EstimationImportSettings> SelectedSettingChanged { get; set; }
+    [Inject] public required IStringLocalizer<ImportSettingsPicker> Localizer { get; set; }
+    [Inject] public required IImportSettingsService ImportSettingsService { get; set; }
+    [Inject] public required ISnackbar Snackbar { get; set; }
+
+    private EstimationImportSettings? _selectedSetting;
+
+    public EstimationImportSettings? SelectedSetting
+    {
+        get => _selectedSetting; set
+        {
+            _selectedSetting = value;
+            SelectedSettingChanged.InvokeAsync(value);
+        }
+    }
+    public bool PopOverIsVisible { get; set; } = false;
+    public ICollection<EstimationImportSettings> SettingsList { get; set; } = new List<EstimationImportSettings>();
+    public EstimationImportSettings? DefaultSetting { get; set; } = null;
+
+
+    public string CreateSelectorClass()
+    {
+        if (SelectedSetting is not null)
+        {
+            return "d-flex mb-1 pa-0 border-solid border-b align-content-center";
+        }
+        else
+        {
+            return "d-flex mb-1 pa-0 border-solid border-b-2 mud-border-error align-content-center";
+        }
+    }
+    protected override async Task OnInitializedAsync()
+    {
+        await RefreshEntireComponent();
+    }
+    /// <summary>
+    /// Refreshing all the data from the backend and trigger StateHasChanged()
+    /// </summary>
+    /// <returns></returns>
+    public async Task RefreshEntireComponent()
+    {
+        await SetSettingsListAsync();
+        await SetDefaultSetteingsAsync();
+        SetSelectedSettings(DefaultSetting);
+        PopOverIsVisible = false;
+        StateHasChanged();
+    }
+    public async Task SetSettingsListAsync()
+    {
+        try
+        {
+            SettingsList = await ImportSettingsService.GetAllAsync();
+        }
+        catch (Exception)
+        {
+            Snackbar.Add(Localizer[$"Misslyckades att hämta Importeringsprofiler"], Severity.Error);
+        }
+    }
+    public async Task SetDefaultSetteingsAsync()
+    {
+        try
+        {
+            DefaultSetting = await ImportSettingsService.GetDefaultAsync();
+        }
+        catch (Exception)
+        {
+            Snackbar.Add(Localizer[$"Ingen standardprofil hittades"], Severity.Warning);
+        }
+    }
+    public void SetSelectedSettings(EstimationImportSettings? settings)
+    {
+        SelectedSetting = settings;
+    }
+    public async Task SetCurrentSettingsAsDefaultAsync()
+    {
+        try
+        {
+            await ImportSettingsService.SaveAsDefaultAsync(SelectedSetting);
+        }
+        catch (Exception)
+        {
+            Snackbar.Add(Localizer[$"Misslyckades att spara vald profil som standard"], Severity.Error);
+        }
+        await RefreshEntireComponent();
+    }
+    public bool IsDefaultSettings(EstimationImportSettings? settings)
+    {
+        if (DefaultSetting is null || settings is null) return false;
+
+        return settings.Id == DefaultSetting.Id;
+    }
+
+}

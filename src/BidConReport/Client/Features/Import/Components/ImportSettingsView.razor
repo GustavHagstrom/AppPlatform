@@ -1,4 +1,5 @@
 ﻿@using SharedPlatformLibrary.Constants;
+
 <div class="d-flex justify-end mud-elevation-1" style="background-color: var(--mud-palette-table-lines);">
     @if (SelectedSetting is not null)
     {
@@ -14,14 +15,16 @@
                 @bind-Value="SelectedSetting"
                 T="EstimationImportSettings"
                 MultiSelection="false"
-                ToStringFunc="ConvertFunc"
+                ToStringFunc="(s) => s.Name"
                 Label="@Localizer["Inställningsprofil"]"
                 Variant="Variant.Outlined"
                 AnchorOrigin="Origin.BottomCenter"
                 Margin="Margin.Dense">
         @foreach (var item in AllSettings)
         {
-            <MudSelectItem Value="item"/>
+            <MudSelectItem Value="item">
+                <MudButton>test</MudButton>
+            </MudSelectItem>
         }
     </MudSelect>
 
@@ -60,7 +63,6 @@
     [Parameter] public EventCallback<EstimationImportSettings> SelectedSettingChanged { get; set; }
     public EstimationImportSettings? DefaultSetting { get; set; } = null;
     public List<EstimationImportSettings> AllSettings { get; set; } = new();
-    public Func<EstimationImportSettings, string> ConvertFunc { get; set; } = s => s.Name;
     public MudForm? Form { get; set; }
 
     public async Task SetSelectedSettingsAsync(EstimationImportSettings? settings)
@@ -92,11 +94,11 @@
             {
                 if(isStandard)
                 {
-                    await ImportSettingsService.SaveAsStandardAsync(SelectedSetting);
+                    await ImportSettingsService.SaveAsDefaultAsync(SelectedSetting);
                 }
                 else
                 {
-                    await ImportSettingsService.SaveAsStandardAsync(null);
+                    await ImportSettingsService.SaveAsDefaultAsync(null);
                 }
 
             }
@@ -122,7 +124,7 @@
     {
         try
         {
-            return await ImportSettingsService.GetStandardAsync();
+            return await ImportSettingsService.GetDefaultAsync();
         }
         catch (Exception)
         {

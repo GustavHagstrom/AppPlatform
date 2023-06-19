@@ -47,7 +47,7 @@ public class ImportSettingsService : IImportSettingsService
         }
     }
 
-    public async Task<EstimationImportSettings> GetStandardAsync()
+    public async Task<EstimationImportSettings> GetDefaultAsync()
     {
         
         try
@@ -67,7 +67,7 @@ public class ImportSettingsService : IImportSettingsService
         }
     }
 
-    public async Task SaveAsStandardAsync(EstimationImportSettings? settings)
+    public async Task SaveAsDefaultAsync(EstimationImportSettings? settings)
     {
         try
         {

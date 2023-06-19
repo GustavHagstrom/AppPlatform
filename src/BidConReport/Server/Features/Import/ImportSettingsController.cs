@@ -70,8 +70,16 @@ public class ImportSettingsController : ControllerBase
         //TODO: add role constraint, maybe admin?? IF update also check for organization
         try
         {
+            var currentOrgId = User.Claims.Where(x => x.Type == CustomClaimTypes.CurrentOrganization).FirstOrDefault()?.Value;
+            ArgumentNullException.ThrowIfNull(currentOrgId);
+            settings.OrganizationId = currentOrgId;
             await _importSettingsService.UpsertImportSettingsAsync(settings);
             return Ok();
+        }
+        catch (ArgumentNullException e)
+        {
+            _logger.LogError(e, "CurrentOrganization claim was not found");
+            return Problem("CurrentOrganization claim was not found");
         }
         catch (Exception e)
         {
