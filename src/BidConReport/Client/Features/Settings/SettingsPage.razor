@@ -1,0 +1,10 @@
+﻿@page "/settings"
+
+
+@code {
+    [Inject] public required NavigationManager NavManager { get; set; }
+    protected override void OnInitialized()
+    {
+        NavManager.NavigateTo("/settings/common");
+    }
+}

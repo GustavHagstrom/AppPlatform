@@ -6,7 +6,8 @@
     </DialogContent>
     <DialogActions>
         <div Class="pr-4 pb-2">
-            <MudButton OnClick="Cancel" Variant="Variant.Filled" Color="Color.Error">@Localizer["Stäng"]</MudButton>
+            <MudButton OnClick="Cancel" Variant="Variant.Filled" Color="Color.Inherit">@Localizer["Stäng"]</MudButton>
+            <MudButton OnClick="Delete" Variant="Variant.Filled" Color="Color.Error">@Localizer["Stäng"]</MudButton>
             <MudButton OnClick="SaveAndClose" Variant="Variant.Filled" Color="Color.Success">@Localizer["Spara och stäng"]</MudButton>
         </div>
     </DialogActions>
@@ -23,6 +24,11 @@
     {
         await ImportSettingsService.UpsertAsync(SelectedSetting);
         MudDialog.Close(SelectedSetting);
+    }
+    public async Task Delete()
+    {
+        await ImportSettingsService.DeleteAsync(SelectedSetting.Id);
+        MudDialog.Close(null);
     }
     void Cancel()
     {

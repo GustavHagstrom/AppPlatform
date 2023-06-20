@@ -38,7 +38,8 @@ public class ImportSettingsService : IImportSettingsService
         }
         else
         {
-            _dbContext.EstimationImportSettings.Attach(settings);
+            //settings.Id = 0;
+            //_dbContext.EstimationImportSettings.Attach(settings);
             _dbContext.Entry(dbSettings).CurrentValues.SetValues(settings);
         }
         await _dbContext.SaveChangesAsync();

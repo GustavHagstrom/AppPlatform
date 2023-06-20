@@ -27,6 +27,11 @@
                     <MudIcon Icon="@CustomIcons.BidconIcon" />
                 </MudButton>
             </MudTooltip>
+            <MudTooltip Text="@Localizer["Inställningar"]" RootClass="align-self-center">
+                <MudButton Href="/settings" Class="py-1 px-3" Variant="Variant.Text" Color="Color.Inherit" Style="@StyleService.CreateNavigationButtonStyle("settings")">
+                    <MudIcon Icon="@Icons.Material.Sharp.Settings" />
+                </MudButton>
+            </MudTooltip>
         </AppBar>
         <div style="position: fixed; height: calc(100% - 50px); width: 100%; top: 50px; background-color: var(--mud-palette-background-grey);">
             @Body

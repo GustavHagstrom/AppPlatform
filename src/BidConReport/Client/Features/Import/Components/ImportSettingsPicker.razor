@@ -3,7 +3,6 @@
     
     <div class="d-flex align-stretch">
         <MudButton Variant="Variant.Text" Class="pa-0 px-2 d-flex align-stretch" OnClick="() => PopOverIsVisible = !PopOverIsVisible">
-            @*<MudIcon Icon="@Icons.Material.Sharp.Settings" Style="height: 40px; width: 40px;" Class="pa-2 " />*@
             <div style="min-width: 120px" class="@CreateSelectorClass()">
                 
                 <MudText Typo="Typo.subtitle2" Class="align-self-end">@Localizer["Profil:"]</MudText>
@@ -24,8 +23,6 @@
         </MudPopover>
     </div>
     <MudIconButton Icon="@CreateDefaultSettingsIcon(SelectedSetting)" Style="height: 40px; width: 40px;" OnClick="SaveSelectedSettingsAsDefault" />
-    <MudIconButton Icon="@Icons.Material.Sharp.Edit" Style="height: 40px; width: 40px;" OnClick="() => EditSetting(SelectedSetting!)" Disabled="SelectedSetting is null"/>
-    <MudIconButton Icon="@Icons.Material.Sharp.Add" Style="height: 40px; width: 40px;" OnClick="() => EditSetting(EstimationImportSettings.Empty)" />
     
 </div>
 @code {
@@ -33,7 +30,7 @@
     [Inject] public required IStringLocalizer<ImportSettingsPicker> Localizer { get; set; }
     [Inject] public required IImportSettingsService ImportSettingsService { get; set; }
     [Inject] public required ISnackbar Snackbar { get; set; }
-    [Inject] public required IDialogService DialogService { get; set; }
+    
 
     private EstimationImportSettings? _selectedSetting;
 
@@ -122,13 +119,9 @@
     }
     public async Task SaveSelectedSettingsAsDefault()
     {
-        await SaveAsDefaultAsync(SelectedSetting);
-    }
-    public async Task SaveAsDefaultAsync(EstimationImportSettings? settings)
-    {
         try
         {
-            await ImportSettingsService.SaveAsDefaultAsync(settings);
+            await ImportSettingsService.SaveAsDefaultAsync(SelectedSetting);
         }
         catch (Exception)
         {
@@ -136,35 +129,39 @@
         }
         await RefreshEntireComponent();
     }
+
     public bool IsDefaultSettings(EstimationImportSettings? settings)
     {
         if (DefaultSetting is null || settings is null) return false;
 
         return settings.Id == DefaultSetting.Id;
     }
-    public async Task EditSetting(EstimationImportSettings setting)
-    {
-        var clone = JsonSerializer.Deserialize<EstimationImportSettings>(JsonSerializer.Serialize(setting));
-        var options = new DialogOptions()
-            {
-                MaxWidth = MaxWidth.Large,
-                CloseButton = false,
-                NoHeader = true,
-                DisableBackdropClick = true,
 
-            };
-        var parameters = new DialogParameters();
-        parameters.Add(nameof(EditSettingsDialog.SelectedSetting), clone);
-        var dialog = await DialogService.ShowAsync<EditSettingsDialog>(string.Empty, parameters, options);
-        var result = await dialog.Result;
-        if(!result.Canceled)
-        {
 
-            await RefreshEntireComponent();
-            SelectedSetting = result.Data as EstimationImportSettings;
-            StateHasChanged();
-        }
+
+    //public async Task EditSetting(EstimationImportSettings setting)
+    //{
+    //    var clone = JsonSerializer.Deserialize<EstimationImportSettings>(JsonSerializer.Serialize(setting));
+    //    var options = new DialogOptions()
+    //        {
+    //            MaxWidth = MaxWidth.Large,
+    //            CloseButton = false,
+    //            NoHeader = true,
+    //            DisableBackdropClick = true,
+
+    //        };
+    //    var parameters = new DialogParameters();
+    //    parameters.Add(nameof(EditSettingsDialog.SelectedSetting), clone);
+    //    var dialog = await DialogService.ShowAsync<EditSettingsDialog>(string.Empty, parameters, options);
+    //    var result = await dialog.Result;
+    //    if(!result.Canceled)
+    //    {
+
+    //        await RefreshEntireComponent();
+    //        SelectedSetting = result.Data as EstimationImportSettings;
+    //        StateHasChanged();
+    //    }
         
-    }
+    //}
 
 }
