@@ -27,7 +27,7 @@ public class EstimationImportSettings
 
 
     [NotMapped]
-    public static EstimationImportSettings Empty => new EstimationImportSettings
+    public static EstimationImportSettings Empty => new()
     {
         Name = string.Empty,
         OrganizationId = string.Empty,

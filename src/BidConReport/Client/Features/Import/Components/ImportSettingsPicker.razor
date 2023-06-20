@@ -1,26 +1,13 @@
-﻿<div class="d-flex align-stretch">
-@*    <MudSelect Class="px-6"
-               @bind-Value="SelectedSetting"
-               T="EstimationImportSettings"
-               MultiSelection="false"
-               ToStringFunc="(s) => s.Name"
-               Label="@Localizer["Importeringsprofil"]"
-               Variant="Variant.Outlined"
-               AnchorOrigin="Origin.BottomLeft"
-               Margin="Margin.Dense">
-        @foreach (var item in SettingsList)
-        {
-            <MudSelectItem Value="item">
-                <MudToggleIconButton Icon="@Icons.Material.Sharp.StarBorder" ToggledIcon="@Icons.Material.Sharp.Star"/>
-            </MudSelectItem>
-        }
-    </MudSelect>*@
+﻿@using System.Text.Json;
+<div class="d-flex align-stretch">
     
     <div class="d-flex align-stretch">
-        <MudButton Variant="Variant.Text" Class="pa-0 d-flex align-stretch" OnClick="() => PopOverIsVisible = !PopOverIsVisible">
-            @*<MudText Typo="Typo.subtitle2">@SelectedSetting?.Name</MudText>*@
+        <MudButton Variant="Variant.Text" Class="pa-0 px-2 d-flex align-stretch" OnClick="() => PopOverIsVisible = !PopOverIsVisible">
+            @*<MudIcon Icon="@Icons.Material.Sharp.Settings" Style="height: 40px; width: 40px;" Class="pa-2 " />*@
             <div style="min-width: 120px" class="@CreateSelectorClass()">
-                <MudText Typo="Typo.subtitle2" Class="align-self-end">ss</MudText>
+                
+                <MudText Typo="Typo.subtitle2" Class="align-self-end">@Localizer["Profil:"]</MudText>
+                <MudText Typo="Typo.subtitle2" Class="align-self-end pl-2">@(SelectedSetting?.Name ?? "-")</MudText>
                 <MudSpacer/>
                 <MudIcon Size="Size.Small" Icon="@Icons.Material.Sharp.ArrowDropDown" Class="align-self-end" />
             </div>
@@ -29,34 +16,24 @@
             <MudStack Spacing="1">
                 @foreach (var item in SettingsList)
                 {
-                    <MudButton Class="d-flex" Variant="Variant.Text">
+                    <MudButton Class="d-flex flex-grow-1" Variant="Variant.Text" EndIcon="@CreateDefaultSettingsIcon(item)" OnClick="() => SetSelectedSettings(item)">
                         <MudText Typo="Typo.subtitle2">@item.Name</MudText>
-                        <MudToggleIconButton Class="" Icon="@Icons.Material.Sharp.StarBorder" ToggledIcon="@Icons.Material.Sharp.Star" />
-                    </MudButton>
-                    <MudButton Class="d-flex" Variant="Variant.Text">
-                        <MudText Typo="Typo.subtitle2">@item.Name</MudText>
-                        <MudToggleIconButton Class="" Icon="@Icons.Material.Sharp.StarBorder" ToggledIcon="@Icons.Material.Sharp.Star" />
-                    </MudButton>
-                    <MudButton Class="d-flex" Variant="Variant.Text">
-                        <MudText Typo="Typo.subtitle2">@item.Name</MudText>
-                        <MudToggleIconButton Class="" Icon="@Icons.Material.Sharp.StarBorder" ToggledIcon="@Icons.Material.Sharp.Star" />
                     </MudButton>
                 }
             </MudStack>
         </MudPopover>
     </div>
-    <MudToggleIconButton Icon="@Icons.Material.Sharp.StarBorder" ToggledIcon="@Icons.Material.Sharp.Star" Style="height: 40px; width: 40px;" />
-    <MudIconButton Icon="@Icons.Material.Sharp.Edit" Style="height: 40px; width: 40px;" />
-    <MudIconButton Icon="@Icons.Material.Sharp.Add" Style="height: 40px; width: 40px;" />
+    <MudIconButton Icon="@CreateDefaultSettingsIcon(SelectedSetting)" Style="height: 40px; width: 40px;" OnClick="SaveSelectedSettingsAsDefault" />
+    <MudIconButton Icon="@Icons.Material.Sharp.Edit" Style="height: 40px; width: 40px;" OnClick="() => EditSetting(SelectedSetting!)" Disabled="SelectedSetting is null"/>
+    <MudIconButton Icon="@Icons.Material.Sharp.Add" Style="height: 40px; width: 40px;" OnClick="() => EditSetting(EstimationImportSettings.Empty)" />
     
-    
-
 </div>
 @code {
     [Parameter] public EventCallback<EstimationImportSettings> SelectedSettingChanged { get; set; }
     [Inject] public required IStringLocalizer<ImportSettingsPicker> Localizer { get; set; }
     [Inject] public required IImportSettingsService ImportSettingsService { get; set; }
     [Inject] public required ISnackbar Snackbar { get; set; }
+    [Inject] public required IDialogService DialogService { get; set; }
 
     private EstimationImportSettings? _selectedSetting;
 
@@ -72,7 +49,17 @@
     public ICollection<EstimationImportSettings> SettingsList { get; set; } = new List<EstimationImportSettings>();
     public EstimationImportSettings? DefaultSetting { get; set; } = null;
 
-
+    public string CreateDefaultSettingsIcon(EstimationImportSettings? settings)
+    {
+        if(IsDefaultSettings(settings))
+        {
+            return Icons.Material.Sharp.Star;
+        }
+        else
+        {
+            return Icons.Material.Sharp.StarBorder;
+        }
+    }
     public string CreateSelectorClass()
     {
         if (SelectedSetting is not null)
@@ -96,7 +83,7 @@
     {
         await SetSettingsListAsync();
         await SetDefaultSetteingsAsync();
-        SetSelectedSettings(DefaultSetting);
+        SelectedSetting = DefaultSetting;
         PopOverIsVisible = false;
         StateHasChanged();
     }
@@ -122,15 +109,26 @@
             Snackbar.Add(Localizer[$"Ingen standardprofil hittades"], Severity.Warning);
         }
     }
+    /// <summary>
+    /// Sets SelectedSettings and trigger StateHasChanged
+    /// Will also close popover
+    /// </summary>
+    /// <param name="settings"></param>
     public void SetSelectedSettings(EstimationImportSettings? settings)
     {
         SelectedSetting = settings;
+        PopOverIsVisible = false;
+        StateHasChanged();
     }
-    public async Task SetCurrentSettingsAsDefaultAsync()
+    public async Task SaveSelectedSettingsAsDefault()
+    {
+        await SaveAsDefaultAsync(SelectedSetting);
+    }
+    public async Task SaveAsDefaultAsync(EstimationImportSettings? settings)
     {
         try
         {
-            await ImportSettingsService.SaveAsDefaultAsync(SelectedSetting);
+            await ImportSettingsService.SaveAsDefaultAsync(settings);
         }
         catch (Exception)
         {
@@ -143,6 +141,30 @@
         if (DefaultSetting is null || settings is null) return false;
 
         return settings.Id == DefaultSetting.Id;
+    }
+    public async Task EditSetting(EstimationImportSettings setting)
+    {
+        var clone = JsonSerializer.Deserialize<EstimationImportSettings>(JsonSerializer.Serialize(setting));
+        var options = new DialogOptions()
+            {
+                MaxWidth = MaxWidth.Large,
+                CloseButton = false,
+                NoHeader = true,
+                DisableBackdropClick = true,
+
+            };
+        var parameters = new DialogParameters();
+        parameters.Add(nameof(EditSettingsDialog.SelectedSetting), clone);
+        var dialog = await DialogService.ShowAsync<EditSettingsDialog>(string.Empty, parameters, options);
+        var result = await dialog.Result;
+        if(!result.Canceled)
+        {
+
+            await RefreshEntireComponent();
+            SelectedSetting = result.Data as EstimationImportSettings;
+            StateHasChanged();
+        }
+        
     }
 
 }
