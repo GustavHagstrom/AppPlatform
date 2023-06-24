@@ -7,7 +7,6 @@
     <DialogActions>
         <div Class="pr-4 pb-2">
             <MudButton OnClick="Cancel" Variant="Variant.Filled" Color="Color.Inherit">@Localizer["Stäng"]</MudButton>
-            <MudButton OnClick="Delete" Variant="Variant.Filled" Color="Color.Error">@Localizer["Stäng"]</MudButton>
             <MudButton OnClick="SaveAndClose" Variant="Variant.Filled" Color="Color.Success">@Localizer["Spara och stäng"]</MudButton>
         </div>
     </DialogActions>
@@ -17,21 +16,8 @@
     [Inject] public required IStringLocalizer<EditSettingsDialog> Localizer { get; set; }
     [CascadingParameter] public required MudDialogInstance MudDialog { get; set; }
     [Parameter] public required EstimationImportSettings SelectedSetting { get; set; }
-    [Inject] public required IImportSettingsService ImportSettingsService { get; set; }
     public MudForm? Form { get; set; }
 
-    public async Task SaveAndClose()
-    {
-        await ImportSettingsService.UpsertAsync(SelectedSetting);
-        MudDialog.Close(SelectedSetting);
-    }
-    public async Task Delete()
-    {
-        await ImportSettingsService.DeleteAsync(SelectedSetting.Id);
-        MudDialog.Close(null);
-    }
-    void Cancel()
-    {
-        MudDialog.Cancel();
-    }
+    void SaveAndClose () => MudDialog.Close();
+    void Cancel() => MudDialog.Cancel();
 }
