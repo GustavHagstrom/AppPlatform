@@ -1,36 +1,31 @@
-﻿@page "/settings/import"
-@using System.Text.Json;
+﻿@using System.Text.Json;
 
-<SettingsPageLayout>
-    <MudContainer MaxWidth="MaxWidth.ExtraLarge" Style="height: 100%" Class="d-flex">
-        <MudPaper Style="height: 100%" Class="relative">
+<MudPaper Style="height: 100%" Class="relative">
 
-            <MudOverlay Visible="ImportProfilesList is null" DarkBackground="true" Absolute="true">
-                <MudProgressCircular Color="Color.Primary" Indeterminate="true" Size="Size.Large" />
-            </MudOverlay>
+    <MudOverlay Visible="ImportProfilesList is null" DarkBackground="true" Absolute="true">
+        <MudProgressCircular Color="Color.Primary" Indeterminate="true" Size="Size.Large" />
+    </MudOverlay>
 
-            <MudList Style="height: 100%; min-width: 100px;" Clickable="true" DisableGutters="true" Dense="true" DisablePadding="true" @bind-SelectedValue="SelectedSettings">
-                <MudListSubheader Class="border-b pa-2 d-flex" Style="border-color: var(--mud-palette-lines-default)">
-                    <MudText Typo="Typo.h6" Class="pr-4">Importprofiler</MudText>
-                    <MudIconButton Icon="@Icons.Material.Sharp.Delete" Style="height:30px; width: 30px;" Disabled="SelectedSettings is null" OnClick="DeleteSelectedSettings" />
-                    <MudIconButton Icon="@Icons.Material.Sharp.Add" Style="height:30px; width: 30px;" OnClick="CreateNew" />
-                    <MudIconButton Icon="@Icons.Material.Sharp.Edit" Style="height:30px; width: 30px;" Disabled="SelectedSettings is null" OnClick="EditSelectedSettings" />
-                </MudListSubheader>
-                <div style="height: calc(100% - 49px);" class="overflow-y-auto">
-                    @if (ImportProfilesList is not null)
-                    {
-                        @foreach (var item in ImportProfilesList)
-                        {
-                            <MudListItem Text="@item.Name" Value="item" Class="px-2" />
-                        }
-                    }                    
-                </div>
-            </MudList>
-            
-            
-        </MudPaper>
-    </MudContainer>
-</SettingsPageLayout>
+    <MudList Style="height: 100%; min-width: 100px;" Clickable="true" DisableGutters="true" Dense="true" DisablePadding="true" @bind-SelectedValue="SelectedSettings">
+        <MudListSubheader Class="border-b pa-2 d-flex" Style="border-color: var(--mud-palette-lines-default)">
+            <MudText Typo="Typo.h6" Class="pr-4" Style="color: var(--mud-palette-text-primary)">Importprofiler</MudText>
+            <MudIconButton Icon="@Icons.Material.Sharp.Delete" Color="Color.Error" Style="height:30px; width: 30px;" Disabled="SelectedSettings is null" OnClick="DeleteSelectedSettings" />
+            <MudIconButton Icon="@Icons.Material.Sharp.Add" Color="Color.Primary" Style="height:30px; width: 30px;" OnClick="CreateNew" />
+            <MudIconButton Icon="@Icons.Material.Sharp.Edit" Color="Color.Primary" Style="height:30px; width: 30px;" Disabled="SelectedSettings is null" OnClick="EditSelectedSettings" />
+        </MudListSubheader>
+        <div style="height: calc(100% - 49px);" class="overflow-y-auto">
+            @if (ImportProfilesList is not null)
+            {
+                @foreach (var item in ImportProfilesList)
+                {
+                    <MudListItem Text="@item.Name" Value="item" Class="px-2" />
+                }
+            }
+        </div>
+    </MudList>
+
+
+</MudPaper>
 
 @code {
     [Inject] public required IImportSettingsService ImportSettingsService { get; set; }
@@ -57,7 +52,7 @@
     }
     public async Task EditSelectedSettings()
     {
-        if(SelectedSettings is not null)
+        if (SelectedSettings is not null)
         {
             var clone = JsonSerializer.Deserialize<EstimationImportSettings>(JsonSerializer.Serialize(SelectedSettings as EstimationImportSettings));
             await OpenSettingsDialog(clone!, Localizer["Redigera"]);
@@ -67,7 +62,7 @@
     {
         var options = new DialogOptions()
             {
-                MaxWidth = MaxWidth.Large,
+                MaxWidth = MaxWidth.ExtraSmall,
                 CloseButton = true,
                 NoHeader = false,
                 DisableBackdropClick = true,
@@ -77,7 +72,7 @@
         parameters.Add(nameof(EditSettingsDialog.SelectedSetting), settings);
         var dialog = await DialogService.ShowAsync<EditSettingsDialog>(title, parameters, options);
         var result = await dialog.Result;
-        if(!result.Canceled)
+        if (!result.Canceled)
         {
             await ImportSettingsService.UpsertAsync(settings!);
             await RefreshImportProfilesList();
@@ -94,7 +89,7 @@
                 await RefreshImportProfilesList();
             }
         }
-        
+
     }
     public async Task<bool> ConfirmDelete(EstimationImportSettings settings)
     {
