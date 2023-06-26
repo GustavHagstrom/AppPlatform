@@ -1,0 +1,40 @@
+﻿
+<div class="d-flex" style="height: 100%;">
+
+    <div class="pa-4" style="height: 100%;">
+        @foreach (var tab in Tabs!)
+        {
+            @tab.NavigationHeaderContent
+        }
+    </div>
+    <MudDivider Vertical="true"/>
+    
+    <div style="width: 100%;">
+        @if(SelectedTab?.ToolbarContent is not null)
+        {
+            <div style="height: @ToolbarHeight; background-color: var(--mud-palette-table-lines); width: 100%;" class="d-flex justify-center align-stretch mud-elevation-1">
+                @SelectedTab.ToolbarContent
+            </div>
+        }
+        
+        <div class="pa-4" style="height: calc(100% - @ToolbarHeight); width: 100%; overflow: auto">
+            @SelectedTab?.ChildContent
+        </div>
+    </div>
+</div>
+
+
+
+
+@code {
+
+    [Parameter] public ICollection<PageTab>? Tabs { get; set; }
+    [Parameter] public string ToolbarHeight { get; set; } = "0px";
+
+    private PageTab? SelectedTab { get; set; }
+
+    protected override void OnInitialized()
+    {
+        SelectedTab = Tabs?.FirstOrDefault();
+    }
+}

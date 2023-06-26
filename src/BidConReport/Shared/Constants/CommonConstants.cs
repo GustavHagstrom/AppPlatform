@@ -11,13 +11,15 @@ public static class CommonAppConstants
     /// </summary>
     public static readonly string[] AppRoles = 
     { 
-
         RoleConstants.Admin,
         RoleConstants.Creator,
         RoleConstants.Reader,
         RoleConstants.Guest,
     };
 
+    /// <summary>
+    /// Contains the role constants. They are to be seeded into license DB and should not be changed once deployed
+    /// </summary>
     public static class RoleConstants
     {
         public const string Admin = "admin";
