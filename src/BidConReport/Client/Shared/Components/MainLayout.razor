@@ -1,47 +1,42 @@
 ﻿@inherits LayoutComponentBase
 
 
-<CascadingValue Value="Theme">
-    <CascadingValue Value="StateHasChanged">
 
-        <MudThemeProvider Theme="CustomThemes.PlatformStandard" IsDarkMode="false" DefaultScrollbar="true" />
-        <MudDialogProvider FullWidth="true"
-                            MaxWidth="MaxWidth.ExtraSmall"
-                            CloseButton="true"
-                            DisableBackdropClick="true"
-                            NoHeader="false"
-                            Position="DialogPosition.Center"
-                            CloseOnEscapeKey="true" />
-        <MudSnackbarProvider />
 
-        <AppBar Height="50px">
-            <a href="dashboard" class="align-self-center"><h1 Class="px-4 mud-primary-text">BidCon rapport</h1></a>
-            <MudDivider Light="false" Vertical="true" FlexItem="true" Class="my-2 mr-2" />
-            <MudTooltip Text="@Localizer["Startsida"]" RootClass="align-self-center">
-                <MudButton Href="/dashboard" Class="py-1 px-3" Variant="Variant.Text" Color="Color.Inherit" Style="@StyleService.CreateNavigationButtonStyle("dashboard")">
-                    <MudIcon Icon="@Icons.Material.Sharp.Dashboard" />
-                </MudButton>
-            </MudTooltip>
-            <MudTooltip Text="@Localizer["Importera från BidCon"]" RootClass="align-self-center">
-                <MudButton Href="/import" Class="py-1 px-3" Variant="Variant.Text" Color="Color.Inherit" Style="@StyleService.CreateNavigationButtonStyle("import")">
-                    <MudIcon Icon="@CustomIcons.BidconIcon" />
-                </MudButton>
-            </MudTooltip>
-            <MudTooltip Text="@Localizer["Inställningar"]" RootClass="align-self-center">
-                <MudButton Href="/settings" Class="py-1 px-3" Variant="Variant.Text" Color="Color.Inherit" Style="@StyleService.CreateNavigationButtonStyle("settings")">
-                    <MudIcon Icon="@Icons.Material.Sharp.Settings" />
-                </MudButton>
-            </MudTooltip>
-        </AppBar>
-        <div style="position: fixed; height: calc(100% - 50px); width: 100%; top: 50px; background-color: var(--mud-palette-background-grey);">
-            @Body
-        </div>
+<MudThemeProvider Theme="CustomThemes.PlatformStandard" IsDarkMode="false" DefaultScrollbar="true" />
+<MudDialogProvider FullWidth="true"
+                    MaxWidth="MaxWidth.ExtraSmall"
+                    CloseButton="true"
+                    DisableBackdropClick="true"
+                    NoHeader="false"
+                    Position="DialogPosition.Center"
+                    CloseOnEscapeKey="true" />
+<MudSnackbarProvider />
+
+<AppBar Height="50px">
+    <a href="dashboard" class="align-self-center"><h1 Class="px-4 mud-primary-text">BidCon rapport</h1></a>
+    <MudDivider Light="false" Vertical="true" FlexItem="true" Class="my-2 mr-2" />
+    <MudTooltip Text="@Localizer["Startsida"]" RootClass="align-self-center">
+        <MudButton Href="/dashboard" Class="py-1 px-3" Variant="Variant.Text" Color="Color.Inherit" Style="@StyleService.CreateNavigationButtonStyle("dashboard")">
+            <MudIcon Icon="@Icons.Material.Sharp.Dashboard" />
+        </MudButton>
+    </MudTooltip>
+    <MudTooltip Text="@Localizer["Importera från BidCon"]" RootClass="align-self-center">
+        <MudButton Href="/import" Class="py-1 px-3" Variant="Variant.Text" Color="Color.Inherit" Style="@StyleService.CreateNavigationButtonStyle("import")">
+            <MudIcon Icon="@CustomIcons.BidconIcon" />
+        </MudButton>
+    </MudTooltip>
+    <MudTooltip Text="@Localizer["Inställningar"]" RootClass="align-self-center">
+        <MudButton Href="/settings" Class="py-1 px-3" Variant="Variant.Text" Color="Color.Inherit" Style="@StyleService.CreateNavigationButtonStyle("settings")">
+            <MudIcon Icon="@Icons.Material.Sharp.Settings" />
+        </MudButton>
+    </MudTooltip>
+</AppBar>
+<div style="position: fixed; height: calc(100% - 50px); width: 100%; top: 50px; background-color: var(--mud-palette-background-grey);">
+    @Body
+</div>
     
 
-
-
-    </CascadingValue>
-</CascadingValue>
 @code {
     [Inject] public required IStringLocalizer<MainLayout> Localizer { get; set; }
     [Inject] public required StyleService StyleService { get; set; }

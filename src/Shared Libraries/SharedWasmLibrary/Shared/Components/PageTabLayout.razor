@@ -1,26 +1,27 @@
-﻿
+﻿<div style="display: none">
+    <CascadingValue Value="this">
+        @ChildContent
+    </CascadingValue>
+</div>
 <div class="d-flex" style="height: 100%;">
 
     <div class="pa-4" style="height: 100%;">
         @foreach (var tab in Tabs!)
         {
-            @tab.NavigationHeaderContent
+            @tab.NavigationHeader
         }
     </div>
     <MudDivider Vertical="true"/>
     
     <div style="width: 100%;">
-        @if(SelectedTab?.ToolbarContent is not null)
+        
+        @if(SelectedTab is not null)
         {
-            <div style="height: @ToolbarHeight; background-color: var(--mud-palette-table-lines); width: 100%;" class="d-flex justify-center align-stretch mud-elevation-1">
-                @SelectedTab.ToolbarContent
-            </div>
+            @SelectedTab.Render();
         }
         
-        <div class="pa-4" style="height: calc(100% - @ToolbarHeight); width: 100%; overflow: auto">
-            @SelectedTab?.ChildContent
-        </div>
     </div>
+    
 </div>
 
 
@@ -28,13 +29,36 @@
 
 @code {
 
-    [Parameter] public ICollection<PageTab>? Tabs { get; set; }
-    [Parameter] public string ToolbarHeight { get; set; } = "0px";
+    [Parameter] public RenderFragment? ChildContent { get; set; }
 
+    private List<PageTab> Tabs { get; set; } = new();
     private PageTab? SelectedTab { get; set; }
 
     protected override void OnInitialized()
     {
-        SelectedTab = Tabs?.FirstOrDefault();
+        RenderFragment renderFragment = builder =>
+        {
+            var index = 0;
+            builder.GetAndAdvance(ref index); // Skip the first item, which is the container <PageTabLayout> itself
+            while (index < builder.GetComponentCount())
+            {
+                var tab = new PageTab();
+                builder.GetChildContent(index)(tab);
+                Tabs.Add(tab);
+                index++;
+            }
+        };
+
+        ChildContent.Invoke(new RenderTreeBuilder(), renderFragment);
+    }
+    public void SetSelectedTab(PageTab tab)
+    {
+        SelectedTab = tab;
+        StateHasChanged();
+    }
+    public void AddTab(PageTab tab)
+    {
+        Tabs.Add(tab);
+        StateHasChanged();
     }
 }
