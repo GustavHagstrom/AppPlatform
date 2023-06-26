@@ -5,8 +5,8 @@
     @ChildContent
 </div>
 
-
 @code {
+    [CascadingParameter] public required PageTabLayout TabController { get; set; } 
     [Parameter, EditorRequired] public required RenderFragment NavigationHeader { get; set; }
     [Parameter] public RenderFragment? ChildContent { get; set; }
     [Parameter] public RenderFragment? ToolbarContent { get; set; }
@@ -14,7 +14,7 @@
 
     protected override void OnInitialized()
     {
-
+        TabController.AddTab(this);
     }
     public RenderFragment Render()
     {
