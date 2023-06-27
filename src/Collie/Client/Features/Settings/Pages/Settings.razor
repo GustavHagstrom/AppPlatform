@@ -1,12 +1,19 @@
 ﻿@page "/settings"
-@inject NavigationManager Navigation
 
+<PageTabLayout>
+    <PageTab HeaderStartIcon="@Icons.Material.Sharp.Article" HeaderText="Settings1">
+        <Settings1/>
+    </PageTab>
+    <PageTab HeaderStartIcon="@Icons.Material.Sharp.Article" HeaderText="Settings2">
+        <Settings2/>
+    </PageTab>
+    <PageTab HeaderStartIcon="@Icons.Material.Sharp.Article" HeaderText="Settings3">
+        <Settings3/>
+    </PageTab>
+</PageTabLayout>
 
 @code {
-    protected override void OnInitialized()
-    {
-        Navigation.NavigateTo("settings/settings1");
-    }
+
 }
 
 

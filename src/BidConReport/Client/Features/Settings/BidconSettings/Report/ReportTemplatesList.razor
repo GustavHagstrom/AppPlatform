@@ -1,0 +1,109 @@
+﻿@using System.Text.Json;
+
+<MudPaper Style="height: 100%" Class="relative">
+
+    <MudOverlay Visible="false" DarkBackground="true" Absolute="true">
+        <MudProgressCircular Color="Color.Primary" Indeterminate="true" Size="Size.Large" />
+    </MudOverlay>
+
+    <MudList Style="height: 100%; min-width: 100px;" Clickable="true" DisableGutters="true" Dense="true" DisablePadding="true" @bind-SelectedValue="SelectedSettings">
+        <MudListSubheader Class="border-b pa-2 d-flex" Style="border-color: var(--mud-palette-lines-default)">
+            <MudText Typo="Typo.h6" Class="pr-4" Style="color: var(--mud-palette-text-primary)">@Localizer["Rapportmallar"]</MudText>
+            <MudIconButton Icon="@Icons.Material.Sharp.Delete" Color="Color.Error" Style="height:30px; width: 30px;" Disabled="SelectedSettings is null" OnClick="DeleteSelectedSettings" />
+            <MudIconButton Icon="@Icons.Material.Sharp.Add" Color="Color.Primary" Style="height:30px; width: 30px;" OnClick="CreateNew" />
+            <MudIconButton Icon="@Icons.Material.Sharp.Edit" Color="Color.Primary" Style="height:30px; width: 30px;" Disabled="SelectedSettings is null" OnClick="EditSelectedSettings" />
+        </MudListSubheader>
+        <div style="height: calc(100% - 49px);" class="overflow-y-auto">
+ @*           @if (ImportProfilesList is not null)
+            {
+                @foreach (var item in ImportProfilesList)
+                {
+                    <MudListItem Text="@item.Name" Value="item" Class="px-2" />
+                }
+            }*@
+        </div>
+    </MudList>
+
+
+</MudPaper>
+
+@code {
+    [Inject] public required IDialogService DialogService { get; set; }
+    [Inject] public required IStringLocalizer<ReportTemplatesList> Localizer { get; set; }
+
+    //public ICollection<EstimationImportSettings>? ImportProfilesList { get; set; }
+    public object? SelectedSettings { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        //await RefreshImportProfilesList();
+    }
+    public async Task RefreshImportProfilesList()
+    {
+        //ImportProfilesList = null;
+        //StateHasChanged();
+        //ImportProfilesList = await ImportSettingsService.GetAllAsync();
+        //StateHasChanged();
+    }
+    public async Task CreateNew()
+    {
+        //await OpenSettingsDialog(EstimationImportSettings.Empty, Localizer["Ny"]);
+    }
+    public async Task EditSelectedSettings()
+    {
+        //if (SelectedSettings is not null)
+        //{
+        //    var clone = JsonSerializer.Deserialize<EstimationImportSettings>(JsonSerializer.Serialize(SelectedSettings as EstimationImportSettings));
+        //    await OpenSettingsDialog(clone!, Localizer["Redigera"]);
+        //}
+    }
+    public async Task OpenSettingsDialog(EstimationImportSettings settings, string title)
+    {
+        //var options = new DialogOptions()
+        //    {
+        //        MaxWidth = MaxWidth.ExtraSmall,
+        //        CloseButton = true,
+        //        NoHeader = false,
+        //        DisableBackdropClick = true,
+
+        //    };
+        //var parameters = new DialogParameters();
+        //parameters.Add(nameof(EditImportSettingsDialog.SelectedSetting), settings);
+        //var dialog = await DialogService.ShowAsync<EditImportSettingsDialog>(title, parameters, options);
+        //var result = await dialog.Result;
+        //if (!result.Canceled)
+        //{
+        //    await ImportSettingsService.UpsertAsync(settings!);
+        //    await RefreshImportProfilesList();
+        //}
+
+    }
+    public async Task DeleteSelectedSettings()
+    {
+        //if (SelectedSettings is not null && SelectedSettings is EstimationImportSettings settings)
+        //{
+        //    if (await ConfirmDelete(settings))
+        //    {
+        //        await ImportSettingsService.DeleteAsync(settings.Id);
+        //        await RefreshImportProfilesList();
+        //    }
+        //}
+
+    }
+    //public async Task<bool> ConfirmDelete(EstimationImportSettings settings)
+    //{
+    //    var options = new DialogOptions()
+    //        {
+    //            MaxWidth = MaxWidth.Small,
+    //            CloseButton = true,
+    //            NoHeader = false,
+    //            DisableBackdropClick = false,
+
+    //        };
+    //    var parameters = new DialogParameters();
+    //    parameters.Add(nameof(YesNoDialog.Info), $"{Localizer["Vill du ta bort"]} \"{settings.Name}\"?");
+    //    var dialog = await DialogService.ShowAsync<YesNoDialog>(Localizer["Ta bort"], parameters, options);
+    //    var result = await dialog.Result;
+    //    return !result.Canceled;
+    //}
+}

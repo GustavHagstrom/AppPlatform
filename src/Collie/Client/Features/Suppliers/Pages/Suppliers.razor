@@ -1,10 +1,17 @@
 ﻿@page "/suppliers"
-@inject NavigationManager Navigation
 
+<PageTabLayout>
+    <PageTab HeaderStartIcon="@Icons.Material.Sharp.Article" HeaderText="Suppliers1">
+        <Suppliers1/>
+    </PageTab>
+    <PageTab HeaderStartIcon="@Icons.Material.Sharp.Article" HeaderText="Suppliers2">
+        <Suppliers2/>
+    </PageTab>
+    <PageTab HeaderStartIcon="@Icons.Material.Sharp.Article" HeaderText="Suppliers3">
+        <Suppliers3/>
+    </PageTab>
+</PageTabLayout>
 
 @code {
-    protected override void OnInitialized()
-    {
-        Navigation.NavigateTo("suppliers/suppliers1");
-    }
+
 }

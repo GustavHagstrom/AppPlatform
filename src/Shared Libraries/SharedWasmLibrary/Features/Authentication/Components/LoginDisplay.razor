@@ -44,13 +44,18 @@
     public string? PhotoString { get; set; }
     public void Dispose()
     {
-        AuthStateProvider.AuthenticationStateChanged -= OnAuthStateChangedAsync;
+        AuthStateProvider.AuthenticationStateChanged -= async (x) => await OnAuthStateChangedAsync(x);
     }
     protected override void OnInitialized()
     {
-        AuthStateProvider.AuthenticationStateChanged += OnAuthStateChangedAsync;
+        AuthStateProvider.AuthenticationStateChanged += async (x) => await OnAuthStateChangedAsync(x);
+        
     }
-    private async void OnAuthStateChangedAsync(Task<AuthenticationState> task)
+    protected override async Task OnInitializedAsync()
+    {
+        await OnAuthStateChangedAsync(AuthStateProvider.GetAuthenticationStateAsync());
+    }
+    private async Task OnAuthStateChangedAsync(Task<AuthenticationState> task)
     {
         var identity = (await task).User.Identity;
         if (identity is not null && identity.IsAuthenticated)

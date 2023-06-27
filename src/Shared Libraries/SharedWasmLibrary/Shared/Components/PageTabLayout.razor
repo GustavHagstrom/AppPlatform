@@ -1,64 +1,44 @@
-﻿<div style="display: none">
+﻿@using SharedWasmLibrary.Shared.Services;
+
+<div class="d-flex" style="height: 100%;">
+
+    <div class="pa-4 d-flex" style="height: 100%; flex-direction: column;">
+        @foreach (var tab in Tabs!)
+        {
+            <MudButton OnClick="() => SetActiveTab(tab)" Class="py-1 px-3 justify-start" Variant="Variant.Text" StartIcon="@tab.HeaderStartIcon" Style="@StyleService.CreateActiveTabButtonStyle(tab == ActiveTab)">
+                @tab.HeaderText
+            </MudButton>
+        }
+    </div>
+
+    <MudDivider Vertical="true"/>
+
     <CascadingValue Value="this">
         @ChildContent
     </CascadingValue>
-</div>
-<div class="d-flex" style="height: 100%;">
-
-    <div class="pa-4" style="height: 100%;">
-        @foreach (var tab in Tabs!)
-        {
-            @tab.NavigationHeader
-        }
-    </div>
-    <MudDivider Vertical="true"/>
-    
-    <div style="width: 100%;">
-        
-        @if(SelectedTab is not null)
-        {
-            @SelectedTab.Render();
-        }
-        
-    </div>
     
 </div>
-
-
-
 
 @code {
-
+    [Inject] public required StyleService StyleService { get; set; }
     [Parameter] public RenderFragment? ChildContent { get; set; }
 
     private List<PageTab> Tabs { get; set; } = new();
-    private PageTab? SelectedTab { get; set; }
+    internal PageTab? ActiveTab { get; set; }
 
-    protected override void OnInitialized()
+    public void SetActiveTab(PageTab tab)
     {
-        RenderFragment renderFragment = builder =>
-        {
-            var index = 0;
-            builder.GetAndAdvance(ref index); // Skip the first item, which is the container <PageTabLayout> itself
-            while (index < builder.GetComponentCount())
-            {
-                var tab = new PageTab();
-                builder.GetChildContent(index)(tab);
-                Tabs.Add(tab);
-                index++;
-            }
-        };
-
-        ChildContent.Invoke(new RenderTreeBuilder(), renderFragment);
-    }
-    public void SetSelectedTab(PageTab tab)
-    {
-        SelectedTab = tab;
+        ActiveTab = tab;
         StateHasChanged();
     }
     public void AddTab(PageTab tab)
     {
+        if (Tabs.Contains(tab)) return;
         Tabs.Add(tab);
-        StateHasChanged();
+        if(Tabs.Count == 1)
+        {
+            SetActiveTab(tab);
+        }
+        
     }
 }

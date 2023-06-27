@@ -1,10 +1,12 @@
 ﻿@page "/settings"
+@using BidConReport.Client.Features.Settings.BidconSettings
+@using BidConReport.Client.Features.Settings.CommonSettings
 
+<PageTabLayout>
+    <CommonSettingsTab/>
+    <BidconSettingsTab/>
+</PageTabLayout>
 
 @code {
-    [Inject] public required NavigationManager NavManager { get; set; }
-    protected override void OnInitialized()
-    {
-        NavManager.NavigateTo("/settings/common");
-    }
+    [Inject] public required IStringLocalizer<SettingsPage> Localizer { get; set; }
 }

@@ -24,4 +24,15 @@ public class StyleService
             return "min-width: 10px";
         }
     }
+    public string CreateActiveTabButtonStyle(bool tabIsActive)
+    {
+        if (tabIsActive)
+        {
+            return ActivePageStyle;
+        }
+        else
+        {
+            return "min-width: 10px";
+        }
+    }
 }

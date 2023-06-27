@@ -1,13 +1,17 @@
 ﻿@page "/orders"
-@inject NavigationManager Navigation
 
-<OrdersLayout>
-
-</OrdersLayout>
+<PageTabLayout>
+    <PageTab HeaderStartIcon="@Icons.Material.Sharp.Article" HeaderText="Orders1">
+        <Orders1/>
+    </PageTab>
+    <PageTab HeaderStartIcon="@Icons.Material.Sharp.Article" HeaderText="Orders2">
+        <Orders2/>
+    </PageTab>
+    <PageTab HeaderStartIcon="@Icons.Material.Sharp.Article" HeaderText="Orders3">
+        <Orders3/>
+    </PageTab>
+</PageTabLayout>
 
 @code {
-    protected override void OnInitialized()
-    {
-        Navigation.NavigateTo("orders/orders1");
-    }
+
 }

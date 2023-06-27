@@ -1,0 +1,18 @@
+﻿@using BidConReport.Client.Features.Settings.BidconSettings.Import
+@using BidConReport.Client.Features.Settings.BidconSettings.Report
+
+<PageTab HeaderStartIcon="@CustomIcons.BidconIcon" HeaderText="@Localizer["Bidcon"]">
+
+    <MudContainer MaxWidth="MaxWidth.ExtraLarge" Style="height: 100%" Class="d-flex justify-start">
+        <MudStack Style="height: 100%" Row="true" Justify="Justify.FlexStart" Spacing="5">
+            <ImportSettignsList/>
+            <ReportTemplatesList/>
+        </MudStack>
+    </MudContainer>
+
+</PageTab>
+
+
+@code {
+    [Inject] public required IStringLocalizer<BidconSettingsTab> Localizer { get; set; }
+}

@@ -36,7 +36,7 @@
                         <ImportSettingsAddTaggItem OnAddClick="AddQuickTag" MaxLength="20" />
                     </MudField>
                 </MudItem>
-                
+
             </MudGrid>
         </MudForm>
     </DialogContent>
@@ -49,13 +49,20 @@
 </MudDialog>
 
 @code{
-    [Inject] public required IStringLocalizer<EditSettingsDialog> Localizer { get; set; }
+    [Inject] public required IStringLocalizer<EditImportSettingsDialog> Localizer { get; set; }
     [CascadingParameter] public required MudDialogInstance MudDialog { get; set; }
     [Parameter, EditorRequired] public required EstimationImportSettings SelectedSetting { get; set; }
 
     public MudForm? Form { get; set; }
 
-    void SaveAndClose () => MudDialog.Close();
+    void SaveAndClose()
+    {
+        Form!.Validate();
+        if(Form!.IsValid)
+        {
+            MudDialog.Close();
+        }
+    }
     void Cancel() => MudDialog.Cancel();
 
 

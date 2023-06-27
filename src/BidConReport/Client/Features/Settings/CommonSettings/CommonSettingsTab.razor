@@ -1,0 +1,9 @@
+﻿<PageTab HeaderStartIcon="@Icons.Material.Sharp.Person" HeaderText="@Localizer["Allmänt"]">
+    <MudContainer MaxWidth="MaxWidth.ExtraLarge">
+        <MudPaper Style="height: 100%" />
+    </MudContainer>
+</PageTab>
+
+@code {
+    [Inject] public required IStringLocalizer<CommonSettingsTab> Localizer { get; set; }
+}

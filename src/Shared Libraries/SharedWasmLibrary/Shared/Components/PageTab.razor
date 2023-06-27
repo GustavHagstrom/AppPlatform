@@ -1,36 +1,22 @@
-<div style="height: @ToolbarHeight; background-color: var(--mud-palette-table-lines); width: 100%;" class="d-flex justify-center align-stretch mud-elevation-1">
-    @ToolbarContent
-</div>
-<div class="pa-4" style="height: calc(100% - @ToolbarHeight); width: 100%; overflow: auto">
-    @ChildContent
+<div style="width: 100%; display: @(TabController.ActiveTab == this ? "block" : "none")">
+    <div class="pa-4" style="height: 100%; width: 100%; overflow: auto">
+        @ChildContent
+    </div>
 </div>
 
 @code {
     [CascadingParameter] public required PageTabLayout TabController { get; set; } 
-    [Parameter, EditorRequired] public required RenderFragment NavigationHeader { get; set; }
     [Parameter] public RenderFragment? ChildContent { get; set; }
-    [Parameter] public RenderFragment? ToolbarContent { get; set; }
-    [Parameter] public string ToolbarHeight { get; set; } = "0px";
+    [Parameter] public string HeaderStartIcon { get; set; } = string.Empty;
+    [Parameter] public string HeaderText { get; set; } = string.Empty;
+
+    private bool _hasRenderdOnce { get; set; } = false;
 
     protected override void OnInitialized()
     {
-        TabController.AddTab(this);
-    }
-    public RenderFragment Render()
-    {
-        return builder =>
+        if(!_hasRenderdOnce)
         {
-            builder.OpenElement(0, "div");
-            builder.AddAttribute(1, "style", $"height: {ToolbarHeight}; background-color: var(--mud-palette-table-lines); width: 100%;");
-            builder.AddAttribute(2, "class", "d-flex justify-center align-stretch mud-elevation-1");
-            builder.AddContent(3, ToolbarContent);
-            builder.CloseElement();
-
-            builder.OpenElement(4, "div");
-            builder.AddAttribute(5, "class", "pa-4");
-            builder.AddAttribute(6, "style", $"height: calc(100% - {ToolbarHeight}); width: 100%; overflow: auto");
-            builder.AddContent(7, ChildContent);
-            builder.CloseElement();
-        };
+            TabController.AddTab(this);
+        }
     }
 }
