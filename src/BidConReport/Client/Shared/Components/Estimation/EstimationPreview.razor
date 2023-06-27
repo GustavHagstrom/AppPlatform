@@ -1,5 +1,5 @@
 ﻿@using BidConReport.Shared.Features.ReportLayout;
-@using BidConReport.Shared.Features.ReportLayout.GeneralInformation;
+@using BidConReport.Shared.Features.ReportLayout.Information;
 
 <CascadingValue Value="this">
 
@@ -11,16 +11,16 @@
         </div>
     }
 
-    @if(Layout.GeneralInformationSection.IsEnabled)
+    @if(Layout.InformationSection.IsEnabled)
     {
         <div class="mb-6">
-            @foreach (var item in Layout.GeneralInformationSection.Items)
+            @foreach (var item in Layout.InformationSection.Items)
             {
                 @if (item.IsEnabled)
                 {
                     <div class="mb-2">
-                        <MudText Style="@CreateFontStyle(Layout.GeneralInformationSection.TitleFont)">@item.Title</MudText>
-                        <MudText Style="@CreateFontStyle(Layout.GeneralInformationSection.ValueFont)">@GeneralInformationFunctions[item.Type].Invoke(Estimation)</MudText>
+                        <MudText Style="@CreateFontStyle(Layout.InformationSection.TitleFont)">@item.Title</MudText>
+                        <MudText Style="@CreateFontStyle(Layout.InformationSection.ValueFont)">@GeneralInformationFunctions[item.Type].Invoke(Estimation)</MudText>
                     </div>
                 }
             } 
@@ -59,7 +59,11 @@
     @if (Layout.TableSection.IsEnabled)
     {
         <div class="mb-6">
-            <EstimationItemTableView/>
+            @foreach (var item in Estimation.Items)
+            {
+                <EstimationItemView Item="item" />
+            }
+            <MudDivider Light="true" />
         </div>
     }
 
@@ -67,17 +71,17 @@
 
 @code {
     [Parameter, EditorRequired] public required Estimation Estimation { get; set; }
-    public LayoutDefinition Layout { get; set; } = new();
-    public Dictionary<GeneralInformationType, Func<Estimation, string>> GeneralInformationFunctions { get; set; } = new()
+    public LayoutDefinition Layout { get; set; } = new LayoutDefinition{ Name = "Default" };
+    public Dictionary<InformationType, Func<Estimation, string>> GeneralInformationFunctions { get; set; } = new()
     {
-        { GeneralInformationType.Name, e => e.Name },
-        { GeneralInformationType.Description, e => e.Description ?? string.Empty },
-        { GeneralInformationType.CreationDate, e => e.CreationDate.ToString("yyyy-MM-dd") },
-        { GeneralInformationType.ExpirationDate, e => e.ExpirationDate?.ToString("yyyy-MM-dd") ?? string.Empty },
-        { GeneralInformationType.PrintDate, e => DateTime.Now.ToString("yyyy-MM-dd") },
-        { GeneralInformationType.Supervisor, e => e.Supervisor ?? string.Empty },
-        { GeneralInformationType.Representative, e => e.Representative ?? string.Empty },
-        { GeneralInformationType.Currency, e => e.Currency },
+        { InformationType.Name, e => e.Name },
+        { InformationType.Description, e => e.Description ?? string.Empty },
+        { InformationType.CreationDate, e => e.CreationDate.ToString("yyyy-MM-dd") },
+        { InformationType.ExpirationDate, e => e.ExpirationDate?.ToString("yyyy-MM-dd") ?? string.Empty },
+        { InformationType.PrintDate, e => DateTime.Now.ToString("yyyy-MM-dd") },
+        { InformationType.Supervisor, e => e.Supervisor ?? string.Empty },
+        { InformationType.Representative, e => e.Representative ?? string.Empty },
+        { InformationType.Currency, e => e.Currency },
     };
 
     void testui()

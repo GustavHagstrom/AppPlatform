@@ -11,7 +11,10 @@ public class ColumnDefinition
     public FontProperties CelleFont { get; set; } = DefaultCellFont();
     [MaxLength(50)]
     public string Title { get; set; } = string.Empty;
-    [Range(1, 12)]
+    /// <summary>
+    /// Int represent the % of the width space for the columm to use
+    /// </summary>
+    [Range(1, 100)]
     public int Width { get; set; }
 
 

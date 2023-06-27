@@ -1,6 +1,7 @@
 ﻿namespace BidConReport.Shared.Features.ReportLayout.Title;
 public class TitleSection : ILayoutSection
 {
+    public int Id { get; set; }
     public int LayoutOrder { get; set; }
     public string Title { get; set; } = "Title";
     public FontProperties Font { get; set; } = DefaultFont();

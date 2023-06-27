@@ -10,13 +10,13 @@ public class TableSection : ILayoutSection
     {
         Columns = new()
         {
-            new ColumnDefinition{ DataSource = ColumnDataSource.Name, Width = 4 },
-            new ColumnDefinition{ DataSource = ColumnDataSource.RowNumber, Width = 1 },
-            new ColumnDefinition{ DataSource = ColumnDataSource.Quantity, Width = 1 },
-            new ColumnDefinition{ DataSource = ColumnDataSource.DisplayedQuantity, Width = 1 },
-            new ColumnDefinition{ DataSource = ColumnDataSource.Comment, Width = 2 },
-            new ColumnDefinition{ DataSource = ColumnDataSource.DisplayedUnit, Width = 1 },
-            new ColumnDefinition{ DataSource = ColumnDataSource.Unit, Width = 1 },
+            new ColumnDefinition{ DataSource = ColumnDataSource.Name, Width = 30 },
+            new ColumnDefinition{ DataSource = ColumnDataSource.RowNumber, Width = 10 },
+            new ColumnDefinition{ DataSource = ColumnDataSource.Quantity, Width = 10 },
+            new ColumnDefinition{ DataSource = ColumnDataSource.DisplayedQuantity, Width = 10 },
+            new ColumnDefinition{ DataSource = ColumnDataSource.Comment, Width = 20 },
+            new ColumnDefinition{ DataSource = ColumnDataSource.DisplayedUnit, Width = 10 },
+            new ColumnDefinition{ DataSource = ColumnDataSource.Unit, Width = 10 },
         }
 
     };
