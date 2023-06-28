@@ -24,6 +24,7 @@ public static class ServiceExtensions
 
         builder.Services.AddTransient<StyleService>();
         builder.Services.AddScoped<AuthenticationStateProvider, CustomAuthStateProvider>();
+        builder.Services.AddScoped<ScreenSizeService>();
 
 #if DEBUG
 

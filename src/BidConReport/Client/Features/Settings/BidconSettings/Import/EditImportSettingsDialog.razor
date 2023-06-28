@@ -1,7 +1,7 @@
 ﻿<MudDialog>
     <DialogContent>
         <MudForm Model="SelectedSetting" @ref="Form" Class="pt-3">
-            <MudGrid Justify="Justify.Center" Spacing="1" Style="overflow-y: auto; max-height: calc(100vh - 144.5px)">
+            <MudGrid Justify="Justify.Center" Spacing="1" Style="overflow-y: auto; max-height: calc(100vh - 144.5px - 100px)">
              
                 <MudItem xs="12"><ImportSettingsStringPropertyItem Label="@Localizer["Namn"]" @bind-Value="SelectedSetting.Name" /></MudItem>
                 <MudItem xs="12"><ImportSettingsStringPropertyItem Label="@Localizer["Kontokod - A-pris faktor"]" @bind-Value="@SelectedSetting.CostFactorAccount" /></MudItem>

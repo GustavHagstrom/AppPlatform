@@ -1,11 +1,21 @@
-﻿@using BidConReport.Client.Features.Settings.BidconSettings.Import
+﻿@implements IDisposable
+@using BidConReport.Client.Features.Settings.BidconSettings.Import
 @using BidConReport.Client.Features.Settings.BidconSettings.Report
+@using MudBlazor.Services;
 
-<PageTab HeaderStartIcon="@CustomIcons.BidconIcon" HeaderText="@Localizer["Bidcon"]">
+<PageTab HeaderStartIcon="@CustomIcons.BidconIcon" HeaderText="@Localizer["Bidcon"]" HeaderTooltip="@Localizer["Bidcon"]">
 
     <MudStack Style="height: 100%" Row="true" Justify="Justify.FlexStart" Spacing="5">
         <ImportSettignsList/>
         <ReportTemplatesList/>
+        @if(ScreenSizeService.CurrentScreenWidth < 700)
+        {
+            <p>Yes</p>
+        }
+        else
+        {
+            <p>No</p>
+        }
     </MudStack>
 
 
@@ -14,4 +24,24 @@
 
 @code {
     [Inject] public required IStringLocalizer<BidconSettingsTab> Localizer { get; set; }
+    [Inject] public required ScreenSizeService ScreenSizeService  { get; set; }
+    protected override async Task OnInitializedAsync()
+    {
+        await ScreenSizeService.InitializeAsync();
+        ScreenSizeService.ScreenWidthChanged += OnScreenWidthChanged;
+    }
+
+    public void Dispose()
+    {
+        ScreenSizeService.ScreenWidthChanged -= OnScreenWidthChanged;
+    }
+
+    private void OnScreenWidthChanged(object? sender, int screenWidth)
+    {
+        if(screenWidth < 700)
+        {
+            StateHasChanged();
+        }
+        // Handle the screen width change event
+    }
 }

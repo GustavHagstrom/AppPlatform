@@ -2,11 +2,13 @@
 
 <div class="d-flex" style="height: 100%;">
 
-    <div class="pa-4 d-flex" style="height: 100%; flex-direction: column;">
+    <div class="py-4 d-flex align-stretch" style="height: 100%; flex-direction: column;">
         @foreach (var tab in Tabs!)
         {
-            <MudButton OnClick="() => SetActiveTab(tab)" Class="py-1 px-3 justify-start" Variant="Variant.Text" StartIcon="@tab.HeaderStartIcon" Style="@StyleService.CreateActiveTabButtonStyle(tab == ActiveTab)">
-                @tab.HeaderText
+            <MudButton OnClick="() => SetActiveTab(tab)" Class="py-1 px-3" Variant="Variant.Text" StartIcon="@tab.HeaderStartIcon" Style="@StyleService.CreateActiveTabButtonStyle(tab == ActiveTab)" FullWidth="true">
+                <MudHidden Breakpoint="Breakpoint.Xs">
+                    @tab.HeaderText
+                </MudHidden>
             </MudButton>
         }
     </div>
