@@ -14,11 +14,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Client\Admin.Client.csproj" />
-    <ProjectReference Include="..\Shared\Admin.Shared.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="7.0.7" NoWarn="NU1605" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.OpenIdConnect" Version="7.0.7" NoWarn="NU1605" />
     <PackageReference Include="Microsoft.Identity.Web" Version="2.12.2" />
