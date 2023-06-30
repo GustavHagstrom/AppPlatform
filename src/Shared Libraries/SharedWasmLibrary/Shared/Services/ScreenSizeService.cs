@@ -24,13 +24,21 @@ public class ScreenSizeService
         if (_isInitialized) return;
 
         _isInitialized = true;
+        
+        await _jSRuntime.InvokeVoidAsync("eval", @"
+        (function() {
+            var script = document.createElement('script');
+            script.innerHTML = '(function() { window.resizeInterop = { registerResizeCallback: function(dotNetReference, methodName) { window.addEventListener(\'resize\', function() { dotNetReference.invokeMethodAsync(methodName); }); } }; })();';
+            document.body.appendChild(script);
+        })();
+    ");
         var dotnetRef = DotNetObjectReference.Create(this);
         await _jSRuntime.InvokeVoidAsync("window.resizeInterop.registerResizeCallback", dotnetRef, "OnWindowResize");
         CurrentScreenWidth = await GetWidnowWidth();
     }
 
     public int CurrentScreenWidth { get; set; }
-    public event Action<int>? ScreenWidthChanged;
+    private event Action<int>? ScreenWidthChanged;
     [JSInvokable]
     public void OnWindowResize()
     {
