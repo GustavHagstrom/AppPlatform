@@ -26,4 +26,10 @@
     <Folder Include="Shared\Features\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Client\Collie.Client.csproj" />
+    <ProjectReference Include="..\Server\Collie.Server.csproj" />
+    <ProjectReference Include="..\Shared\Collie.Shared.csproj" />
+  </ItemGroup>
+
 </Project>
