@@ -1,6 +1,9 @@
 <div style="width: 100%; display: @(TabController.ActiveTab == this ? "block" : "none")">
     <div class="pa-4" style="height: 100%; width: 100%; overflow: auto">
-        @ChildContent
+        @if(TabController.ActiveTab == this)
+        {
+            @ChildContent
+        }
     </div>
 </div>
 
@@ -11,11 +14,9 @@
     [Parameter] public string HeaderText { get; set; } = string.Empty;
     [Parameter] public string? HeaderTooltip { get; set; } = string.Empty;
 
-    private bool _hasRenderdOnce { get; set; } = false;
-
-    protected override void OnInitialized()
+    protected override void OnAfterRender(bool firstRender)
     {
-        if(!_hasRenderdOnce)
+        if(firstRender)
         {
             TabController.AddTab(this);
         }

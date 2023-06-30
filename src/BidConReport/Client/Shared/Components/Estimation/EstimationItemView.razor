@@ -1,26 +1,26 @@
 ﻿@using BidConReport.Shared.Features.ReportLayout.Table;
 
 <MudDivider Light="true"/>
-<MudGrid Spacing="0">
+<MudStack Row="true" Spacing="1" Class="@($"pl-{0}")">
     @foreach (var column in ParentComponent.Layout.TableSection.Columns)
     {
-        <MudItem xs="column.Width">
+        <div style="@($"width: {column.Width}%")">
             @if(Item.ItemType == EstimationItemType.Group )
             {
-                <MudText Style="@ParentComponent.CreateFontStyle(column.GroupFont)">@DataSourceFunctions[column.DataSource].Invoke(Item)</MudText>
+                <MudText Style="@($"{ParentComponent.CreateFontStyle(column.GroupFont)}")">@DataSourceFunctions[column.DataSource].Invoke(Item)</MudText>
             }
             else if (Item.ItemType == EstimationItemType.Part)
             {
-                <MudText Style="@ParentComponent.CreateFontStyle(column.PartFont)">@DataSourceFunctions[column.DataSource].Invoke(Item)</MudText>
+                <MudText Style="@($"{ParentComponent.CreateFontStyle(column.PartFont)}")">@DataSourceFunctions[column.DataSource].Invoke(Item)</MudText>
             }
             else
             {
-                <MudText Style="@ParentComponent.CreateFontStyle(column.CelleFont)">@DataSourceFunctions[column.DataSource].Invoke(Item)</MudText>
+                <MudText Style="@($"{ParentComponent.CreateFontStyle(column.CelleFont)}")">@DataSourceFunctions[column.DataSource].Invoke(Item)</MudText>
             }
         
-        </MudItem>
+        </div>
     }
-</MudGrid>
+</MudStack>
 
 @foreach (var subitem in Item.Items)
 {
@@ -40,4 +40,28 @@
         { ColumnDataSource.DisplayedQuantity, e => e.DisplayedQuantity },
         { ColumnDataSource.Comment, e => e.Comment },
     };
+    //int NumberOfNestedGroups(EstimationItem? item)
+    //{
+    //    if (item is null)
+    //    {
+    //        return 0;
+    //    }
+    //    var parentGroups = NumberOfNestedGroups(item.Parent);
+    //    if (item.ItemType is EstimationItemType.Group)
+    //    {
+    //        return parentGroups + 1;
+    //    }
+    //    return NumberOfNestedGroups(item.Parent);
+    //}
+    //IEnumerable<EstimationItem> GetParentsCount(EstimationItem? item, bool isStartingChild = true)
+    //{
+    //    if (item is not null && !isStartingChild)
+    //    {
+    //        yield return item;
+    //    }
+    //    foreach (var parent in GetParentsCount(item))
+    //    {
+    //        yield return parent;   
+    //    }
+    //}
 }

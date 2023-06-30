@@ -1,19 +1,11 @@
 ﻿@page "/publish"
 
-@*<MudPopoverProvider>
-    
-</MudPopoverProvider>*@
 
-
-<PageToolbar>
+<Toolbar Height="40px">
     <MudIconButton Icon="@Icons.Material.Sharp.Download" Style="height: 40px; width: 40px;" />
     <MudIconButton Icon="@Icons.Material.Sharp.Share" Style="height: 40px; width: 40px;" />
-    <MudIconButton OnClick="ToggleDrawer" Icon="@Icons.Material.Sharp.Settings" Style="height: 40px; width: 40px;" />
-</PageToolbar>
+</Toolbar>
 
-<MudDrawer Open="ShowDrawer" ClipMode="DrawerClipMode.Always" Anchor="Anchor.End" Elevation="4">
-
-</MudDrawer>
 
 <MudContainer MaxWidth="MaxWidth.Medium" >
 
@@ -23,7 +15,6 @@
 
         @if (SelectedEstimation is not null)
         {
-            @*<MudPopover Open="ShowPreviewPopOver" RelativeWidth="true" Style="overflow-y: scroll; height: calc(100vh - 105px)" Elevation="0">*@
             <MudPopover Open="ShowPreviewPopOver" RelativeWidth="true" Elevation="0">
 
                 <div class="d-flex">
@@ -91,14 +82,12 @@
 @code{
     bool ShowPreviewPopOver { get; set; } = false;
     bool ShowComparePopOver { get; set; } = false;
-    bool ShowDrawer { get; set; } = true;
 
     [CascadingParameter] public required MudTheme Theame { get; set; }
     [Inject] public required ImportedEstimationsContainer EstimationsContainer { get; set; }
     [Inject] public required IStringLocalizer<Publish> Localizer { get; set; }
     public Estimation? SelectedEstimation { get; set; }
 
-    public void ToggleDrawer() => ShowDrawer = !ShowDrawer;
     public void ShowEstimationPreview(Estimation estimation)
     {
         SelectedEstimation = estimation;

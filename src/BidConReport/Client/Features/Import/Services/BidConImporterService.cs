@@ -36,7 +36,8 @@ public class BidConImporterService : IBidConImporterService
         {
             var result = await GetHttpClient().PostAsJsonAsync($"bidcon/getestimation", request, cancelToken);
             result.EnsureSuccessStatusCode();
-            return (await result.Content.ReadFromJsonAsync<BidConImportResult<Estimation>>())!;
+            var importResult = (await result.Content.ReadFromJsonAsync<BidConImportResult<Estimation>>())!;
+            return importResult;
         }
         catch (HttpRequestException)
         {
@@ -47,6 +48,7 @@ public class BidConImporterService : IBidConImporterService
             return new BidConImportResult<Estimation> { ErrorMessage = e.Message };
         }
     }
+
     private HttpClient GetHttpClient()
     {
         return _httpClientFactory.CreateClient(HttpClientNames.DesktopBridgeAddress);

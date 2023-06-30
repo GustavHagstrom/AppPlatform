@@ -7,51 +7,49 @@
     </div>
 </MudDrawer>*@
 
-<PageLayout ToolbarHeight="40px"> 
-    <ToolbarContent>
-        <ImportSettingsPicker SelectedSettingChanged="OnSettingsSelectionChanged" />
+
+<Toolbar Height="40px">
+    <ImportSettingsPicker SelectedSettingChanged="OnSettingsSelectionChanged" />
         
-        @*<MudIconButton Icon="@Icons.Material.Sharp.Settings" OnClick="ToggleDrawer" Style="height: 40px; width: 40px;" />*@
-        <div class="border-solid border-l mx-2 my-2" style="border-color: var(--mud-palette-lines-default)"/>
+    @*<MudIconButton Icon="@Icons.Material.Sharp.Settings" OnClick="ToggleDrawer" Style="height: 40px; width: 40px;" />*@
+    <div class="border-solid border-l mx-2 my-2" style="border-color: var(--mud-palette-lines-default)"/>
         
-        <MudIconButton Icon="@Icons.Material.Sharp.Refresh" OnClick="GetEstimationItemTreeAsync" Style="height: 40px; width: 40px;" />
-        <MudIconButton Icon="@Icons.Material.Sharp.Start" OnClick="DownloadAsync" Style="height: 40px; width: 40px;" />
-       
-
-    </ToolbarContent>
+    <MudIconButton Icon="@Icons.Material.Sharp.Refresh" OnClick="GetEstimationItemTreeAsync" Style="height: 40px; width: 40px;" />
+    <MudIconButton Icon="@Icons.Material.Sharp.Start" OnClick="DownloadAsync" Style="height: 40px; width: 40px;" />
 
 
-    <ChildContent>
-        
+</Toolbar>
 
-        <MudContainer MaxWidth="MaxWidth.Medium" Style="height: 100%" Class="px-0">
-            
-            <MudPaper Square="true" Elevation="4" Style="height: 100%">
-                <MudStack Spacing="0" Row="true" Class="d-flex justify-center">
-                    <MudButton OnClick="() => ActiveTab = 1" Variant="Variant.Text" StartIcon="@Icons.Material.Sharp.Search" Class="px-4" Style="@GetTabButtonStyle(1)">@Localizer["Sök"]</MudButton>
-                    <MudButton OnClick="() => ActiveTab = 2" Variant="Variant.Text" StartIcon="@Icons.Material.Sharp.Folder" Class="px-3" Style="@GetTabButtonStyle(2)">@Localizer["Utforska"]</MudButton>
-                    <MudBadge Content="ItemTree?.SelectedEstimations()?.Count()" Color="Color.Primary" Overlap="true">
-                        <MudButton OnClick="() => ActiveTab = 3" Variant="Variant.Text" StartIcon="@Icons.Material.Sharp.CheckBox" Class="px-3" Style="@GetTabButtonStyle(3)">@Localizer["Valda"]</MudButton>
-                    </MudBadge>
-                </MudStack>
-                <MudDivider Light="true" />
-                @if(ActiveTab == 1)
-                {
-                    <EstimationList ItemTree="ItemTree" IsRefreshing="IsRefreshing" Height="calc(100% - 38px)" />
-                }
-                @if (ActiveTab == 2)
-                {
-                    <EstimationExplorer ItemTree="ItemTree" IsRefreshing="IsRefreshing" Height="calc(100% - 38px)" />
-                }
-                @if (ActiveTab == 3)
-                {
-                    <EstimationSelectionList ItemTree="ItemTree" IsRefreshing="IsRefreshing" Height="calc(100% - 38px)" />
-                }
-            </MudPaper>
-        </MudContainer>
-    </ChildContent>
+
     
-</PageLayout>
+        
+
+<MudContainer MaxWidth="MaxWidth.Medium" Style="height: calc(100% - 40px)" Class="pa-4">
+            
+    <MudPaper Square="true" Elevation="4" Style="height: 100%">
+        <MudStack Spacing="0" Row="true" Class="d-flex justify-center">
+            <MudButton OnClick="() => ActiveTab = 1" Variant="Variant.Text" StartIcon="@Icons.Material.Sharp.Search" Class="px-4" Style="@GetTabButtonStyle(1)">@Localizer["Sök"]</MudButton>
+            <MudButton OnClick="() => ActiveTab = 2" Variant="Variant.Text" StartIcon="@Icons.Material.Sharp.Folder" Class="px-3" Style="@GetTabButtonStyle(2)">@Localizer["Utforska"]</MudButton>
+            <MudBadge Content="ItemTree?.SelectedEstimations()?.Count()" Color="Color.Primary" Overlap="true">
+                <MudButton OnClick="() => ActiveTab = 3" Variant="Variant.Text" StartIcon="@Icons.Material.Sharp.CheckBox" Class="px-3" Style="@GetTabButtonStyle(3)">@Localizer["Valda"]</MudButton>
+            </MudBadge>
+        </MudStack>
+        <MudDivider Light="true" />
+        @if(ActiveTab == 1)
+        {
+            <EstimationList ItemTree="ItemTree" IsRefreshing="IsRefreshing" Height="calc(100% - 38px)" />
+        }
+        @if (ActiveTab == 2)
+        {
+            <EstimationExplorer ItemTree="ItemTree" IsRefreshing="IsRefreshing" Height="calc(100% - 38px)" />
+        }
+        @if (ActiveTab == 3)
+        {
+            <EstimationSelectionList ItemTree="ItemTree" IsRefreshing="IsRefreshing" Height="calc(100% - 38px)" />
+        }
+    </MudPaper>
+</MudContainer>
+
 
 
 

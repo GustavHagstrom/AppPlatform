@@ -1,9 +1,6 @@
-﻿using BidCon.MM.Properties;
-using BidCon.SDK;
+﻿using BidCon.SDK;
 using BidConReport.DesktopBridge.Features.Bidcon.RulesEngine;
 using BidConReport.Shared.Entities;
-using Syncfusion.DocIO.DLS;
-using System.Runtime.CompilerServices;
 
 namespace BidConReport.DesktopBridge.Features.Bidcon.Factories;
 public class EstimationFactory : IEstimationFactory
@@ -19,12 +16,11 @@ public class EstimationFactory : IEstimationFactory
     public Shared.Entities.Estimation Create(BidCon.SDK.Estimation estimation, EstimationImportSettings settings)
     {
         Settings = settings;
-
-        //var resources = GetResources(estimation.SummarySheet);// (Resource[])estimation.SummarySheet.Items;
         
         CostFactor = GetSummarySheetResourceAccountValue(settings.CostFactorAccount, estimation);
         var costBeforeChanges = GetSummarySheetResourceAccountValue(settings.CostBeforeChangesAccount, estimation);
         var endPageNetCost = GetSummarySheetResourceAccountValue(settings.NetCostAccount, estimation);
+        int startRow = 0;
 
         return new Shared.Entities.Estimation
         {
@@ -34,12 +30,11 @@ public class EstimationFactory : IEstimationFactory
             Name = estimation.Name,
             Description = estimation.Description,
             CreationDate = DateTime.Now,
-            //ExpirationDate = settings.ExpirationDate,
             CostBeforeChanges = costBeforeChanges + (estimation.NetSheet.TotalCost - endPageNetCost) * CostFactor!.Value,
             Currency = estimation.Currency,
-            QuickTags = settings.QuickTags.ToArray(),
-            SelectionTags = settings.SelectionTags.ToArray(),
-            Items = CreateEstimationItemsRecursivly(estimation.NetSheet.Items),
+            QuickTags = settings.QuickTags?.ToArray() ?? Array.Empty<string>(),
+            SelectionTags = settings.SelectionTags?.ToArray() ?? Array.Empty<string>() ,
+            Items = CreateEstimationItemsRecursivly(estimation.NetSheet.Items, ref startRow),
             LockedCategories = CreateLockedCategories(estimation).ToList(),
         };
     }
@@ -68,17 +63,18 @@ public class EstimationFactory : IEstimationFactory
 
     private IEnumerable<LockedStage> CreateLockedStages(BidCon.SDK.EstimationItem category)
     {
+        int startRow = 0;
         foreach (var stage in category.Items)
         {
             yield return new LockedStage
             {
                 Name = stage.Name,
-                Items = CreateEstimationItemsRecursivly(stage.Items)
+                Items = CreateEstimationItemsRecursivly(stage.Items, ref startRow)
             };
         }
     }
 
-    private List<Shared.Entities.EstimationItem> CreateEstimationItemsRecursivly(BidCon.SDK.EstimationItem[] items, Shared.Entities.EstimationItem? parent = null, int row = 0)//, int? parentRow = null)
+    private List<Shared.Entities.EstimationItem> CreateEstimationItemsRecursivly(BidCon.SDK.EstimationItem[] items, ref int row, Shared.Entities.EstimationItem? parent = null)
     {
         var returnlist = new List<Shared.Entities.EstimationItem>();
         foreach (var item in items)
@@ -87,19 +83,19 @@ public class EstimationFactory : IEstimationFactory
             {
                 row += 1;
                 var simpleItem = CreateSimpleEstimationItem(item, row, parent);
-                simpleItem.Items = GetSubItems(item, row, simpleItem);
+                simpleItem.Items = GetSubItems(item, ref row, simpleItem);
                 returnlist.Add(simpleItem);
             }
         }
         return returnlist;
     }
 
-    private List<Shared.Entities.EstimationItem> GetSubItems(BidCon.SDK.EstimationItem item, int row, Shared.Entities.EstimationItem? parent = null)
+    private List<Shared.Entities.EstimationItem> GetSubItems(BidCon.SDK.EstimationItem item, ref int row, Shared.Entities.EstimationItem? parent = null)
     {
         var subItems = new List<Shared.Entities.EstimationItem>();
         if (item.ItemType == BidCon.SDK.EstimationItemType.Part || item.ItemType == BidCon.SDK.EstimationItemType.Group)
         {
-            subItems.AddRange(CreateEstimationItemsRecursivly(item.Items, parent, row));
+            subItems.AddRange(CreateEstimationItemsRecursivly(item.Items, ref row, parent));
         }
         return subItems;
     }
@@ -110,41 +106,21 @@ public class EstimationFactory : IEstimationFactory
             Id = Guid.NewGuid(),
             Comment = string.Empty,
             RowNumber = row,
-            //BidConId = item.ID,
-            //BidConRow = item.RowNum,
-            //ParentRowNumber = parent?.RowNumber,
-            //Parent = parent,
             ChangedToRowNumber = row,
-            //Items = GetSubItems(item),
             ItemType = (Shared.Entities.EstimationItemType)Enum.Parse(typeof(Shared.Entities.EstimationItemType), item.ItemType.ToString()),
             Quantity = item.Quantity,
-            //RegulatedQuantity = item.Quantity - item.OriginalQuantity,
             DisplayedQuantity = GetDisplayedQuantity(item),
             Unit = item.Unit,
             DisplayedUnit = GetDisplayedUnit(item),
             UnitCost = GetUnitCost(item.UnitCost),
-            //RegulatedUnitCost = GetUnitCost(item.RegulatedCost),
             Name = item.Name,
             Tags = GetTags(item).ToArray(),
             Items = new HashSet<Shared.Entities.EstimationItem>()
-            //Revision = item.Revision?.Code,
-            //QuickTags = GetTagsFromRemark(item, Settings!.QuickTags).ToArray(),
-            //SelectionTags = GetSelectionTags(item),// GetTags(item, Settings!.OptionTags).ToArray(),
         };
     }
-
-    //private string[] GetSelectionTags(BidCon.SDK.EstimationItem item)
-    //{
-    //    var tags = GetTags(item, Settings!.SelectionTags).ToList();
-    //    if (item.Revision is not null && item.Revision.Code is not null)
-    //    {
-    //        tags.Add(item.Revision.Code);
-    //    }
-    //    return tags.ToArray();
-    //}
-    private IEnumerable<string> GetTags(BidCon.SDK.EstimationItem estimationItem)//, IEnumerable<string> TagsTemplate)
+    private IEnumerable<string> GetTags(BidCon.SDK.EstimationItem estimationItem)
     {
-        foreach (var tag in Settings!.QuickTags.Concat(Settings.SelectionTags))
+        foreach (var tag in Settings!.QuickTags!.Concat(Settings.SelectionTags!))
         {
             if (estimationItem.Remark.ToLower().Contains(tag.ToLower()))
             {
@@ -156,16 +132,6 @@ public class EstimationFactory : IEstimationFactory
             yield return estimationItem.Revision.Code;
         }
     }
-    //private static IEnumerable<SelectionTag> GetTags(BidCon.SDK.EstimationItem estimationItem, IEnumerable<SelectionTag> TagsTemplate)
-    //{
-    //    foreach (var tag in TagsTemplate)
-    //    {
-    //        if (estimationItem.Remark.ToLower().Contains(tag.Value.ToLower()))
-    //        {
-    //            yield return tag;
-    //        }
-    //    }
-    //}
     private string GetDisplayedUnit(BidCon.SDK.EstimationItem estimationItem)
     {
         if (estimationItem.ItemType == BidCon.SDK.EstimationItemType.Group || estimationItem.ItemType == BidCon.SDK.EstimationItemType.Part || estimationItem.Remark.Contains(Settings!.HiddenUnitTag))
