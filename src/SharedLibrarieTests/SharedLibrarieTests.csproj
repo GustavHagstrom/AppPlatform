@@ -17,4 +17,9 @@
     <PackageReference Include="coverlet.collector" Version="3.2.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Shared Libraries\SharedWasmLibrary\SharedWasmLibrary.csproj" />
+    <ProjectReference Include="..\SharedPlatformLibrary\SharedPlatformLibrary.csproj" />
+  </ItemGroup>
+
 </Project>

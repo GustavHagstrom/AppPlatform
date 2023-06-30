@@ -37,7 +37,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SharedPlatformLibrary", "Sh
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BidconReport.Tests", "BidConReport\Tests\BidconReport.Tests.csproj", "{459B3A5F-D14B-42E2-A8D6-D92828E80A35}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "License.Tests", "License\Tests\License.Tests.csproj", "{E0018101-83A0-4F65-9583-EF8DE28E59E0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "License.Tests", "License\Tests\License.Tests.csproj", "{E0018101-83A0-4F65-9583-EF8DE28E59E0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SharedLibrarieTests", "SharedLibrarieTests\SharedLibrarieTests.csproj", "{7D81C4EF-972E-4667-B72C-2B8DEFA442E5}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -101,6 +103,10 @@ Global
 		{E0018101-83A0-4F65-9583-EF8DE28E59E0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E0018101-83A0-4F65-9583-EF8DE28E59E0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E0018101-83A0-4F65-9583-EF8DE28E59E0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7D81C4EF-972E-4667-B72C-2B8DEFA442E5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7D81C4EF-972E-4667-B72C-2B8DEFA442E5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7D81C4EF-972E-4667-B72C-2B8DEFA442E5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7D81C4EF-972E-4667-B72C-2B8DEFA442E5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -119,6 +125,7 @@ Global
 		{061A0CDA-C6F8-481A-B757-44BDF4170526} = {1BC1C62C-17E7-44BF-A895-BF15472D62D8}
 		{459B3A5F-D14B-42E2-A8D6-D92828E80A35} = {0CFCF6AC-1F1C-4E38-99D3-2D85DC0B6BA8}
 		{E0018101-83A0-4F65-9583-EF8DE28E59E0} = {DABA1554-1113-47C0-B948-60B8F7029200}
+		{7D81C4EF-972E-4667-B72C-2B8DEFA442E5} = {1BC1C62C-17E7-44BF-A895-BF15472D62D8}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {6E90DC8A-48FE-4E1A-93DE-F049D278F5A4}
