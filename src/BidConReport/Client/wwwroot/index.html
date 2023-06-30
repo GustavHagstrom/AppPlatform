@@ -38,6 +38,15 @@
     <script>navigator.serviceWorker.register('service-worker.js');</script>
 
     <script src="_content/MudBlazor/MudBlazor.min.js"></script>
+    <script>
+        window.resizeInterop = {
+            registerResizeCallback: function (dotNetReference, methodName) {
+                window.addEventListener('resize', function () {
+                    dotNetReference.invokeMethodAsync(methodName);
+                });
+            }
+        };
+    </script>
 </body>
 
 </html>

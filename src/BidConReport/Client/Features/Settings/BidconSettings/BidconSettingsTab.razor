@@ -27,18 +27,22 @@
     [Inject] public required ScreenSizeService ScreenSizeService  { get; set; }
     protected override async Task OnInitializedAsync()
     {
-        await ScreenSizeService.InitializeAsync();
+        await ScreenSizeService.Subscribe(OnScreenWidthChanged);
         ScreenSizeService.ScreenWidthChanged += OnScreenWidthChanged;
     }
 
     public void Dispose()
     {
-        ScreenSizeService.ScreenWidthChanged -= OnScreenWidthChanged;
+        ScreenSizeService.UnSubscribe(OnScreenWidthChanged);
     }
 
-    private void OnScreenWidthChanged(object? sender, int screenWidth)
+    private void OnScreenWidthChanged(int screenWidth)
     {
         if(screenWidth < 700)
+        {
+            StateHasChanged();
+        }
+        else if (screenWidth > 700)
         {
             StateHasChanged();
         }
