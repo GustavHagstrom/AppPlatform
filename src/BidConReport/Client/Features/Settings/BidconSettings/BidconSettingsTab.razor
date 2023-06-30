@@ -5,20 +5,11 @@
 
 <PageTab HeaderStartIcon="@CustomIcons.BidconIcon" HeaderText="@Localizer["Bidcon"]" HeaderTooltip="@Localizer["Bidcon"]">
 
-    <MudStack Style="height: 100%" Row="true" Justify="Justify.FlexStart" Spacing="5">
-        <ImportSettignsList/>
-        <ReportTemplatesList/>
-        @if(ScreenSizeService.CurrentScreenWidth < 700)
-        {
-            <p>Yes</p>
-        }
-        else
-        {
-            <p>No</p>
-        }
+    <MudStack Style="height: 100%" Row="ScreenSizeService.CurrentScreenWidth > 500" Justify="Justify.FlexStart" Spacing="5">
+        <ImportSettignsList />
+        <ReportTemplatesList />
     </MudStack>
-
-
+      
 </PageTab>
 
 
@@ -28,7 +19,6 @@
     protected override async Task OnInitializedAsync()
     {
         await ScreenSizeService.Subscribe(OnScreenWidthChanged);
-        ScreenSizeService.ScreenWidthChanged += OnScreenWidthChanged;
     }
 
     public void Dispose()
@@ -36,16 +26,12 @@
         ScreenSizeService.UnSubscribe(OnScreenWidthChanged);
     }
 
-    private void OnScreenWidthChanged(int screenWidth)
+    private void OnScreenWidthChanged()
     {
-        if(screenWidth < 700)
+        if (ScreenSizeService.LastScreenWidth >= 500 && ScreenSizeService.CurrentScreenWidth < 500 ||
+        ScreenSizeService.LastScreenWidth <= 500 && ScreenSizeService.CurrentScreenWidth > 500)
         {
             StateHasChanged();
         }
-        else if (screenWidth > 700)
-        {
-            StateHasChanged();
-        }
-        // Handle the screen width change event
     }
 }

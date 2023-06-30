@@ -5,11 +5,17 @@
     <div class="py-4 d-flex align-stretch" style="height: 100%; flex-direction: column;">
         @foreach (var tab in Tabs!)
         {
-            <MudButton OnClick="() => SetActiveTab(tab)" Class="py-1 px-3" Variant="Variant.Text" StartIcon="@tab.HeaderStartIcon" Style="@StyleService.CreateActiveTabButtonStyle(tab == ActiveTab)" FullWidth="true">
-                <MudHidden Breakpoint="Breakpoint.Xs">
+            <MudHidden Breakpoint="Breakpoint.Xs">
+                <MudButton OnClick="() => SetActiveTab(tab)" Class="py-1 px-3" Variant="Variant.Text" StartIcon="@tab.HeaderStartIcon" Style="@StyleService.CreateActiveTabButtonStyle(tab == ActiveTab)" FullWidth="true">
                     @tab.HeaderText
-                </MudHidden>
-            </MudButton>
+                </MudButton>
+            </MudHidden>
+
+            <MudHidden Breakpoint="Breakpoint.SmAndUp">
+                <MudButton OnClick="() => SetActiveTab(tab)" Class="py-1 px-3" Variant="Variant.Text" Style="@StyleService.CreateActiveTabButtonStyle(tab == ActiveTab)" FullWidth="true">
+                    <MudIcon Icon="@tab.HeaderStartIcon" Size="Size.Medium" Color="Color.Inherit"/>
+                </MudButton>
+            </MudHidden>
         }
     </div>
 

@@ -10,12 +10,12 @@ public class ScreenSizeService
     {
         _jSRuntime = jSRuntime;
     }
-    public async Task Subscribe(Action<int> triggerAction)
+    public async Task Subscribe(Action triggerAction)
     {
         await InitializeAsync();
         ScreenWidthChanged += triggerAction;
     }
-    public void UnSubscribe(Action<int> triggerAction)
+    public void UnSubscribe(Action triggerAction)
     {
         ScreenWidthChanged -= triggerAction;
     }
@@ -33,19 +33,24 @@ public class ScreenSizeService
         })();
     ");
         var dotnetRef = DotNetObjectReference.Create(this);
-        await _jSRuntime.InvokeVoidAsync("window.resizeInterop.registerResizeCallback", dotnetRef, "OnWindowResize");
-        CurrentScreenWidth = await GetWidnowWidth();
+        await _jSRuntime.InvokeVoidAsync("window.resizeInterop.registerResizeCallback", dotnetRef, nameof(OnWindowResize));
+        CurrentScreenWidth = await GetWindowWidth();
+        LastScreenWidth = CurrentScreenWidth;
     }
-
-    public int CurrentScreenWidth { get; set; }
-    private event Action<int>? ScreenWidthChanged;
+    public int LastScreenWidth { get; private set; }
+    public int CurrentScreenWidth { get; private set; }
+    private event Action? ScreenWidthChanged;
     [JSInvokable]
     public void OnWindowResize()
     {
-        ScreenWidthChanged?.Invoke(CurrentScreenWidth);
-        _ = Task.Run(async () => CurrentScreenWidth = await GetWidnowWidth());
+        GetWindowWidth().ContinueWith(task =>
+        {
+            LastScreenWidth = CurrentScreenWidth;
+            CurrentScreenWidth = task.Result;
+            ScreenWidthChanged?.Invoke();
+        });
     }
-    private async Task<int> GetWidnowWidth()
+    private async Task<int> GetWindowWidth()
     {
         return await _jSRuntime.InvokeAsync<int>("eval", "window.innerWidth");
     }
