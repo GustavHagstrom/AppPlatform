@@ -1,4 +1,5 @@
-﻿using BidConReport.Shared.Entities;
+﻿using BidConReport.Client.Shared.Services;
+using BidConReport.Shared.Entities;
 using System;
 using System.Net.Http.Json;
 
@@ -7,10 +8,12 @@ namespace BidConReport.Client.Features.Import.Services;
 public class BidConImporterService : IBidConImporterService
 {
     private readonly IHttpClientFactory _httpClientFactory;
+    private readonly IEstimationParentReferencer _parentReferencer;
 
-    public BidConImporterService(IHttpClientFactory httpClientFactory)
+    public BidConImporterService(IHttpClientFactory httpClientFactory, IEstimationParentReferencer parentReferencer)
     {
         _httpClientFactory = httpClientFactory;
+        _parentReferencer = parentReferencer;
     }
     public async Task<BidConImportResult<DbFolder>> GetFoldersAsync()
     {
@@ -37,6 +40,10 @@ public class BidConImporterService : IBidConImporterService
             var result = await GetHttpClient().PostAsJsonAsync($"bidcon/getestimation", request, cancelToken);
             result.EnsureSuccessStatusCode();
             var importResult = (await result.Content.ReadFromJsonAsync<BidConImportResult<Estimation>>())!;
+            if (importResult.Value is not null)
+            {
+                _parentReferencer.SetAllParentReferences(importResult.Value);
+            }
             return importResult;
         }
         catch (HttpRequestException)

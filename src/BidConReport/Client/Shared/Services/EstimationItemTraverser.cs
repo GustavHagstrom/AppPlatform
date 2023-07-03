@@ -6,11 +6,11 @@ public class EstimationItemTraverser : IEstimationItemTraverser
 {
     public EstimationItem? FindItem(Estimation estimation, int row)
     {
-        return FindItem(estimation.Items, row);
+        var root = CreateRoot(estimation);
+        return FindItem(root, row);
     }
-    public IEnumerable<EstimationItem> GetAllEstimationItemsItems(Estimation estimation)
+    public IEnumerable<EstimationItem> GetAllEstimationItems(Estimation estimation)
     {
-        var itemList = new List<EstimationItem>();
         foreach (var baseNode in estimation.Items)
         {
             foreach (var item in GetAllItems(baseNode))
@@ -19,34 +19,51 @@ public class EstimationItemTraverser : IEstimationItemTraverser
             }
         }
     }
-    private EstimationItem? FindItem(ICollection<EstimationItem> items, int row)
+    private EstimationItem? FindItem(EstimationItem root, int row)
     {
-        EstimationItem currentItem;
-        for (int i = 0; i < items.Count; i++)
+        if (root.RowNumber == row)
         {
-            currentItem = items.ElementAt(i);
+            return root;
+        }
 
-            if (currentItem.RowNumber == row)
+        for (int i = root.Items.Count - 1; i >= 0; i--)
+        {
+            var elementAtIndex = root.Items.ElementAt(i);
+            if (elementAtIndex.RowNumber <= row)
             {
-                return currentItem;
-            }
-
-            if (currentItem.ItemType == EstimationItemType.Group || currentItem.ItemType == EstimationItemType.Part)
-            {
-                if (i < items.Count - 1 && items.ElementAt(i + 1).RowNumber > row)
-                {
-                    return FindItem(currentItem.Items, row);
-                }
+                return FindItem(elementAtIndex, row);
             }
         }
+
         return null;
     }
-    private IEnumerable<EstimationItem> GetAllItems(EstimationItem item)
+    private IEnumerable<EstimationItem> GetAllItems(EstimationItem root)
     {
-        yield return item;
-        foreach (var child in item.Items)
+        yield return root;
+        foreach (var child in root.Items)
         {
-            GetAllItems(child);
+            foreach (var item in GetAllItems(child))
+            {
+                yield return item;
+            }
         }
+    }
+    private EstimationItem CreateRoot(Estimation estimation)
+    {
+        return new EstimationItem
+        {
+            Comment = string.Empty,
+            DisplayedQuantity = string.Empty,
+            DisplayedUnit = string.Empty,
+            Id = Guid.Empty,
+            ItemType = EstimationItemType.Group,
+            Name = string.Empty,
+            Quantity = double.NaN,
+            RowNumber = -1,
+            Tags = Array.Empty<string>(),
+            Unit = string.Empty,
+            UnitCost = double.NaN,
+            Items = estimation.Items
+        };
     }
 }

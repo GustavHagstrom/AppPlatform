@@ -12,21 +12,7 @@ public class EstimationParentReferencerTests
     {
         var jsonFIlePath = Path.Combine(TestContext.CurrentContext.TestDirectory, "EstimationSample.json");
         var jsonData = File.ReadAllText(jsonFIlePath);
-        var options = new JsonSerializerOptions { PropertyNameCaseInsensitive = false };
-        //var testData = JsonSerializer.Serialize(new Estimation
-        //{
-        //    BidConId = "test",
-        //    SelectionTags = new List<string>(),
-        //    CostBeforeChanges = 0,
-        //    CreationDate = DateTime.Now,
-        //    Currency = "SEK",
-        //    Id = Guid.Empty,
-        //    Items = new List<EstimationItem>(),
-        //    LockedCategories = new List<LockedCategory>(),
-        //    Name = "test",
-        //    OrganizationId = "test",
-        //    QuickTags = new List<string>(),
-        //});
+        var options = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
         _EstimationData = JsonSerializer.Deserialize<Estimation>(jsonData, options);
     }
     [Test]
@@ -44,7 +30,7 @@ public class EstimationParentReferencerTests
         {
             Assert.That(rootElement.Parent, Is.EqualTo(null));
         }
-        foreach (var item in traverser.GetAllEstimationItemsItems(_EstimationData!).Where(x => x.RowNumber != 1 || x.RowNumber != 4))
+        foreach (var item in traverser.GetAllEstimationItems(_EstimationData!).Where(x => x.RowNumber != 1 && x.RowNumber != 4))
         {
             Assert.IsNotNull(item.Parent);
         }
