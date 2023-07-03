@@ -26,6 +26,8 @@ public class Estimation
     public DateTime? ExpirationDate { get; set; }
     [NotMapped]
     public DateTime? PrintDate { get; set; }
+    [MaxLength(50)]
+    public string? HiddenUnitAndAmount { get; set; } = null;
     public required ICollection<string> QuickTags { get; set; }
     public required ICollection<string> SelectionTags { get; set; }
     public required ICollection<EstimationItem> Items { get; set; }
