@@ -1,10 +1,10 @@
 ﻿@using BidConReport.Shared.Features.ReportLayout.Table;
 
 <MudDivider Light="true"/>
-<MudStack Row="true" Spacing="1" Class="@($"pl-{0}")">
+<MudStack Row="true" Spacing="1">
     @foreach (var column in ParentComponent.Layout.TableSection.Columns)
     {
-        <div style="@($"width: {column.Width}%")">
+        <div style="@($"width: {column.Width}%")" class="@($"pl-{NumberOfNestedParentGroups(Item) * 3}")">
             @if(Item.ItemType == EstimationItemType.Group )
             {
                 <MudText Style="@($"{ParentComponent.CreateFontStyle(column.GroupFont)}")">@DataSourceFunctions[column.DataSource].Invoke(Item)</MudText>
@@ -40,19 +40,23 @@
         { ColumnDataSource.DisplayedQuantity, e => e.DisplayedQuantity },
         { ColumnDataSource.Comment, e => e.Comment },
     };
-    //int NumberOfNestedGroups(EstimationItem? item)
-    //{
-    //    if (item is null)
-    //    {
-    //        return 0;
-    //    }
-    //    var parentGroups = NumberOfNestedGroups(item.Parent);
-    //    if (item.ItemType is EstimationItemType.Group)
-    //    {
-    //        return parentGroups + 1;
-    //    }
-    //    return NumberOfNestedGroups(item.Parent);
-    //}
+    int NumberOfNestedParentGroups(EstimationItem? item)
+    {
+        if (item is null || item.Parent is null)
+        {
+            return 0;
+        }
+        var numberofParentGroups = NumberOfNestedParentGroups(item.Parent);
+
+        if (item.Parent.ItemType is EstimationItemType.Group)
+        {
+            return numberofParentGroups + 1;
+        }
+        else
+        {
+            return numberofParentGroups;
+        }
+    }
     //IEnumerable<EstimationItem> GetParentsCount(EstimationItem? item, bool isStartingChild = true)
     //{
     //    if (item is not null && !isStartingChild)

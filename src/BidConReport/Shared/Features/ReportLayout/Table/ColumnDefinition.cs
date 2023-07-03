@@ -37,7 +37,7 @@ public class ColumnDefinition
     {
         var font = FontProperties.Default;
         font.Bold = true;
-        font.FontSize = 11;
+        font.FontSize = 14;
         return font;
     }
     private static FontProperties DefaultCellFont()
