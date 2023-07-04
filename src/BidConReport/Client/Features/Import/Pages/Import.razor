@@ -1,27 +1,16 @@
 ﻿@page "/import"
 @*@attribute [Authorize]*@
 
-@*<MudDrawer @bind-Open="@drawerOpen" ClipMode="DrawerClipMode.Docked" Anchor="Anchor.End" Elevation="4">
-    <div>
-        <ImportSettingsView SelectedSettingChanged="OnSettingsSelectionChanged" />
-    </div>
-</MudDrawer>*@
-
-
 <Toolbar Height="40px">
+
     <ImportSettingsPicker SelectedSettingChanged="OnSettingsSelectionChanged" />
-        
-    @*<MudIconButton Icon="@Icons.Material.Sharp.Settings" OnClick="ToggleDrawer" Style="height: 40px; width: 40px;" />*@
+
     <div class="border-solid border-l mx-2 my-2" style="border-color: var(--mud-palette-lines-default)"/>
         
     <MudIconButton Icon="@Icons.Material.Sharp.Refresh" OnClick="GetEstimationItemTreeAsync" Style="height: 40px; width: 40px;" />
     <MudIconButton Icon="@Icons.Material.Sharp.Start" OnClick="DownloadAsync" Style="height: 40px; width: 40px;" />
 
-
 </Toolbar>
-
-
-    
         
 
 <MudContainer MaxWidth="MaxWidth.Medium" Style="height: calc(100% - 40px)" Class="pa-4">
@@ -51,8 +40,6 @@
 </MudContainer>
 
 
-
-
 @code{
     public bool IsDownloading { get; set; } = true;
     public int ActiveTab { get; set; } = 1;
@@ -65,7 +52,6 @@
     [Inject] public required IBidConImporterService _importer { get; set; }
     [Inject] public required ImportedEstimationsContainer ImportedEstimationsContainer { get; set; }
     [Inject] public required ISnackbar Snackbar { get; set; }
-    //[Inject] public required NavigationManager Navigation { get; set; }
 
     public EstimationImportSettings? Settings { get; set; }
     public DbTreeItem? ItemTree { get; set; }
@@ -90,7 +76,6 @@
     }
     protected override async Task OnInitializedAsync()
     {
-        //await _settingsState.LoadPreferedSettingsAsync();
         await GetEstimationItemTreeAsync();
     }
     public void OnSettingsSelectionChanged(EstimationImportSettings? settings)
@@ -112,9 +97,9 @@
             var progress = new Progress<BidConImportResult<Estimation>>();
             var options = new DialogOptions()
             {
-                MaxWidth = MaxWidth.Large,
+                MaxWidth = MaxWidth.ExtraSmall,
                 CloseButton = false,
-                NoHeader = true,
+                NoHeader = false,
                 DisableBackdropClick = true,
 
             };
@@ -122,7 +107,7 @@
             parameters.Add(nameof(DownloadDialog.Progress), progress);
             parameters.Add(nameof(DownloadDialog.TotalEstimationCount), selectedEstimations.Count);
             parameters.Add(nameof(DownloadDialog.CancelTokenSource), cancelSource);
-            DialogService.Show<DownloadDialog>(string.Empty, parameters, options);
+            DialogService.Show<DownloadDialog>(Localizer["Hämtar"], parameters, options);
             var result = await _importer.GetEstimationsAsync(selectedEstimations, Settings, cancelSource.Token, progress);
 
             ImportedEstimationsContainer.ImportedEstimations = result
