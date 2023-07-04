@@ -1,9 +1,10 @@
 ﻿@using Microsoft.AspNetCore.Components.WebAssembly.Authentication
+@using SharedWasmLibrary.Shared.Constants;
 @inject NavigationManager Navigation
 
 @code {
     protected override void OnInitialized()
     {
-        Navigation.NavigateToLogin("authentication/login");
+        Navigation.NavigateToLogin(SharedClientRoutes.Authentication.Login);
     }
 }

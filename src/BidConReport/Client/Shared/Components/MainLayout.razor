@@ -1,4 +1,5 @@
-﻿@inherits LayoutComponentBase
+﻿@using BidConReport.Client.Shared.Constants;
+@inherits LayoutComponentBase
 
 <MudThemeProvider Theme="CustomThemes.PlatformStandard" IsDarkMode="false" DefaultScrollbar="true" />
 <MudDialogProvider FullWidth="true"
@@ -17,17 +18,17 @@
         <Authorized>
             <MudDivider Light="false" Vertical="true" FlexItem="true" Class="my-2 mr-2" />
             <MudTooltip Text="@Localizer["Startsida"]" RootClass="align-self-center">
-                <MudButton Href="/dashboard" Class="py-1 px-3" Variant="Variant.Text" Color="Color.Inherit" Style="@StyleService.CreateNavigationButtonStyle("dashboard")">
+                <MudButton Href="@ClientRoutes.Dashboard" Class="py-1 px-3" Variant="Variant.Text" Color="Color.Inherit" Style="@StyleService.CreateNavigationButtonStyle("dashboard")">
                     <MudIcon Icon="@Icons.Material.Sharp.Dashboard" />
                 </MudButton>
             </MudTooltip>
             <MudTooltip Text="@Localizer["Importera från BidCon"]" RootClass="align-self-center">
-                <MudButton Href="/import" Class="py-1 px-3" Variant="Variant.Text" Color="Color.Inherit" Style="@StyleService.CreateNavigationButtonStyle("import")">
+                <MudButton Href="@ClientRoutes.Import" Class="py-1 px-3" Variant="Variant.Text" Color="Color.Inherit" Style="@StyleService.CreateNavigationButtonStyle("import")">
                     <MudIcon Icon="@CustomIcons.BidconIcon" />
                 </MudButton>
             </MudTooltip>
             <MudTooltip Text="@Localizer["Inställningar"]" RootClass="align-self-center">
-                <MudButton Href="/settings" Class="py-1 px-3" Variant="Variant.Text" Color="Color.Inherit" Style="@StyleService.CreateNavigationButtonStyle("settings")">
+                <MudButton Href="@ClientRoutes.Settings" Class="py-1 px-3" Variant="Variant.Text" Color="Color.Inherit" Style="@StyleService.CreateNavigationButtonStyle("settings")">
                     <MudIcon Icon="@Icons.Material.Sharp.Settings" />
                 </MudButton>
             </MudTooltip>

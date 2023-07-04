@@ -4,7 +4,7 @@ using BidConReport.Client.Shared.Services;
 using BidConReport.Client.Shared.StateContainers;
 using Microsoft.AspNetCore.Components.Authorization;
 
-namespace BidConReport.Client;
+namespace BidConReport.Client.Shared.Extensions;
 
 public static class ServiceExtensions
 {

@@ -1,4 +1,5 @@
-﻿using BidConReport.Shared.Constants;
+﻿using BidConReport.Client.Shared.Constants;
+using BidConReport.Shared.Constants;
 using BidConReport.Shared.Entities;
 using System.Net.Http.Json;
 

@@ -1,8 +1,0 @@
-﻿<MudToolBar Dense="true" Style="@($"height: 40px; background-color: {Theame!.Palette.GrayLighter}; width: 100%;")" DisableGutters="true" Class="d-flex justify-center">
-    @ChildContent
-</MudToolBar>
-
-@code {
-    [CascadingParameter] public required MudTheme Theame { get; set; }
-    [Parameter] public RenderFragment? ChildContent { get; set; }
-}

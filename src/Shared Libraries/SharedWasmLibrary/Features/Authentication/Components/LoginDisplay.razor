@@ -1,4 +1,5 @@
 ﻿@using Microsoft.Graph;
+@using SharedWasmLibrary.Shared.Constants;
 @implements IDisposable
 
 <AuthorizeView>
@@ -30,7 +31,7 @@
 
     </Authorized>
     <NotAuthorized>
-        <MudButton Href="authentication/login" Class="px-4" Variant="Variant.Text" Color="Color.Inherit" StartIcon="@Icons.Material.Sharp.Login">@Localizer["Logga in"]</MudButton>
+        <MudButton OnClick="LogIn" Class="px-4" Variant="Variant.Text" Color="Color.Inherit" StartIcon="@Icons.Material.Sharp.Login">@Localizer["Logga in"]</MudButton>
     </NotAuthorized>
 </AuthorizeView>
 
@@ -49,7 +50,7 @@
     protected override void OnInitialized()
     {
         AuthStateProvider.AuthenticationStateChanged += async (x) => await OnAuthStateChangedAsync(x);
-        
+
     }
     protected override async Task OnInitializedAsync()
     {
@@ -66,7 +67,11 @@
     public void LogOut()
     {
         PopOverIsVisible = false;
-        NavManager.NavigateToLogout("authentication/logout");
+        NavManager.NavigateToLogout(SharedClientRoutes.Authentication.Logout);
+    }
+    public void LogIn()
+    {
+        NavManager.NavigateToLogout(SharedClientRoutes.Authentication.Login);
     }
     public async Task GetPhotoStringAsync()
     {

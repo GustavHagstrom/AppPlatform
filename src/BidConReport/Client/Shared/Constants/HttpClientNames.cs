@@ -1,4 +1,4 @@
-﻿namespace BidConReport.Client;
+﻿namespace BidConReport.Client.Shared.Constants;
 
 public static class HttpClientNames
 {
