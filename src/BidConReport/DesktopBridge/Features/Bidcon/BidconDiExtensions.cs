@@ -13,5 +13,6 @@ public static class BidconDiExtensions
         services.AddTransient<IEstimationItemRulesEngine, EstimationItemRulesEngine>();
         services.AddTransient<IEstimationFactory, EstimationFactory>();
         services.AddTransient<IBidConConfigProvider, BidConConfigProvider>();
+        services.AddTransient<IEstimationItemsFactory, EstimationItemsFactory>();
     }
 }

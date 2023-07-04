@@ -41,6 +41,7 @@ public class BidconController : ControllerBase
     {
         //TODO implement error message 
         var result = new BidConImportResult<Estimation>();
+
         try
         {
             var estimation = _bidConImporter.GetEstimation(request.Estimation.Id);
