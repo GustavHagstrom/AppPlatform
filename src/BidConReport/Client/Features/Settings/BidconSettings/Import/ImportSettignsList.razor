@@ -10,19 +10,28 @@
         <MudListSubheader Class="border-b pa-2 d-flex" Style="border-color: var(--mud-palette-lines-default)">
             <MudText Typo="Typo.h6" Class="pr-4" Style="color: var(--mud-palette-text-primary)">@Localizer["Importprofiler"]</MudText>
             <MudSpacer/>
-            <MudIconButton Icon="@Icons.Material.Sharp.Delete" Color="Color.Error" Style="height:30px; width: 30px;" Disabled="SelectedSettings is null" OnClick="DeleteSelectedSettings" />
             <MudIconButton Icon="@Icons.Material.Sharp.Add" Color="Color.Primary" Style="height:30px; width: 30px;" OnClick="CreateNew" />
-            <MudIconButton Icon="@Icons.Material.Sharp.Edit" Color="Color.Primary" Style="height:30px; width: 30px;" Disabled="SelectedSettings is null" OnClick="EditSelectedSettings" />
         </MudListSubheader>
-        <div style="height: calc(100% - 49px);" class="overflow-y-auto">
+
+        <table style="max-height: calc(100% - 49px);" class="striped overflow-y-auto">
             @if (ImportProfilesList is not null)
             {
                 @foreach (var item in ImportProfilesList)
                 {
-                    <MudListItem Text="@item.Name" Value="item" Class="px-2" />
+                    <tr class="px-2 d-flex">
+                        <td class="d-flex flex-grow-1 align-center">
+                            <MudText Typo="Typo.subtitle2">@item.Name</MudText>
+                        </td>
+                        <td>
+                            <div class="d-flex">
+                                <MudIconButton Icon="@Icons.Material.Sharp.Delete" Color="Color.Error" Style="height:30px; width: 30px;" OnClick="async () => await DeleteAsync(item)" />
+                                <MudIconButton Icon="@Icons.Material.Sharp.Edit" Color="Color.Primary" Style="height:30px; width: 30px;" OnClick="async () => await EditSettings(item)" />
+                            </div>
+                        </td>
+                    </tr>
                 }
             }
-        </div>
+        </table>
     </MudList>
 
 
@@ -47,17 +56,22 @@
         ImportProfilesList = await ImportSettingsService.GetAllAsync();
         StateHasChanged();
     }
+
     public async Task CreateNew()
     {
         await OpenSettingsDialog(EstimationImportSettings.Empty, Localizer["Ny"]);
     }
     public async Task EditSelectedSettings()
     {
-        if (SelectedSettings is not null)
+        if (SelectedSettings is not null && SelectedSettings is EstimationImportSettings settings)
         {
-            var clone = JsonSerializer.Deserialize<EstimationImportSettings>(JsonSerializer.Serialize(SelectedSettings as EstimationImportSettings));
-            await OpenSettingsDialog(clone!, Localizer["Redigera"]);
+            await EditSettings(settings);
         }
+    }
+    public async Task EditSettings(EstimationImportSettings settings)
+    {
+        var clone = JsonSerializer.Deserialize<EstimationImportSettings>(JsonSerializer.Serialize(settings));
+        await OpenSettingsDialog(clone!, Localizer["Redigera"]);
     }
     public async Task OpenSettingsDialog(EstimationImportSettings settings, string title)
     {
@@ -80,17 +94,22 @@
         }
 
     }
+
     public async Task DeleteSelectedSettings()
     {
         if (SelectedSettings is not null && SelectedSettings is EstimationImportSettings settings)
         {
-            if (await ConfirmDelete(settings))
-            {
-                await ImportSettingsService.DeleteAsync(settings.Id);
-                await RefreshImportProfilesList();
-            }
+            await DeleteAsync(settings);
         }
 
+    }
+    public async Task DeleteAsync(EstimationImportSettings settings)
+    {
+        if (await ConfirmDelete(settings))
+        {
+            await ImportSettingsService.DeleteAsync(settings.Id);
+            await RefreshImportProfilesList();
+        }
     }
     public async Task<bool> ConfirmDelete(EstimationImportSettings settings)
     {
@@ -108,4 +127,5 @@
         var result = await dialog.Result;
         return !result.Canceled;
     }
+
 }
