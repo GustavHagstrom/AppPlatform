@@ -1,6 +1,6 @@
 ﻿using BidConReport.Shared.Entities;
 
-namespace BidConReport.Client.Features.Import.Services;
+namespace BidConReport.Client.Shared.Services;
 
 public interface IImportSettingsService
 {

@@ -1,6 +1,4 @@
-﻿@using System.Text.Json;
-
-<MudPaper Style="height: 100%" Class="relative">
+﻿<MudPaper Style="height: 100%" Class="relative">
 
     <MudOverlay Visible="ImportProfilesList is null" DarkBackground="true" Absolute="true">
         <MudProgressCircular Color="Color.Primary" Indeterminate="true" Size="Size.Large" />
@@ -16,7 +14,7 @@
         <table style="max-height: calc(100% - 49px);" class="striped overflow-y-auto">
             @if (ImportProfilesList is not null)
             {
-                @foreach (var item in ImportProfilesList)
+                @foreach (var item in ImportProfilesList) 
                 {
                     <tr class="px-2 d-flex">
                         <td class="d-flex flex-grow-1 align-center">

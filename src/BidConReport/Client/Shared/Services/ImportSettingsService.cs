@@ -3,7 +3,7 @@ using BidConReport.Shared.Constants;
 using BidConReport.Shared.Entities;
 using System.Net.Http.Json;
 
-namespace BidConReport.Client.Features.Import.Services;
+namespace BidConReport.Client.Shared.Services;
 
 public class ImportSettingsService : IImportSettingsService
 {
@@ -50,7 +50,7 @@ public class ImportSettingsService : IImportSettingsService
 
     public async Task<EstimationImportSettings> GetDefaultAsync()
     {
-        
+
         try
         {
             var client = _httpClientFactory.CreateClient(HttpClientNames.BackendHttpClientName);
