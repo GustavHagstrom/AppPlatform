@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace BidConReport.Shared.Features.ReportLayout;
+namespace BidConReport.Shared.Features.ReportTemplate;
 public class FontProperties
 {
     public int Id { get; set; }

@@ -1,5 +1,5 @@
-﻿namespace BidConReport.Shared.Features.ReportLayout.Information;
-public class InformationSection : ILayoutSection
+﻿namespace BidConReport.Shared.Features.ReportTemplate.Information;
+public class InformationSection : IReportTemplateSection
 {
     public bool IsEnabled { get; set; } = true;
     public List<InformationItem> Items { get; set; } = new();

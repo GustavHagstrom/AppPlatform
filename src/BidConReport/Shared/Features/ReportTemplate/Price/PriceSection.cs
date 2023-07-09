@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace BidConReport.Shared.Features.ReportLayout.Price;
-public class PriceSection : ILayoutSection
+namespace BidConReport.Shared.Features.ReportTemplate.Price;
+public class PriceSection : IReportTemplateSection
 {
     public int LayoutOrder { get; set; }
     public bool IsEnabled { get; set; } = true;

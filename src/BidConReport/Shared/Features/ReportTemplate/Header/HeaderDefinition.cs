@@ -1,4 +1,4 @@
-﻿namespace BidConReport.Shared.Features.ReportLayout.Header;
+﻿namespace BidConReport.Shared.Features.ReportTemplate.Header;
 public class HeaderDefinition
 {
     public int Id { get; set; }

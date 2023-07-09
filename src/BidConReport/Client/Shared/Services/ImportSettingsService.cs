@@ -21,7 +21,7 @@ public class ImportSettingsService : IImportSettingsService
         try
         {
             var client = _httpClientFactory.CreateClient(HttpClientNames.BackendHttpClientName);
-            var result = await client.DeleteAsync($"{BackendApiEndpoints.ImportEndpoints.Delete}/{settingsId}");
+            var result = await client.DeleteAsync($"{BackendApiEndpoints.ImportController.Delete}/{settingsId}");
             result.EnsureSuccessStatusCode();
         }
         catch (HttpRequestException ex)
@@ -35,7 +35,7 @@ public class ImportSettingsService : IImportSettingsService
         try
         {
             var client = _httpClientFactory.CreateClient(HttpClientNames.BackendHttpClientName);
-            var requestUri = BackendApiEndpoints.ImportEndpoints.All;
+            var requestUri = BackendApiEndpoints.ImportController.All;
             var response = await client.GetAsync(requestUri);
             response.EnsureSuccessStatusCode();
 
@@ -54,7 +54,7 @@ public class ImportSettingsService : IImportSettingsService
         try
         {
             var client = _httpClientFactory.CreateClient(HttpClientNames.BackendHttpClientName);
-            var requestUri = BackendApiEndpoints.ImportEndpoints.Default;
+            var requestUri = BackendApiEndpoints.ImportController.Default;
             var result = await client.GetAsync(requestUri);
             result.EnsureSuccessStatusCode();
 
@@ -73,7 +73,7 @@ public class ImportSettingsService : IImportSettingsService
         try
         {
             var client = _httpClientFactory.CreateClient(HttpClientNames.BackendHttpClientName);
-            var result = await client.PostAsJsonAsync(BackendApiEndpoints.ImportEndpoints.SetDefault, settings);
+            var result = await client.PostAsJsonAsync(BackendApiEndpoints.ImportController.SetDefault, settings);
             result.EnsureSuccessStatusCode();
         }
         catch (HttpRequestException ex)
@@ -88,7 +88,7 @@ public class ImportSettingsService : IImportSettingsService
         try
         {
             var client = _httpClientFactory.CreateClient(HttpClientNames.BackendHttpClientName);
-            var result = await client.PostAsJsonAsync(BackendApiEndpoints.ImportEndpoints.Upsert, settings);
+            var result = await client.PostAsJsonAsync(BackendApiEndpoints.ImportController.Upsert, settings);
             //var test = "test";
             //var result = await client.PostAsJsonAsync("/api/import/UpdateOrCreateImportSettings", test);
             result.EnsureSuccessStatusCode();

@@ -1,13 +1,13 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using BidConReport.Shared.Features.ReportLayout.Information;
-using BidConReport.Shared.Features.ReportLayout.Header;
-using BidConReport.Shared.Features.ReportLayout.Price;
-using BidConReport.Shared.Features.ReportLayout.Table;
-using BidConReport.Shared.Features.ReportLayout.Title;
+using BidConReport.Shared.Features.ReportTemplate.Information;
+using BidConReport.Shared.Features.ReportTemplate.Header;
+using BidConReport.Shared.Features.ReportTemplate.Price;
+using BidConReport.Shared.Features.ReportTemplate.Table;
+using BidConReport.Shared.Features.ReportTemplate.Title;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace BidConReport.Shared.Features.ReportLayout;
-public class LayoutDefinition
+namespace BidConReport.Shared.Features.ReportTemplate;
+public class ReportTemplate
 {
     public int Id { get; set; }
     public required string Name { get; set; }
@@ -21,9 +21,9 @@ public class LayoutDefinition
     public TableSection TableSection { get; set; } = TableSection.Default;
 
     [NotMapped]
-    public ICollection<ILayoutSection> SectionsInOrder => AllSections().OrderBy(x => x.LayoutOrder).ToArray();
+    public ICollection<IReportTemplateSection> SectionsInOrder => AllSections().OrderBy(x => x.LayoutOrder).ToArray();
 
-    private IEnumerable<ILayoutSection> AllSections()
+    private IEnumerable<IReportTemplateSection> AllSections()
     {
         yield return TitleSection;
         yield return InformationSection;

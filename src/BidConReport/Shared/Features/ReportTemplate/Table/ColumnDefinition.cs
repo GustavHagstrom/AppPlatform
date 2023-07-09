@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace BidConReport.Shared.Features.ReportLayout.Table;
+namespace BidConReport.Shared.Features.ReportTemplate.Table;
 public class ColumnDefinition
 {
     public bool IsActive { get; set; }

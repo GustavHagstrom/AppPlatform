@@ -136,31 +136,4 @@
         return settings.Id == DefaultSetting.Id;
     }
 
-
-
-    //public async Task EditSetting(EstimationImportSettings setting)
-    //{
-    //    var clone = JsonSerializer.Deserialize<EstimationImportSettings>(JsonSerializer.Serialize(setting));
-    //    var options = new DialogOptions()
-    //        {
-    //            MaxWidth = MaxWidth.Large,
-    //            CloseButton = false,
-    //            NoHeader = true,
-    //            DisableBackdropClick = true,
-
-    //        };
-    //    var parameters = new DialogParameters();
-    //    parameters.Add(nameof(EditSettingsDialog.SelectedSetting), clone);
-    //    var dialog = await DialogService.ShowAsync<EditSettingsDialog>(string.Empty, parameters, options);
-    //    var result = await dialog.Result;
-    //    if(!result.Canceled)
-    //    {
-
-    //        await RefreshEntireComponent();
-    //        SelectedSetting = result.Data as EstimationImportSettings;
-    //        StateHasChanged();
-    //    }
-        
-    //}
-
 }

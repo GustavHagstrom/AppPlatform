@@ -1,4 +1,4 @@
-﻿namespace BidConReport.Shared.Features.ReportLayout.Header;
+﻿namespace BidConReport.Shared.Features.ReportTemplate.Header;
 public record InfoTag(string Name, string Tag);
 public static class EstiamtionInfoDataTags
 {

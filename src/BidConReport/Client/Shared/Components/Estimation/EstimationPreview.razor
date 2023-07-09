@@ -1,62 +1,61 @@
-﻿@using BidConReport.Shared.Features.ReportLayout;
-@using BidConReport.Shared.Features.ReportLayout.Information;
+﻿@using BidConReport.Shared.Features.ReportTemplate.Information;
 
 <CascadingValue Value="this">
 
 
-    @if (Layout.TitleSection.IsEnabled)
+    @if (Template.TitleSection.IsEnabled)
     {
         <div class="mb-6">
-            <MudText Style="@CreateFontStyle(Layout.TitleSection.Font)">@Layout.TitleSection.Title</MudText>
+            <MudText Style="@CreateFontStyle(Template.TitleSection.Font)">@Template.TitleSection.Title</MudText>
         </div>
     }
 
-    @if(Layout.InformationSection.IsEnabled)
+    @if(Template.InformationSection.IsEnabled)
     {
         <div class="mb-6">
-            @foreach (var item in Layout.InformationSection.Items)
+            @foreach (var item in Template.InformationSection.Items)
             {
                 @if (item.IsEnabled)
                 {
                     <div class="mb-2">
-                        <MudText Style="@CreateFontStyle(Layout.InformationSection.TitleFont)">@item.Title</MudText>
-                        <MudText Style="@CreateFontStyle(Layout.InformationSection.ValueFont)">@GeneralInformationFunctions[item.Type].Invoke(Estimation)</MudText>
+                        <MudText Style="@CreateFontStyle(Template.InformationSection.TitleFont)">@item.Title</MudText>
+                        <MudText Style="@CreateFontStyle(Template.InformationSection.ValueFont)">@GeneralInformationFunctions[item.Type].Invoke(Estimation)</MudText>
                     </div>
                 }
             } 
         </div>
     }
 
-    @if (Layout.PriceSection.IsEnabled)
+    @if (Template.PriceSection.IsEnabled)
     {
         <div class="mb-6">
             <div class="d-flex">
                 <MudSpacer/>
-                <MudText Style="@CreateFontStyle(Layout.PriceSection.CommentFont)">@Layout.PriceSection.Comment</MudText>
+                <MudText Style="@CreateFontStyle(Template.PriceSection.CommentFont)">@Template.PriceSection.Comment</MudText>
             </div>
             <MudDivider />
             <div class="d-flex">
-                <MudText Style="@CreateFontStyle(Layout.PriceSection.PriceFont)">@Layout.PriceSection.PriceWithoutChangesDescription</MudText>
+                <MudText Style="@CreateFontStyle(Template.PriceSection.PriceFont)">@Template.PriceSection.PriceWithoutChangesDescription</MudText>
                 <MudSpacer />
-                <MudText Style="@CreateFontStyle(Layout.PriceSection.PriceFont)">@Estimation.CostBeforeChanges.ToString("N0")</MudText>
+                <MudText Style="@CreateFontStyle(Template.PriceSection.PriceFont)">@Estimation.CostBeforeChanges.ToString("N0")</MudText>
             </div>
             <MudDivider />
             <div class="d-flex">
-                <MudText Style="@CreateFontStyle(Layout.PriceSection.PriceFont)">@Layout.PriceSection.ChangesDescription</MudText>
+                <MudText Style="@CreateFontStyle(Template.PriceSection.PriceFont)">@Template.PriceSection.ChangesDescription</MudText>
                 <MudSpacer />
-                <MudText Style="@CreateFontStyle(Layout.PriceSection.PriceFont)">0</MudText>
+                <MudText Style="@CreateFontStyle(Template.PriceSection.PriceFont)">0</MudText>
             </div>
             <MudDivider />
             <div class="d-flex">
-                <MudText Style="@CreateFontStyle(Layout.PriceSection.PriceFont)">@Layout.PriceSection.PriceWithChangesDescription</MudText>
+                <MudText Style="@CreateFontStyle(Template.PriceSection.PriceFont)">@Template.PriceSection.PriceWithChangesDescription</MudText>
                 <MudSpacer />
-                <MudText Style="@CreateFontStyle(Layout.PriceSection.PriceFont)">@Estimation.CostBeforeChanges.ToString("N0")</MudText>
+                <MudText Style="@CreateFontStyle(Template.PriceSection.PriceFont)">@Estimation.CostBeforeChanges.ToString("N0")</MudText>
             </div>
             <MudDivider/>
         </div>
     }
 
-    @if (Layout.TableSection.IsEnabled)
+    @if (Template.TableSection.IsEnabled)
     {
         <div class="mb-6">
             @foreach (var item in Estimation.Items)
@@ -71,7 +70,7 @@
 
 @code {
     [Parameter, EditorRequired] public required Estimation Estimation { get; set; }
-    public LayoutDefinition Layout { get; set; } = new LayoutDefinition{ Name = "Default" };
+    public ReportTemplate Template { get; set; } = new ReportTemplate { Name = "Default" };
     public Dictionary<InformationType, Func<Estimation, string>> GeneralInformationFunctions { get; set; } = new()
     {
         { InformationType.Name, e => e.Name },

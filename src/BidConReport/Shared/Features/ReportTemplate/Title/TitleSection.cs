@@ -1,5 +1,5 @@
-﻿namespace BidConReport.Shared.Features.ReportLayout.Title;
-public class TitleSection : ILayoutSection
+﻿namespace BidConReport.Shared.Features.ReportTemplate.Title;
+public class TitleSection : IReportTemplateSection
 {
     public int Id { get; set; }
     public int LayoutOrder { get; set; }

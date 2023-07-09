@@ -8,14 +8,14 @@ public static class BackendApiEndpoints
         /// </summary>
         public const string Get = "api/claims";
     }
-    public static class ImportEndpoints
+    public static class ImportController
     {
         /// <summary>
         /// Get request. Returns all ImportSettings associated with current Organization
         /// </summary>
         public const string All = "api/ImportSettings/All";
         /// <summary>
-        /// Get request. Returns the default ImportSetting for current organization if there is one
+        /// Get request. Returns the default ImportSetting for current user if there is one
         /// </summary>
         public const string Default = "api/ImportSettings/Default";
         /// <summary>
@@ -28,6 +28,29 @@ public static class BackendApiEndpoints
         public const string Delete = "api/ImportSettings/Delete";
         /// <summary>
         /// Post request. Set importSettings as default. id as json body. Id may be null resulting in no default settings.
+        /// </summary>
+        public const string SetDefault = "api/ImportSettings/SetDefault";
+    }
+    public static class ReportTemplatesController
+    {
+        /// <summary>
+        /// Get request. Returns all ReportTemplates associated with current Organization
+        /// </summary>
+        public const string All = "api/ReportTemplates";
+        /// <summary>
+        /// Get request. Returns the default ReportTemplate for current user if there is one
+        /// </summary>
+        public const string Default = "api/ReportTemplates/Default";
+        /// <summary>
+        /// Post request. Upsert ReportTemplates from json body
+        /// </summary>
+        public const string Upsert = "api/ImportSettings/Upsert";
+        /// <summary>
+        /// Delete request. Deletes ReportTemplates. Parameter appended as /{id} in the request Uri
+        /// </summary>
+        public const string Delete = "api/ImportSettings/Delete";
+        /// <summary>
+        /// Post request. Set ReportTemplate as default. id as json body. Id may be null resulting in no default settings.
         /// </summary>
         public const string SetDefault = "api/ImportSettings/SetDefault";
     }

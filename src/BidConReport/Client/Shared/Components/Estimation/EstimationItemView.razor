@@ -1,8 +1,8 @@
-﻿@using BidConReport.Shared.Features.ReportLayout.Table;
+﻿@using BidConReport.Shared.Features.ReportTemplate.Table;
 
 <MudDivider Light="true"/>
 <MudStack Row="true" Spacing="1">
-    @foreach (var column in ParentComponent.Layout.TableSection.Columns)
+    @foreach (var column in ParentComponent.Template.TableSection.Columns)
     {
         <div style="@($"width: {column.Width}%")" class="@($"pl-{NumberOfNestedParentGroups(Item) * 3}")">
             @if(Item.ItemType == EstimationItemType.Group )

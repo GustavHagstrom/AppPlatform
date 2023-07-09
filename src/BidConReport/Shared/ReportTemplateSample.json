@@ -1,0 +1,420 @@
+{
+  "Id": 15,
+  "Name": "TestCase",
+  "OrganizationId": "sample_organization",
+  "TopLeftHeader": {
+    "Id": 0,
+    "Font": {
+      "Id": 0,
+      "FontName": "Calibri",
+      "FontSize": 11,
+      "Bold": false,
+      "Italic": false,
+      "Underline": false
+    },
+    "InterpolationValue": ""
+  },
+  "TopRightHeader": {
+    "Id": 0,
+    "Font": {
+      "Id": 0,
+      "FontName": "Calibri",
+      "FontSize": 11,
+      "Bold": false,
+      "Italic": false,
+      "Underline": false
+    },
+    "InterpolationValue": ""
+  },
+  "TitleSection": {
+    "Id": 0,
+    "LayoutOrder": 1,
+    "Title": "Title",
+    "Font": {
+      "Id": 0,
+      "FontName": "Calibri",
+      "FontSize": 30,
+      "Bold": true,
+      "Italic": false,
+      "Underline": false
+    },
+    "Image": "",
+    "IsEnabled": true
+  },
+  "InformationSection": {
+    "IsEnabled": true,
+    "Items": [
+      {
+        "IsEnabled": true,
+        "Type": 0,
+        "Title": "Name"
+      },
+      {
+        "IsEnabled": true,
+        "Type": 1,
+        "Title": "Description"
+      },
+      {
+        "IsEnabled": true,
+        "Type": 2,
+        "Title": "Creation date"
+      },
+      {
+        "IsEnabled": true,
+        "Type": 3,
+        "Title": "Expiration date"
+      },
+      {
+        "IsEnabled": true,
+        "Type": 4,
+        "Title": "Print date"
+      },
+      {
+        "IsEnabled": true,
+        "Type": 5,
+        "Title": "Supervisor"
+      },
+      {
+        "IsEnabled": true,
+        "Type": 6,
+        "Title": "Representative"
+      },
+      {
+        "IsEnabled": true,
+        "Type": 7,
+        "Title": "Currency"
+      }
+    ],
+    "LayoutOrder": 0,
+    "TitleFont": {
+      "Id": 0,
+      "FontName": "Calibri",
+      "FontSize": 11,
+      "Bold": true,
+      "Italic": false,
+      "Underline": false
+    },
+    "ValueFont": {
+      "Id": 0,
+      "FontName": "Calibri",
+      "FontSize": 11,
+      "Bold": false,
+      "Italic": false,
+      "Underline": false
+    }
+  },
+  "PriceSection": {
+    "LayoutOrder": 3,
+    "IsEnabled": true,
+    "PriceWithoutChangesDescription": "",
+    "ChangesDescription": "",
+    "PriceWithChangesDescription": "",
+    "Comment": "",
+    "PriceFont": {
+      "Id": 0,
+      "FontName": "Calibri",
+      "FontSize": 11,
+      "Bold": false,
+      "Italic": false,
+      "Underline": false
+    },
+    "CommentFont": {
+      "Id": 0,
+      "FontName": "Calibri",
+      "FontSize": 11,
+      "Bold": false,
+      "Italic": false,
+      "Underline": false
+    }
+  },
+  "TableSection": {
+    "LayoutOrder": 0,
+    "IsEnabled": true,
+    "Columns": [
+      {
+        "IsActive": false,
+        "DataSource": 1,
+        "TitleFont": {
+          "Id": 0,
+          "FontName": "Calibri",
+          "FontSize": 16,
+          "Bold": true,
+          "Italic": false,
+          "Underline": false
+        },
+        "GroupFont": {
+          "Id": 0,
+          "FontName": "Calibri",
+          "FontSize": 20,
+          "Bold": true,
+          "Italic": false,
+          "Underline": false
+        },
+        "PartFont": {
+          "Id": 0,
+          "FontName": "Calibri",
+          "FontSize": 14,
+          "Bold": true,
+          "Italic": false,
+          "Underline": false
+        },
+        "CelleFont": {
+          "Id": 0,
+          "FontName": "Calibri",
+          "FontSize": 11,
+          "Bold": false,
+          "Italic": false,
+          "Underline": false
+        },
+        "Title": "",
+        "Width": 30
+      },
+      {
+        "IsActive": false,
+        "DataSource": 0,
+        "TitleFont": {
+          "Id": 0,
+          "FontName": "Calibri",
+          "FontSize": 16,
+          "Bold": true,
+          "Italic": false,
+          "Underline": false
+        },
+        "GroupFont": {
+          "Id": 0,
+          "FontName": "Calibri",
+          "FontSize": 20,
+          "Bold": true,
+          "Italic": false,
+          "Underline": false
+        },
+        "PartFont": {
+          "Id": 0,
+          "FontName": "Calibri",
+          "FontSize": 14,
+          "Bold": true,
+          "Italic": false,
+          "Underline": false
+        },
+        "CelleFont": {
+          "Id": 0,
+          "FontName": "Calibri",
+          "FontSize": 11,
+          "Bold": false,
+          "Italic": false,
+          "Underline": false
+        },
+        "Title": "",
+        "Width": 10
+      },
+      {
+        "IsActive": false,
+        "DataSource": 4,
+        "TitleFont": {
+          "Id": 0,
+          "FontName": "Calibri",
+          "FontSize": 16,
+          "Bold": true,
+          "Italic": false,
+          "Underline": false
+        },
+        "GroupFont": {
+          "Id": 0,
+          "FontName": "Calibri",
+          "FontSize": 20,
+          "Bold": true,
+          "Italic": false,
+          "Underline": false
+        },
+        "PartFont": {
+          "Id": 0,
+          "FontName": "Calibri",
+          "FontSize": 14,
+          "Bold": true,
+          "Italic": false,
+          "Underline": false
+        },
+        "CelleFont": {
+          "Id": 0,
+          "FontName": "Calibri",
+          "FontSize": 11,
+          "Bold": false,
+          "Italic": false,
+          "Underline": false
+        },
+        "Title": "",
+        "Width": 10
+      },
+      {
+        "IsActive": false,
+        "DataSource": 5,
+        "TitleFont": {
+          "Id": 0,
+          "FontName": "Calibri",
+          "FontSize": 16,
+          "Bold": true,
+          "Italic": false,
+          "Underline": false
+        },
+        "GroupFont": {
+          "Id": 0,
+          "FontName": "Calibri",
+          "FontSize": 20,
+          "Bold": true,
+          "Italic": false,
+          "Underline": false
+        },
+        "PartFont": {
+          "Id": 0,
+          "FontName": "Calibri",
+          "FontSize": 14,
+          "Bold": true,
+          "Italic": false,
+          "Underline": false
+        },
+        "CelleFont": {
+          "Id": 0,
+          "FontName": "Calibri",
+          "FontSize": 11,
+          "Bold": false,
+          "Italic": false,
+          "Underline": false
+        },
+        "Title": "",
+        "Width": 10
+      },
+      {
+        "IsActive": false,
+        "DataSource": 6,
+        "TitleFont": {
+          "Id": 0,
+          "FontName": "Calibri",
+          "FontSize": 16,
+          "Bold": true,
+          "Italic": false,
+          "Underline": false
+        },
+        "GroupFont": {
+          "Id": 0,
+          "FontName": "Calibri",
+          "FontSize": 20,
+          "Bold": true,
+          "Italic": false,
+          "Underline": false
+        },
+        "PartFont": {
+          "Id": 0,
+          "FontName": "Calibri",
+          "FontSize": 14,
+          "Bold": true,
+          "Italic": false,
+          "Underline": false
+        },
+        "CelleFont": {
+          "Id": 0,
+          "FontName": "Calibri",
+          "FontSize": 11,
+          "Bold": false,
+          "Italic": false,
+          "Underline": false
+        },
+        "Title": "",
+        "Width": 20
+      },
+      {
+        "IsActive": false,
+        "DataSource": 3,
+        "TitleFont": {
+          "Id": 0,
+          "FontName": "Calibri",
+          "FontSize": 16,
+          "Bold": true,
+          "Italic": false,
+          "Underline": false
+        },
+        "GroupFont": {
+          "Id": 0,
+          "FontName": "Calibri",
+          "FontSize": 20,
+          "Bold": true,
+          "Italic": false,
+          "Underline": false
+        },
+        "PartFont": {
+          "Id": 0,
+          "FontName": "Calibri",
+          "FontSize": 14,
+          "Bold": true,
+          "Italic": false,
+          "Underline": false
+        },
+        "CelleFont": {
+          "Id": 0,
+          "FontName": "Calibri",
+          "FontSize": 11,
+          "Bold": false,
+          "Italic": false,
+          "Underline": false
+        },
+        "Title": "",
+        "Width": 10
+      },
+      {
+        "IsActive": false,
+        "DataSource": 2,
+        "TitleFont": {
+          "Id": 0,
+          "FontName": "Calibri",
+          "FontSize": 16,
+          "Bold": true,
+          "Italic": false,
+          "Underline": false
+        },
+        "GroupFont": {
+          "Id": 0,
+          "FontName": "Calibri",
+          "FontSize": 20,
+          "Bold": true,
+          "Italic": false,
+          "Underline": false
+        },
+        "PartFont": {
+          "Id": 0,
+          "FontName": "Calibri",
+          "FontSize": 14,
+          "Bold": true,
+          "Italic": false,
+          "Underline": false
+        },
+        "CelleFont": {
+          "Id": 0,
+          "FontName": "Calibri",
+          "FontSize": 11,
+          "Bold": false,
+          "Italic": false,
+          "Underline": false
+        },
+        "Title": "",
+        "Width": 10
+      }
+    ]
+  },
+  "SectionsInOrder": [
+    {
+      "LayoutOrder": 0,
+      "IsEnabled": true
+    },
+    {
+      "LayoutOrder": 0,
+      "IsEnabled": true
+    },
+    {
+      "LayoutOrder": 1,
+      "IsEnabled": true
+    },
+    {
+      "LayoutOrder": 3,
+      "IsEnabled": true
+    }
+  ]
+}

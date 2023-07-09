@@ -1,7 +1,7 @@
 ﻿using BidConReport.Shared.Entities;
 
-namespace BidConReport.Shared.Features.ReportLayout.Table;
-public class TableSection : ILayoutSection
+namespace BidConReport.Shared.Features.ReportTemplate.Table;
+public class TableSection : IReportTemplateSection
 {
     public int LayoutOrder { get; set; }
     public bool IsEnabled { get; set; } = true;
