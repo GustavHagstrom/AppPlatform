@@ -3,11 +3,9 @@
 namespace BidConReport.Client.Shared.Services;
 public interface IReportTemplateCrudService
 {
-    Task Create(ReportTemplate reportTemplate);
-    void Delete(int id);
-    Task<ReportTemplate> Get(int id);
-    Task<ICollection<ReportTemplate>> GetAll();
-    Task<ReportTemplate?> GetDefault();
-    Task SetAsDefault(int id);
-    Task Update(ReportTemplate reportTemplate);
+    Task UpsertAsync(ReportTemplate reportTemplate);
+    Task DeleteAsync(int id);
+    Task<ICollection<ReportTemplate>> GetAllAsync();
+    Task<ReportTemplate?> GetDefaultAsync();
+    Task SetAsDefaultAsync(ReportTemplate reportTemplate);
 }

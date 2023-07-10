@@ -1,22 +1,25 @@
 ﻿using System.Net;
 using System.Text.Json;
+using Azure;
 using BidConReport.Shared.Constants;
 using BidConReport.Shared.Features.ReportTemplate;
 using Moq;
+using Moq.Protected;
+using SharedPlatformLibrary.Wrappers;
 
 namespace BidConReport.Client.Shared.Services.Tests
 {
+    
     [TestFixture]
     public class ReportTemplateCrudServiceTests
     {
-        private Mock<HttpClient> _mockHttpClient;
-        private IReportTemplateCrudService _reportTemplateCrudService;
-
+        private ReportTemplateCrudService? _reportTemplateCrudService;
+        private Mock<IHttpClientWrapper>? _httpClientWrapperMock;
         [SetUp]
-        public void Setup()
+        public void SetUp()
         {
-            _mockHttpClient = new Mock<HttpClient>();
-            _reportTemplateCrudService = new ReportTemplateCrudService(_mockHttpClient.Object);
+            _httpClientWrapperMock = new Mock<IHttpClientWrapper>(MockBehavior.Strict);
+            _reportTemplateCrudService = new ReportTemplateCrudService(_httpClientWrapperMock.Object);
         }
         private ReportTemplate GetSampleData()
         {
@@ -26,118 +29,109 @@ namespace BidConReport.Client.Shared.Services.Tests
             return JsonSerializer.Deserialize<ReportTemplate>(jsonData, options)!;
         }
         [Test]
-        public async Task GetAll_ShouldReturnListOfReportTemplates()
+        public async Task UpsertAsync_ShouldCallPostAsJsonAsyncWithCorrectDataAndUri()
         {
             // Arrange
-            var sample = GetSampleData();
-            var expectedReportTemplates = new List<ReportTemplate> { sample };
-            var response = new HttpResponseMessage(HttpStatusCode.OK)
-            {
-                Content = new StringContent(JsonSerializer.Serialize(expectedReportTemplates))
-            };
-            _mockHttpClient.Setup(c => c.GetAsync(BackendApiEndpoints.ReportTemplatesController.All))
-                .ReturnsAsync(response);
+            var expectedUri = BackendApiEndpoints.ReportTemplatesController.Upsert;
+            var expectedData = GetSampleData();
+
+            _httpClientWrapperMock!
+                .Setup(x => x.PostAsJsonAsync(expectedUri, expectedData, CancellationToken.None))
+                .ReturnsAsync(new HttpResponseMessage(HttpStatusCode.OK));
 
             // Act
-            var result = await _reportTemplateCrudService.GetAll();
+            await _reportTemplateCrudService!.UpsertAsync(expectedData);
+
+            // Assert
+            _httpClientWrapperMock!.Verify(x => x.PostAsJsonAsync(expectedUri, expectedData, CancellationToken.None), Times.Once);
+        }
+        [Test]
+        public async Task GetAllAsync_ShouldCallGetAsyncAndReturnListOfReportTemplates()
+        {
+            // Arrange
+            var expectedUri = BackendApiEndpoints.ReportTemplatesController.All;
+            var expectedReportTemplates = new List<ReportTemplate> { GetSampleData() };
+
+            _httpClientWrapperMock!
+                .Setup(x => x.GetAsync(expectedUri, CancellationToken.None))
+                .ReturnsAsync(new HttpResponseMessage
+                {
+                    StatusCode = HttpStatusCode.OK,
+                    Content = new StringContent(JsonSerializer.Serialize(expectedReportTemplates)),
+                });
+
+            // Act
+            var result = await _reportTemplateCrudService!.GetAllAsync();
 
             // Assert
             Assert.That(result.Count, Is.EqualTo(expectedReportTemplates.Count));
             foreach (var item in result)
             {
-                Assert.That(expectedReportTemplates.Any(x => x.Id == item.Id));
+                Assert.That(expectedReportTemplates.Any(x => x.Id == item.Id), Is.True);
             }
+            _httpClientWrapperMock.Verify(x => x.GetAsync(expectedUri, CancellationToken.None), Times.Once);
         }
+
         [Test]
-        public async Task GetAll_ShouldCallHttpClientGetAsyncWithCorrectUri()
+        public async Task GetDefaultAsync_ShouldCallGetAsyncWithCorrectUriAndReturnCorrectData()
         {
             // Arrange
-            var expectedUri = BackendApiEndpoints.ReportTemplatesController.All;
-            //var sample = GetSampleData();
-            //var expectedReportTemplates = new List<ReportTemplate> { sample };
-            //var response = new HttpResponseMessage(HttpStatusCode.OK)
-            //{
-            //    Content = new StringContent(JsonSerializer.Serialize(expectedReportTemplates))
-            //};
-            //_mockHttpClient.Setup(c => c.GetAsync(BackendApiEndpoints.ReportTemplatesController.All))
-            //    .ReturnsAsync(response);
+            var expectedUri = BackendApiEndpoints.ReportTemplatesController.Default;
+            var expectedData =  GetSampleData();
+
+            _httpClientWrapperMock!
+                .Setup(x => x.GetAsync(expectedUri, CancellationToken.None))
+                .ReturnsAsync(new HttpResponseMessage
+                {
+                    StatusCode = HttpStatusCode.OK,
+                    Content = new StringContent(JsonSerializer.Serialize(expectedData)),
+                });
 
             // Act
-            await _reportTemplateCrudService.GetAll();
+            var result = await _reportTemplateCrudService!.GetDefaultAsync();
 
             // Assert
-            _mockHttpClient.Verify(c => c.GetAsync(expectedUri, CancellationToken.None), Times.Once);
+            Assert.That(result?.Id, Is.EqualTo(expectedData.Id));
+            _httpClientWrapperMock!.Verify(c => c.GetAsync(expectedUri, CancellationToken.None), Times.Once);
         }
 
-        //[Test]
-        //public async Task Create_ShouldCallHttpClientPostAsyncWithCorrectData()
-        //{
-        //    // Arrange
-        //    var reportTemplate = new ReportTemplate { /* Populate with sample data */ };
-        //    var expectedUri = "api/reporttemplates";
-        //    var expectedContent = new StringContent(JsonConvert.SerializeObject(reportTemplate));
+        [Test]
+        public async Task SetAsDefaultAsync_ShouldCallPostAsJsonAsyncWithCorrectDataAndUri()
+        {
+            // Arrange
+            var expectedUri = BackendApiEndpoints.ReportTemplatesController.SetDefault;
+            var expectedData = GetSampleData();
 
-        //    // Act
-        //    await _reportTemplateCrudService.Create(reportTemplate);
+            _httpClientWrapperMock!
+                .Setup(x => x.PostAsJsonAsync(expectedUri, expectedData, CancellationToken.None))
+                .ReturnsAsync(new HttpResponseMessage
+                {
+                    StatusCode = HttpStatusCode.OK,
+                });
 
-        //    // Assert
-        //    _mockHttpClient.Verify(c => c.PostAsync(expectedUri, expectedContent, CancellationToken.None), Times.Once);
-        //}
+            // Act
+           await _reportTemplateCrudService!.SetAsDefaultAsync(expectedData);
 
-        //[Test]
-        //public async Task Get_ShouldCallHttpClientGetAsyncWithCorrectUri()
-        //{
-        //    // Arrange
-        //    var id = 123; // Sample report template ID
-        //    var expectedUri = $"api/reporttemplates/{id}";
+            // Assert
+            _httpClientWrapperMock.Verify(c => c.PostAsJsonAsync(expectedUri, expectedData, CancellationToken.None), Times.Once);
+        }
+        [Test]
+        public async Task DeleteAsync_ShouldCallDeleteAsyncWithCorrectUri()
+        {
+            // Arrange
+            var id = 123; // Sample report template ID
+            var expectedUri = BackendApiEndpoints.ReportTemplatesController.Delete + id.ToString();
+            _httpClientWrapperMock!
+                .Setup(x => x.DeleteAsync(expectedUri, CancellationToken.None))
+                .ReturnsAsync(new HttpResponseMessage
+                {
+                    StatusCode = HttpStatusCode.OK,
+                });
+            // Act
+            await _reportTemplateCrudService!.DeleteAsync(id);
 
-        //    // Act
-        //    await _reportTemplateCrudService.Get(id);
-
-        //    // Assert
-        //    _mockHttpClient.Verify(c => c.GetAsync(expectedUri, CancellationToken.None), Times.Once);
-        //}
-
-        //[Test]
-        //public async Task GetDefault_ShouldCallHttpClientGetAsyncWithCorrectUri()
-        //{
-        //    // Arrange
-        //    var expectedUri = "api/reporttemplates/default";
-
-        //    // Act
-        //    await _reportTemplateCrudService.GetDefault();
-
-        //    // Assert
-        //    _mockHttpClient.Verify(c => c.GetAsync(expectedUri, CancellationToken.None), Times.Once);
-        //}
-
-        //[Test]
-        //public async Task Update_ShouldCallHttpClientPutAsyncWithCorrectData()
-        //{
-        //    // Arrange
-        //    var reportTemplate = new ReportTemplate { /* Populate with sample data */ };
-        //    var expectedUri = $"api/reporttemplates/{reportTemplate.Id}";
-        //    var expectedContent = new StringContent(JsonConvert.SerializeObject(reportTemplate));
-
-        //    // Act
-        //    await _reportTemplateCrudService.Update(reportTemplate);
-
-        //    // Assert
-        //    _mockHttpClient.Verify(c => c.PutAsync(expectedUri, expectedContent, CancellationToken.None), Times.Once);
-        //}
-
-        //[Test]
-        //public void Delete_ShouldCallHttpClientDeleteAsyncWithCorrectUri()
-        //{
-        //    // Arrange
-        //    var id = 123; // Sample report template ID
-        //    var expectedUri = $"api/reporttemplates/{id}";
-
-        //    // Act
-        //    _reportTemplateCrudService.Delete(id);
-
-        //    // Assert
-        //    _mockHttpClient.Verify(c => c.DeleteAsync(expectedUri, CancellationToken.None), Times.Once);
-        //}
+            // Assert
+            _httpClientWrapperMock.Verify(c => c.DeleteAsync(expectedUri, CancellationToken.None), Times.Once);
+        }
     }
 }

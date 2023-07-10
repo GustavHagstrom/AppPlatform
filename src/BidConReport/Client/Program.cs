@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using MudBlazor;
 using MudBlazor.Services;
 using SharedWasmLibrary;
+using SharedPlatformLibrary;
 
 var builder = WebAssemblyHostBuilder.CreateDefault(args);
 builder.RootComponents.Add<App>("#app");
@@ -39,6 +40,7 @@ builder.Services.AddLocalization();
 builder.Services.UseImportFeature();
 builder.Services.UseSharedStateContainers();
 builder.Services.UserSharedServices();
+builder.Services.UseSharedPlatformLibrary();
 builder.UseSharedWasmLibrary(BackendApiEndpoints.ClaimEnpoints.Get);
 
 

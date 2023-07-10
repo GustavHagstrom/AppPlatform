@@ -1,43 +1,47 @@
-﻿using BidConReport.Shared.Features.ReportTemplate;
+﻿using BidConReport.Shared.Constants;
+using BidConReport.Shared.Features.ReportTemplate;
+using SharedPlatformLibrary.Wrappers;
+using System.Net.Http.Json;
 
 namespace BidConReport.Client.Shared.Services;
 
 public class ReportTemplateCrudService : IReportTemplateCrudService
 {
-    private readonly HttpClient _httpClient;
+    private readonly IHttpClientWrapper _httpClient;
 
-    public ReportTemplateCrudService(HttpClient httpClient)
+    public ReportTemplateCrudService(IHttpClientWrapper httpClient)
     {
         _httpClient = httpClient;
     }
 
-    public async Task Create(ReportTemplate reportTemplate)
+    public async Task UpsertAsync(ReportTemplate reportTemplate)
     {
-        throw new NotImplementedException();
+        var response = await _httpClient.PostAsJsonAsync(BackendApiEndpoints.ReportTemplatesController.Upsert, reportTemplate);
+        response.EnsureSuccessStatusCode();
     }
-    public async Task<ICollection<ReportTemplate>> GetAll()
+    public async Task<ICollection<ReportTemplate>> GetAllAsync()
     {
-        throw new NotImplementedException();
+        var response = await _httpClient.GetAsync(BackendApiEndpoints.ReportTemplatesController.All);
+        response.EnsureSuccessStatusCode();
+        var data = await response.Content.ReadFromJsonAsync<ICollection<ReportTemplate>>();
+        return data ?? Array.Empty<ReportTemplate>();
     }
-    public async Task<ReportTemplate> Get(int id)
+    public async Task<ReportTemplate?> GetDefaultAsync()
     {
-        throw new NotImplementedException();
+        var response = await _httpClient.GetAsync(BackendApiEndpoints.ReportTemplatesController.Default);
+        response.EnsureSuccessStatusCode();
+        var data = await response.Content.ReadFromJsonAsync<ReportTemplate>();
+        return data;
     }
-    public async Task<ReportTemplate?> GetDefault()
+    public async Task SetAsDefaultAsync(ReportTemplate reportTemplate)
     {
-        throw new NotImplementedException();
+        var response = await _httpClient.PostAsJsonAsync(BackendApiEndpoints.ReportTemplatesController.SetDefault, reportTemplate);
+        response.EnsureSuccessStatusCode();
     }
-    public async Task SetAsDefault(int id)
+    public async Task DeleteAsync(int id)
     {
-        throw new NotImplementedException();
-    }
-    public async Task Update(ReportTemplate reportTemplate)
-    {
-        throw new NotImplementedException();
-    }
-    public void Delete(int id)
-    {
-        throw new NotImplementedException();
+        var response = await _httpClient.DeleteAsync(BackendApiEndpoints.ReportTemplatesController.Delete + id.ToString());
+        response.EnsureSuccessStatusCode();
     }
 
 }
