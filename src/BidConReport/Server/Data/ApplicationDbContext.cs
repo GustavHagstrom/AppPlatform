@@ -1,5 +1,11 @@
 ﻿using BidConReport.Server.Shared.Enteties;
 using BidConReport.Shared.Entities;
+using BidConReport.Shared.Features.ReportTemplate;
+using BidConReport.Shared.Features.ReportTemplate.Header;
+using BidConReport.Shared.Features.ReportTemplate.Information;
+using BidConReport.Shared.Features.ReportTemplate.Price;
+using BidConReport.Shared.Features.ReportTemplate.Table;
+using BidConReport.Shared.Features.ReportTemplate.Title;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
@@ -26,12 +32,21 @@ public class ApplicationDbContext : DbContext
     {
         base.OnModelCreating(modelBuilder);
 
+        MapUserAndOrganizations(modelBuilder);
+        MapEstimation(modelBuilder);
+        MapImportSettings(modelBuilder);
+        MapReportTemplate(modelBuilder);
 
+    }
+    private void MapUserAndOrganizations(ModelBuilder modelBuilder)
+    {
         modelBuilder.Entity<UserOrganization>()
             .HasOne(u => u.User)
             .WithMany(u => u.UserOrganizations)
             .HasForeignKey(u => u.UserId);
-
+    }
+    private void MapEstimation(ModelBuilder modelBuilder)
+    {
         modelBuilder.Entity<Estimation>()
             .Property(e => e.QuickTags)
             .HasConversion(
@@ -54,14 +69,16 @@ public class ApplicationDbContext : DbContext
             v => (JsonSerializer.Deserialize<ICollection<string>>(v, new JsonSerializerOptions())!))
             .HasColumnType("NVARCHAR(1000)")
             .Metadata.SetValueComparer(_stringCollectionValueComparer);
-
+    }
+    private void MapImportSettings(ModelBuilder modelBuilder)
+    {
         modelBuilder.Entity<EstimationImportSettings>()
-            .Property(e => e.QuickTags)
-            .HasConversion(
-                v => string.Join(",", v),
-                v => v.Split(",", StringSplitOptions.RemoveEmptyEntries).ToArray())
-            .HasColumnType("NVARCHAR(1000)")
-            .Metadata.SetValueComparer(_stringCollectionValueComparer);
+           .Property(e => e.QuickTags)
+           .HasConversion(
+               v => string.Join(",", v),
+               v => v.Split(",", StringSplitOptions.RemoveEmptyEntries).ToArray())
+           .HasColumnType("NVARCHAR(1000)")
+           .Metadata.SetValueComparer(_stringCollectionValueComparer);
         modelBuilder.Entity<EstimationImportSettings>()
             .Property(e => e.SelectionTags)
             .HasConversion(
@@ -70,5 +87,101 @@ public class ApplicationDbContext : DbContext
             .HasColumnType("NVARCHAR(1000)")
             .Metadata.SetValueComparer(_stringCollectionValueComparer);
     }
-    
+    private void MapReportTemplate(ModelBuilder modelBuilder)
+    {
+        modelBuilder.Entity<ReportTemplate>()
+            .HasOne(x => x.TopLeftHeader)
+            .WithOne()
+            .HasForeignKey<ReportTemplate>(x => x.TopLeftHeaderId)
+           .OnDelete(DeleteBehavior.NoAction);
+        modelBuilder.Entity<ReportTemplate>()
+            .HasOne(x => x.TopRightHeader)
+            .WithOne()
+            .HasForeignKey<ReportTemplate>(x => x.TopRightHeaderId)
+           .OnDelete(DeleteBehavior.NoAction);
+        modelBuilder.Entity<ReportTemplate>()
+            .HasOne(x => x.TitleSection)
+            .WithOne()
+            .HasForeignKey<ReportTemplate>(x => x.TitleSectionId)
+           .OnDelete(DeleteBehavior.NoAction);
+        modelBuilder.Entity<ReportTemplate>()
+            .HasOne(x => x.InformationSection)
+            .WithOne()
+            .HasForeignKey<ReportTemplate>(x => x.InformationSectionId)
+           .OnDelete(DeleteBehavior.NoAction);
+        modelBuilder.Entity<ReportTemplate>()
+            .HasOne(x => x.PriceSection)
+            .WithOne()
+            .HasForeignKey<ReportTemplate>(x => x.PriceSectionId)
+           .OnDelete(DeleteBehavior.NoAction);
+        modelBuilder.Entity<ReportTemplate>()
+           .HasOne(x => x.TableSection)
+           .WithOne()
+           .HasForeignKey<ReportTemplate>(x => x.TableSectionId)
+           .OnDelete(DeleteBehavior.NoAction);
+
+        modelBuilder.Entity<HeaderDefinition>()
+           .HasOne(x => x.Font)
+           .WithOne()
+           .HasForeignKey<HeaderDefinition>(x => x.FontId)
+           .OnDelete(DeleteBehavior.NoAction);
+
+        modelBuilder.Entity<TitleSection>()
+           .HasOne(x => x.Font)
+           .WithOne()
+           .HasForeignKey<TitleSection>(x => x.FontId)
+           .OnDelete(DeleteBehavior.NoAction);
+
+        modelBuilder.Entity<InformationItem>()
+            .HasOne<InformationSection>()
+            .WithMany(x => x.Items)
+            .HasForeignKey(x => x.InformationSectionId)
+           .OnDelete(DeleteBehavior.NoAction);
+
+        modelBuilder.Entity<InformationSection>()
+           .HasOne(x => x.TitleFont)
+           .WithOne()
+           .HasForeignKey<InformationSection>(x => x.TitleFontId)
+           .OnDelete(DeleteBehavior.NoAction);
+        modelBuilder.Entity<InformationSection>()
+           .HasOne(x => x.ValueFont)
+           .WithOne()
+           .HasForeignKey<InformationSection>(x => x.ValueFontId)
+           .OnDelete(DeleteBehavior.NoAction);
+
+        modelBuilder.Entity<PriceSection>()
+           .HasOne(x => x.PriceFont)
+           .WithOne()
+           .HasForeignKey<PriceSection>(x => x.PriceFontId)
+           .OnDelete(DeleteBehavior.NoAction);
+        modelBuilder.Entity<PriceSection>()
+           .HasOne(x => x.CommentFont)
+           .WithOne()
+           .HasForeignKey<PriceSection>(x => x.CommentFontId)
+           .OnDelete(DeleteBehavior.NoAction);
+
+        modelBuilder.Entity<ColumnDefinition>()
+            .HasOne<TableSection>()
+            .WithMany(x => x.Columns)
+            .HasForeignKey(x => x.TableSectionId)
+           .OnDelete(DeleteBehavior.NoAction);
+        modelBuilder.Entity<ColumnDefinition>()
+           .HasOne(x => x.GroupFont)
+           .WithOne()
+           .HasForeignKey<ColumnDefinition>(x => x.GroupFontId)
+           .OnDelete(DeleteBehavior.NoAction);
+        modelBuilder.Entity<ColumnDefinition>()
+           .HasOne(x => x.PartFont)
+           .WithOne()
+           .HasForeignKey<ColumnDefinition>(x => x.PartFontId)
+           .OnDelete(DeleteBehavior.NoAction);
+        modelBuilder.Entity<ColumnDefinition>()
+           .HasOne(x => x.CelleFont)
+           .WithOne()
+           .HasForeignKey<ColumnDefinition>(x => x.CelleFontId)
+           .OnDelete(DeleteBehavior.NoAction);
+
+    }
+
+
 }
