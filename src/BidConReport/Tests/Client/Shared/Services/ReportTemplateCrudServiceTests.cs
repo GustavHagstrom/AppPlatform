@@ -3,6 +3,7 @@ using System.Text.Json;
 using Azure;
 using BidConReport.Shared.Constants;
 using BidConReport.Shared.Features.ReportTemplate;
+using Microsoft.Extensions.Logging;
 using Moq;
 using Moq.Protected;
 using SharedPlatformLibrary.Wrappers;
@@ -19,7 +20,8 @@ namespace BidConReport.Client.Shared.Services.Tests
         public void SetUp()
         {
             _httpClientWrapperMock = new Mock<IHttpClientWrapper>(MockBehavior.Strict);
-            _reportTemplateCrudService = new ReportTemplateCrudService(_httpClientWrapperMock.Object);
+            var loggerMock = new Mock<ILogger<ReportTemplateCrudService>>();
+            _reportTemplateCrudService = new ReportTemplateCrudService(_httpClientWrapperMock.Object, loggerMock.Object);
         }
         private ReportTemplate GetSampleData()
         {
