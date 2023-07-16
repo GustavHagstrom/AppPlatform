@@ -1,11 +1,14 @@
 ﻿using BidConReport.Shared.Entities;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace BidConReport.Shared.Features.ReportTemplate.Table;
 public class TableSection : IReportTemplateSection
 {
+    public int Id { get; set; }
     public int LayoutOrder { get; set; }
     public bool IsEnabled { get; set; } = true;
     public List<ColumnDefinition> Columns { get; set; } = new();
+    [NotMapped]
     public static TableSection Default => new()
     {
         Columns = new()

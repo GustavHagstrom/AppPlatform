@@ -2,11 +2,12 @@
 public class HeaderDefinition
 {
     public int Id { get; set; }
+    public int FontId { get; set; }
     public FontProperties Font { get; set; } = FontProperties.Default;
     /// <summary>
-    /// string value with EstimationInfoDataTags to be translated into a single string at presentation
+    /// Text within curly bracers {} will try to find matching dtat form estimation info
     /// </summary>
-    public string InterpolationValue { get; set; } = string.Empty;
+    public string ValueCode { get; set; } = string.Empty;
 }
 
 

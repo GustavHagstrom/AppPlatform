@@ -4,7 +4,7 @@ namespace BidConReport.Shared.Features.ReportTemplate;
 public class FontProperties
 {
     public int Id { get; set; }
-    [MaxLength(100)]
+    [MaxLength(50)]
     public required string FontName { get; set; }
     public int FontSize { get; set; }
     public bool Bold { get; set; }

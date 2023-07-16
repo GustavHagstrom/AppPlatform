@@ -3,12 +3,16 @@
 namespace BidConReport.Shared.Features.ReportTemplate.Table;
 public class ColumnDefinition
 {
+    public int Id { get; set; }
+    public int TableSectionId { get; set; }
     public bool IsActive { get; set; }
     public ColumnDataSource DataSource { get; set; }
-    public FontProperties TitleFont { get; set; } = DefaultTitleFont();
+    public int GroupFontId { get; set; }
     public FontProperties GroupFont { get; set; } = DefaultGroupFont();
+    public int PartFontId { get; set; }
     public FontProperties PartFont { get; set; } = DefaultPartFont();
-    public FontProperties CelleFont { get; set; } = DefaultCellFont();
+    public int CelleFontId { get; set; }
+    public FontProperties CellFont { get; set; } = DefaultCellFont();
     [MaxLength(50)]
     public string Title { get; set; } = string.Empty;
     /// <summary>

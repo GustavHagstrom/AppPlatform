@@ -27,6 +27,7 @@ public class ApplicationDbContext : DbContext
     public DbSet<Estimation> Estimations { get; set; }
     public DbSet<User> Users { get; set; }
     public DbSet<UserOrganization> UserOrganizations { get; set; }
+    public DbSet<ReportTemplate> ReportTemplates { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -176,7 +177,7 @@ public class ApplicationDbContext : DbContext
            .HasForeignKey<ColumnDefinition>(x => x.PartFontId)
            .OnDelete(DeleteBehavior.NoAction);
         modelBuilder.Entity<ColumnDefinition>()
-           .HasOne(x => x.CelleFont)
+           .HasOne(x => x.CellFont)
            .WithOne()
            .HasForeignKey<ColumnDefinition>(x => x.CelleFontId)
            .OnDelete(DeleteBehavior.NoAction);
