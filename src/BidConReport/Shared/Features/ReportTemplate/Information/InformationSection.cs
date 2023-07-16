@@ -6,9 +6,9 @@ public class InformationSection : IReportTemplateSection
     public List<InformationItem> Items { get; set; } = new();
     public int LayoutOrder { get; set; }
     public int TitleFontId { get; set; }
-    public FontProperties TitleFont { get; set; } = DefaultTitleFont();
+    public FontProperties? TitleFont { get; set; } = DefaultTitleFont();
     public int ValueFontId { get; set; }
-    public FontProperties ValueFont { get; set; } = DefaultValueFont();
+    public FontProperties? ValueFont { get; set; } = DefaultValueFont();
     public static InformationSection Default => new()
     {
         Items = new List<InformationItem>

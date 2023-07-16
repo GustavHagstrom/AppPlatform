@@ -8,11 +8,11 @@ public class ColumnDefinition
     public bool IsActive { get; set; }
     public ColumnDataSource DataSource { get; set; }
     public int GroupFontId { get; set; }
-    public FontProperties GroupFont { get; set; } = DefaultGroupFont();
+    public FontProperties? GroupFont { get; set; } = DefaultGroupFont();
     public int PartFontId { get; set; }
-    public FontProperties PartFont { get; set; } = DefaultPartFont();
+    public FontProperties? PartFont { get; set; } = DefaultPartFont();
     public int CelleFontId { get; set; }
-    public FontProperties CellFont { get; set; } = DefaultCellFont();
+    public FontProperties? CellFont { get; set; } = DefaultCellFont();
     [MaxLength(50)]
     public string Title { get; set; } = string.Empty;
     /// <summary>

@@ -16,7 +16,7 @@ public class PriceSection : IReportTemplateSection
     [MaxLength(50)]
     public string Comment { get; set; } = string.Empty;
     public int PriceFontId { get; set; }
-    public FontProperties PriceFont { get; set; } = FontProperties.Default;
+    public FontProperties? PriceFont { get; set; } = FontProperties.Default;
     public int CommentFontId { get; set; }
-    public FontProperties CommentFont { get; set; } = FontProperties.Default;
+    public FontProperties? CommentFont { get; set; } = FontProperties.Default;
 }
