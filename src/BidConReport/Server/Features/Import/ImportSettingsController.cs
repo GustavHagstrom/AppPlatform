@@ -14,10 +14,8 @@ public class ImportSettingsController : ControllerBase
     private readonly ILogger<ImportSettingsController> _logger;
 
     public ImportSettingsController(IImportSettingsService importSettingsService, ILogger<ImportSettingsController> logger)
-    //public ImportController(ApplicationDbContext dbContext, ILogger<ImportController> logger)
     {
         _importSettingsService = importSettingsService;
-        //_importSettingsService = new ImportSettingsService(dbContext);
         _logger = logger;
     }
     [HttpGet("All")]

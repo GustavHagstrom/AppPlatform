@@ -131,5 +131,22 @@ public class ReportTemplatesCrudServiceTests
         //Assert
         Assert.That(result, Is.Not.Null);
     }
+    [Test]
+    public async Task SetAsDefaultAsync_ShouldUpdateDefaultTemplate()
+    {
+        //Arrange
+        int expectedTemplateId = 2;
+
+        //Act
+        await _service.SetAsDefaultAsync(_userId, expectedTemplateId);
+        var actualUserOrg = _dbContext.UserOrganizations.FirstOrDefault(x => x.UserId == _userId);
+
+        //Assert
+        Assert.That(actualUserOrg, Is.Not.Null);
+        Assert.Multiple(() =>
+        {
+            Assert.That(actualUserOrg.DefaultReportTemplateId, Is.EqualTo(expectedTemplateId));
+        });
+    }
 
 }

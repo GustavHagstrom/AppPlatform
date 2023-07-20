@@ -5,7 +5,7 @@ using System.Linq.Expressions;
 
 namespace BidConReport.Server.Features.Report;
 
-public class ReportTemplatesCrudService
+public class ReportTemplatesCrudService : IReportTemplatesCrudService
 {
     private readonly ApplicationDbContext _dbContext;
 
@@ -36,7 +36,7 @@ public class ReportTemplatesCrudService
     {
         var userOrg = await _dbContext.UserOrganizations.FirstAsync(x => x.UserId == userId);
         ArgumentNullException.ThrowIfNull(userOrg);
-        if(userOrg.DefaultReportTemplateId is null)
+        if (userOrg.DefaultReportTemplateId is null)
         {
             return null;
         }
@@ -55,7 +55,7 @@ public class ReportTemplatesCrudService
         if (template.OrganizationId == userOrg.OrganizationId)
         {
             _dbContext.Remove(template);
-            
+
             _dbContext.Remove(template.TopLeftHeader);
             _dbContext.Remove(template.TopRightHeader);
             _dbContext.Remove(template.TitleSection);
@@ -118,6 +118,14 @@ public class ReportTemplatesCrudService
             .ToListAsync();
 
         return result;
+    }
+    public async Task SetAsDefaultAsync(string userId, int templateId)
+    {
+        var userOrg = _dbContext.UserOrganizations.FirstOrDefault(x => x.UserId == userId);
+        ArgumentNullException.ThrowIfNull(userOrg);
+
+        userOrg.DefaultReportTemplateId = templateId;
+        await _dbContext.SaveChangesAsync();
     }
 }
 
