@@ -1,4 +1,5 @@
 ﻿using BidConReport.Server.Features.Import;
+using BidConReport.Server.Features.Report;
 using BidConReport.Server.Shared.Services;
 
 namespace BidConReport.Server;
@@ -9,6 +10,7 @@ internal static class ServiceExtensions
     {
         services.UseImportFeature();
         services.UseSharedServices();
+        services.UseReportFeature();
     }
     public static void UseImportFeature(this IServiceCollection services)
     {
@@ -21,6 +23,10 @@ internal static class ServiceExtensions
 #else
         services.AddTransient<IClaimsProvider, ClaimsProvider>();
 #endif
+    }
+    public static void UseReportFeature(this IServiceCollection services)
+    {
+        services.AddTransient<IReportTemplatesCrudService, ReportTemplatesCrudService>();
     }
 }
 

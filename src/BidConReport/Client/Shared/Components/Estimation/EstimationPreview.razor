@@ -70,7 +70,7 @@
 
 @code {
     [Parameter, EditorRequired] public required Estimation Estimation { get; set; }
-    public ReportTemplate Template { get; set; } = new ReportTemplate { Name = "Default" };
+    [Parameter, EditorRequired] public required ReportTemplate Template { get; set; }
     public Dictionary<InformationType, Func<Estimation, string>> GeneralInformationFunctions { get; set; } = new()
     {
         { InformationType.Name, e => e.Name },
@@ -89,7 +89,7 @@
     }
     public string CreateFontStyle(FontProperties properties)
     {
-        var builder = new System.Text.StringBuilder($"font-family: {properties.FontFamily.Value}; font-size: {properties.FontSize}px; ");
+        var builder = new System.Text.StringBuilder($"font-family: {properties.FontFamily?.Value}; font-size: {properties.FontSize}px; ");
         if (properties.Bold)
         {
             builder.Append("font-weight: bold; ");

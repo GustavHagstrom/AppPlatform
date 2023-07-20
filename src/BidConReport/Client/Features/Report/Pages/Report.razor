@@ -1,7 +1,8 @@
-﻿@page "/report"
+﻿@page "/bidcon/report"
 
 
 <Toolbar Height="40px">
+    <ReportTemplatePicker/>
     <MudIconButton Icon="@Icons.Material.Sharp.Download" Style="height: 40px; width: 40px;" />
     <MudIconButton Icon="@Icons.Material.Sharp.Share" Style="height: 40px; width: 40px;" />
 </Toolbar>
@@ -85,7 +86,7 @@
 
     [CascadingParameter] public required MudTheme Theame { get; set; }
     [Inject] public required ImportedEstimationsContainer EstimationsContainer { get; set; }
-    [Inject] public required IStringLocalizer<Publish> Localizer { get; set; }
+    [Inject] public required IStringLocalizer<Report> Localizer { get; set; }
     public Estimation? SelectedEstimation { get; set; }
 
     public void ShowEstimationPreview(Estimation estimation)

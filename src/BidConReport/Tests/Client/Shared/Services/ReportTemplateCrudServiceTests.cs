@@ -14,14 +14,14 @@ namespace BidConReport.Client.Shared.Services.Tests
     [TestFixture]
     public class ReportTemplateCrudServiceTests
     {
-        private ReportTemplateCrudService? _reportTemplateCrudService;
+        private ReportTemplateService? _reportTemplateCrudService;
         private Mock<IHttpClientWrapper>? _httpClientWrapperMock;
         [SetUp]
         public void SetUp()
         {
             _httpClientWrapperMock = new Mock<IHttpClientWrapper>(MockBehavior.Strict);
-            var loggerMock = new Mock<ILogger<ReportTemplateCrudService>>();
-            _reportTemplateCrudService = new ReportTemplateCrudService(_httpClientWrapperMock.Object, loggerMock.Object);
+            var loggerMock = new Mock<ILogger<ReportTemplateService>>();
+            _reportTemplateCrudService = new ReportTemplateService(_httpClientWrapperMock.Object, loggerMock.Object);
         }
         private ReportTemplate GetSampleData()
         {

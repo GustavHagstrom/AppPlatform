@@ -5,12 +5,12 @@ using System.Net.Http.Json;
 
 namespace BidConReport.Client.Shared.Services
 {
-    public class ReportTemplateCrudService : IReportTemplateCrudService
+    public class ReportTemplateService : IReportTemplateService
     {
         private readonly IHttpClientWrapper _httpClient;
-        private readonly ILogger<ReportTemplateCrudService> _logger;
+        private readonly ILogger<ReportTemplateService> _logger;
 
-        public ReportTemplateCrudService(IHttpClientWrapper httpClient, ILogger<ReportTemplateCrudService> logger)
+        public ReportTemplateService(IHttpClientWrapper httpClient, ILogger<ReportTemplateService> logger)
         {
             _httpClient = httpClient;
             _logger = logger;
@@ -62,7 +62,7 @@ namespace BidConReport.Client.Shared.Services
             }
         }
 
-        public async Task SetAsDefaultAsync(ReportTemplate reportTemplate)
+        public async Task SetAsDefaultAsync(ReportTemplate? reportTemplate)
         {
             try
             {

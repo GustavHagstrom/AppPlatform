@@ -12,7 +12,6 @@
 <MudSnackbarProvider />
 
 <AppBar Height="50px">
-    @*<h1 class="px-4 mud-primary-text align-self-center">BidCon rapport</h1>*@
     <MudIcon Icon="@CustomIcons.ReportsForBidcon" Color="Color.Primary" Style="height: 50px; width: 50px;" Class="pa-1"/>
     <AuthorizeView>
         <Authorized>
@@ -23,7 +22,7 @@
                 </MudButton>
             </MudTooltip>
             <MudTooltip Text="@Localizer["Importera från BidCon"]" RootClass="align-self-center">
-                <MudButton Href="@ClientRoutes.Import" Class="py-1 px-3" Variant="Variant.Text" Color="Color.Inherit" Style="@StyleService.CreateNavigationButtonStyle("import")">
+                <MudButton Href="@ClientRoutes.Import" Class="py-1 px-3" Variant="Variant.Text" Color="Color.Inherit" Style="@StyleService.CreateNavigationButtonStyle("bidcon")">
                     <MudIcon Icon="@CustomIcons.BidconIcon" />
                 </MudButton>
             </MudTooltip>
