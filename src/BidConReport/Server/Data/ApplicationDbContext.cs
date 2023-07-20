@@ -28,6 +28,7 @@ public class ApplicationDbContext : DbContext
     public DbSet<User> Users { get; set; }
     public DbSet<UserOrganization> UserOrganizations { get; set; }
     public DbSet<ReportTemplate> ReportTemplates { get; set; }
+    public DbSet<FontFamily> FontFamilies { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -90,97 +91,60 @@ public class ApplicationDbContext : DbContext
     }
     private void MapReportTemplate(ModelBuilder modelBuilder)
     {
-        modelBuilder.Entity<ReportTemplate>()
-            .HasOne(x => x.TopLeftHeader)
-            .WithOne()
-            .HasForeignKey<ReportTemplate>(x => x.TopLeftHeaderId)
-           .OnDelete(DeleteBehavior.ClientSetNull);
-        modelBuilder.Entity<ReportTemplate>()
-            .HasOne(x => x.TopRightHeader)
-            .WithOne()
-            .HasForeignKey<ReportTemplate>(x => x.TopRightHeaderId)
-           .OnDelete(DeleteBehavior.ClientSetNull);
-        modelBuilder.Entity<ReportTemplate>()
-            .HasOne(x => x.TitleSection)
-            .WithOne()
-            .HasForeignKey<ReportTemplate>(x => x.TitleSectionId)
-           .OnDelete(DeleteBehavior.ClientSetNull);
-        modelBuilder.Entity<ReportTemplate>()
-            .HasOne(x => x.InformationSection)
-            .WithOne()
-            .HasForeignKey<ReportTemplate>(x => x.InformationSectionId)
-           .OnDelete(DeleteBehavior.ClientSetNull);
-        modelBuilder.Entity<ReportTemplate>()
-            .HasOne(x => x.PriceSection)
-            .WithOne()
-            .HasForeignKey<ReportTemplate>(x => x.PriceSectionId)
-           .OnDelete(DeleteBehavior.ClientSetNull);
-        modelBuilder.Entity<ReportTemplate>()
-           .HasOne(x => x.TableSection)
-           .WithOne()
-           .HasForeignKey<ReportTemplate>(x => x.TableSectionId)
-           .OnDelete(DeleteBehavior.ClientSetNull);
+        modelBuilder.Entity<FontProperties>()
+            .HasMany<InformationSection>()
+            .WithOne(x => x.ValueFont)
+            .HasForeignKey(x => x.ValueFontId)
+            .OnDelete(DeleteBehavior.NoAction);
+        modelBuilder.Entity<FontProperties>()
+            .HasMany<InformationSection>()
+            .WithOne(x => x.TitleFont)
+            .HasForeignKey(x => x.TitleFontId)
+            .OnDelete(DeleteBehavior.NoAction);
+
+        modelBuilder.Entity<FontProperties>()
+            .HasMany<HeaderDefinition>()
+            .WithOne(x => x.Font)
+            .HasForeignKey(x => x.FontId)
+            .OnDelete(DeleteBehavior.NoAction);
+
+        modelBuilder.Entity<FontProperties>()
+            .HasMany<TableSection>()
+            .WithOne(x => x.CellFont)
+            .HasForeignKey(x => x.CellFontId)
+            .OnDelete(DeleteBehavior.NoAction);
+        modelBuilder.Entity<FontProperties>()
+            .HasMany<TableSection>()
+            .WithOne(x => x.PartFont)
+            .HasForeignKey(x => x.PartFontId)
+            .OnDelete(DeleteBehavior.NoAction);
+        modelBuilder.Entity<FontProperties>()
+            .HasMany<TableSection>()
+            .WithOne(x => x.GroupFont)
+            .HasForeignKey(x => x.GroupFontId)
+            .OnDelete(DeleteBehavior.NoAction);
+
+        modelBuilder.Entity<FontProperties>()
+            .HasMany<PriceSection>()
+            .WithOne(x => x.CommentFont)
+            .HasForeignKey(x => x.CommentFontId)
+            .OnDelete(DeleteBehavior.NoAction);
+        modelBuilder.Entity<FontProperties>()
+            .HasMany<PriceSection>()
+            .WithOne(x => x.PriceFont)
+            .HasForeignKey(x => x.PriceFontId)
+            .OnDelete(DeleteBehavior.NoAction);
 
         modelBuilder.Entity<HeaderDefinition>()
-           .HasOne(x => x.Font)
-           .WithOne()
-           .HasForeignKey<HeaderDefinition>(x => x.FontId)
-           .OnDelete(DeleteBehavior.ClientSetNull);
-
-        modelBuilder.Entity<TitleSection>()
-           .HasOne(x => x.Font)
-           .WithOne()
-           .HasForeignKey<TitleSection>(x => x.FontId)
-           .OnDelete(DeleteBehavior.ClientSetNull);
-
-        modelBuilder.Entity<InformationItem>()
-            .HasOne<InformationSection>()
-            .WithMany(x => x.Items)
-            .HasForeignKey(x => x.InformationSectionId)
-           .OnDelete(DeleteBehavior.ClientSetNull);
-
-        modelBuilder.Entity<InformationSection>()
-           .HasOne(x => x.TitleFont)
-           .WithOne()
-           .HasForeignKey<InformationSection>(x => x.TitleFontId)
-           .OnDelete(DeleteBehavior.ClientSetNull);
-        modelBuilder.Entity<InformationSection>()
-           .HasOne(x => x.ValueFont)
-           .WithOne()
-           .HasForeignKey<InformationSection>(x => x.ValueFontId)
-           .OnDelete(DeleteBehavior.ClientSetNull);
-
-        modelBuilder.Entity<PriceSection>()
-           .HasOne(x => x.PriceFont)
-           .WithOne()
-           .HasForeignKey<PriceSection>(x => x.PriceFontId)
-           .OnDelete(DeleteBehavior.ClientSetNull);
-        modelBuilder.Entity<PriceSection>()
-           .HasOne(x => x.CommentFont)
-           .WithOne()
-           .HasForeignKey<PriceSection>(x => x.CommentFontId)
-           .OnDelete(DeleteBehavior.ClientSetNull);
-
-        modelBuilder.Entity<ColumnDefinition>()
-            .HasOne<TableSection>()
-            .WithMany(x => x.Columns)
-            .HasForeignKey(x => x.TableSectionId)
-           .OnDelete(DeleteBehavior.ClientSetNull);
-        modelBuilder.Entity<ColumnDefinition>()
-           .HasOne(x => x.GroupFont)
-           .WithOne()
-           .HasForeignKey<ColumnDefinition>(x => x.GroupFontId)
-           .OnDelete(DeleteBehavior.ClientSetNull);
-        modelBuilder.Entity<ColumnDefinition>()
-           .HasOne(x => x.PartFont)
-           .WithOne()
-           .HasForeignKey<ColumnDefinition>(x => x.PartFontId)
-           .OnDelete(DeleteBehavior.ClientSetNull);
-        modelBuilder.Entity<ColumnDefinition>()
-           .HasOne(x => x.CellFont)
-           .WithOne()
-           .HasForeignKey<ColumnDefinition>(x => x.CelleFontId)
-           .OnDelete(DeleteBehavior.ClientSetNull);
+            .HasMany<ReportTemplate>()
+            .WithOne(x => x.TopLeftHeader)
+            .HasForeignKey(x => x.TopLeftHeaderId)
+            .OnDelete(DeleteBehavior.NoAction);
+        modelBuilder.Entity<HeaderDefinition>()
+            .HasMany<ReportTemplate>()
+            .WithOne(x => x.TopRightHeader)
+            .HasForeignKey(x => x.TopRightHeaderId)
+            .OnDelete(DeleteBehavior.NoAction);
 
     }
 

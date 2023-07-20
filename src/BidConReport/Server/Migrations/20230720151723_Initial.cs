@@ -58,34 +58,16 @@ namespace BidConReport.Server.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "FontProperties",
+                name: "FontFamilies",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    FontName = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    FontSize = table.Column<int>(type: "int", nullable: false),
-                    Bold = table.Column<bool>(type: "bit", nullable: false),
-                    Italic = table.Column<bool>(type: "bit", nullable: false),
-                    Underline = table.Column<bool>(type: "bit", nullable: false)
+                    Value = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_FontProperties", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "TableSection",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    LayoutOrder = table.Column<int>(type: "int", nullable: false),
-                    IsEnabled = table.Column<bool>(type: "bit", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_TableSection", x => x.Id);
+                    table.PrimaryKey("PK_FontFamilies", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -132,6 +114,29 @@ namespace BidConReport.Server.Migrations
                         column: x => x.EstimationId,
                         principalTable: "Estimations",
                         principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "FontProperties",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    FontFamilyId = table.Column<int>(type: "int", nullable: false),
+                    FontSize = table.Column<int>(type: "int", nullable: false),
+                    Bold = table.Column<bool>(type: "bit", nullable: false),
+                    Italic = table.Column<bool>(type: "bit", nullable: false),
+                    Underline = table.Column<bool>(type: "bit", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_FontProperties", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_FontProperties_FontFamilies_FontFamilyId",
+                        column: x => x.FontFamilyId,
+                        principalTable: "FontFamilies",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -211,6 +216,38 @@ namespace BidConReport.Server.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "TableSection",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    LayoutOrder = table.Column<int>(type: "int", nullable: false),
+                    IsEnabled = table.Column<bool>(type: "bit", nullable: false),
+                    GroupFontId = table.Column<int>(type: "int", nullable: false),
+                    PartFontId = table.Column<int>(type: "int", nullable: false),
+                    CellFontId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_TableSection", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_TableSection_FontProperties_CellFontId",
+                        column: x => x.CellFontId,
+                        principalTable: "FontProperties",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_TableSection_FontProperties_GroupFontId",
+                        column: x => x.GroupFontId,
+                        principalTable: "FontProperties",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_TableSection_FontProperties_PartFontId",
+                        column: x => x.PartFontId,
+                        principalTable: "FontProperties",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
                 name: "TitleSection",
                 columns: table => new
                 {
@@ -229,71 +266,6 @@ namespace BidConReport.Server.Migrations
                         name: "FK_TitleSection_FontProperties_FontId",
                         column: x => x.FontId,
                         principalTable: "FontProperties",
-                        principalColumn: "Id");
-                });
-
-            migrationBuilder.CreateTable(
-                name: "ColumnDefinition",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    TableSectionId = table.Column<int>(type: "int", nullable: false),
-                    IsActive = table.Column<bool>(type: "bit", nullable: false),
-                    DataSource = table.Column<int>(type: "int", nullable: false),
-                    GroupFontId = table.Column<int>(type: "int", nullable: false),
-                    PartFontId = table.Column<int>(type: "int", nullable: false),
-                    CelleFontId = table.Column<int>(type: "int", nullable: false),
-                    Title = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    Width = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_ColumnDefinition", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_ColumnDefinition_FontProperties_CelleFontId",
-                        column: x => x.CelleFontId,
-                        principalTable: "FontProperties",
-                        principalColumn: "Id");
-                    table.ForeignKey(
-                        name: "FK_ColumnDefinition_FontProperties_GroupFontId",
-                        column: x => x.GroupFontId,
-                        principalTable: "FontProperties",
-                        principalColumn: "Id");
-                    table.ForeignKey(
-                        name: "FK_ColumnDefinition_FontProperties_PartFontId",
-                        column: x => x.PartFontId,
-                        principalTable: "FontProperties",
-                        principalColumn: "Id");
-                    table.ForeignKey(
-                        name: "FK_ColumnDefinition_TableSection_TableSectionId",
-                        column: x => x.TableSectionId,
-                        principalTable: "TableSection",
-                        principalColumn: "Id");
-                });
-
-            migrationBuilder.CreateTable(
-                name: "UserOrganizations",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    UserId = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    OrganizationId = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    DefaultEstimationSettingsId = table.Column<int>(type: "int", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_UserOrganizations", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_UserOrganizations_EstimationImportSettings_DefaultEstimationSettingsId",
-                        column: x => x.DefaultEstimationSettingsId,
-                        principalTable: "EstimationImportSettings",
-                        principalColumn: "Id");
-                    table.ForeignKey(
-                        name: "FK_UserOrganizations_Users_UserId",
-                        column: x => x.UserId,
-                        principalTable: "Users",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -317,11 +289,35 @@ namespace BidConReport.Server.Migrations
                         name: "FK_InformationItem_InformationSection_InformationSectionId",
                         column: x => x.InformationSectionId,
                         principalTable: "InformationSection",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
-                name: "ReportTemplate",
+                name: "ColumnDefinition",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    TableSectionId = table.Column<int>(type: "int", nullable: false),
+                    IsActive = table.Column<bool>(type: "bit", nullable: false),
+                    DataSource = table.Column<int>(type: "int", nullable: false),
+                    Title = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    Width = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ColumnDefinition", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_ColumnDefinition_TableSection_TableSectionId",
+                        column: x => x.TableSectionId,
+                        principalTable: "TableSection",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "ReportTemplates",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -337,56 +333,74 @@ namespace BidConReport.Server.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_ReportTemplate", x => x.Id);
+                    table.PrimaryKey("PK_ReportTemplates", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_ReportTemplate_HeaderDefinition_TopLeftHeaderId",
+                        name: "FK_ReportTemplates_HeaderDefinition_TopLeftHeaderId",
                         column: x => x.TopLeftHeaderId,
                         principalTable: "HeaderDefinition",
                         principalColumn: "Id");
                     table.ForeignKey(
-                        name: "FK_ReportTemplate_HeaderDefinition_TopRightHeaderId",
+                        name: "FK_ReportTemplates_HeaderDefinition_TopRightHeaderId",
                         column: x => x.TopRightHeaderId,
                         principalTable: "HeaderDefinition",
                         principalColumn: "Id");
                     table.ForeignKey(
-                        name: "FK_ReportTemplate_InformationSection_InformationSectionId",
+                        name: "FK_ReportTemplates_InformationSection_InformationSectionId",
                         column: x => x.InformationSectionId,
                         principalTable: "InformationSection",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_ReportTemplate_PriceSection_PriceSectionId",
+                        name: "FK_ReportTemplates_PriceSection_PriceSectionId",
                         column: x => x.PriceSectionId,
                         principalTable: "PriceSection",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_ReportTemplate_TableSection_TableSectionId",
+                        name: "FK_ReportTemplates_TableSection_TableSectionId",
                         column: x => x.TableSectionId,
                         principalTable: "TableSection",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_ReportTemplate_TitleSection_TitleSectionId",
+                        name: "FK_ReportTemplates_TitleSection_TitleSectionId",
                         column: x => x.TitleSectionId,
                         principalTable: "TitleSection",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
-            migrationBuilder.CreateIndex(
-                name: "IX_ColumnDefinition_CelleFontId",
-                table: "ColumnDefinition",
-                column: "CelleFontId",
-                unique: true);
-
-            migrationBuilder.CreateIndex(
-                name: "IX_ColumnDefinition_GroupFontId",
-                table: "ColumnDefinition",
-                column: "GroupFontId",
-                unique: true);
-
-            migrationBuilder.CreateIndex(
-                name: "IX_ColumnDefinition_PartFontId",
-                table: "ColumnDefinition",
-                column: "PartFontId",
-                unique: true);
+            migrationBuilder.CreateTable(
+                name: "UserOrganizations",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    UserId = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    OrganizationId = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    DefaultEstimationSettingsId = table.Column<int>(type: "int", nullable: true),
+                    DefaultReportTemplateId = table.Column<int>(type: "int", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_UserOrganizations", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_UserOrganizations_EstimationImportSettings_DefaultEstimationSettingsId",
+                        column: x => x.DefaultEstimationSettingsId,
+                        principalTable: "EstimationImportSettings",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_UserOrganizations_ReportTemplates_DefaultReportTemplateId",
+                        column: x => x.DefaultReportTemplateId,
+                        principalTable: "ReportTemplates",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_UserOrganizations_Users_UserId",
+                        column: x => x.UserId,
+                        principalTable: "Users",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
 
             migrationBuilder.CreateIndex(
                 name: "IX_ColumnDefinition_TableSectionId",
@@ -404,10 +418,14 @@ namespace BidConReport.Server.Migrations
                 column: "EstimationItemId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_FontProperties_FontFamilyId",
+                table: "FontProperties",
+                column: "FontFamilyId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_HeaderDefinition_FontId",
                 table: "HeaderDefinition",
-                column: "FontId",
-                unique: true);
+                column: "FontId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_InformationItem_InformationSectionId",
@@ -417,73 +435,82 @@ namespace BidConReport.Server.Migrations
             migrationBuilder.CreateIndex(
                 name: "IX_InformationSection_TitleFontId",
                 table: "InformationSection",
-                column: "TitleFontId",
-                unique: true);
+                column: "TitleFontId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_InformationSection_ValueFontId",
                 table: "InformationSection",
-                column: "ValueFontId",
-                unique: true);
+                column: "ValueFontId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_PriceSection_CommentFontId",
                 table: "PriceSection",
-                column: "CommentFontId",
-                unique: true);
+                column: "CommentFontId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_PriceSection_PriceFontId",
                 table: "PriceSection",
-                column: "PriceFontId",
-                unique: true);
+                column: "PriceFontId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_ReportTemplate_InformationSectionId",
-                table: "ReportTemplate",
-                column: "InformationSectionId",
-                unique: true);
+                name: "IX_ReportTemplates_InformationSectionId",
+                table: "ReportTemplates",
+                column: "InformationSectionId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_ReportTemplate_PriceSectionId",
-                table: "ReportTemplate",
-                column: "PriceSectionId",
-                unique: true);
+                name: "IX_ReportTemplates_PriceSectionId",
+                table: "ReportTemplates",
+                column: "PriceSectionId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_ReportTemplate_TableSectionId",
-                table: "ReportTemplate",
-                column: "TableSectionId",
-                unique: true);
+                name: "IX_ReportTemplates_TableSectionId",
+                table: "ReportTemplates",
+                column: "TableSectionId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_ReportTemplate_TitleSectionId",
-                table: "ReportTemplate",
-                column: "TitleSectionId",
-                unique: true);
+                name: "IX_ReportTemplates_TitleSectionId",
+                table: "ReportTemplates",
+                column: "TitleSectionId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_ReportTemplate_TopLeftHeaderId",
-                table: "ReportTemplate",
-                column: "TopLeftHeaderId",
-                unique: true);
+                name: "IX_ReportTemplates_TopLeftHeaderId",
+                table: "ReportTemplates",
+                column: "TopLeftHeaderId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_ReportTemplate_TopRightHeaderId",
-                table: "ReportTemplate",
-                column: "TopRightHeaderId",
-                unique: true);
+                name: "IX_ReportTemplates_TopRightHeaderId",
+                table: "ReportTemplates",
+                column: "TopRightHeaderId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_TableSection_CellFontId",
+                table: "TableSection",
+                column: "CellFontId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_TableSection_GroupFontId",
+                table: "TableSection",
+                column: "GroupFontId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_TableSection_PartFontId",
+                table: "TableSection",
+                column: "PartFontId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_TitleSection_FontId",
                 table: "TitleSection",
-                column: "FontId",
-                unique: true);
+                column: "FontId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_UserOrganizations_DefaultEstimationSettingsId",
                 table: "UserOrganizations",
                 column: "DefaultEstimationSettingsId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_UserOrganizations_DefaultReportTemplateId",
+                table: "UserOrganizations",
+                column: "DefaultReportTemplateId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_UserOrganizations_UserId",
@@ -504,13 +531,19 @@ namespace BidConReport.Server.Migrations
                 name: "InformationItem");
 
             migrationBuilder.DropTable(
-                name: "ReportTemplate");
-
-            migrationBuilder.DropTable(
                 name: "UserOrganizations");
 
             migrationBuilder.DropTable(
                 name: "Estimations");
+
+            migrationBuilder.DropTable(
+                name: "EstimationImportSettings");
+
+            migrationBuilder.DropTable(
+                name: "ReportTemplates");
+
+            migrationBuilder.DropTable(
+                name: "Users");
 
             migrationBuilder.DropTable(
                 name: "HeaderDefinition");
@@ -528,13 +561,10 @@ namespace BidConReport.Server.Migrations
                 name: "TitleSection");
 
             migrationBuilder.DropTable(
-                name: "EstimationImportSettings");
-
-            migrationBuilder.DropTable(
-                name: "Users");
-
-            migrationBuilder.DropTable(
                 name: "FontProperties");
+
+            migrationBuilder.DropTable(
+                name: "FontFamilies");
         }
     }
 }

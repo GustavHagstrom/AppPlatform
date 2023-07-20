@@ -7,15 +7,15 @@
         <div style="@($"width: {column.Width}%")" class="@($"pl-{NumberOfNestedParentGroups(Item) * 3}")">
             @if(Item.ItemType == EstimationItemType.Group )
             {
-                <MudText Style="@($"{ParentComponent.CreateFontStyle(column.GroupFont)}")">@DataSourceFunctions[column.DataSource].Invoke(Item)</MudText>
+                <MudText Style="@($"{ParentComponent.CreateFontStyle(ParentComponent.Template.TableSection.GroupFont)}")">@DataSourceFunctions[column.DataSource].Invoke(Item)</MudText>
             }
             else if (Item.ItemType == EstimationItemType.Part)
             {
-                <MudText Style="@($"{ParentComponent.CreateFontStyle(column.PartFont)}")">@DataSourceFunctions[column.DataSource].Invoke(Item)</MudText>
+                <MudText Style="@($"{ParentComponent.CreateFontStyle(ParentComponent.Template.TableSection.PartFont)}")">@DataSourceFunctions[column.DataSource].Invoke(Item)</MudText>
             }
             else
             {
-                <MudText Style="@($"{ParentComponent.CreateFontStyle(column.CellFont)}")">@DataSourceFunctions[column.DataSource].Invoke(Item)</MudText>
+                <MudText Style="@($"{ParentComponent.CreateFontStyle(ParentComponent.Template.TableSection.CellFont)}")">@DataSourceFunctions[column.DataSource].Invoke(Item)</MudText>
             }
         
         </div>

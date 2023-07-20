@@ -1,4 +1,6 @@
-﻿namespace BidConReport.Shared.Features.ReportTemplate.Information;
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace BidConReport.Shared.Features.ReportTemplate.Information;
 
 public class InformationItem 
 {

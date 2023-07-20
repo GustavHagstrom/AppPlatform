@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BidConReport.Server.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230714211920_Initial")]
+    [Migration("20230720151723_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -50,6 +50,9 @@ namespace BidConReport.Server.Migrations
                     b.Property<int?>("DefaultEstimationSettingsId")
                         .HasColumnType("int");
 
+                    b.Property<int?>("DefaultReportTemplateId")
+                        .HasColumnType("int");
+
                     b.Property<string>("OrganizationId")
                         .IsRequired()
                         .HasMaxLength(50)
@@ -63,6 +66,8 @@ namespace BidConReport.Server.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("DefaultEstimationSettingsId");
+
+                    b.HasIndex("DefaultReportTemplateId");
 
                     b.HasIndex("UserId");
 
@@ -254,6 +259,24 @@ namespace BidConReport.Server.Migrations
                     b.ToTable("EstimationItem");
                 });
 
+            modelBuilder.Entity("BidConReport.Shared.Features.ReportTemplate.FontFamily", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Value")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("FontFamilies");
+                });
+
             modelBuilder.Entity("BidConReport.Shared.Features.ReportTemplate.FontProperties", b =>
                 {
                     b.Property<int>("Id")
@@ -265,10 +288,8 @@ namespace BidConReport.Server.Migrations
                     b.Property<bool>("Bold")
                         .HasColumnType("bit");
 
-                    b.Property<string>("FontName")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                    b.Property<int>("FontFamilyId")
+                        .HasColumnType("int");
 
                     b.Property<int>("FontSize")
                         .HasColumnType("int");
@@ -280,6 +301,8 @@ namespace BidConReport.Server.Migrations
                         .HasColumnType("bit");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("FontFamilyId");
 
                     b.ToTable("FontProperties");
                 });
@@ -301,8 +324,7 @@ namespace BidConReport.Server.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("FontId")
-                        .IsUnique();
+                    b.HasIndex("FontId");
 
                     b.ToTable("HeaderDefinition");
                 });
@@ -361,11 +383,9 @@ namespace BidConReport.Server.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("TitleFontId")
-                        .IsUnique();
+                    b.HasIndex("TitleFontId");
 
-                    b.HasIndex("ValueFontId")
-                        .IsUnique();
+                    b.HasIndex("ValueFontId");
 
                     b.ToTable("InformationSection");
                 });
@@ -415,11 +435,9 @@ namespace BidConReport.Server.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CommentFontId")
-                        .IsUnique();
+                    b.HasIndex("CommentFontId");
 
-                    b.HasIndex("PriceFontId")
-                        .IsUnique();
+                    b.HasIndex("PriceFontId");
 
                     b.ToTable("PriceSection");
                 });
@@ -462,25 +480,19 @@ namespace BidConReport.Server.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("InformationSectionId")
-                        .IsUnique();
+                    b.HasIndex("InformationSectionId");
 
-                    b.HasIndex("PriceSectionId")
-                        .IsUnique();
+                    b.HasIndex("PriceSectionId");
 
-                    b.HasIndex("TableSectionId")
-                        .IsUnique();
+                    b.HasIndex("TableSectionId");
 
-                    b.HasIndex("TitleSectionId")
-                        .IsUnique();
+                    b.HasIndex("TitleSectionId");
 
-                    b.HasIndex("TopLeftHeaderId")
-                        .IsUnique();
+                    b.HasIndex("TopLeftHeaderId");
 
-                    b.HasIndex("TopRightHeaderId")
-                        .IsUnique();
+                    b.HasIndex("TopRightHeaderId");
 
-                    b.ToTable("ReportTemplate");
+                    b.ToTable("ReportTemplates");
                 });
 
             modelBuilder.Entity("BidConReport.Shared.Features.ReportTemplate.Table.ColumnDefinition", b =>
@@ -491,20 +503,11 @@ namespace BidConReport.Server.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("CelleFontId")
-                        .HasColumnType("int");
-
                     b.Property<int>("DataSource")
-                        .HasColumnType("int");
-
-                    b.Property<int>("GroupFontId")
                         .HasColumnType("int");
 
                     b.Property<bool>("IsActive")
                         .HasColumnType("bit");
-
-                    b.Property<int>("PartFontId")
-                        .HasColumnType("int");
 
                     b.Property<int>("TableSectionId")
                         .HasColumnType("int");
@@ -519,15 +522,6 @@ namespace BidConReport.Server.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CelleFontId")
-                        .IsUnique();
-
-                    b.HasIndex("GroupFontId")
-                        .IsUnique();
-
-                    b.HasIndex("PartFontId")
-                        .IsUnique();
-
                     b.HasIndex("TableSectionId");
 
                     b.ToTable("ColumnDefinition");
@@ -541,13 +535,28 @@ namespace BidConReport.Server.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<int>("CellFontId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("GroupFontId")
+                        .HasColumnType("int");
+
                     b.Property<bool>("IsEnabled")
                         .HasColumnType("bit");
 
                     b.Property<int>("LayoutOrder")
                         .HasColumnType("int");
 
+                    b.Property<int>("PartFontId")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("CellFontId");
+
+                    b.HasIndex("GroupFontId");
+
+                    b.HasIndex("PartFontId");
 
                     b.ToTable("TableSection");
                 });
@@ -580,8 +589,7 @@ namespace BidConReport.Server.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("FontId")
-                        .IsUnique();
+                    b.HasIndex("FontId");
 
                     b.ToTable("TitleSection");
                 });
@@ -592,6 +600,10 @@ namespace BidConReport.Server.Migrations
                         .WithMany()
                         .HasForeignKey("DefaultEstimationSettingsId");
 
+                    b.HasOne("BidConReport.Shared.Features.ReportTemplate.ReportTemplate", "DefaultReportTemplate")
+                        .WithMany()
+                        .HasForeignKey("DefaultReportTemplateId");
+
                     b.HasOne("BidConReport.Server.Shared.Enteties.User", "User")
                         .WithMany("UserOrganizations")
                         .HasForeignKey("UserId")
@@ -599,6 +611,8 @@ namespace BidConReport.Server.Migrations
                         .IsRequired();
 
                     b.Navigation("DefaultEstimationSettings");
+
+                    b.Navigation("DefaultReportTemplate");
 
                     b.Navigation("User");
                 });
@@ -614,11 +628,22 @@ namespace BidConReport.Server.Migrations
                         .HasForeignKey("EstimationItemId");
                 });
 
+            modelBuilder.Entity("BidConReport.Shared.Features.ReportTemplate.FontProperties", b =>
+                {
+                    b.HasOne("BidConReport.Shared.Features.ReportTemplate.FontFamily", "FontFamily")
+                        .WithMany()
+                        .HasForeignKey("FontFamilyId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("FontFamily");
+                });
+
             modelBuilder.Entity("BidConReport.Shared.Features.ReportTemplate.Header.HeaderDefinition", b =>
                 {
                     b.HasOne("BidConReport.Shared.Features.ReportTemplate.FontProperties", "Font")
-                        .WithOne()
-                        .HasForeignKey("BidConReport.Shared.Features.ReportTemplate.Header.HeaderDefinition", "FontId")
+                        .WithMany()
+                        .HasForeignKey("FontId")
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
@@ -630,21 +655,21 @@ namespace BidConReport.Server.Migrations
                     b.HasOne("BidConReport.Shared.Features.ReportTemplate.Information.InformationSection", null)
                         .WithMany("Items")
                         .HasForeignKey("InformationSectionId")
-                        .OnDelete(DeleteBehavior.NoAction)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
             modelBuilder.Entity("BidConReport.Shared.Features.ReportTemplate.Information.InformationSection", b =>
                 {
                     b.HasOne("BidConReport.Shared.Features.ReportTemplate.FontProperties", "TitleFont")
-                        .WithOne()
-                        .HasForeignKey("BidConReport.Shared.Features.ReportTemplate.Information.InformationSection", "TitleFontId")
+                        .WithMany()
+                        .HasForeignKey("TitleFontId")
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.HasOne("BidConReport.Shared.Features.ReportTemplate.FontProperties", "ValueFont")
-                        .WithOne()
-                        .HasForeignKey("BidConReport.Shared.Features.ReportTemplate.Information.InformationSection", "ValueFontId")
+                        .WithMany()
+                        .HasForeignKey("ValueFontId")
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
@@ -656,14 +681,14 @@ namespace BidConReport.Server.Migrations
             modelBuilder.Entity("BidConReport.Shared.Features.ReportTemplate.Price.PriceSection", b =>
                 {
                     b.HasOne("BidConReport.Shared.Features.ReportTemplate.FontProperties", "CommentFont")
-                        .WithOne()
-                        .HasForeignKey("BidConReport.Shared.Features.ReportTemplate.Price.PriceSection", "CommentFontId")
+                        .WithMany()
+                        .HasForeignKey("CommentFontId")
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.HasOne("BidConReport.Shared.Features.ReportTemplate.FontProperties", "PriceFont")
-                        .WithOne()
-                        .HasForeignKey("BidConReport.Shared.Features.ReportTemplate.Price.PriceSection", "PriceFontId")
+                        .WithMany()
+                        .HasForeignKey("PriceFontId")
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
@@ -675,38 +700,38 @@ namespace BidConReport.Server.Migrations
             modelBuilder.Entity("BidConReport.Shared.Features.ReportTemplate.ReportTemplate", b =>
                 {
                     b.HasOne("BidConReport.Shared.Features.ReportTemplate.Information.InformationSection", "InformationSection")
-                        .WithOne()
-                        .HasForeignKey("BidConReport.Shared.Features.ReportTemplate.ReportTemplate", "InformationSectionId")
-                        .OnDelete(DeleteBehavior.NoAction)
+                        .WithMany()
+                        .HasForeignKey("InformationSectionId")
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("BidConReport.Shared.Features.ReportTemplate.Price.PriceSection", "PriceSection")
-                        .WithOne()
-                        .HasForeignKey("BidConReport.Shared.Features.ReportTemplate.ReportTemplate", "PriceSectionId")
-                        .OnDelete(DeleteBehavior.NoAction)
+                        .WithMany()
+                        .HasForeignKey("PriceSectionId")
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("BidConReport.Shared.Features.ReportTemplate.Table.TableSection", "TableSection")
-                        .WithOne()
-                        .HasForeignKey("BidConReport.Shared.Features.ReportTemplate.ReportTemplate", "TableSectionId")
-                        .OnDelete(DeleteBehavior.NoAction)
+                        .WithMany()
+                        .HasForeignKey("TableSectionId")
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("BidConReport.Shared.Features.ReportTemplate.Title.TitleSection", "TitleSection")
-                        .WithOne()
-                        .HasForeignKey("BidConReport.Shared.Features.ReportTemplate.ReportTemplate", "TitleSectionId")
-                        .OnDelete(DeleteBehavior.NoAction)
+                        .WithMany()
+                        .HasForeignKey("TitleSectionId")
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("BidConReport.Shared.Features.ReportTemplate.Header.HeaderDefinition", "TopLeftHeader")
-                        .WithOne()
-                        .HasForeignKey("BidConReport.Shared.Features.ReportTemplate.ReportTemplate", "TopLeftHeaderId")
+                        .WithMany()
+                        .HasForeignKey("TopLeftHeaderId")
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.HasOne("BidConReport.Shared.Features.ReportTemplate.Header.HeaderDefinition", "TopRightHeader")
-                        .WithOne()
-                        .HasForeignKey("BidConReport.Shared.Features.ReportTemplate.ReportTemplate", "TopRightHeaderId")
+                        .WithMany()
+                        .HasForeignKey("TopRightHeaderId")
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
@@ -725,31 +750,34 @@ namespace BidConReport.Server.Migrations
 
             modelBuilder.Entity("BidConReport.Shared.Features.ReportTemplate.Table.ColumnDefinition", b =>
                 {
-                    b.HasOne("BidConReport.Shared.Features.ReportTemplate.FontProperties", "CelleFont")
-                        .WithOne()
-                        .HasForeignKey("BidConReport.Shared.Features.ReportTemplate.Table.ColumnDefinition", "CelleFontId")
+                    b.HasOne("BidConReport.Shared.Features.ReportTemplate.Table.TableSection", null)
+                        .WithMany("Columns")
+                        .HasForeignKey("TableSectionId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("BidConReport.Shared.Features.ReportTemplate.Table.TableSection", b =>
+                {
+                    b.HasOne("BidConReport.Shared.Features.ReportTemplate.FontProperties", "CellFont")
+                        .WithMany()
+                        .HasForeignKey("CellFontId")
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.HasOne("BidConReport.Shared.Features.ReportTemplate.FontProperties", "GroupFont")
-                        .WithOne()
-                        .HasForeignKey("BidConReport.Shared.Features.ReportTemplate.Table.ColumnDefinition", "GroupFontId")
+                        .WithMany()
+                        .HasForeignKey("GroupFontId")
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.HasOne("BidConReport.Shared.Features.ReportTemplate.FontProperties", "PartFont")
-                        .WithOne()
-                        .HasForeignKey("BidConReport.Shared.Features.ReportTemplate.Table.ColumnDefinition", "PartFontId")
+                        .WithMany()
+                        .HasForeignKey("PartFontId")
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
-                    b.HasOne("BidConReport.Shared.Features.ReportTemplate.Table.TableSection", null)
-                        .WithMany("Columns")
-                        .HasForeignKey("TableSectionId")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
-
-                    b.Navigation("CelleFont");
+                    b.Navigation("CellFont");
 
                     b.Navigation("GroupFont");
 
@@ -759,9 +787,9 @@ namespace BidConReport.Server.Migrations
             modelBuilder.Entity("BidConReport.Shared.Features.ReportTemplate.Title.TitleSection", b =>
                 {
                     b.HasOne("BidConReport.Shared.Features.ReportTemplate.FontProperties", "Font")
-                        .WithOne()
-                        .HasForeignKey("BidConReport.Shared.Features.ReportTemplate.Title.TitleSection", "FontId")
-                        .OnDelete(DeleteBehavior.NoAction)
+                        .WithMany()
+                        .HasForeignKey("FontId")
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Font");

@@ -89,7 +89,7 @@
     }
     public string CreateFontStyle(FontProperties properties)
     {
-        var builder = new System.Text.StringBuilder($"font-family: {properties.FontName}; font-size: {properties.FontSize}px; ");
+        var builder = new System.Text.StringBuilder($"font-family: {properties.FontFamily.Value}; font-size: {properties.FontSize}px; ");
         if (properties.Bold)
         {
             builder.Append("font-weight: bold; ");

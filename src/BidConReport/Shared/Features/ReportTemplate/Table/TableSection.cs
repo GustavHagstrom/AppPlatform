@@ -1,4 +1,5 @@
 ﻿using BidConReport.Shared.Entities;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace BidConReport.Shared.Features.ReportTemplate.Table;
@@ -8,6 +9,13 @@ public class TableSection : IReportTemplateSection
     public int LayoutOrder { get; set; }
     public bool IsEnabled { get; set; } = true;
     public List<ColumnDefinition> Columns { get; set; } = new();
+    public int GroupFontId { get; set; }
+    public FontProperties GroupFont { get; set; } = DefaultGroupFont();
+    public int PartFontId { get; set; }
+    public FontProperties PartFont { get; set; } = DefaultPartFont();
+    public int CellFontId { get; set; }
+    public FontProperties CellFont { get; set; } = DefaultCellFont();
+
     [NotMapped]
     public static TableSection Default => new()
     {
@@ -23,4 +31,25 @@ public class TableSection : IReportTemplateSection
         }
 
     };
+    private static FontProperties DefaultGroupFont()
+    {
+        var font = FontProperties.Default;
+        font.Bold = true;
+        font.FontSize = 20;
+        return font;
+    }
+    private static FontProperties DefaultPartFont()
+    {
+        var font = FontProperties.Default;
+        font.Bold = true;
+        font.FontSize = 14;
+        return font;
+    }
+    private static FontProperties DefaultCellFont()
+    {
+        var font = FontProperties.Default;
+        font.Bold = false;
+        font.FontSize = 11;
+        return font;
+    }
 }
