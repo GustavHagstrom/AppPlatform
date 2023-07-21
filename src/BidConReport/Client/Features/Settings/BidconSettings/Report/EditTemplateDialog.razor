@@ -1,11 +1,13 @@
 ﻿<MudDialog>
     <DialogContent>
         <MudForm Model="Template" @ref="Form" Class="pt-3">
-            <MudGrid Justify="Justify.Center" Spacing="1" Style="overflow-y: auto; max-height: calc(100vh - 144.5px - 100px)">
+            <div style="overflow-y: auto; height: calc(100vh - 144.5px - 100px);">
              
-                <MudItem xs="12"><MudTextField @bind-Value="Template.Name" Label="@Localizer["Namn"]" Variant="Variant.Outlined" Margin="Margin.Dense"/></MudItem>
+                <MudTextField Class="mb-4" @bind-Value="Template.Name" Label="@Localizer["Namn"]" Variant="Variant.Outlined" Margin="Margin.Dense"/>
+                
+                <ReportTemplateSectionOrderer Template="Template"/>
 
-            </MudGrid>
+            </div>
         </MudForm>
     </DialogContent>
     <DialogActions>
