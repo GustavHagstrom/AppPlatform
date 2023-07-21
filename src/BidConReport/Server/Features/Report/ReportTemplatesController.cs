@@ -28,7 +28,7 @@ public class ReportTemplatesController : ControllerBase
         var result = await _reportTemplatesCrudService.GetAllOrganizationTemplatesAsync(currentOrgId);
         return Ok(result);
     }
-    [HttpGet]
+    [HttpGet("Default")]
     public async Task<IActionResult> GetDefault()
     {
         var userId = User.Claims.Where(x => x.Type == ClaimConstants.ObjectId).FirstOrDefault()?.Value;

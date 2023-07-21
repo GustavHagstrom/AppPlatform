@@ -19,6 +19,7 @@ public class TableSection : IReportTemplateSection
     [NotMapped]
     public static TableSection Default => new()
     {
+        LayoutOrder = 4,
         Columns = new()
         {
             new ColumnDefinition{ DataSource = ColumnDataSource.Name, Width = 30 },

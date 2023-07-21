@@ -11,7 +11,7 @@ public static class ServiceExtensions
     public static void UseImportFeature(this IServiceCollection services)
     {
         services.AddTransient<IBidConImporterService, BidConImporterService>();
-        services.AddTransient<IImportSettingsService, ImportSettingsService>();
+        
     }
     public static void UseSharedStateContainers(this IServiceCollection services)
     {
@@ -21,5 +21,7 @@ public static class ServiceExtensions
     {
         services.AddTransient<IEstimationParentReferencer, EstimationParentReferencer>();
         services.AddTransient<IEstimationItemTraverser, EstimationItemTraverser>();
+        services.AddTransient<IReportTemplateService, ReportTemplateService>();
+        services.AddTransient<IImportSettingsService, ImportSettingsService>();
     }
 }

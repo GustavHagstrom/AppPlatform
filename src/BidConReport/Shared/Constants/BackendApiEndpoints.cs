@@ -44,15 +44,15 @@ public static class BackendApiEndpoints
         /// <summary>
         /// Post request. Upsert ReportTemplates from json body
         /// </summary>
-        public const string Upsert = "api/ImportSettings/Upsert";
+        public const string Upsert = "api/ReportTemplates/Upsert";
         /// <summary>
         /// Delete request. Deletes ReportTemplates. Parameter appended as /{id} in the request Uri
         /// </summary>
-        public const string Delete = "api/ImportSettings/Delete";
+        public const string Delete = "api/ReportTemplates/Delete";
         /// <summary>
         /// Post request. Set ReportTemplate as default. id as json body. Id may be null resulting in no default settings.
         /// </summary>
-        public const string SetDefault = "api/ImportSettings/SetDefault";
+        public const string SetDefault = "api/ReportTemplates/SetAsDefault";
     }
 }
 

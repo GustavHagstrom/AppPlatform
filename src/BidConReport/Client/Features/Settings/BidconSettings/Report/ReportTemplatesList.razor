@@ -6,7 +6,7 @@
         <MudProgressCircular Color="Color.Primary" Indeterminate="true" Size="Size.Large" />
     </MudOverlay>
 
-    <MudList Style="height: 100%; min-width: 100px;" Clickable="true" DisableGutters="true" Dense="true" DisablePadding="true" @bind-SelectedValue="SelectedSettings">
+    <MudList Style="height: 100%; min-width: 100px;" Clickable="true" DisableGutters="true" Dense="true" DisablePadding="true" @bind-SelectedValue="SelectedTemplate">
         <MudListSubheader Class="border-b pa-2 d-flex" Style="border-color: var(--mud-palette-lines-default)">
             <MudText Typo="Typo.h6" Class="pr-4" Style="color: var(--mud-palette-text-primary)">@Localizer["Rapportmallar"]</MudText>
             <MudSpacer/>
@@ -22,82 +22,82 @@
 </MudPaper>
 
 @code {
+    [Inject] public required IReportTemplateService TemplateService { get; set; }
     [Inject] public required IDialogService DialogService { get; set; }
     [Inject] public required IStringLocalizer<ReportTemplatesList> Localizer { get; set; }
 
-    //public ICollection<EstimationImportSettings>? ImportProfilesList { get; set; }
-    public object? SelectedSettings { get; set; }
+    public ICollection<ReportTemplate>? TemplateList { get; set; }
+    public object? SelectedTemplate { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
-        //await RefreshImportProfilesList();
+        await RefreshList();
     }
-    public async Task RefreshImportProfilesList()
+    public async Task RefreshList()
     {
-        //ImportProfilesList = null;
-        //StateHasChanged();
-        //ImportProfilesList = await ImportSettingsService.GetAllAsync();
-        //StateHasChanged();
+        TemplateList = null;
+        StateHasChanged();
+        TemplateList = await TemplateService.GetAllAsync();
+        StateHasChanged();
     }
     public async Task CreateNew()
     {
-        //await OpenSettingsDialog(EstimationImportSettings.Empty, Localizer["Ny"]);
+        await OpenEditDialog(new ReportTemplate(), Localizer["Ny"]);
     }
-    public async Task EditSelectedSettings()
+    public async Task EditSelectedTemplate()
     {
-        //if (SelectedSettings is not null)
-        //{
-        //    var clone = JsonSerializer.Deserialize<EstimationImportSettings>(JsonSerializer.Serialize(SelectedSettings as EstimationImportSettings));
-        //    await OpenSettingsDialog(clone!, Localizer["Redigera"]);
-        //}
+        if (SelectedTemplate is not null)
+        {
+            var clone = JsonSerializer.Deserialize<ReportTemplate>(JsonSerializer.Serialize(SelectedTemplate as ReportTemplate));
+            await OpenEditDialog(clone!, Localizer["Redigera"]);
+        }
     }
-    public async Task OpenSettingsDialog(EstimationImportSettings settings, string title)
+    public async Task OpenEditDialog(ReportTemplate template, string title)
     {
-        //var options = new DialogOptions()
-        //    {
-        //        MaxWidth = MaxWidth.ExtraSmall,
-        //        CloseButton = true,
-        //        NoHeader = false,
-        //        DisableBackdropClick = true,
+        var options = new DialogOptions()
+            {
+                MaxWidth = MaxWidth.ExtraSmall,
+                CloseButton = true,
+                NoHeader = false,
+                DisableBackdropClick = true,
 
-        //    };
-        //var parameters = new DialogParameters();
-        //parameters.Add(nameof(EditImportSettingsDialog.SelectedSetting), settings);
-        //var dialog = await DialogService.ShowAsync<EditImportSettingsDialog>(title, parameters, options);
-        //var result = await dialog.Result;
-        //if (!result.Canceled)
-        //{
-        //    await ImportSettingsService.UpsertAsync(settings!);
-        //    await RefreshImportProfilesList();
-        //}
-
+            };
+        var parameters = new DialogParameters();
+        parameters.Add(nameof(EditTemplateDialog.Template), template);
+        var dialog = await DialogService.ShowAsync<EditTemplateDialog>(title, parameters, options);
+        var result = await dialog.Result;
+        if (!result.Canceled)
+        {
+            await TemplateService.UpsertAsync(template!);
+            await RefreshList();
+        }
     }
-    public async Task DeleteSelectedSettings()
+    public async Task DeleteSelectedTemplate()
     {
-        //if (SelectedSettings is not null && SelectedSettings is EstimationImportSettings settings)
-        //{
-        //    if (await ConfirmDelete(settings))
-        //    {
-        //        await ImportSettingsService.DeleteAsync(settings.Id);
-        //        await RefreshImportProfilesList();
-        //    }
-        //}
+        if (SelectedTemplate is not null && SelectedTemplate is ReportTemplate template)
+        {
+            if (await ConfirmDelete(template))
+            {
+                await TemplateService.DeleteAsync(template.Id);
+                await RefreshList();
+            }
+        }
 
     }
-    //public async Task<bool> ConfirmDelete(EstimationImportSettings settings)
-    //{
-    //    var options = new DialogOptions()
-    //        {
-    //            MaxWidth = MaxWidth.Small,
-    //            CloseButton = true,
-    //            NoHeader = false,
-    //            DisableBackdropClick = false,
+    public async Task<bool> ConfirmDelete(ReportTemplate template)
+    {
+        var options = new DialogOptions()
+            {
+                MaxWidth = MaxWidth.Small,
+                CloseButton = true,
+                NoHeader = false,
+                DisableBackdropClick = false,
 
-    //        };
-    //    var parameters = new DialogParameters();
-    //    parameters.Add(nameof(YesNoDialog.Info), $"{Localizer["Vill du ta bort"]} \"{settings.Name}\"?");
-    //    var dialog = await DialogService.ShowAsync<YesNoDialog>(Localizer["Ta bort"], parameters, options);
-    //    var result = await dialog.Result;
-    //    return !result.Canceled;
-    //}
+            };
+        var parameters = new DialogParameters();
+        parameters.Add(nameof(YesNoDialog.Info), $"{Localizer["Vill du ta bort"]} \"{template.Name}\"?");
+        var dialog = await DialogService.ShowAsync<YesNoDialog>(Localizer["Ta bort"], parameters, options);
+        var result = await dialog.Result;
+        return !result.Canceled;
+    }
 }

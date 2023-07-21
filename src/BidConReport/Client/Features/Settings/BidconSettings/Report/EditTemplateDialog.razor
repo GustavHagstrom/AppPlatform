@@ -1,0 +1,36 @@
+﻿<MudDialog>
+    <DialogContent>
+        <MudForm Model="Template" @ref="Form" Class="pt-3">
+            <MudGrid Justify="Justify.Center" Spacing="1" Style="overflow-y: auto; max-height: calc(100vh - 144.5px - 100px)">
+             
+                <MudItem xs="12"><MudTextField @bind-Value="Template.Name" Label="@Localizer["Namn"]" Variant="Variant.Outlined" Margin="Margin.Dense"/></MudItem>
+
+            </MudGrid>
+        </MudForm>
+    </DialogContent>
+    <DialogActions>
+        <div Class="pr-4 pb-2">
+            <MudButton OnClick="Cancel" Variant="Variant.Filled" Color="Color.Inherit">@Localizer["Stäng"]</MudButton>
+            <MudButton OnClick="SaveAndClose" Variant="Variant.Filled" Color="Color.Success">@Localizer["Spara och stäng"]</MudButton>
+        </div>
+    </DialogActions>
+</MudDialog>
+
+@code{
+    [Inject] public required IStringLocalizer<EditTemplateDialog> Localizer { get; set; }
+    [CascadingParameter] public required MudDialogInstance MudDialog { get; set; }
+    [Parameter, EditorRequired] public required ReportTemplate Template { get; set; }
+
+    public MudForm? Form { get; set; }
+
+    void SaveAndClose()
+    {
+        Form!.Validate();
+        if(Form!.IsValid)
+        {
+            MudDialog.Close();
+        }
+    }
+    void Cancel() => MudDialog.Cancel();
+
+}

@@ -14,6 +14,7 @@ public class InformationSection : IReportTemplateSection
     
     public static InformationSection Default => new()
     {
+        LayoutOrder = 2,
         Items = new List<InformationItem>
         {
             new(true, InformationType.Name, "Name"),
