@@ -47,7 +47,6 @@
     private void MoveUp(IReportTemplateSection section)
     {
         var index = GetIndex(section);
-        //var array = Template.SectionsInOrder.ToArray();
         var otherSection = Template.SectionsInOrder.ElementAt(index - 1);
         var tempValue = otherSection.LayoutOrder;
         otherSection.LayoutOrder = section.LayoutOrder;
@@ -57,7 +56,6 @@
     private void MoveDown(IReportTemplateSection section)
     {
         var index = GetIndex(section);
-        //var array = Template.SectionsInOrder.ToArray();
         var otherSection = Template.SectionsInOrder.ElementAt(index + 1);
         var tempValue = otherSection.LayoutOrder;
         otherSection.LayoutOrder = section.LayoutOrder;
