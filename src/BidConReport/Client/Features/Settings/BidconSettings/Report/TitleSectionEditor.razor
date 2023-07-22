@@ -1,11 +1,9 @@
 ﻿@using BidConReport.Shared.Features.ReportTemplate.Title;
 
-<MudStack Spacing="3">
-    <MudText Typo="Typo.h5" Class="mb-2">@Localizer["Sektion: Titel"]</MudText>
+<SectionContainer SectionHeader="@Localizer["Titel"]">
     <MudTextField T="string" @bind-Value="Section.Title" Margin="Margin.Dense" Variant="Variant.Outlined" Label="@Localizer["Titeltext"]" />
     <FontEditor Font="Section.Font" SampleText="@Localizer["Titel"]" />
-</MudStack>
-
+</SectionContainer>
 
 @code {
     [Parameter, EditorRequired] public required TitleSection Section { get; set; }

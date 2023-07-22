@@ -1,0 +1,15 @@
+﻿<MudStack Spacing="3">
+    <MudText Typo="Typo.h5" Class="mb-2">@Header()</MudText>
+    @ChildContent
+</MudStack>
+
+@code {
+    [Inject] public required IStringLocalizer<SectionContainer> Localizer { get; set; }
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+    [Parameter, EditorRequired] public required string SectionHeader { get; set; }
+
+    string Header()
+    {
+        return $"{Localizer["Sektion:"]} {SectionHeader}";
+    }
+}
