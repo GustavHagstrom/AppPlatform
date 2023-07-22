@@ -5,7 +5,14 @@
              
                 <MudTextField Class="mb-4" @bind-Value="Template.Name" Label="@Localizer["Namn"]" Variant="Variant.Outlined" Margin="Margin.Dense"/>
                 
-                <ReportTemplateSectionOrderer Template="Template"/>
+                <ReportTemplateSectionOrderer Template="Template" OnEditRequest="EditSection" />
+
+                @if (CurrentSection is not null)
+                {
+                    <div @key="CurrentSection" class="border bodred-solid mt-4 pa-4 @(OutAnimation ? "fade-out" : "fade-in")" style="border-color: var(--mud-palette-lines-inputs); overflow-y: auto;">
+                        <FontEditor Font="FontProperties.Default"/>
+                    </div>
+                }
 
             </div>
         </MudForm>
@@ -18,12 +25,17 @@
     </DialogActions>
 </MudDialog>
 
+
 @code{
     [Inject] public required IStringLocalizer<EditTemplateDialog> Localizer { get; set; }
     [CascadingParameter] public required MudDialogInstance MudDialog { get; set; }
     [Parameter, EditorRequired] public required ReportTemplate Template { get; set; }
 
+    private bool OutAnimation { get; set; } = false;
+    private IReportTemplateSection? CurrentSection { get; set; }
+
     public MudForm? Form { get; set; }
+
 
     void SaveAndClose()
     {
@@ -34,5 +46,30 @@
         }
     }
     void Cancel() => MudDialog.Cancel();
+
+    void EditSection(IReportTemplateSection section)
+    {
+        if(CurrentSection is null)
+        {
+            OutAnimation = false;
+            CurrentSection = section;
+            StateHasChanged();
+        }
+        else if(CurrentSection != section)
+        {
+            OutAnimation = true;
+            StateHasChanged();
+            InvokeAsync(() =>
+            {
+                Task.Delay(200).ContinueWith(_ =>
+                {
+                    OutAnimation = false;
+                    CurrentSection = section;
+                    StateHasChanged();
+                });
+            });
+        }
+    }
+
 
 }

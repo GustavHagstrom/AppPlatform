@@ -6,7 +6,7 @@
     "Id": 0,
     "Font": {
       "Id": 0,
-      "FontName": "Calibri",
+      "FontFamily": "Calibri",
       "FontSize": 11,
       "Bold": false,
       "Italic": false,
@@ -18,7 +18,7 @@
     "Id": 0,
     "Font": {
       "Id": 0,
-      "FontName": "Calibri",
+      "FontFamily": "Calibri",
       "FontSize": 11,
       "Bold": false,
       "Italic": false,
@@ -32,7 +32,7 @@
     "Title": "Title",
     "Font": {
       "Id": 0,
-      "FontName": "Calibri",
+      "FontFamily": "Calibri",
       "FontSize": 30,
       "Bold": true,
       "Italic": false,
@@ -88,7 +88,7 @@
     "LayoutOrder": 0,
     "TitleFont": {
       "Id": 0,
-      "FontName": "Calibri",
+      "FontFamily": "Calibri",
       "FontSize": 11,
       "Bold": true,
       "Italic": false,
@@ -96,7 +96,7 @@
     },
     "ValueFont": {
       "Id": 0,
-      "FontName": "Calibri",
+      "FontFamily": "Calibri",
       "FontSize": 11,
       "Bold": false,
       "Italic": false,
@@ -112,7 +112,7 @@
     "Comment": "",
     "PriceFont": {
       "Id": 0,
-      "FontName": "Calibri",
+      "FontFamily": "Calibri",
       "FontSize": 11,
       "Bold": false,
       "Italic": false,
@@ -120,7 +120,7 @@
     },
     "CommentFont": {
       "Id": 0,
-      "FontName": "Calibri",
+      "FontFamily": "Calibri",
       "FontSize": 11,
       "Bold": false,
       "Italic": false,
@@ -136,7 +136,7 @@
         "DataSource": 1,
         "TitleFont": {
           "Id": 0,
-          "FontName": "Calibri",
+          "FontFamily": "Calibri",
           "FontSize": 16,
           "Bold": true,
           "Italic": false,
@@ -144,7 +144,7 @@
         },
         "GroupFont": {
           "Id": 0,
-          "FontName": "Calibri",
+          "FontFamily": "Calibri",
           "FontSize": 20,
           "Bold": true,
           "Italic": false,
@@ -152,7 +152,7 @@
         },
         "PartFont": {
           "Id": 0,
-          "FontName": "Calibri",
+          "FontFamily": "Calibri",
           "FontSize": 14,
           "Bold": true,
           "Italic": false,
@@ -160,7 +160,7 @@
         },
         "CelleFont": {
           "Id": 0,
-          "FontName": "Calibri",
+          "FontFamily": "Calibri",
           "FontSize": 11,
           "Bold": false,
           "Italic": false,
@@ -174,7 +174,7 @@
         "DataSource": 0,
         "TitleFont": {
           "Id": 0,
-          "FontName": "Calibri",
+          "FontFamily": "Calibri",
           "FontSize": 16,
           "Bold": true,
           "Italic": false,
@@ -182,7 +182,7 @@
         },
         "GroupFont": {
           "Id": 0,
-          "FontName": "Calibri",
+          "FontFamily": "Calibri",
           "FontSize": 20,
           "Bold": true,
           "Italic": false,
@@ -190,7 +190,7 @@
         },
         "PartFont": {
           "Id": 0,
-          "FontName": "Calibri",
+          "FontFamily": "Calibri",
           "FontSize": 14,
           "Bold": true,
           "Italic": false,
@@ -198,7 +198,7 @@
         },
         "CelleFont": {
           "Id": 0,
-          "FontName": "Calibri",
+          "FontFamily": "Calibri",
           "FontSize": 11,
           "Bold": false,
           "Italic": false,
@@ -212,7 +212,7 @@
         "DataSource": 4,
         "TitleFont": {
           "Id": 0,
-          "FontName": "Calibri",
+          "FontFamily": "Calibri",
           "FontSize": 16,
           "Bold": true,
           "Italic": false,
@@ -220,7 +220,7 @@
         },
         "GroupFont": {
           "Id": 0,
-          "FontName": "Calibri",
+          "FontFamily": "Calibri",
           "FontSize": 20,
           "Bold": true,
           "Italic": false,
@@ -228,7 +228,7 @@
         },
         "PartFont": {
           "Id": 0,
-          "FontName": "Calibri",
+          "FontFamily": "Calibri",
           "FontSize": 14,
           "Bold": true,
           "Italic": false,
@@ -236,7 +236,7 @@
         },
         "CelleFont": {
           "Id": 0,
-          "FontName": "Calibri",
+          "FontFamily": "Calibri",
           "FontSize": 11,
           "Bold": false,
           "Italic": false,
@@ -250,7 +250,7 @@
         "DataSource": 5,
         "TitleFont": {
           "Id": 0,
-          "FontName": "Calibri",
+          "FontFamily": "Calibri",
           "FontSize": 16,
           "Bold": true,
           "Italic": false,
@@ -258,7 +258,7 @@
         },
         "GroupFont": {
           "Id": 0,
-          "FontName": "Calibri",
+          "FontFamily": "Calibri",
           "FontSize": 20,
           "Bold": true,
           "Italic": false,
@@ -266,7 +266,7 @@
         },
         "PartFont": {
           "Id": 0,
-          "FontName": "Calibri",
+          "FontFamily": "Calibri",
           "FontSize": 14,
           "Bold": true,
           "Italic": false,
@@ -274,7 +274,7 @@
         },
         "CelleFont": {
           "Id": 0,
-          "FontName": "Calibri",
+          "FontFamily": "Calibri",
           "FontSize": 11,
           "Bold": false,
           "Italic": false,
@@ -288,7 +288,7 @@
         "DataSource": 6,
         "TitleFont": {
           "Id": 0,
-          "FontName": "Calibri",
+          "FontFamily": "Calibri",
           "FontSize": 16,
           "Bold": true,
           "Italic": false,
@@ -296,7 +296,7 @@
         },
         "GroupFont": {
           "Id": 0,
-          "FontName": "Calibri",
+          "FontFamily": "Calibri",
           "FontSize": 20,
           "Bold": true,
           "Italic": false,
@@ -304,7 +304,7 @@
         },
         "PartFont": {
           "Id": 0,
-          "FontName": "Calibri",
+          "FontFamily": "Calibri",
           "FontSize": 14,
           "Bold": true,
           "Italic": false,
@@ -312,7 +312,7 @@
         },
         "CelleFont": {
           "Id": 0,
-          "FontName": "Calibri",
+          "FontFamily": "Calibri",
           "FontSize": 11,
           "Bold": false,
           "Italic": false,
@@ -326,7 +326,7 @@
         "DataSource": 3,
         "TitleFont": {
           "Id": 0,
-          "FontName": "Calibri",
+          "FontFamily": "Calibri",
           "FontSize": 16,
           "Bold": true,
           "Italic": false,
@@ -334,7 +334,7 @@
         },
         "GroupFont": {
           "Id": 0,
-          "FontName": "Calibri",
+          "FontFamily": "Calibri",
           "FontSize": 20,
           "Bold": true,
           "Italic": false,
@@ -342,7 +342,7 @@
         },
         "PartFont": {
           "Id": 0,
-          "FontName": "Calibri",
+          "FontFamily": "Calibri",
           "FontSize": 14,
           "Bold": true,
           "Italic": false,
@@ -350,7 +350,7 @@
         },
         "CelleFont": {
           "Id": 0,
-          "FontName": "Calibri",
+          "FontFamily": "Calibri",
           "FontSize": 11,
           "Bold": false,
           "Italic": false,
@@ -364,7 +364,7 @@
         "DataSource": 2,
         "TitleFont": {
           "Id": 0,
-          "FontName": "Calibri",
+          "FontFamily": "Calibri",
           "FontSize": 16,
           "Bold": true,
           "Italic": false,
@@ -372,7 +372,7 @@
         },
         "GroupFont": {
           "Id": 0,
-          "FontName": "Calibri",
+          "FontFamily": "Calibri",
           "FontSize": 20,
           "Bold": true,
           "Italic": false,
@@ -380,7 +380,7 @@
         },
         "PartFont": {
           "Id": 0,
-          "FontName": "Calibri",
+          "FontFamily": "Calibri",
           "FontSize": 14,
           "Bold": true,
           "Italic": false,
@@ -388,7 +388,7 @@
         },
         "CelleFont": {
           "Id": 0,
-          "FontName": "Calibri",
+          "FontFamily": "Calibri",
           "FontSize": 11,
           "Bold": false,
           "Italic": false,

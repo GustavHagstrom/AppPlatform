@@ -28,7 +28,6 @@ public class ApplicationDbContext : DbContext
     public DbSet<User> Users { get; set; }
     public DbSet<UserOrganization> UserOrganizations { get; set; }
     public DbSet<ReportTemplate> ReportTemplates { get; set; }
-    public DbSet<FontFamily> FontFamilies { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

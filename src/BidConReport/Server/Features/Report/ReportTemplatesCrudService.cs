@@ -83,18 +83,18 @@ public class ReportTemplatesCrudService : IReportTemplatesCrudService
     private async Task<ReportTemplate?> FirstOrDefaultAsync_IncludAll(Expression<Func<ReportTemplate, bool>> predicate, CancellationToken cancellationToken = default)
     {
         var result = await _dbContext.ReportTemplates
-            .Include(x => x.TopLeftHeader).ThenInclude(x => x.Font).ThenInclude(x => x.FontFamily)
-            .Include(x => x.TopRightHeader).ThenInclude(x => x.Font).ThenInclude(x => x.FontFamily)
-            .Include(x => x.TitleSection).ThenInclude(x => x.Font).ThenInclude(x => x.FontFamily)
-            .Include(x => x.InformationSection).ThenInclude(x => x.TitleFont).ThenInclude(x => x.FontFamily)
-            .Include(x => x.InformationSection).ThenInclude(x => x.ValueFont).ThenInclude(x => x.FontFamily)
+            .Include(x => x.TopLeftHeader).ThenInclude(x => x.Font)
+            .Include(x => x.TopRightHeader).ThenInclude(x => x.Font)
+            .Include(x => x.TitleSection).ThenInclude(x => x.Font)
+            .Include(x => x.InformationSection).ThenInclude(x => x.TitleFont)
+            .Include(x => x.InformationSection).ThenInclude(x => x.ValueFont)
             .Include(x => x.InformationSection).ThenInclude(x => x.Items)
-            .Include(x => x.PriceSection).ThenInclude(x => x.CommentFont).ThenInclude(x => x.FontFamily)
-            .Include(x => x.PriceSection).ThenInclude(x => x.PriceFont).ThenInclude(x => x.FontFamily)
+            .Include(x => x.PriceSection).ThenInclude(x => x.CommentFont)
+            .Include(x => x.PriceSection).ThenInclude(x => x.PriceFont)
             .Include(x => x.TableSection).ThenInclude(x => x.Columns)
-            .Include(x => x.TableSection).ThenInclude(x => x.CellFont).ThenInclude(x => x.FontFamily)
-            .Include(x => x.TableSection).ThenInclude(x => x.GroupFont).ThenInclude(x => x.FontFamily)
-            .Include(x => x.TableSection).ThenInclude(x => x.PartFont).ThenInclude(x => x.FontFamily)
+            .Include(x => x.TableSection).ThenInclude(x => x.CellFont)
+            .Include(x => x.TableSection).ThenInclude(x => x.GroupFont)
+            .Include(x => x.TableSection).ThenInclude(x => x.PartFont)
             .FirstOrDefaultAsync(predicate);
 
         return result;
@@ -102,18 +102,18 @@ public class ReportTemplatesCrudService : IReportTemplatesCrudService
     private async Task<ICollection<ReportTemplate>> ToListAsync_IncludAll(Expression<Func<ReportTemplate, bool>> predicate, CancellationToken cancellationToken = default)
     {
         var result = await _dbContext.ReportTemplates
-            .Include(x => x.TopLeftHeader).ThenInclude(x => x.Font).ThenInclude(x => x.FontFamily)
-            .Include(x => x.TopRightHeader).ThenInclude(x => x.Font).ThenInclude(x => x.FontFamily)
-            .Include(x => x.TitleSection).ThenInclude(x => x.Font).ThenInclude(x => x.FontFamily)
-            .Include(x => x.InformationSection).ThenInclude(x => x.TitleFont).ThenInclude(x => x.FontFamily)
-            .Include(x => x.InformationSection).ThenInclude(x => x.ValueFont).ThenInclude(x => x.FontFamily)
+            .Include(x => x.TopLeftHeader).ThenInclude(x => x.Font)
+            .Include(x => x.TopRightHeader).ThenInclude(x => x.Font)
+            .Include(x => x.TitleSection).ThenInclude(x => x.Font)
+            .Include(x => x.InformationSection).ThenInclude(x => x.TitleFont)
+            .Include(x => x.InformationSection).ThenInclude(x => x.ValueFont)
             .Include(x => x.InformationSection).ThenInclude(x => x.Items)
-            .Include(x => x.PriceSection).ThenInclude(x => x.CommentFont).ThenInclude(x => x.FontFamily)
-            .Include(x => x.PriceSection).ThenInclude(x => x.PriceFont).ThenInclude(x => x.FontFamily)
+            .Include(x => x.PriceSection).ThenInclude(x => x.CommentFont)
+            .Include(x => x.PriceSection).ThenInclude(x => x.PriceFont)
             .Include(x => x.TableSection).ThenInclude(x => x.Columns)
-            .Include(x => x.TableSection).ThenInclude(x => x.CellFont).ThenInclude(x => x.FontFamily)
-            .Include(x => x.TableSection).ThenInclude(x => x.GroupFont).ThenInclude(x => x.FontFamily)
-            .Include(x => x.TableSection).ThenInclude(x => x.PartFont).ThenInclude(x => x.FontFamily)
+            .Include(x => x.TableSection).ThenInclude(x => x.CellFont)
+            .Include(x => x.TableSection).ThenInclude(x => x.GroupFont)
+            .Include(x => x.TableSection).ThenInclude(x => x.PartFont)
             .Where(predicate)
             .ToListAsync();
 

@@ -12,7 +12,7 @@
             </td>
             <td>
                 <div class="d-flex">
-                    <MudSwitch @bind-Checked="section.IsEnabled" Color="Color.Primary"/>
+                    <MudSwitch @bind-Checked="section.IsEnabled" Color="Color.Primary" Style="margin: 0; margin-inline: 0;"/>
                     <MudIconButton Icon="@Icons.Material.Sharp.ArrowUpward" Color="Color.Primary" Style="height:30px; width: 30px;" Disabled="IsFirst(section)" OnClick="() => MoveUp(section)"/>
                     <MudIconButton Icon="@Icons.Material.Sharp.ArrowDownward" Color="Color.Primary" Style="height:30px; width: 30px;" Disabled="IsLast(section)" OnClick="() => MoveDown(section)" />
                     <MudIconButton Icon="@Icons.Material.Sharp.Edit" Color="Color.Primary" Style="height:30px; width: 30px;" OnClick="async () => await OnEditRequest.InvokeAsync(section)"/>
