@@ -1,4 +1,5 @@
-﻿<MudDialog>
+﻿@using BidConReport.Shared.Features.ReportTemplate.Title;
+<MudDialog>
     <DialogContent>
         <MudForm Model="Template" @ref="Form" Class="pt-3">
             <div style="overflow-y: auto; height: calc(100vh - 144.5px - 100px);">
@@ -10,7 +11,14 @@
                 @if (CurrentSection is not null)
                 {
                     <div @key="CurrentSection" class="border bodred-solid mt-4 pa-4 @(OutAnimation ? "fade-out" : "fade-in")" style="border-color: var(--mud-palette-lines-inputs); overflow-y: auto;">
-                        <FontEditor Font="FontProperties.Default"/>
+                        @if(CurrentSection is TitleSection)
+                        {
+                            <TitleSectionEditor Section="CurrentSection as TitleSection"/>
+                        }
+                        else
+                        {
+                            <FontEditor Font="FontProperties.Default" SampleText="@Localizer["Exempeltext"]" />
+                        }                        
                     </div>
                 }
 

@@ -1,0 +1,12 @@
+﻿@using BidConReport.Shared.Features.ReportTemplate.Title;
+
+<MudStack Spacing="3">
+    <MudTextField T="string" @bind-Value="Section.Title" Margin="Margin.Dense" Variant="Variant.Outlined" Label="@Localizer["Titel"]" />
+    <FontEditor Font="Section.Font" SampleText="@Localizer["Titel"]" />
+</MudStack>
+
+
+@code {
+    [Parameter, EditorRequired] public required TitleSection Section { get; set; }
+    [Inject]public required IStringLocalizer<TitleSectionEditor> Localizer { get; set; }
+}

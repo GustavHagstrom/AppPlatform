@@ -33,20 +33,16 @@
     
     
     <div>
-        <div class="mt-4 pa-4 border border-solid" style="@BuildFontStyle()">@SampleText</div>
+        <div class="mt-4 py-2 px-4 border border-solid" style="@BuildFontStyle()">@SampleText</div>
     </div>
 </div>
 
 
 @code {
     [Parameter, EditorRequired] public required FontProperties Font { get; set; }
-    [Parameter] public string SampleText { get; set; } = string.Empty;
+    [Parameter, EditorRequired] public string SampleText { get; set; } = string.Empty;
     [Inject] public required IStringLocalizer<FontEditor> Localizer { get; set; }
 
-    protected override void OnInitialized()
-    {
-        SampleText = Localizer["Exempeltext"];
-    }
     string BuildFontStyle()
     {
         var builder = new System.Text.StringBuilder($"max-width: 100%; overflow-x: hidden; border-color: var(--mud-palette-lines-inputs); font-family: {Font.FontFamily}; font-size: {Font.FontSize}px; ");
