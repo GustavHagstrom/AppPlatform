@@ -1,9 +1,6 @@
 ﻿@using BidConReport.Shared.Features.ReportTemplate.Information;
 
-<div class="border border-solid" style="border-color: var(--mud-palette-lines-inputs);">
-    
-</div>
-<MudList Style="height: 100%; min-width: 100px;" Clickable="true" DisableGutters="true" Dense="true" DisablePadding="true">
+<MudList Class="border border-solid" Style="border-color: var(--mud-palette-lines-inputs);" Clickable="true" DisableGutters="true" Dense="true" DisablePadding="true">
     <MudListSubheader Class="border-b pa-2 d-flex" Style="border-color: var(--mud-palette-lines-default)">
         <MudText Typo="Typo.h6" Class="pr-4" Style="color: var(--mud-palette-text-primary)">@Localizer["Informationsposter"]</MudText>
         <MudSpacer />
@@ -11,10 +8,12 @@
     </MudListSubheader>
     @foreach (var item in InformationItems)
     {
-        <MudListItem Text="@item.Title">
+        <MudListItem Text="@item.Title" Class="px-2">
             <NestedList>
-                <MudTextField @bind-Value="item.Title" Label="@Localizer["Rubrik"]" Variant="Variant.Outlined" Margin="Margin.Dense"/>
-                <MudTextField @bind-Value="item.ValueCode" Label="@Localizer["Värde"]" Variant="Variant.Outlined" Margin="Margin.Dense" />
+                <MudStack Spacing="2" Class="pa-2">
+                    <MudTextField @bind-Value="item.Title" Label="@Localizer["Rubrik"]" Variant="Variant.Outlined" Margin="Margin.Dense" />
+                    <MudTextField @bind-Value="item.ValueCode" Label="@Localizer["Värde"]" Variant="Variant.Outlined" Margin="Margin.Dense" />
+                </MudStack>
             </NestedList>
         </MudListItem>
     }
