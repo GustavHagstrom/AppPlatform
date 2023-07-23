@@ -10,9 +10,12 @@
     {
         <MudListItem Text="@item.Title" Class="px-2">
             <NestedList>
-                <MudStack Spacing="2" Class="pa-2">
+                <MudStack Spacing="2" Class="pa-2 border-y border-solid" Style="border-color: var(--mud-palette-lines-inputs);">
                     <MudTextField @bind-Value="item.Title" Label="@Localizer["Rubrik"]" Variant="Variant.Outlined" Margin="Margin.Dense" />
-                    <MudTextField @bind-Value="item.ValueCode" Label="@Localizer["Värde"]" Variant="Variant.Outlined" Margin="Margin.Dense" />
+                    <div class="d-flex align-center">
+                        <MudTextField Class="flex-grow-1" @bind-Value="item.ValueCode" Label="@Localizer["Värde"]" Variant="Variant.Outlined" Margin="Margin.Dense" />
+                        <MudIconButton Icon="@Icons.Material.Sharp.AddLink" Color="Color.Primary" Class="ml-3" Style="height: 40px; width: 40px;" Variant="Variant.Outlined" />
+                    </div>
                 </MudStack>
             </NestedList>
         </MudListItem>
