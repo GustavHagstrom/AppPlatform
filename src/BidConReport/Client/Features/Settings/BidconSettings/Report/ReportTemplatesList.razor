@@ -25,6 +25,7 @@
     [Inject] public required IReportTemplateService TemplateService { get; set; }
     [Inject] public required IDialogService DialogService { get; set; }
     [Inject] public required IStringLocalizer<ReportTemplatesList> Localizer { get; set; }
+    [Inject] public required ScreenSizeService ScreenSizeService { get; set; }
 
 
     public ICollection<ReportTemplate>? TemplateList { get; set; }
@@ -61,7 +62,7 @@
                 CloseButton = true,
                 NoHeader = false,
                 DisableBackdropClick = true,
-
+                FullScreen = ScreenSizeService.CurrentScreenWidth < 400,
             };
         var parameters = new DialogParameters();
         parameters.Add(nameof(EditTemplateDialog.Template), template);

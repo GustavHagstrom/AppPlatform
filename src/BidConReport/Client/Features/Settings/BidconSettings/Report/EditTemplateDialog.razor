@@ -1,5 +1,7 @@
-﻿@using BidConReport.Shared.Features.ReportTemplate.Price;
+﻿@using BidConReport.Shared.Features.ReportTemplate.Information;
+@using BidConReport.Shared.Features.ReportTemplate.Price;
 @using BidConReport.Shared.Features.ReportTemplate.Title;
+
 <MudDialog>
     <DialogContent>
         <MudForm Model="Template" @ref="Form" Class="pt-3">
@@ -19,6 +21,10 @@
                         else if (CurrentSection is PriceSection)
                         {
                             <PriceSectionEditor Section="CurrentSection as PriceSection" />
+                        }
+                        else if (CurrentSection is InformationSection)
+                        {
+                            <InformationSectionEditor Section="CurrentSection as InformationSection" />
                         }
                         else
                         {

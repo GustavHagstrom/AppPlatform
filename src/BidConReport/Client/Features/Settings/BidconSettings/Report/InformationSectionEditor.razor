@@ -1,0 +1,11 @@
+﻿@using BidConReport.Shared.Features.ReportTemplate.Information;
+
+<SectionContainer SectionHeader="@Localizer["Allmän info"]">
+    <FontEditor Font="Section.TitleFont" SampleText="@Localizer["Rubrikstext"]"/>
+    <FontEditor Font="Section.ValueFont" SampleText="@Localizer["Datatext"]" />
+</SectionContainer>
+
+@code {
+    [Parameter, EditorRequired] public required InformationSection Section { get; set; }
+    [Inject] public required IStringLocalizer<InformationSectionEditor> Localizer { get; set; }
+}
