@@ -13,10 +13,12 @@ namespace SharedWasmLibrary.Features.Authentication;
 public class CustomAuthStateProvider : RemoteAuthenticationService<RemoteAuthenticationState, RemoteUserAccount, MsalProviderOptions>
 {
     private readonly IHttpClientFactory _httpClientFactory;
+    private readonly ILogger<RemoteAuthenticationService<RemoteAuthenticationState, RemoteUserAccount, MsalProviderOptions>> _logger;
 
     public CustomAuthStateProvider(IHttpClientFactory httpClientFactory, IJSRuntime jsRuntime, IOptionsSnapshot<RemoteAuthenticationOptions<MsalProviderOptions>> options, NavigationManager navigation, AccountClaimsPrincipalFactory<RemoteUserAccount> accountClaimsPrincipalFactory, ILogger<RemoteAuthenticationService<RemoteAuthenticationState, RemoteUserAccount, MsalProviderOptions>> logger) : base(jsRuntime, options, navigation, accountClaimsPrincipalFactory, logger)
     {
         _httpClientFactory = httpClientFactory;
+        _logger = logger;
     }
 
     protected override async ValueTask<ClaimsPrincipal> GetAuthenticatedUser()
@@ -41,9 +43,10 @@ public class CustomAuthStateProvider : RemoteAuthenticationService<RemoteAuthent
                     }
                 }
             }
-            catch (Exception)
+            catch (Exception e)
             {
                 //handle this ??
+                _logger.LogCritical(e, "Failed to get customClaims");
                 throw;
             }
             
