@@ -5,7 +5,7 @@
     <MudListSubheader Class="border-b pa-2 d-flex" Style="border-color: var(--mud-palette-lines-default)">
         <MudText Typo="Typo.h6" Class="pr-4" Style="color: var(--mud-palette-text-primary)">@Localizer["Informationsposter"]</MudText>
         <MudSpacer />
-        <MudIconButton Icon="@Icons.Material.Sharp.Add" Color="Color.Primary" Style="height:30px; width: 30px;" />
+        <MudIconButton Icon="@Icons.Material.Sharp.Add" Color="Color.Primary" Style="height:30px; width: 30px;" OnClick="AddNewItem"/>
     </MudListSubheader>
     @foreach (var item in InformationItems)
     {
@@ -48,5 +48,10 @@
         }
         return string.Empty;
 
+    }
+    void AddNewItem()
+    {
+        InformationItems.Add(new InformationItem());
+        StateHasChanged();
     }
 }
