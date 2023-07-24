@@ -23,6 +23,24 @@
     }
 </MudList>
 
+
+@*<table style="width: 100%; border-color: var(--mud-palette-lines-inputs);" class="border boder-solid py-2 px-4">
+    @foreach (var item in InformationItems)
+    {
+        <tr class="d-flex">
+            <td class="d-flex flex-grow-1 align-center">
+                <MudText Typo="Typo.subtitle2">@item.Title</MudText>
+            </td>
+            <td>
+                <div class="d-flex">
+                    <MudIconButton Icon="@Icons.Material.Sharp.ArrowUpward" Color="Color.Primary" Style="height:30px; width: 30px;" Disabled="IsFirst(section)" OnClick="() => MoveUp(section)" />
+                    <MudIconButton Icon="@Icons.Material.Sharp.ArrowDownward" Color="Color.Primary" Style="height:30px; width: 30px;" Disabled="IsLast(section)" OnClick="() => MoveDown(section)" />
+                    <MudIconButton Icon="@Icons.Material.Sharp.Edit" Color="Color.Primary" Style="height:30px; width: 30px;" OnClick="async () => await OnEditRequest.InvokeAsync(section)" />
+                </div>
+            </td>
+        </tr>
+    }
+</table>*@
 @code {
     [Parameter, EditorRequired] public required ICollection<InformationItem> InformationItems { get; set; }
     [Inject] public required IStringLocalizer<InformationItemList> Localizer { get; set; }
