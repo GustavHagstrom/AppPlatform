@@ -1,7 +1,7 @@
 ﻿@using BidConReport.Shared.Features.ReportTemplate.Information;
 @using SharedPlatformLibrary.Features.Placeholder;
 
-<MudList Class="border border-solid" Style="border-color: var(--mud-palette-lines-inputs);" Clickable="true" DisableGutters="true" Dense="true" DisablePadding="true">
+@*<MudList Class="border border-solid" Style="border-color: var(--mud-palette-lines-inputs);" Clickable="true" DisableGutters="true" Dense="true" DisablePadding="true">
     <MudListSubheader Class="border-b pa-2 d-flex" Style="border-color: var(--mud-palette-lines-default)">
         <MudText Typo="Typo.h6" Class="pr-4" Style="color: var(--mud-palette-text-primary)">@Localizer["Informationsposter"]</MudText>
         <MudSpacer />
@@ -21,26 +21,32 @@
             </NestedList>
         </MudListItem>
     }
-</MudList>
+</MudList>*@
 
-
-@*<table style="width: 100%; border-color: var(--mud-palette-lines-inputs);" class="border boder-solid py-2 px-4">
-    @foreach (var item in InformationItems)
-    {
-        <tr class="d-flex">
-            <td class="d-flex flex-grow-1 align-center">
-                <MudText Typo="Typo.subtitle2">@item.Title</MudText>
-            </td>
-            <td>
-                <div class="d-flex">
-                    <MudIconButton Icon="@Icons.Material.Sharp.ArrowUpward" Color="Color.Primary" Style="height:30px; width: 30px;" Disabled="IsFirst(section)" OnClick="() => MoveUp(section)" />
-                    <MudIconButton Icon="@Icons.Material.Sharp.ArrowDownward" Color="Color.Primary" Style="height:30px; width: 30px;" Disabled="IsLast(section)" OnClick="() => MoveDown(section)" />
-                    <MudIconButton Icon="@Icons.Material.Sharp.Edit" Color="Color.Primary" Style="height:30px; width: 30px;" OnClick="async () => await OnEditRequest.InvokeAsync(section)" />
-                </div>
-            </td>
-        </tr>
-    }
-</table>*@
+<div class="border border-solid" style="border-color: var(--mud-palette-lines-inputs);">
+    <div class="border-b border-solid d-flex py-2 px-4" style="border-color: var(--mud-palette-lines-inputs);">
+        <MudText Typo="Typo.h6" Class="pr-4" Style="color: var(--mud-palette-text-primary)">@Localizer["Informationsposter"]</MudText>
+        <MudSpacer />
+        <MudIconButton Icon="@Icons.Material.Sharp.Add" Color="Color.Primary" Style="height:30px; width: 30px;" OnClick="AddNewItem" />
+    </div>
+    <table class="striped" style="width: 100%;">
+        @foreach (var item in InformationItems)
+        {
+            <tr class="d-flex px-4">
+                <td class="d-flex flex-grow-1 align-center">
+                    <MudText Typo="Typo.subtitle2">@item.Title</MudText>
+                </td>
+                <td>
+                    <div class="d-flex">
+                        <MudIconButton Icon="@Icons.Material.Sharp.ArrowUpward" Color="Color.Primary" Style="height:30px; width: 30px;" />
+                        <MudIconButton Icon="@Icons.Material.Sharp.ArrowDownward" Color="Color.Primary" Style="height:30px; width: 30px;" />
+                        <MudIconButton Icon="@Icons.Material.Sharp.Edit" Color="Color.Primary" Style="height:30px; width: 30px;" />
+                    </div>
+                </td>
+            </tr>
+        }
+    </table>
+</div>
 @code {
     [Parameter, EditorRequired] public required ICollection<InformationItem> InformationItems { get; set; }
     [Inject] public required IStringLocalizer<InformationItemList> Localizer { get; set; }
