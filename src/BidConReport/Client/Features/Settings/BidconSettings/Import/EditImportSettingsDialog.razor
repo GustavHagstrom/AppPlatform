@@ -2,14 +2,15 @@
     <DialogContent>
         <MudForm Model="SelectedSetting" @ref="Form" Class="pt-3">
             <MudGrid Justify="Justify.Center" Spacing="1" Style="overflow-y: auto; max-height: calc(100vh - 144.5px - 100px)">
-             
-                <MudItem xs="12"><ImportSettingsStringPropertyItem Label="@Localizer["Namn"]" @bind-Value="SelectedSetting.Name" /></MudItem>
-                <MudItem xs="12"><ImportSettingsStringPropertyItem Label="@Localizer["Kontokod - A-pris faktor"]" @bind-Value="@SelectedSetting.CostFactorAccount" /></MudItem>
-                <MudItem xs="12"><ImportSettingsStringPropertyItem Label="@Localizer["Kontokod - Nettokalkyl"]" @bind-Value="@SelectedSetting.NetCostAccount" /></MudItem>
-                <MudItem xs="12"><ImportSettingsStringPropertyItem Label="@Localizer["Kontokod - Försäljningspris"]" @bind-Value="@SelectedSetting.CostBeforeChangesAccount" /></MudItem>
+                
+                <MudItem xs="12"><MudTextField Label="@Localizer["Namn"]" @bind-Value="SelectedSetting.Name" For="(() => SelectedSetting.Name)" Variant="Variant.Outlined" Margin="Margin.Dense" /></MudItem>
+                <MudItem xs="12"><MudTextField Label="@Localizer["Kontokod - A-pris faktor"]" @bind-Value="@SelectedSetting.CostFactorAccount" For="(() => SelectedSetting.CostFactorAccount)" Variant="Variant.Outlined" Margin="Margin.Dense" /></MudItem>
+                <MudItem xs="12"><MudTextField Label="@Localizer["Kontokod - Nettokalkyl"]" @bind-Value="@SelectedSetting.NetCostAccount" For="(() => SelectedSetting.NetCostAccount)" Variant="Variant.Outlined" Margin="Margin.Dense" /></MudItem>
+                <MudItem xs="12"><MudTextField Label="@Localizer["Kontokod - Försäljningspris"]" @bind-Value="@SelectedSetting.CostBeforeChangesAccount" For="(() => SelectedSetting.CostBeforeChangesAccount)" Variant="Variant.Outlined" Margin="Margin.Dense" /></MudItem>
 
-                <MudItem xs="12"><ImportSettingsStringPropertyItem Label="@Localizer["Tagg för dolda rader"]" @bind-Value="@SelectedSetting.HiddenTag" /></MudItem>
-                <MudItem xs="12"><ImportSettingsStringPropertyItem Label="@Localizer["Tagg för dold enhet"]" @bind-Value="@SelectedSetting.HiddenUnitTag" /></MudItem>
+                <MudItem xs="12"><MudTextField Label="@Localizer["Tagg för dolda rader"]" @bind-Value="@SelectedSetting.HiddenTag" For="(() => SelectedSetting.HiddenTag)" Variant="Variant.Outlined" Margin="Margin.Dense" /></MudItem>
+                <MudItem xs="12"><MudTextField Label="@Localizer["Tagg för dold enhet"]" @bind-Value="@SelectedSetting.HiddenUnitTag" For="(() => SelectedSetting.HiddenUnitTag)" Variant="Variant.Outlined" Margin="Margin.Dense" /></MudItem>
+
 
                 <MudItem xs="12"><MudSwitch @bind-Checked="SelectedSetting.UseRevisionAsSelectionTags" Label="@Localizer["Revision som valtagg"]" Color="Color.Primary" /></MudItem>
                 <MudItem xs="12">
