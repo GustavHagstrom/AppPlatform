@@ -1,23 +1,44 @@
 :root {
     --bidcon-color: #fed932
 }
-
-
-.height-in {
-    height: 400px;
-    animation-name: height-expand-animation;
+.expand-100 {
+    height: 100px;
+    opacity: 1;
+    animation-name: expand-100-animation;
     animation-duration: 0.3s;
 }
 
-@keyframes height-expand-animation {
+@keyframes expand-100-animation {
     from {
-        height: 0;
+        height: 0px;
+        visibility: hidden;
+        opacity: 0;
     }
 
     to {
-        height: 400px;
+        height: 100px;
+        visibility: initial;
+        opacity: 1;
     }
 }
+
+.minimize-100 {
+    height: 0px;
+    visibility: hidden;
+    animation-name: minimize-100-animation;
+    animation-duration: 0.3s;
+}
+
+@keyframes minimize-100-animation {
+    from {
+        height: 100px;
+    }
+
+    to {
+        height: 0px;
+    }
+}
+
 .fade-in {
     animation-name: fade-in-animation;
     animation-duration: 0.2s;

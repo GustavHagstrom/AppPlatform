@@ -1,27 +1,6 @@
 ﻿@using BidConReport.Shared.Features.ReportTemplate.Information;
 @using SharedPlatformLibrary.Features.Placeholder;
 
-@*<MudList Class="border border-solid" Style="border-color: var(--mud-palette-lines-inputs);" Clickable="true" DisableGutters="true" Dense="true" DisablePadding="true">
-    <MudListSubheader Class="border-b pa-2 d-flex" Style="border-color: var(--mud-palette-lines-default)">
-        <MudText Typo="Typo.h6" Class="pr-4" Style="color: var(--mud-palette-text-primary)">@Localizer["Informationsposter"]</MudText>
-        <MudSpacer />
-        <MudIconButton Icon="@Icons.Material.Sharp.Add" Color="Color.Primary" Style="height:30px; width: 30px;" OnClick="AddNewItem"/>
-    </MudListSubheader>
-    @foreach (var item in InformationItems)
-    {
-        <MudListItem Text="@item.Title" Class="px-2">
-            <NestedList>
-                <MudStack Spacing="2" Class="pa-2 border-y border-solid" Style="border-color: var(--mud-palette-lines-inputs);">
-                    <MudTextField @bind-Value="item.Title" Label="@Localizer["Rubrik"]" Variant="Variant.Outlined" Margin="Margin.Dense" />
-                    <div class="d-flex align-center">
-                        <MudTextField Class="flex-grow-1" @bind-Value="item.ValueCode" Label="@Localizer["Värde"]" Variant="Variant.Outlined" Margin="Margin.Dense" />
-                        <MudIconButton Icon="@Icons.Material.Sharp.AddLink" Color="Color.Primary" Class="ml-3" Style="height: 40px; width: 40px;" Variant="Variant.Outlined" OnClick="() => AddLinkToItem(item)" />
-                    </div>
-                </MudStack>
-            </NestedList>
-        </MudListItem>
-    }
-</MudList>*@
 
 <div class="border border-solid" style="border-color: var(--mud-palette-lines-inputs);">
     <div class="border-b border-solid d-flex py-2 px-4" style="border-color: var(--mud-palette-lines-inputs);">
@@ -32,15 +11,25 @@
     <table class="striped" style="width: 100%;">
         @foreach (var item in InformationItems)
         {
-            <tr class="d-flex px-4">
+            <tr class="d-flex px-4 py-2">
                 <td class="d-flex flex-grow-1 align-center">
-                    <MudText Typo="Typo.subtitle2">@item.Title</MudText>
+                    <div>
+                        <MudText Typo="Typo.subtitle2">@item.Title</MudText>
+
+                        <div class="@CreateEditCss(item)">
+                            <MudTextField Class="my-2" @bind-Value="@item.Title" Variant="Variant.Text" Margin="Margin.Dense" Label="@Localizer["Rubrik"]" />
+                            <MudTextField @bind-Value="@item.ValueCode" Variant="Variant.Text" Margin="Margin.Dense" Label="@Localizer["Värde"]" />
+                        </div>
+
+                    </div>
+                    
                 </td>
                 <td>
                     <div class="d-flex">
                         <MudIconButton Icon="@Icons.Material.Sharp.ArrowUpward" Color="Color.Primary" Style="height:30px; width: 30px;" />
                         <MudIconButton Icon="@Icons.Material.Sharp.ArrowDownward" Color="Color.Primary" Style="height:30px; width: 30px;" />
-                        <MudIconButton Icon="@Icons.Material.Sharp.Edit" Color="Color.Primary" Style="height:30px; width: 30px;" />
+                        <MudIconButton Icon="@Icons.Material.Sharp.Delete" Color="Color.Error" Style="height:30px; width: 30px;" OnClick="(async () => await Delete(item))" />
+                        <MudIconButton Icon="@Icons.Material.Sharp.Edit" Color="Color.Primary" Style="height:30px; width: 30px;" OnClick="(() => Edit(item))" />
                     </div>
                 </td>
             </tr>
@@ -51,12 +40,28 @@
     [Parameter, EditorRequired] public required ICollection<InformationItem> InformationItems { get; set; }
     [Inject] public required IStringLocalizer<InformationItemList> Localizer { get; set; }
     [Inject] public required IDialogService DialogService { get; set; }
+    [Inject] public required IReportTemplateService ReportTemplateService { get; set; }
+
+    InformationItem? CurrentUsedItem;
+    InformationItem? LastUsedItem;
 
     async Task AddLinkToItem(InformationItem item)
     {
-        item.ValueCode += await GetValueCodeFromDialog();
+        item.ValueCode += await GetPlaceholderFromDialog();
     }
-    async Task<string> GetValueCodeFromDialog()
+    string CreateEditCss(InformationItem item)
+    {
+        if(item == CurrentUsedItem)
+        {
+            return "expand-100";
+        }
+        if (item == LastUsedItem)
+        {
+            return "minimize-100";
+        }
+        return "d-none";
+    }
+    async Task<string> GetPlaceholderFromDialog()
     {
         var options = new DialogOptions()
             {
@@ -77,5 +82,36 @@
     {
         InformationItems.Add(new InformationItem());
         StateHasChanged();
+    }
+    async Task Delete(InformationItem item)
+    {
+        var options = new DialogOptions()
+            {
+                MaxWidth = MaxWidth.ExtraSmall,
+                CloseButton = true,
+                NoHeader = false,
+            };
+        var parameters = new DialogParameters();
+        parameters.Add(nameof(YesNoDialog.Info), Localizer["Vill du ta bort "] + $"{item.Title}?");
+        var dialog = await DialogService.ShowAsync<YesNoDialog>(Localizer["Ta bort"], parameters, options);
+        var result = await dialog.Result;
+        if (!result.Canceled)
+        {
+            InformationItems.Remove(item);
+        }
+    }
+    void Edit(InformationItem item)
+    {
+        LastUsedItem = CurrentUsedItem;
+        if(item == CurrentUsedItem)
+        {
+            CurrentUsedItem = null;
+        }
+        else
+        {
+            CurrentUsedItem = item;
+        }
+        
+        
     }
 }
