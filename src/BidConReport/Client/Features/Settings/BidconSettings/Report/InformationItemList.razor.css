@@ -1,0 +1,33 @@
+.expand {
+    max-height: 500px;
+    overflow: hidden;
+    animation-name: expand-animation;
+    animation-duration: 0.3s;
+}
+
+@keyframes expand-animation {
+    from {
+        max-height: 0px;
+    }
+
+    to {
+        max-height: 110px;
+    }
+}
+
+.minimize {
+    max-height: 0;
+    overflow: hidden;
+    animation-name: minimize-animation;
+    animation-duration: 0.3s;
+}
+
+@keyframes minimize-animation {
+    from {
+        max-height: 110px;
+    }
+
+    to {
+        max-height: 0;
+    }
+}

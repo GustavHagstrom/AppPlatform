@@ -12,24 +12,22 @@
         @foreach (var item in InformationItems)
         {
             <tr class="d-flex px-4 py-2">
-                <td class="d-flex flex-grow-1 align-center">
-                    <div>
-                        <MudText Typo="Typo.subtitle2">@item.Title</MudText>
 
-                        <div class="@CreateEditCss(item)">
-                            <MudTextField Class="my-2" @bind-Value="@item.Title" Variant="Variant.Text" Margin="Margin.Dense" Label="@Localizer["Rubrik"]" />
-                            <MudTextField @bind-Value="@item.ValueCode" Variant="Variant.Text" Margin="Margin.Dense" Label="@Localizer["Värde"]" />
+                <td style="width: 100%">
+                    <div class="d-flex">
+                        <MudText Class="d-flex align-center flex-grow-1" Typo="Typo.subtitle2">@item.Title</MudText>
+                        <div class="d-flex">
+                            <MudIconButton Icon="@Icons.Material.Sharp.ArrowUpward" Color="Color.Primary" Style="height:30px; width: 30px;" />
+                            <MudIconButton Icon="@Icons.Material.Sharp.ArrowDownward" Color="Color.Primary" Style="height:30px; width: 30px;" />
+                            <MudIconButton Icon="@Icons.Material.Sharp.Delete" Color="Color.Error" Style="height:30px; width: 30px;" OnClick="(async () => await Delete(item))" />
+                            <MudIconButton Icon="@Icons.Material.Sharp.Edit" Color="Color.Primary" Style="height:30px; width: 30px;" OnClick="(() => Edit(item))" />
                         </div>
-
                     </div>
                     
-                </td>
-                <td>
-                    <div class="d-flex">
-                        <MudIconButton Icon="@Icons.Material.Sharp.ArrowUpward" Color="Color.Primary" Style="height:30px; width: 30px;" />
-                        <MudIconButton Icon="@Icons.Material.Sharp.ArrowDownward" Color="Color.Primary" Style="height:30px; width: 30px;" />
-                        <MudIconButton Icon="@Icons.Material.Sharp.Delete" Color="Color.Error" Style="height:30px; width: 30px;" OnClick="(async () => await Delete(item))" />
-                        <MudIconButton Icon="@Icons.Material.Sharp.Edit" Color="Color.Primary" Style="height:30px; width: 30px;" OnClick="(() => Edit(item))" />
+       
+                    <div class="@CreateEditCss(item)">
+                        <MudTextField Class="my-2" @bind-Value="@item.Title" Variant="Variant.Text" Margin="Margin.Dense" Label="@Localizer["Rubrik"]" />
+                        <MudTextField @bind-Value="@item.ValueCode" Variant="Variant.Text" Margin="Margin.Dense" Label="@Localizer["Värde"]" />
                     </div>
                 </td>
             </tr>
@@ -53,11 +51,11 @@
     {
         if(item == CurrentUsedItem)
         {
-            return "expand-100";
+            return "expand";
         }
         if (item == LastUsedItem)
         {
-            return "minimize-100";
+            return "minimize";
         }
         return "d-none";
     }

@@ -11,27 +11,39 @@
                 
                 <ReportTemplateSectionOrderer Template="Template" OnEditRequest="EditSection" />
 
-                @if (CurrentSection is not null)
-                {
-                    <div @key="CurrentSection" class="border bodred-solid mt-4 pa-4 @(OutAnimation ? "fade-out" : "fade-in")" style="border-color: var(--mud-palette-lines-inputs); overflow-y: auto;">
-                        @if(CurrentSection is TitleSection)
-                        {
-                            <TitleSectionEditor Section="CurrentSection as TitleSection"/>
-                        }
-                        else if (CurrentSection is PriceSection)
-                        {
-                            <PriceSectionEditor Section="CurrentSection as PriceSection" />
-                        }
-                        else if (CurrentSection is InformationSection)
-                        {
-                            <InformationSectionEditor Section="CurrentSection as InformationSection" />
-                        }
-                        else
-                        {
-                            <FontEditor Font="FontProperties.Default" SampleText="@Localizer["Exempeltext"]" />
-                        }                        
-                    </div>
-                }
+                @*In animations*@
+                <div class="border bodred-solid mt-4 pa-4 @(CurrentSection == Template.TitleSection ? "expand" : "d-none")" style="border-color: var(--mud-palette-lines-inputs); overflow-y: auto;">
+                    <TitleSectionEditor Section="Template.TitleSection" />
+                </div>
+
+                <div class="border bodred-solid mt-4 pa-4 @(CurrentSection == Template.InformationSection ? "expand" : "d-none")" style="border-color: var(--mud-palette-lines-inputs); overflow-y: auto;">
+                    <InformationSectionEditor Section="Template.InformationSection" />
+                </div>
+
+                <div class="border bodred-solid mt-4 pa-4 @(CurrentSection == Template.PriceSection ? "expand" : "d-none")" style="border-color: var(--mud-palette-lines-inputs); overflow-y: auto;">
+                    <PriceSectionEditor Section="Template.PriceSection" />
+                </div>
+
+                <div class="border bodred-solid mt-4 pa-4 @(CurrentSection == Template.TableSection ? "expand" : "d-none")" style="border-color: var(--mud-palette-lines-inputs); overflow-y: auto;">
+                    <FontEditor Font="FontProperties.Default" SampleText="@Localizer["Exempeltext"]" />
+                </div>
+
+                @*Out animations*@
+                <div class="border bodred-solid mt-4 pa-4 @(LastSection == Template.TitleSection ? "minimize" : "d-none")" style="border-color: var(--mud-palette-lines-inputs); overflow-y: auto;">
+                    <TitleSectionEditor Section="Template.TitleSection" />
+                </div>
+
+                <div class="border bodred-solid mt-4 pa-4 @(LastSection == Template.PriceSection ? "minimize" : "d-none")" style="border-color: var(--mud-palette-lines-inputs); overflow-y: auto;">
+                    <PriceSectionEditor Section="Template.PriceSection" />
+                </div>
+
+                <div class="border bodred-solid mt-4 pa-4 @(LastSection == Template.InformationSection ? "minimize" : "d-none")" style="border-color: var(--mud-palette-lines-inputs); overflow-y: auto;">
+                    <InformationSectionEditor Section="Template.InformationSection" />
+                </div>
+
+                <div class="border bodred-solid mt-4 pa-4 @(LastSection == Template.TableSection ? "minimize" : "d-none")" style="border-color: var(--mud-palette-lines-inputs); overflow-y: auto;">
+                    <FontEditor Font="FontProperties.Default" SampleText="@Localizer["Exempeltext"]" />
+                </div>
 
             </div>
         </MudForm>
@@ -52,9 +64,23 @@
 
     private bool OutAnimation { get; set; } = false;
     private IReportTemplateSection? CurrentSection { get; set; }
+    private IReportTemplateSection? LastSection { get; set; }
 
     public MudForm? Form { get; set; }
 
+
+    string CreateEditCss(IReportTemplateSection? section)
+    {
+        if (section == CurrentSection)
+        {
+            return "expand";
+        }
+        if (section == LastSection)
+        {
+            return "minimize";
+        }
+        return "d-none";
+    }
 
     void SaveAndClose()
     {
@@ -68,26 +94,33 @@
 
     void EditSection(IReportTemplateSection section)
     {
-        if(CurrentSection is null)
+        if(section == CurrentSection)
         {
-            OutAnimation = false;
-            CurrentSection = section;
-            StateHasChanged();
+            return;
         }
-        else if(CurrentSection != section)
-        {
-            OutAnimation = true;
-            StateHasChanged();
-            InvokeAsync(() =>
-            {
-                Task.Delay(200).ContinueWith(_ =>
-                {
-                    OutAnimation = false;
-                    CurrentSection = section;
-                    StateHasChanged();
-                });
-            });
-        }
+        LastSection = CurrentSection;
+        CurrentSection = section;
+
+        //if(CurrentSection is null)
+        //{
+        //    OutAnimation = false;
+        //    CurrentSection = section;
+        //    StateHasChanged();
+        //}
+        //else if(CurrentSection != section)
+        //{
+        //    OutAnimation = true;
+        //    StateHasChanged();
+        //    InvokeAsync(() =>
+        //    {
+        //        Task.Delay(200).ContinueWith(_ =>
+        //        {
+        //            OutAnimation = false;
+        //            CurrentSection = section;
+        //            StateHasChanged();
+        //        });
+        //    });
+        //}
     }
 
 
