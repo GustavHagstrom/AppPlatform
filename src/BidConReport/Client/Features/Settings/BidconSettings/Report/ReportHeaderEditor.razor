@@ -1,0 +1,38 @@
+﻿<div class="border border-solid" style="border-color: var(--mud-palette-lines-inputs);">
+    <div class="border-b border-solid d-flex py-2 px-4" style="border-color: var(--mud-palette-lines-inputs);">
+        <MudText Typo="Typo.h6" Style="color: var(--mud-palette-text-primary)">@Title</MudText>
+    </div>
+
+    <MudStack Spacing="2" Class="pa-4">
+        <FontEditor Font="Header.Font" SampleText="@Localizer["Sidhuvudtext"]" />
+        <MudTextField Class="" @bind-Value="@Header.ValueCode" Variant="Variant.Text" Margin="Margin.Dense" Label="@Localizer["Data"]"
+                      Adornment="Adornment.End" AdornmentIcon="@Icons.Material.Sharp.AddLink" AdornmentColor="Color.Primary"
+                      OnAdornmentClick="(AddPlaceholder)" />
+    </MudStack>
+
+</div>
+
+@code {
+    [Parameter, EditorRequired] public required HeaderDefinition Header { get; set; }
+    [Parameter] public string? Title { get; set; }
+
+    [Inject] public required IStringLocalizer<ReportHeaderEditor> Localizer{ get; set; }
+    [Inject] public required IDialogService DialogService { get; set; }
+
+    async Task AddPlaceholder()
+    {
+        var options = new DialogOptions()
+            {
+                MaxWidth = MaxWidth.ExtraSmall,
+                CloseButton = true,
+                NoHeader = false,
+            };
+        var dialog = await DialogService.ShowAsync<EstimationPlaceholderSelectorDialog>(Localizer["Välj"], options);
+        var result = await dialog.Result;
+        if (!result.Canceled)
+        {
+            Header.ValueCode += result.Data.ToString()!;
+        }
+
+    }
+}
