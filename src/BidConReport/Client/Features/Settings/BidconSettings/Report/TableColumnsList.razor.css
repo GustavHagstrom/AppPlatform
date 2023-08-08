@@ -11,7 +11,7 @@
     }
 
     to {
-        max-height: 114px;
+        max-height: 124px;
     }
 }
 
@@ -24,11 +24,10 @@
 
 @keyframes minimize-animation {
     from {
-        max-height: 114px;
+        max-height: 124px;
     }
 
     to {
         max-height: 0;
     }
 }
-

@@ -1,40 +1,97 @@
 ﻿<div class="border border-solid" style="border-color: var(--mud-palette-lines-inputs);">
     <div class="border-b border-solid d-flex py-2 px-4" style="border-color: var(--mud-palette-lines-inputs);">
-        <MudText Typo="Typo.h6" Class="pr-4" Style="color: var(--mud-palette-text-primary)"></MudText>
+        <MudText Typo="Typo.h6" Class="pr-4" Style="color: var(--mud-palette-text-primary)">@Localizer["Kolumner"]</MudText>
     </div>
     <table class="striped" style="width: 100%; min-height: 46px;">
-       @* @foreach (var item in ItemsInOrder)
+        @foreach (var column in ColumnsInOrder)
         {
             <tr class="d-flex">
 
                 <td class="py-2 px-4" style="width: 100%">
 
                     <div class="d-flex">
-                        <MudText Class="d-flex align-center flex-grow-1" Typo="Typo.subtitle2">@item.Title</MudText>
+                        <MudText Class="d-flex align-center flex-grow-1" Typo="Typo.subtitle2">@ColumnNameMap[column.DataSource]</MudText>
                         <div class="d-flex">
-                            <MudIconButton Icon="@Icons.Material.Sharp.ArrowUpward" Color="Color.Primary" Style="height:30px; width: 30px;" Disabled="ItemsInOrder.First() == item" OnClick="() => MoveUp(item)" />
-                            <MudIconButton Icon="@Icons.Material.Sharp.ArrowDownward" Color="Color.Primary" Style="height:30px; width: 30px;" Disabled="ItemsInOrder.Last() == item" OnClick="() => MoveDown(item)" />
-                            <MudIconButton Icon="@Icons.Material.Sharp.Delete" Color="Color.Error" Style="height:30px; width: 30px;" OnClick="(async () => await Delete(item))" />
-                            <MudIconButton Icon="@Icons.Material.Sharp.Edit" Color="Color.Primary" Style="height:30px; width: 30px;" OnClick="(() => Edit(item))" />
+                            <MudSwitch @bind-Checked="column.IsActive" Color="Color.Primary" Style="margin: 0; margin-inline: 0;" />
+                            <MudIconButton Icon="@Icons.Material.Sharp.ArrowUpward" Color="Color.Primary" Style="height:30px; width: 30px;" Disabled="ColumnsInOrder.First() == column" OnClick="() => MoveUp(column)" />
+                            <MudIconButton Icon="@Icons.Material.Sharp.ArrowDownward" Color="Color.Primary" Style="height:30px; width: 30px;" Disabled="ColumnsInOrder.Last() == column" OnClick="() => MoveDown(column)" />
+                            <MudIconButton Icon="@Icons.Material.Sharp.Edit" Color="Color.Primary" Style="height:30px; width: 30px;" OnClick="() => Edit(column)" />
                         </div>
                     </div>
 
-
-                    <div class="@CreateEditCss(item)">
-                        <div class="pa-2">
-                            <MudTextField @bind-Value="@item.Title" Variant="Variant.Text" Margin="Margin.Dense" Label="@Localizer["Rubrik"]" />
-                            <MudTextField Class="" @bind-Value="@item.ValueCode" Variant="Variant.Text" Margin="Margin.Dense" Label="@Localizer["Data"]"
-                                            Adornment="Adornment.End" AdornmentIcon="@Icons.Material.Sharp.AddLink" AdornmentColor="Color.Primary"
-                                            OnAdornmentClick="(async () => await AddPlaceholder(item))"/>
+                    <div class="@CreateEditCss(column)">
+                        <div class="pa-2 d-flex flex-column gap-2">
+                            <MudTextField @bind-Value="@column.ColumnHeader" Variant="Variant.Text" Margin="Margin.Dense" Label="@Localizer["Kolumnrubrik"]" />
+                            <MudTextField @bind-Value="@column.Width" Variant="Variant.Text" Margin="Margin.Dense" Label="@Localizer["Bredd"]" />
                         </div>
                     </div>
-                    
+
                 </td>
             </tr>
-        }*@
+        }
     </table>
 </div>
 
 @code {
+    [Parameter, EditorRequired] public required ICollection<ColumnDefinition> ColumnList { get; set; }
+    [Inject] public required IStringLocalizer<TableColumnsList> Localizer { get; set; }
 
+    private Dictionary<ColumnDataSource, string> ColumnNameMap => new()
+    {
+        { ColumnDataSource.Name, Localizer["Namn"] },
+        { ColumnDataSource.RowNumber, Localizer["Radnummer"] },
+        { ColumnDataSource.DisplayedQuantity, Localizer["Mängd exkl dolda"] },
+        { ColumnDataSource.Quantity, Localizer["Mängd inkl dolda"] },
+        { ColumnDataSource.DisplayedUnit, Localizer["Enhet exkl dolda"] },
+        { ColumnDataSource.Unit, Localizer["Enhet inkl dolda"] },
+        { ColumnDataSource.Comment, Localizer["Kommentar"] },
+
+    };
+    private IEnumerable<ColumnDefinition> ColumnsInOrder => ColumnList.OrderBy(x => x.Order);
+    private ColumnDefinition? CurrentColumn;
+    private ColumnDefinition? LastColumn;
+
+    string CreateEditCss(ColumnDefinition column)
+    {
+        if (column == CurrentColumn)
+        {
+            return "expand";
+        }
+        if (column == LastColumn)
+        {
+            return "minimize";
+        }
+        return "d-none";
+    }
+
+    void Edit(ColumnDefinition column)
+    {
+        LastColumn = CurrentColumn;
+        if (column == CurrentColumn)
+        {
+            CurrentColumn = null;
+        }
+        else
+        {
+            CurrentColumn = column;
+        }
+    }
+    void MoveUp(ColumnDefinition column)
+    {
+        var orderedList = ColumnsInOrder.ToList();
+        SwapOrder(column, orderedList[orderedList.IndexOf(column) - 1]);
+    }
+    void MoveDown(ColumnDefinition column)
+    {
+        var orderedList = ColumnsInOrder.ToList();
+        SwapOrder(column, orderedList[orderedList.IndexOf(column) + 1]);
+    }
+    void SwapOrder(ColumnDefinition column1, ColumnDefinition column2)
+    {
+        var temp = column1.Order;
+        column1.Order = column2.Order;
+        column2.Order = temp;
+        CurrentColumn = null;
+        LastColumn = null;
+    }
 }
