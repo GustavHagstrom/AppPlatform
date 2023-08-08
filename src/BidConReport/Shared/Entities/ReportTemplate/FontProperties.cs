@@ -1,4 +1,4 @@
-﻿namespace BidConReport.Shared.Features.ReportTemplate;
+﻿namespace BidConReport.Shared.Entities.ReportTemplate;
 public class FontProperties
 {
     public int Id { get; set; }
@@ -10,7 +10,7 @@ public class FontProperties
 
     public static FontProperties Default => new()
     {
-        FontFamily ="Calibri",
+        FontFamily = "Calibri",
         FontSize = 11,
         Bold = false,
         Italic = false,

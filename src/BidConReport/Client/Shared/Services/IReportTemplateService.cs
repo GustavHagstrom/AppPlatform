@@ -1,4 +1,4 @@
-﻿using BidConReport.Shared.Features.ReportTemplate;
+﻿using BidConReport.Shared.Entities.ReportTemplate;
 
 namespace BidConReport.Client.Shared.Services;
 public interface IReportTemplateService

@@ -1,14 +1,12 @@
 ﻿using BidConReport.Server.Shared.Enteties;
 using BidConReport.Shared.Entities;
-using BidConReport.Shared.Features.ReportTemplate;
-using BidConReport.Shared.Features.ReportTemplate.Header;
-using BidConReport.Shared.Features.ReportTemplate.Information;
-using BidConReport.Shared.Features.ReportTemplate.Price;
-using BidConReport.Shared.Features.ReportTemplate.Table;
-using BidConReport.Shared.Features.ReportTemplate.Title;
+using BidConReport.Shared.Entities.ReportTemplate;
+using BidConReport.Shared.Entities.ReportTemplate.Header;
+using BidConReport.Shared.Entities.ReportTemplate.Information;
+using BidConReport.Shared.Entities.ReportTemplate.Price;
+using BidConReport.Shared.Entities.ReportTemplate.Table;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
-using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using System.Text.Json;
 
 namespace BidConReport.Server.Data;

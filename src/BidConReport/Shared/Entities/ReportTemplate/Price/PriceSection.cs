@@ -1,6 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using BidConReport.Shared.Entities.ReportTemplate;
 
-namespace BidConReport.Shared.Features.ReportTemplate.Price;
+namespace BidConReport.Shared.Entities.ReportTemplate.Price;
 public class PriceSection : IReportTemplateSection
 {
     public int Id { get; set; }

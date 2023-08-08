@@ -1,5 +1,5 @@
 ﻿using BidConReport.Shared.Entities;
-using BidConReport.Shared.Features.ReportTemplate;
+using BidConReport.Shared.Entities.ReportTemplate;
 using System.ComponentModel.DataAnnotations;
 
 namespace BidConReport.Server.Shared.Enteties;

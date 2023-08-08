@@ -1,6 +1,4 @@
-﻿@using BidConReport.Shared.Features.ReportTemplate.Price;
-
-<SectionContainer SectionHeader="@Localizer["Prissummering"]">
+﻿<SectionContainer SectionHeader="@Localizer["Prissummering"]">
     <MudTextField T="string" @bind-Value="Section.PriceWithoutChangesDescription" Margin="Margin.Dense" Variant="Variant.Outlined" Label="@Localizer["Beskrivning pris innan ändringar"]" />
     <MudTextField T="string" @bind-Value="Section.ChangesDescription" Margin="Margin.Dense" Variant="Variant.Outlined" Label="@Localizer["Beskrivning summa ändringar"]" />
     <MudTextField T="string" @bind-Value="Section.PriceWithChangesDescription" Margin="Margin.Dense" Variant="Variant.Outlined" Label="@Localizer["Beskrivning pris med ändringar"]" />

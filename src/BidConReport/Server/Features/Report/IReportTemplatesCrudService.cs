@@ -1,4 +1,4 @@
-﻿using BidConReport.Shared.Features.ReportTemplate;
+﻿using BidConReport.Shared.Entities.ReportTemplate;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
 
 namespace BidConReport.Server.Features.Report;

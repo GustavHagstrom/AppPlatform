@@ -1,4 +1,4 @@
-﻿namespace BidConReport.Shared.Features.ReportTemplate;
+﻿namespace BidConReport.Shared.Entities.ReportTemplate;
 public interface IReportTemplateSection
 {
     int LayoutOrder { get; set; }

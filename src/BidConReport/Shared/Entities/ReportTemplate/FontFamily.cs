@@ -1,9 +1,9 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace BidConReport.Shared.Features.ReportTemplate;
+namespace BidConReport.Shared.Entities.ReportTemplate;
 public class FontFamily
 {
     public int Id { get; set; }
     [MaxLength(50)]
-    public required string Value { get; set; } 
+    public required string Value { get; set; }
 }

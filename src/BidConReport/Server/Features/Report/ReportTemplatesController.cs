@@ -1,4 +1,4 @@
-﻿using BidConReport.Shared.Features.ReportTemplate;
+﻿using BidConReport.Shared.Entities.ReportTemplate;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Identity.Web;
 using SharedPlatformLibrary.Constants;

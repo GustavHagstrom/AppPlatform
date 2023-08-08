@@ -1,6 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using BidConReport.Shared.Entities.ReportTemplate;
 
-namespace BidConReport.Shared.Features.ReportTemplate.Header;
+namespace BidConReport.Shared.Entities.ReportTemplate.Header;
 public class HeaderDefinition
 {
     public int Id { get; set; }

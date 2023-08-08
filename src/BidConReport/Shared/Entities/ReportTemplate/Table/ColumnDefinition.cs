@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace BidConReport.Shared.Features.ReportTemplate.Table;
+namespace BidConReport.Shared.Entities.ReportTemplate.Table;
 public class ColumnDefinition
 {
     public int Id { get; set; }

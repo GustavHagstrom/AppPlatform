@@ -1,4 +1,4 @@
-﻿namespace BidConReport.Shared.Features.ReportTemplate.Table;
+﻿namespace BidConReport.Shared.Entities.ReportTemplate.Table;
 
 public enum ColumnDataSource
 {

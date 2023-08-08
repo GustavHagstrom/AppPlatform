@@ -2,7 +2,7 @@
 using System.Text.Json;
 using Azure;
 using BidConReport.Shared.Constants;
-using BidConReport.Shared.Features.ReportTemplate;
+using BidConReport.Shared.Entities.ReportTemplate;
 using Microsoft.Extensions.Logging;
 using Moq;
 using Moq.Protected;
@@ -10,7 +10,7 @@ using SharedPlatformLibrary.Wrappers;
 
 namespace BidConReport.Client.Shared.Services.Tests
 {
-    
+
     [TestFixture]
     public class ReportTemplateCrudServiceTests
     {

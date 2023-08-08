@@ -1,12 +1,12 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using BidConReport.Shared.Features.ReportTemplate.Information;
-using BidConReport.Shared.Features.ReportTemplate.Header;
-using BidConReport.Shared.Features.ReportTemplate.Price;
-using BidConReport.Shared.Features.ReportTemplate.Table;
-using BidConReport.Shared.Features.ReportTemplate.Title;
 using System.ComponentModel.DataAnnotations.Schema;
+using BidConReport.Shared.Entities.ReportTemplate.Header;
+using BidConReport.Shared.Entities.ReportTemplate.Information;
+using BidConReport.Shared.Entities.ReportTemplate.Price;
+using BidConReport.Shared.Entities.ReportTemplate.Table;
+using BidConReport.Shared.Entities.ReportTemplate.Title;
 
-namespace BidConReport.Shared.Features.ReportTemplate;
+namespace BidConReport.Shared.Entities.ReportTemplate;
 public class ReportTemplate
 {
     public int Id { get; set; }

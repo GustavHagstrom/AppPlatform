@@ -1,6 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using BidConReport.Shared.Entities.ReportTemplate;
 
-namespace BidConReport.Shared.Features.ReportTemplate.Information;
+namespace BidConReport.Shared.Entities.ReportTemplate.Information;
 public class InformationSection : IReportTemplateSection
 {
     public int Id { get; set; }
@@ -11,21 +12,10 @@ public class InformationSection : IReportTemplateSection
     public FontProperties TitleFont { get; set; } = DefaultTitleFont();
     public int ValueFontId { get; set; }
     public FontProperties ValueFont { get; set; } = DefaultValueFont();
-    
+
     public static InformationSection Default => new()
     {
         LayoutOrder = 2,
-        Items = new List<InformationItem>
-        {
-            new(true, InformationType.Name, "Name"),
-            new(true, InformationType.Description, "Description"),
-            new(true, InformationType.CreationDate, "Creation date"),
-            new(true, InformationType.ExpirationDate, "Expiration date"),
-            new(true, InformationType.PrintDate, "Print date"),
-            new(true, InformationType.Supervisor, "Supervisor"),
-            new(true, InformationType.Representative, "Representative"),
-            new(true, InformationType.Currency, "Currency"),
-        },
     };
     private static FontProperties DefaultTitleFont()
     {

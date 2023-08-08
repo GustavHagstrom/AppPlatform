@@ -1,8 +1,8 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace BidConReport.Shared.Features.ReportTemplate.Information;
+namespace BidConReport.Shared.Entities.ReportTemplate.Information;
 
-public class InformationItem 
+public class InformationItem
 {
     public InformationItem(bool isEnabled, InformationType type, string title)
     {
@@ -12,7 +12,7 @@ public class InformationItem
     }
     public InformationItem()
     {
-            
+
     }
     public int Id { get; set; }
     public int InformationSectionId { get; set; }

@@ -1,5 +1,5 @@
 ﻿using BidConReport.Shared.Constants;
-using BidConReport.Shared.Features.ReportTemplate;
+using BidConReport.Shared.Entities.ReportTemplate;
 using SharedPlatformLibrary.Wrappers;
 using System.Net.Http.Json;
 

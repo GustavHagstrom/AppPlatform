@@ -1,4 +1,4 @@
-﻿namespace BidConReport.Shared.Features.ReportTemplate.Information;
+﻿namespace BidConReport.Shared.Entities.ReportTemplate.Information;
 
 public enum InformationType
 {

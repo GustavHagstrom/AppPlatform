@@ -1,6 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using BidConReport.Shared.Entities.ReportTemplate;
 
-namespace BidConReport.Shared.Features.ReportTemplate.Title;
+namespace BidConReport.Shared.Entities.ReportTemplate.Title;
 public class TitleSection : IReportTemplateSection
 {
     public int Id { get; set; }
