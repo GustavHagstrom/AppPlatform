@@ -11,7 +11,7 @@
     }
 
     to {
-        max-height: 110px;
+        max-height: 114px;
     }
 }
 
@@ -24,10 +24,21 @@
 
 @keyframes minimize-animation {
     from {
-        max-height: 110px;
+        max-height: 114px;
     }
 
     to {
         max-height: 0;
     }
 }
+
+/*.button-ma-0{
+    background-color: magenta;
+}
+.button-ma-0 button {
+    margin: 0 !important;
+}*/
+table button{
+    margin: 0;
+}
+

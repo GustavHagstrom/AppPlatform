@@ -1,7 +1,4 @@
-﻿using BidConReport.Shared.Entities;
-using BidConReport.Shared.Entities.ReportTemplate;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
+﻿using System.ComponentModel.DataAnnotations.Schema;
 
 namespace BidConReport.Shared.Entities.ReportTemplate.Table;
 public class TableSection : IReportTemplateSection

@@ -1,5 +1,8 @@
 ﻿<div style="position: relative">
-    <MudGrid Spacing="1">
+
+    
+
+    <MudGrid Justify="Justify.SpaceBetween">
         
         <MudItem xs="12" sm="7">
             <MudStack Spacing="1" Row="true" AlignItems="AlignItems.Center" Style="height: 45px">
@@ -11,7 +14,7 @@
         </MudItem>
 
         <MudItem xs="12" sm="5">
-            <MudStack Spacing="1" Row="true" AlignItems="AlignItems.Center" Style="height: 45px">
+            <MudStack Spacing="1" Row="true" AlignItems="AlignItems.Center" Justify="Justify.FlexEnd" Style="height: 45px">
                 <MudToggleIconButton @bind-Toggled="Font.Bold" Class="pa-2 border border-solid" Variant="Variant.Filled"
                                      Style="@FormatButtonStyle(Font.Bold)"
                                      Icon="@Icons.Material.Sharp.FormatBold"
@@ -30,10 +33,8 @@
             </MudStack>
         </MudItem>
     </MudGrid>
-    
-    
     <div>
-        <div class="mt-4 py-2 px-4 border border-solid" style="@BuildFontStyle()">@SampleText</div>
+        <div class="mt-1 py-2 px-4 border border-solid" style="@BuildFontStyle()">@SampleText</div>
     </div>
 </div>
 

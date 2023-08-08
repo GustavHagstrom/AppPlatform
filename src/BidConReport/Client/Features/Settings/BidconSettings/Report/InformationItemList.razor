@@ -4,12 +4,13 @@
         <MudSpacer />
         <MudIconButton Icon="@Icons.Material.Sharp.Add" Color="Color.Primary" Style="height:30px; width: 30px;" OnClick="AddNewItem" />
     </div>
-    <table class="striped" style="width: 100%;">
+    <table class="striped" style="width: 100%; min-height: 46px;">
         @foreach (var item in InformationItems)
         {
-            <tr class="d-flex px-4 py-2">
+            <tr class="d-flex">
 
-                <td style="width: 100%">
+                <td class="py-2 px-4" style="width: 100%">
+
                     <div class="d-flex">
                         <MudText Class="d-flex align-center flex-grow-1" Typo="Typo.subtitle2">@item.Title</MudText>
                         <div class="d-flex">
@@ -19,12 +20,17 @@
                             <MudIconButton Icon="@Icons.Material.Sharp.Edit" Color="Color.Primary" Style="height:30px; width: 30px;" OnClick="(() => Edit(item))" />
                         </div>
                     </div>
-                    
-       
+
+
                     <div class="@CreateEditCss(item)">
-                        <MudTextField Class="my-2" @bind-Value="@item.Title" Variant="Variant.Text" Margin="Margin.Dense" Label="@Localizer["Rubrik"]" />
-                        <MudTextField @bind-Value="@item.ValueCode" Variant="Variant.Text" Margin="Margin.Dense" Label="@Localizer["Värde"]" />
+                        <div class="pa-2">
+                            <MudTextField @bind-Value="@item.Title" Variant="Variant.Text" Margin="Margin.Dense" Label="@Localizer["Rubrik"]" />
+                            <MudTextField Class="" @bind-Value="@item.ValueCode" Variant="Variant.Text" Margin="Margin.Dense" Label="@Localizer["Data"]"
+                                            Adornment="Adornment.End" AdornmentIcon="@Icons.Material.Sharp.AddLink" AdornmentColor="Color.Primary"
+                                            OnAdornmentClick="(async () => await AddPlaceholder(item))"/>
+                        </div>
                     </div>
+                    
                 </td>
             </tr>
         }
@@ -74,17 +80,17 @@
     }
     void AddNewItem()
     {
-        InformationItems.Add(new InformationItem());
+        InformationItems.Add(new InformationItem { Title = Localizer["Ny rubrik"]});
         StateHasChanged();
     }
     async Task Delete(InformationItem item)
     {
         var options = new DialogOptions()
-            {
-                MaxWidth = MaxWidth.ExtraSmall,
-                CloseButton = true,
-                NoHeader = false,
-            };
+        {
+            MaxWidth = MaxWidth.ExtraSmall,
+            CloseButton = true,
+            NoHeader = false,
+        };
         var parameters = new DialogParameters();
         parameters.Add(nameof(YesNoDialog.Info), Localizer["Vill du ta bort "] + $"{item.Title}?");
         var dialog = await DialogService.ShowAsync<YesNoDialog>(Localizer["Ta bort"], parameters, options);
@@ -104,8 +110,10 @@
         else
         {
             CurrentUsedItem = item;
-        }
-        
-        
+        }        
+    }
+    async Task AddPlaceholder(InformationItem item)
+    {
+        item.ValueCode += await GetPlaceholderFromDialog();
     }
 }

@@ -21,11 +21,11 @@
                 </div>
 
                 <div class="border bodred-solid mt-4 pa-4 @(CurrentSection == Template.TableSection ? "expand" : "d-none")" style="border-color: var(--mud-palette-lines-inputs); overflow-y: auto;">
-                    <FontEditor Font="FontProperties.Default" SampleText="@Localizer["Exempeltext"]" />
+                    <TableSectionEditor Section="Template.TableSection"/>
                 </div>
 
                 @*Out animations*@
-                <div class="border bodred-solid mt-4 pa-4 @(LastSection == Template.TitleSection ? "minimize" : "d-none")" style="border-color: var(--mud-palette-lines-inputs); overflow-y: auto;">
+       @*         <div class="border bodred-solid mt-4 pa-4 @(LastSection == Template.TitleSection ? "minimize" : "d-none")" style="border-color: var(--mud-palette-lines-inputs); overflow-y: auto;">
                     <TitleSectionEditor Section="Template.TitleSection" />
                 </div>
 
@@ -38,8 +38,8 @@
                 </div>
 
                 <div class="border bodred-solid mt-4 pa-4 @(LastSection == Template.TableSection ? "minimize" : "d-none")" style="border-color: var(--mud-palette-lines-inputs); overflow-y: auto;">
-                    <FontEditor Font="FontProperties.Default" SampleText="@Localizer["Exempeltext"]" />
-                </div>
+                <TableSectionEditor Section="Template.TableSection"/>
+                </div>*@
 
             </div>
         </MudForm>

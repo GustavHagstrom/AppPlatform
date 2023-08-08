@@ -1,0 +1,10 @@
+﻿<SectionContainer SectionHeader="@Localizer["Tabell"]">
+    <FontEditor Font="Section.GroupFont" SampleText="@Localizer["Grupptext"]" />
+    <FontEditor Font="Section.PartFont" SampleText="@Localizer["Kalkyldelstext"]" />
+    <FontEditor Font="Section.CellFont" SampleText="@Localizer["Kalkylpoststext"]" />
+</SectionContainer>
+
+@code {
+    [Parameter, EditorRequired] public required TableSection Section { get; set; }
+    [Inject] public required IStringLocalizer<TableSectionEditor> Localizer { get; set; }
+}
