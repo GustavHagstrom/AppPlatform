@@ -478,19 +478,22 @@ namespace BidConReport.Server.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<string>("ColumnHeader")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
                     b.Property<int>("DataSource")
                         .HasColumnType("int");
 
                     b.Property<bool>("IsActive")
                         .HasColumnType("bit");
 
-                    b.Property<int>("TableSectionId")
+                    b.Property<int>("Order")
                         .HasColumnType("int");
 
-                    b.Property<string>("Title")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                    b.Property<int>("TableSectionId")
+                        .HasColumnType("int");
 
                     b.Property<int>("Width")
                         .HasColumnType("int");
@@ -513,6 +516,9 @@ namespace BidConReport.Server.Migrations
                     b.Property<int>("CellFontId")
                         .HasColumnType("int");
 
+                    b.Property<int>("ColumnHeaderFontId")
+                        .HasColumnType("int");
+
                     b.Property<int>("GroupFontId")
                         .HasColumnType("int");
 
@@ -528,6 +534,8 @@ namespace BidConReport.Server.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("CellFontId");
+
+                    b.HasIndex("ColumnHeaderFontId");
 
                     b.HasIndex("GroupFontId");
 
@@ -729,6 +737,12 @@ namespace BidConReport.Server.Migrations
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
+                    b.HasOne("BidConReport.Shared.Entities.ReportTemplate.FontProperties", "ColumnHeaderFont")
+                        .WithMany()
+                        .HasForeignKey("ColumnHeaderFontId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
                     b.HasOne("BidConReport.Shared.Entities.ReportTemplate.FontProperties", "GroupFont")
                         .WithMany()
                         .HasForeignKey("GroupFontId")
@@ -742,6 +756,8 @@ namespace BidConReport.Server.Migrations
                         .IsRequired();
 
                     b.Navigation("CellFont");
+
+                    b.Navigation("ColumnHeaderFont");
 
                     b.Navigation("GroupFont");
 

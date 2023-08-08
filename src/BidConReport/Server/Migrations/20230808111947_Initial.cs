@@ -58,16 +58,20 @@ namespace BidConReport.Server.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "FontFamilies",
+                name: "FontProperties",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Value = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false)
+                    FontFamily = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    FontSize = table.Column<int>(type: "int", nullable: false),
+                    Bold = table.Column<bool>(type: "bit", nullable: false),
+                    Italic = table.Column<bool>(type: "bit", nullable: false),
+                    Underline = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_FontFamilies", x => x.Id);
+                    table.PrimaryKey("PK_FontProperties", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -114,29 +118,6 @@ namespace BidConReport.Server.Migrations
                         column: x => x.EstimationId,
                         principalTable: "Estimations",
                         principalColumn: "Id");
-                });
-
-            migrationBuilder.CreateTable(
-                name: "FontProperties",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    FontFamilyId = table.Column<int>(type: "int", nullable: false),
-                    FontSize = table.Column<int>(type: "int", nullable: false),
-                    Bold = table.Column<bool>(type: "bit", nullable: false),
-                    Italic = table.Column<bool>(type: "bit", nullable: false),
-                    Underline = table.Column<bool>(type: "bit", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_FontProperties", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_FontProperties_FontFamilies_FontFamilyId",
-                        column: x => x.FontFamilyId,
-                        principalTable: "FontFamilies",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -225,7 +206,8 @@ namespace BidConReport.Server.Migrations
                     IsEnabled = table.Column<bool>(type: "bit", nullable: false),
                     GroupFontId = table.Column<int>(type: "int", nullable: false),
                     PartFontId = table.Column<int>(type: "int", nullable: false),
-                    CellFontId = table.Column<int>(type: "int", nullable: false)
+                    CellFontId = table.Column<int>(type: "int", nullable: false),
+                    ColumnHeaderFontId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -233,6 +215,11 @@ namespace BidConReport.Server.Migrations
                     table.ForeignKey(
                         name: "FK_TableSection_FontProperties_CellFontId",
                         column: x => x.CellFontId,
+                        principalTable: "FontProperties",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_TableSection_FontProperties_ColumnHeaderFontId",
+                        column: x => x.ColumnHeaderFontId,
                         principalTable: "FontProperties",
                         principalColumn: "Id");
                     table.ForeignKey(
@@ -277,10 +264,9 @@ namespace BidConReport.Server.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     InformationSectionId = table.Column<int>(type: "int", nullable: false),
-                    IsEnabled = table.Column<bool>(type: "bit", nullable: false),
-                    Type = table.Column<int>(type: "int", nullable: false),
                     Title = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    ValueCode = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    ValueCode = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Order = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -302,8 +288,9 @@ namespace BidConReport.Server.Migrations
                     TableSectionId = table.Column<int>(type: "int", nullable: false),
                     IsActive = table.Column<bool>(type: "bit", nullable: false),
                     DataSource = table.Column<int>(type: "int", nullable: false),
-                    Title = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    Width = table.Column<int>(type: "int", nullable: false)
+                    ColumnHeader = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    Width = table.Column<int>(type: "int", nullable: false),
+                    Order = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -418,11 +405,6 @@ namespace BidConReport.Server.Migrations
                 column: "EstimationItemId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_FontProperties_FontFamilyId",
-                table: "FontProperties",
-                column: "FontFamilyId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_HeaderDefinition_FontId",
                 table: "HeaderDefinition",
                 column: "FontId");
@@ -486,6 +468,11 @@ namespace BidConReport.Server.Migrations
                 name: "IX_TableSection_CellFontId",
                 table: "TableSection",
                 column: "CellFontId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_TableSection_ColumnHeaderFontId",
+                table: "TableSection",
+                column: "ColumnHeaderFontId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_TableSection_GroupFontId",
@@ -562,9 +549,6 @@ namespace BidConReport.Server.Migrations
 
             migrationBuilder.DropTable(
                 name: "FontProperties");
-
-            migrationBuilder.DropTable(
-                name: "FontFamilies");
         }
     }
 }

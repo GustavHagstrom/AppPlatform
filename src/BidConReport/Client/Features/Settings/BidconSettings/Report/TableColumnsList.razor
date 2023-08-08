@@ -1,0 +1,40 @@
+﻿<div class="border border-solid" style="border-color: var(--mud-palette-lines-inputs);">
+    <div class="border-b border-solid d-flex py-2 px-4" style="border-color: var(--mud-palette-lines-inputs);">
+        <MudText Typo="Typo.h6" Class="pr-4" Style="color: var(--mud-palette-text-primary)"></MudText>
+    </div>
+    <table class="striped" style="width: 100%; min-height: 46px;">
+       @* @foreach (var item in ItemsInOrder)
+        {
+            <tr class="d-flex">
+
+                <td class="py-2 px-4" style="width: 100%">
+
+                    <div class="d-flex">
+                        <MudText Class="d-flex align-center flex-grow-1" Typo="Typo.subtitle2">@item.Title</MudText>
+                        <div class="d-flex">
+                            <MudIconButton Icon="@Icons.Material.Sharp.ArrowUpward" Color="Color.Primary" Style="height:30px; width: 30px;" Disabled="ItemsInOrder.First() == item" OnClick="() => MoveUp(item)" />
+                            <MudIconButton Icon="@Icons.Material.Sharp.ArrowDownward" Color="Color.Primary" Style="height:30px; width: 30px;" Disabled="ItemsInOrder.Last() == item" OnClick="() => MoveDown(item)" />
+                            <MudIconButton Icon="@Icons.Material.Sharp.Delete" Color="Color.Error" Style="height:30px; width: 30px;" OnClick="(async () => await Delete(item))" />
+                            <MudIconButton Icon="@Icons.Material.Sharp.Edit" Color="Color.Primary" Style="height:30px; width: 30px;" OnClick="(() => Edit(item))" />
+                        </div>
+                    </div>
+
+
+                    <div class="@CreateEditCss(item)">
+                        <div class="pa-2">
+                            <MudTextField @bind-Value="@item.Title" Variant="Variant.Text" Margin="Margin.Dense" Label="@Localizer["Rubrik"]" />
+                            <MudTextField Class="" @bind-Value="@item.ValueCode" Variant="Variant.Text" Margin="Margin.Dense" Label="@Localizer["Data"]"
+                                            Adornment="Adornment.End" AdornmentIcon="@Icons.Material.Sharp.AddLink" AdornmentColor="Color.Primary"
+                                            OnAdornmentClick="(async () => await AddPlaceholder(item))"/>
+                        </div>
+                    </div>
+                    
+                </td>
+            </tr>
+        }*@
+    </table>
+</div>
+
+@code {
+
+}

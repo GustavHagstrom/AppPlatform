@@ -120,6 +120,11 @@ public class ApplicationDbContext : DbContext
             .WithOne(x => x.GroupFont)
             .HasForeignKey(x => x.GroupFontId)
             .OnDelete(DeleteBehavior.NoAction);
+        modelBuilder.Entity<FontProperties>()
+            .HasMany<TableSection>()
+            .WithOne(x => x.ColumnHeaderFont)
+            .HasForeignKey(x => x.ColumnHeaderFontId)
+            .OnDelete(DeleteBehavior.NoAction);
 
         modelBuilder.Entity<FontProperties>()
             .HasMany<PriceSection>()

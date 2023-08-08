@@ -8,12 +8,13 @@ public class ColumnDefinition
     public bool IsActive { get; set; }
     public ColumnDataSource DataSource { get; set; }
     [MaxLength(50)]
-    public string Title { get; set; } = string.Empty;
+    public string ColumnHeader { get; set; } = string.Empty;
     /// <summary>
     /// Int represent the % of the width space for the columm to use
     /// </summary>
     [Range(1, 100)]
     public int Width { get; set; }
+    public int Order { get; set; }
 
 }
 
