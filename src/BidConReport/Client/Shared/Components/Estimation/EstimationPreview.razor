@@ -7,7 +7,7 @@
             <MudText Style="@CreateFontStyle(Template.TitleSection.Font)">@Template.TitleSection.Title</MudText>
         </div>
     }
-
+@*
     @if(Template.InformationSection.IsEnabled)
     {
         <div class="mb-6">
@@ -22,7 +22,7 @@
                 }
             } 
         </div>
-    }
+    }*@
 
     @if (Template.PriceSection.IsEnabled)
     {
@@ -69,17 +69,7 @@
 @code {
     [Parameter, EditorRequired] public required Estimation Estimation { get; set; }
     [Parameter, EditorRequired] public required ReportTemplate Template { get; set; }
-    public Dictionary<InformationType, Func<Estimation, string>> GeneralInformationFunctions { get; set; } = new()
-    {
-        { InformationType.Name, e => e.Name },
-        { InformationType.Description, e => e.Description ?? string.Empty },
-        { InformationType.CreationDate, e => e.CreationDate.ToString("yyyy-MM-dd") },
-        { InformationType.ExpirationDate, e => e.ExpirationDate?.ToString("yyyy-MM-dd") ?? string.Empty },
-        { InformationType.PrintDate, e => DateTime.Now.ToString("yyyy-MM-dd") },
-        { InformationType.Supervisor, e => e.Supervisor ?? string.Empty },
-        { InformationType.Representative, e => e.Representative ?? string.Empty },
-        { InformationType.Currency, e => e.Currency },
-    };
+    
 
     void testui()
     {

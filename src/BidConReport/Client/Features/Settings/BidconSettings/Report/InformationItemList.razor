@@ -5,7 +5,7 @@
         <MudIconButton Icon="@Icons.Material.Sharp.Add" Color="Color.Primary" Style="height:30px; width: 30px;" OnClick="AddNewItem" />
     </div>
     <table class="striped" style="width: 100%; min-height: 46px;">
-        @foreach (var item in InformationItems)
+        @foreach (var item in ItemsInOrder)
         {
             <tr class="d-flex">
 
@@ -14,8 +14,8 @@
                     <div class="d-flex">
                         <MudText Class="d-flex align-center flex-grow-1" Typo="Typo.subtitle2">@item.Title</MudText>
                         <div class="d-flex">
-                            <MudIconButton Icon="@Icons.Material.Sharp.ArrowUpward" Color="Color.Primary" Style="height:30px; width: 30px;" />
-                            <MudIconButton Icon="@Icons.Material.Sharp.ArrowDownward" Color="Color.Primary" Style="height:30px; width: 30px;" />
+                            <MudIconButton Icon="@Icons.Material.Sharp.ArrowUpward" Color="Color.Primary" Style="height:30px; width: 30px;" Disabled="ItemsInOrder.First() == item" OnClick="() => MoveUp(item)" />
+                            <MudIconButton Icon="@Icons.Material.Sharp.ArrowDownward" Color="Color.Primary" Style="height:30px; width: 30px;" Disabled="ItemsInOrder.Last() == item" OnClick="() => MoveDown(item)" />
                             <MudIconButton Icon="@Icons.Material.Sharp.Delete" Color="Color.Error" Style="height:30px; width: 30px;" OnClick="(async () => await Delete(item))" />
                             <MudIconButton Icon="@Icons.Material.Sharp.Edit" Color="Color.Primary" Style="height:30px; width: 30px;" OnClick="(() => Edit(item))" />
                         </div>
@@ -37,10 +37,11 @@
     </table>
 </div>
 @code {
-    [Parameter, EditorRequired] public required ICollection<InformationItem> InformationItems { get; set; }
+    [Parameter, EditorRequired] public required List<InformationItem> InformationItems { get; set; }
     [Inject] public required IStringLocalizer<InformationItemList> Localizer { get; set; }
     [Inject] public required IDialogService DialogService { get; set; }
     [Inject] public required IReportTemplateService ReportTemplateService { get; set; }
+    private IEnumerable<InformationItem> ItemsInOrder => InformationItems.OrderBy(x => x.Order);
 
     InformationItem? CurrentUsedItem;
     InformationItem? LastUsedItem;
@@ -80,7 +81,11 @@
     }
     void AddNewItem()
     {
-        InformationItems.Add(new InformationItem { Title = Localizer["Ny rubrik"]});
+        InformationItems.Add(new InformationItem
+            {
+                Title = Localizer["Ny rubrik"],
+                Order = InformationItems.Count,
+    });
         StateHasChanged();
     }
     async Task Delete(InformationItem item)
@@ -115,5 +120,23 @@
     async Task AddPlaceholder(InformationItem item)
     {
         item.ValueCode += await GetPlaceholderFromDialog();
+    }
+    void MoveUp(InformationItem item)
+    {
+        var orderedList = ItemsInOrder.ToList();
+        SwapOrder(item, orderedList[orderedList.IndexOf(item) - 1]);
+    }
+    void MoveDown(InformationItem item)
+    {
+        var orderedList = ItemsInOrder.ToList();
+        SwapOrder(item, orderedList[orderedList.IndexOf(item) + 1]);
+    }
+    void SwapOrder(InformationItem item1, InformationItem item2)
+    {
+        var temp = item1.Order;
+        item1.Order = item2.Order;
+        item2.Order = temp;
+        CurrentUsedItem = null;
+        LastUsedItem = null;
     }
 }

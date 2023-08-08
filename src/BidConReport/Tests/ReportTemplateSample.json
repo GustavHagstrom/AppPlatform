@@ -45,44 +45,36 @@
     "IsEnabled": true,
     "Items": [
       {
-        "IsEnabled": true,
-        "Type": 0,
-        "Title": "Name"
+        "Title": "Name",
+        "Order": 0
       },
       {
-        "IsEnabled": true,
-        "Type": 1,
-        "Title": "Description"
+        "Title": "Description",
+        "Order": 1
       },
       {
-        "IsEnabled": true,
-        "Type": 2,
-        "Title": "Creation date"
+        "Title": "Creation date",
+        "Order": 2
       },
       {
-        "IsEnabled": true,
-        "Type": 3,
-        "Title": "Expiration date"
+        "Title": "Expiration date",
+        "Order": 3
       },
       {
-        "IsEnabled": true,
-        "Type": 4,
-        "Title": "Print date"
+        "Title": "Print date",
+        "Order": 4
       },
       {
-        "IsEnabled": true,
-        "Type": 5,
-        "Title": "Supervisor"
+        "Title": "Supervisor",
+        "Order": 5
       },
       {
-        "IsEnabled": true,
-        "Type": 6,
-        "Title": "Representative"
+        "Title": "Representative",
+        "Order": 6
       },
       {
-        "IsEnabled": true,
-        "Type": 7,
-        "Title": "Currency"
+        "Title": "Currency",
+        "Order": 7
       }
     ],
     "LayoutOrder": 0,

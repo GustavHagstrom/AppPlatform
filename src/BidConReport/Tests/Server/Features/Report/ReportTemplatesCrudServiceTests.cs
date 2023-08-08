@@ -1,9 +1,8 @@
 ﻿using BidConReport.Server.Data;
 using BidConReport.Server.Features.Report;
 using BidConReport.Server.Shared.Enteties;
-using BidConReport.Shared.Features.ReportTemplate;
+using BidConReport.Shared.Entities.ReportTemplate;
 using Microsoft.EntityFrameworkCore;
-using System.Reflection;
 
 namespace BidconReport.Tests.Server.Features.Report;
 [TestFixture]
