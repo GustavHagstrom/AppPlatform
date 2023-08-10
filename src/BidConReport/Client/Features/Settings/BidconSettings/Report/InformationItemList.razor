@@ -22,10 +22,10 @@
                         </TitleContent>
                         <ChildContent>
                             <div class="pa-2 d-flex flex-column gap-2">
-                                <MudTextField @bind-Value="@item.Title" Variant="Variant.Outlined" Margin="Margin.Dense" Label="@Localizer["Rubrik"]" />
+                                <MudTextField @bind-Value="@item.Title" Variant="Variant.Outlined" Margin="Margin.Dense" Label="@Localizer["Rubrik"]" For="(() => item.Title)">@item.Title</MudTextField>
                                 <MudTextField Class="" @bind-Value="@item.ValueCode" Variant="Variant.Outlined" Margin="Margin.Dense" Label="@Localizer["Data"]"
                                               Adornment="Adornment.End" AdornmentIcon="@Icons.Material.Sharp.AddLink" AdornmentColor="Color.Primary"
-                                              OnAdornmentClick="(async () => await AddPlaceholder(item))" />
+                                              OnAdornmentClick="(async () => await AddPlaceholder(item))" For="(() => item.ValueCode)"/>
                             </div>
                         </ChildContent>
                     </ExpansionFrame>

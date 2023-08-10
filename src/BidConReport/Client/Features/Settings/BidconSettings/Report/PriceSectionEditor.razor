@@ -1,7 +1,11 @@
 ﻿<MudStack Spacing="4" Class="pa-4">
-    <MudTextField T="string" @bind-Value="Section.PriceWithoutChangesDescription" Margin="Margin.Dense" Variant="Variant.Outlined" Label="@Localizer["Beskrivning pris innan ändringar"]" />
-    <MudTextField T="string" @bind-Value="Section.ChangesDescription" Margin="Margin.Dense" Variant="Variant.Outlined" Label="@Localizer["Beskrivning summa ändringar"]" />
-    <MudTextField T="string" @bind-Value="Section.PriceWithChangesDescription" Margin="Margin.Dense" Variant="Variant.Outlined" Label="@Localizer["Beskrivning pris med ändringar"]" />
+    <MudTextField @bind-Value="Section.PriceWithoutChangesDescription" For="() => Section.PriceWithoutChangesDescription" Margin="Margin.Dense" Variant="Variant.Outlined" 
+                  Label="@Localizer["Beskrivning pris innan ändringar"]" />
+    <MudTextField @bind-Value="Section.ChangesDescription" For="() => Section.ChangesDescription" Margin="Margin.Dense" Variant="Variant.Outlined" 
+                  Label="@Localizer["Beskrivning summa ändringar"]" />
+    <MudTextField @bind-Value="Section.PriceWithChangesDescription" For="() => Section.PriceWithChangesDescription" Margin="Margin.Dense" Variant="Variant.Outlined" 
+                  Label="@Localizer["Beskrivning pris med ändringar"]" />
+
     <MudSwitch @bind-Checked="Section.ShowChanges" Color="Color.Primary">@Localizer["Visa ändringssummering"]</MudSwitch>
     <FontEditor Font="Section.CommentFont" SampleText="@Localizer["Beskrivningstext"]" />
     <FontEditor Font="Section.PriceFont" SampleText="@Localizer["Pristext"]" />

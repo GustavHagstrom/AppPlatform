@@ -18,8 +18,8 @@
                         </TitleContent>
                         <ChildContent>
                             <div class="pa-2 d-flex flex-column gap-2">
-                                <MudTextField @bind-Value="@column.ColumnHeader" Variant="Variant.Outlined" Margin="Margin.Dense" Label="@Localizer["Kolumnrubrik"]" />
-                                <MudTextField @bind-Value="@column.Width" Variant="Variant.Outlined" Margin="Margin.Dense" Label="@Localizer["Bredd"]" />
+                                <MudTextField @bind-Value="@column.ColumnHeader" For="() => column.ColumnHeader" Variant="Variant.Outlined" Margin="Margin.Dense" Label="@Localizer["Kolumnrubrik"]" />
+                                <MudTextField @bind-Value="@column.Width" For="() => column.Width" Variant="Variant.Outlined" Margin="Margin.Dense" Label="@Localizer["Bredd"]" />
                             </div>
                         </ChildContent>
                     </ExpansionFrame>

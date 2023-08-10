@@ -10,7 +10,7 @@ namespace BidConReport.Shared.Entities.ReportTemplate;
 public class ReportTemplate
 {
     public int Id { get; set; }
-    [MaxLength(50)]
+    [StringLength(50, MinimumLength = 1)]
     public string Name { get; set; } = string.Empty;
     [MaxLength(50)]
     public string OrganizationId { get; set; } = string.Empty;

@@ -3,7 +3,7 @@
         <MudForm Model="Template" @ref="Form" Class="pt-3">
             <div style="overflow-y: auto; height: calc(100vh - 144.5px - 100px);">
              
-                <MudTextField @bind-Value="Template.Name" Label="@Localizer["Namn"]" Variant="Variant.Outlined" Margin="Margin.Dense"/>
+                <MudTextField @bind-Value="Template.Name" For="() => Template.Name" Label="@Localizer["Namn"]" Variant="Variant.Outlined" Margin="Margin.Dense"/>
                 <div class="mt-4" />
                 <ReportHeaderEditor Header="Template.TopLeftHeader" Title="@Localizer["Vänster sidhuvud"]"/>
                 <div class="mt-4" />
@@ -37,7 +37,7 @@
         Form!.Validate();
         if(Form!.IsValid)
         {
-            MudDialog.Close();
+            MudDialog.Close(Template);
         }
     }
     void Cancel() => MudDialog.Cancel();
