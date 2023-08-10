@@ -1,36 +1,35 @@
-﻿<div class="border border-solid" style="border-color: var(--mud-palette-lines-inputs);">
-    <div class="border-b border-solid d-flex py-2 px-4" style="border-color: var(--mud-palette-lines-inputs);">
-        <MudText Typo="Typo.h6" Class="pr-4" Style="color: var(--mud-palette-text-primary)">@Localizer["Kolumner"]</MudText>
-    </div>
-    <table class="striped" style="width: 100%; min-height: 46px;">
+﻿<ExpansionFrame TitleText="@Localizer["Kolumner"]">
+    <table class="table-row-border">
         @foreach (var column in ColumnsInOrder)
         {
-            <tr class="d-flex">
+            <tr>
 
-                <td class="py-2 px-4" style="width: 100%">
-
-                    <div class="d-flex">
-                        <MudText Class="d-flex align-center flex-grow-1" Typo="Typo.subtitle2">@ColumnNameMap[column.DataSource]</MudText>
-                        <div class="d-flex">
-                            <MudSwitch @bind-Checked="column.IsActive" Color="Color.Primary" Style="margin: 0; margin-inline: 0;" />
-                            <MudIconButton Icon="@Icons.Material.Sharp.ArrowUpward" Color="Color.Primary" Style="height:30px; width: 30px;" Disabled="ColumnsInOrder.First() == column" OnClick="() => MoveUp(column)" />
-                            <MudIconButton Icon="@Icons.Material.Sharp.ArrowDownward" Color="Color.Primary" Style="height:30px; width: 30px;" Disabled="ColumnsInOrder.Last() == column" OnClick="() => MoveDown(column)" />
-                            <MudIconButton Icon="@Icons.Material.Sharp.Edit" Color="Color.Primary" Style="height:30px; width: 30px;" OnClick="() => Edit(column)" />
-                        </div>
-                    </div>
-
-                    <MudCollapse Expanded="column == CurrentColumn">
-                        <div class="pa-2 d-flex flex-column gap-2">
-                            <MudTextField @bind-Value="@column.ColumnHeader" Variant="Variant.Text" Margin="Margin.Dense" Label="@Localizer["Kolumnrubrik"]" />
-                            <MudTextField @bind-Value="@column.Width" Variant="Variant.Text" Margin="Margin.Dense" Label="@Localizer["Bredd"]" />
-                        </div>
-                    </MudCollapse>
+                <td style="width: 100%">
+                    <ExpansionFrame Class="px-2 py-1" Border="false" IconCollapsed="@Icons.Material.Sharp.Edit" IconExpanded="@Icons.Material.Sharp.Edit" IconHeight="30px" IconWidth="30px">
+                        <TitleContent>
+                            <div class="d-flex">
+                                <MudText Class="d-flex align-center flex-grow-1" Typo="Typo.subtitle2">@ColumnNameMap[column.DataSource]</MudText>
+                                <div class="d-flex">
+                                    <MudSwitch @bind-Checked="column.IsActive" Color="Color.Primary" Style="margin: 0; margin-inline: 0;" />
+                                    <MudIconButton Class="my-auto" Icon="@Icons.Material.Sharp.ArrowUpward" Color="Color.Primary" Style="height:30px; width: 30px;" Disabled="ColumnsInOrder.First() == column" OnClick="() => MoveUp(column)" />
+                                    <MudIconButton Class="my-auto" Icon="@Icons.Material.Sharp.ArrowDownward" Color="Color.Primary" Style="height:30px; width: 30px;" Disabled="ColumnsInOrder.Last() == column" OnClick="() => MoveDown(column)" />
+                                </div>
+                            </div>
+                        </TitleContent>
+                        <ChildContent>
+                            <div class="pa-2 d-flex flex-column gap-2">
+                                <MudTextField @bind-Value="@column.ColumnHeader" Variant="Variant.Outlined" Margin="Margin.Dense" Label="@Localizer["Kolumnrubrik"]" />
+                                <MudTextField @bind-Value="@column.Width" Variant="Variant.Outlined" Margin="Margin.Dense" Label="@Localizer["Bredd"]" />
+                            </div>
+                        </ChildContent>
+                    </ExpansionFrame>
 
                 </td>
             </tr>
         }
     </table>
-</div>
+</ExpansionFrame>
+
 
 @code {
     [Parameter, EditorRequired] public required ICollection<ColumnDefinition> ColumnList { get; set; }
@@ -48,19 +47,7 @@
 
     };
     private IEnumerable<ColumnDefinition> ColumnsInOrder => ColumnList.OrderBy(x => x.Order);
-    private ColumnDefinition? CurrentColumn;
 
-    void Edit(ColumnDefinition column)
-    {
-        if (column == CurrentColumn)
-        {
-            CurrentColumn = null;
-        }
-        else
-        {
-            CurrentColumn = column;
-        }
-    }
     void MoveUp(ColumnDefinition column)
     {
         var orderedList = ColumnsInOrder.ToList();
@@ -76,6 +63,5 @@
         var temp = column1.Order;
         column1.Order = column2.Order;
         column2.Order = temp;
-        //CurrentColumn = null;
     }
 }

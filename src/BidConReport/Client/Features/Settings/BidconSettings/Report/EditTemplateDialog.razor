@@ -9,21 +9,8 @@
                 <div class="mt-4" />
                 <ReportHeaderEditor Header="Template.TopLeftHeader" Title="@Localizer["Höger sidhuvud"]" />
                 <div class="mt-4"/>
-                <ReportTemplateSectionOrderer Template="Template" OnEditRequest="EditSection" />
+                <ReportTemplateSectionOrderer Template="Template" />
                 <div class="mt-4" />
-
-           @*     <MudCollapse Expanded="CurrentSection == Template.TitleSection">
-                    <TitleSectionEditor Section="Template.TitleSection" />
-                </MudCollapse>
-                <MudCollapse Expanded="CurrentSection == Template.InformationSection">
-                    <InformationSectionEditor Section="Template.InformationSection" />
-                </MudCollapse>
-                <MudCollapse Expanded="CurrentSection == Template.PriceSection">
-                    <PriceSectionEditor Section="Template.PriceSection" />
-                </MudCollapse>
-                <MudCollapse Expanded="CurrentSection == Template.TableSection">
-                    <TableSectionEditor Section="Template.TableSection" />
-                </MudCollapse>*@
             </div>
         </MudForm>
     </DialogContent>
@@ -42,7 +29,6 @@
     [Parameter, EditorRequired] public required ReportTemplate Template { get; set; }
 
     private bool OutAnimation { get; set; } = false;
-    private IReportTemplateSection? CurrentSection { get; set; }
 
     public MudForm? Form { get; set; }
 
@@ -55,11 +41,5 @@
         }
     }
     void Cancel() => MudDialog.Cancel();
-
-    void EditSection(IReportTemplateSection section)
-    {
-        CurrentSection = section;
-    }
-
 
 }

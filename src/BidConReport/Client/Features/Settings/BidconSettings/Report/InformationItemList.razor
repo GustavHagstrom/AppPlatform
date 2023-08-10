@@ -1,35 +1,34 @@
-﻿<div class="border border-solid" style="border-color: var(--mud-palette-lines-inputs);">
-    <div class="border-b border-solid d-flex py-2 px-4" style="border-color: var(--mud-palette-lines-inputs);">
-        <MudText Typo="Typo.h6" Class="pr-4" Style="color: var(--mud-palette-text-primary)">@Localizer["Informationsposter"]</MudText>
-        <MudSpacer />
+﻿<div class="border border-solid">
+    <div class="border-b border-solid d-flex py-2 px-4">
+        <MudText Typo="Typo.h6" Class="pr-4 d-flex flex-grow-1" Style="color: var(--mud-palette-text-primary)">@Localizer["Informationsposter"]</MudText>
         <MudIconButton Icon="@Icons.Material.Sharp.Add" Color="Color.Primary" Style="height:30px; width: 30px;" OnClick="AddNewItem" />
     </div>
-    <table class="striped" style="width: 100%; min-height: 46px;">
+    <table class="table-row-border">
         @foreach (var item in ItemsInOrder)
         {
-            <tr class="d-flex">
+            <tr>
 
-                <td class="py-2 px-4" style="width: 100%">
-
-                    <div class="d-flex">
-                        <MudText Class="d-flex align-center flex-grow-1" Typo="Typo.subtitle2">@item.Title</MudText>
-                        <div class="d-flex">
-                            <MudIconButton Icon="@Icons.Material.Sharp.ArrowUpward" Color="Color.Primary" Style="height:30px; width: 30px;" Disabled="ItemsInOrder.First() == item" OnClick="() => MoveUp(item)" />
-                            <MudIconButton Icon="@Icons.Material.Sharp.ArrowDownward" Color="Color.Primary" Style="height:30px; width: 30px;" Disabled="ItemsInOrder.Last() == item" OnClick="() => MoveDown(item)" />
-                            <MudIconButton Icon="@Icons.Material.Sharp.Delete" Color="Color.Error" Style="height:30px; width: 30px;" OnClick="(async () => await Delete(item))" />
-                            <MudIconButton Icon="@Icons.Material.Sharp.Edit" Color="Color.Primary" Style="height:30px; width: 30px;" OnClick="(() => Edit(item))" />
-                        </div>
-                    </div>
-
-
-                    <MudCollapse Expanded="item == CurrentUsedItem">
-                        <div class="pa-2">
-                            <MudTextField @bind-Value="@item.Title" Variant="Variant.Text" Margin="Margin.Dense" Label="@Localizer["Rubrik"]" />
-                            <MudTextField Class="" @bind-Value="@item.ValueCode" Variant="Variant.Text" Margin="Margin.Dense" Label="@Localizer["Data"]"
-                                            Adornment="Adornment.End" AdornmentIcon="@Icons.Material.Sharp.AddLink" AdornmentColor="Color.Primary"
-                                            OnAdornmentClick="(async () => await AddPlaceholder(item))"/>
-                        </div>
-                    </MudCollapse>
+                <td style="width: 100%">
+                    <ExpansionFrame Class="px-2 py-1" Border="false" IconCollapsed="@Icons.Material.Sharp.Edit" IconExpanded="@Icons.Material.Sharp.Edit" IconHeight="30px" IconWidth="30px">
+                        <TitleContent>
+                            <div class="d-flex">
+                                <MudText Class="d-flex align-center flex-grow-1" Typo="Typo.subtitle2">@item.Title</MudText>
+                                <div class="d-flex">
+                                    <MudIconButton Class="my-auto" Icon="@Icons.Material.Sharp.ArrowUpward" Color="Color.Primary" Style="height:30px; width: 30px;" Disabled="ItemsInOrder.First() == item" OnClick="() => MoveUp(item)" />
+                                    <MudIconButton Class="my-auto" Icon="@Icons.Material.Sharp.ArrowDownward" Color="Color.Primary" Style="height:30px; width: 30px;" Disabled="ItemsInOrder.Last() == item" OnClick="() => MoveDown(item)" />
+                                    <MudIconButton Class="my-auto" Icon="@Icons.Material.Sharp.Delete" Color="Color.Error" Style="height:30px; width: 30px;" OnClick="(async () => await Delete(item))" />
+                                </div>
+                            </div>
+                        </TitleContent>
+                        <ChildContent>
+                            <div class="pa-2 d-flex flex-column gap-2">
+                                <MudTextField @bind-Value="@item.Title" Variant="Variant.Outlined" Margin="Margin.Dense" Label="@Localizer["Rubrik"]" />
+                                <MudTextField Class="" @bind-Value="@item.ValueCode" Variant="Variant.Outlined" Margin="Margin.Dense" Label="@Localizer["Data"]"
+                                              Adornment="Adornment.End" AdornmentIcon="@Icons.Material.Sharp.AddLink" AdornmentColor="Color.Primary"
+                                              OnAdornmentClick="(async () => await AddPlaceholder(item))" />
+                            </div>
+                        </ChildContent>
+                    </ExpansionFrame>
                     
                 </td>
             </tr>
@@ -40,10 +39,8 @@
     [Parameter, EditorRequired] public required List<InformationItem> InformationItems { get; set; }
     [Inject] public required IStringLocalizer<InformationItemList> Localizer { get; set; }
     [Inject] public required IDialogService DialogService { get; set; }
-    [Inject] public required IReportTemplateService ReportTemplateService { get; set; }
     private IEnumerable<InformationItem> ItemsInOrder => InformationItems.OrderBy(x => x.Order);
 
-    InformationItem? CurrentUsedItem;
 
     async Task AddLinkToItem(InformationItem item)
     {
@@ -69,11 +66,10 @@
     void AddNewItem()
     {
         InformationItems.Add(new InformationItem
-            {
-                Title = Localizer["Ny rubrik"],
-                Order = InformationItems.Count,
-    });
-        StateHasChanged();
+        {
+            Title = Localizer["Ny rubrik"],
+            Order = InformationItems.Count,
+        });
     }
     async Task Delete(InformationItem item)
     {
@@ -91,17 +87,6 @@
         {
             InformationItems.Remove(item);
         }
-    }
-    void Edit(InformationItem item)
-    {
-        if(item == CurrentUsedItem)
-        {
-            CurrentUsedItem = null;
-        }
-        else
-        {
-            CurrentUsedItem = item;
-        }        
     }
     async Task AddPlaceholder(InformationItem item)
     {
@@ -122,6 +107,5 @@
         var temp = item1.Order;
         item1.Order = item2.Order;
         item2.Order = temp;
-        //CurrentUsedItem = null;
     }
 }

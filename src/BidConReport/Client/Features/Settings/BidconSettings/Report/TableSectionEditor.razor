@@ -1,10 +1,10 @@
-﻿<SectionContainer SectionHeader="@Localizer["Tabell"]">
+﻿<MudStack Spacing="4" Class="pa-4">
+    <TableColumnsList ColumnList="Section.Columns" />
     <FontEditor Font="Section.GroupFont" SampleText="@Localizer["Grupptext"]" />
     <FontEditor Font="Section.PartFont" SampleText="@Localizer["Kalkyldelstext"]" />
     <FontEditor Font="Section.CellFont" SampleText="@Localizer["Kalkylpoststext"]" />
     <FontEditor Font="Section.ColumnHeaderFont" SampleText="@Localizer["Kolumnrubrikstext"]" />
-    <TableColumnsList ColumnList="Section.Columns"/>
-</SectionContainer>
+</MudStack>
 
 @code {
     [Parameter, EditorRequired] public required TableSection Section { get; set; }

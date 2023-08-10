@@ -1,7 +1,7 @@
 ﻿<ExpansionFrame TitleText="@Title">
     <MudStack Spacing="2" Class="pa-4">
         <FontEditor Font="Header.Font" SampleText="@Localizer["Sidhuvudtext"]" />
-        <MudTextField Class="" @bind-Value="@Header.ValueCode" Variant="Variant.Text" Margin="Margin.Dense" Label="@Localizer["Data"]"
+        <MudTextField Class="" @bind-Value="@Header.ValueCode" Variant="Variant.Outlined" Margin="Margin.Dense" Label="@Localizer["Data"]"
                       Adornment="Adornment.End" AdornmentIcon="@Icons.Material.Sharp.AddLink" AdornmentColor="Color.Primary"
                       OnAdornmentClick="(AddPlaceholder)" />
     </MudStack>

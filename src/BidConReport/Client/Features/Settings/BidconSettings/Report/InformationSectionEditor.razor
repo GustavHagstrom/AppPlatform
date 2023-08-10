@@ -1,8 +1,8 @@
-﻿<SectionContainer SectionHeader="@Localizer["Allmän info"]">
+﻿<MudStack Spacing="4" Class="pa-4">
+    <InformationItemList InformationItems="Section.Items" />
     <FontEditor Font="Section.TitleFont" SampleText="@Localizer["Rubrikstext"]"/>
     <FontEditor Font="Section.ValueFont" SampleText="@Localizer["Datatext"]" />
-    <InformationItemList InformationItems="Section.Items"/>
-</SectionContainer>
+</MudStack>
 
 @code {
     [Parameter, EditorRequired] public required InformationSection Section { get; set; }

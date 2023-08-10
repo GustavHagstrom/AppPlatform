@@ -42,7 +42,6 @@
 
 
 @code {
-    [Parameter] public EventCallback<IReportTemplateSection> OnEditRequest { get; set; }
     [Parameter, EditorRequired] public required ReportTemplate Template { get; set; }
     [Inject] public required IStringLocalizer<ReportTemplateSectionOrderer> Localizer { get; set; }
 
@@ -67,19 +66,13 @@
     {
         var index = GetIndex(section);
         var otherSection = Template.SectionsInOrder.ElementAt(index - 1);
-        var tempValue = otherSection.LayoutOrder;
-        otherSection.LayoutOrder = section.LayoutOrder;
-        section.LayoutOrder = tempValue;
-        StateHasChanged();
+        Swap(section, otherSection);
     }
     private void MoveDown(IReportTemplateSection section)
     {
         var index = GetIndex(section);
         var otherSection = Template.SectionsInOrder.ElementAt(index + 1);
-        var tempValue = otherSection.LayoutOrder;
-        otherSection.LayoutOrder = section.LayoutOrder;
-        section.LayoutOrder = tempValue;
-        StateHasChanged();
+        Swap(section, otherSection);
     }
     private int GetIndex(IReportTemplateSection section)
     {
@@ -89,5 +82,11 @@
             .Single()
             .Index;
         return index;
+    }
+    void Swap(IReportTemplateSection section1, IReportTemplateSection section2)
+    {
+        var tempValue = section2.LayoutOrder;
+        section2.LayoutOrder = section1.LayoutOrder;
+        section1.LayoutOrder = tempValue;
     }
 }
