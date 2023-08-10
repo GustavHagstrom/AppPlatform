@@ -1,39 +1,29 @@
 ﻿<MudDialog>
     <DialogContent>
         <MudForm Model="Template" @ref="Form" Class="pt-3">
-            <div class="d-flex flex-column gap-4" style="overflow-y: auto; height: calc(100vh - 144.5px - 100px);">
+            <div style="overflow-y: auto; height: calc(100vh - 144.5px - 100px);">
              
                 <MudTextField @bind-Value="Template.Name" Label="@Localizer["Namn"]" Variant="Variant.Outlined" Margin="Margin.Dense"/>
-                
+                <div class="mt-4" />
                 <ReportHeaderEditor Header="Template.TopLeftHeader" Title="@Localizer["Vänster sidhuvud"]"/>
+                <div class="mt-4" />
                 <ReportHeaderEditor Header="Template.TopLeftHeader" Title="@Localizer["Höger sidhuvud"]" />
-
+                <div class="mt-4"/>
                 <ReportTemplateSectionOrderer Template="Template" OnEditRequest="EditSection" />
+                <div class="mt-4" />
 
-                @if(CurrentSection is TitleSection)
-                {
-                    <div class="border bodred-solid mt-4 pa-4 @(CurrentSection == Template.TitleSection ? "expand" : "d-none")" style="border-color: var(--mud-palette-lines-inputs); overflow-y: auto;">
-                        <TitleSectionEditor Section="Template.TitleSection" />
-                    </div>
-                }
-                @if(CurrentSection is InformationSection)
-                {
-                    <div class="border bodred-solid mt-4 pa-4 @(CurrentSection == Template.InformationSection ? "expand" : "d-none")" style="border-color: var(--mud-palette-lines-inputs); overflow-y: auto;">
-                        <InformationSectionEditor Section="Template.InformationSection" />
-                    </div>
-                }
-                @if(CurrentSection is PriceSection)
-                {
-                    <div class="border bodred-solid mt-4 pa-4 @(CurrentSection == Template.PriceSection ? "expand" : "d-none")" style="border-color: var(--mud-palette-lines-inputs); overflow-y: auto;">
-                        <PriceSectionEditor Section="Template.PriceSection" />
-                    </div>
-                }
-                @if (CurrentSection is TableSection)
-                {
-                    <div class="border bodred-solid mt-4 pa-4 @(CurrentSection == Template.TableSection ? "expand" : "d-none")" style="border-color: var(--mud-palette-lines-inputs); overflow-y: auto;">
-                        <TableSectionEditor Section="Template.TableSection" />
-                    </div>
-                }
+                <MudCollapse Expanded="CurrentSection == Template.TitleSection">
+                    <TitleSectionEditor Section="Template.TitleSection" />
+                </MudCollapse>
+                <MudCollapse Expanded="CurrentSection == Template.InformationSection">
+                    <InformationSectionEditor Section="Template.InformationSection" />
+                </MudCollapse>
+                <MudCollapse Expanded="CurrentSection == Template.PriceSection">
+                    <PriceSectionEditor Section="Template.PriceSection" />
+                </MudCollapse>
+                <MudCollapse Expanded="CurrentSection == Template.TableSection">
+                    <TableSectionEditor Section="Template.TableSection" />
+                </MudCollapse>
             </div>
         </MudForm>
     </DialogContent>

@@ -22,14 +22,14 @@
                     </div>
 
 
-                    <div class="@CreateEditCss(item)">
+                    <MudCollapse Expanded="item == CurrentUsedItem">
                         <div class="pa-2">
                             <MudTextField @bind-Value="@item.Title" Variant="Variant.Text" Margin="Margin.Dense" Label="@Localizer["Rubrik"]" />
                             <MudTextField Class="" @bind-Value="@item.ValueCode" Variant="Variant.Text" Margin="Margin.Dense" Label="@Localizer["Data"]"
                                             Adornment="Adornment.End" AdornmentIcon="@Icons.Material.Sharp.AddLink" AdornmentColor="Color.Primary"
                                             OnAdornmentClick="(async () => await AddPlaceholder(item))"/>
                         </div>
-                    </div>
+                    </MudCollapse>
                     
                 </td>
             </tr>
@@ -44,23 +44,10 @@
     private IEnumerable<InformationItem> ItemsInOrder => InformationItems.OrderBy(x => x.Order);
 
     InformationItem? CurrentUsedItem;
-    InformationItem? LastUsedItem;
 
     async Task AddLinkToItem(InformationItem item)
     {
         item.ValueCode += await GetPlaceholderFromDialog();
-    }
-    string CreateEditCss(InformationItem item)
-    {
-        if(item == CurrentUsedItem)
-        {
-            return "expand";
-        }
-        if (item == LastUsedItem)
-        {
-            return "minimize";
-        }
-        return "d-none";
     }
     async Task<string> GetPlaceholderFromDialog()
     {
@@ -107,7 +94,6 @@
     }
     void Edit(InformationItem item)
     {
-        LastUsedItem = CurrentUsedItem;
         if(item == CurrentUsedItem)
         {
             CurrentUsedItem = null;
@@ -136,7 +122,6 @@
         var temp = item1.Order;
         item1.Order = item2.Order;
         item2.Order = temp;
-        CurrentUsedItem = null;
-        LastUsedItem = null;
+        //CurrentUsedItem = null;
     }
 }

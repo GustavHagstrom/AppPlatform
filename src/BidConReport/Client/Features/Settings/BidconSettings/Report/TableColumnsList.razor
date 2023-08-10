@@ -19,12 +19,12 @@
                         </div>
                     </div>
 
-                    <div class="@CreateEditCss(column)">
+                    <MudCollapse Expanded="column == CurrentColumn">
                         <div class="pa-2 d-flex flex-column gap-2">
                             <MudTextField @bind-Value="@column.ColumnHeader" Variant="Variant.Text" Margin="Margin.Dense" Label="@Localizer["Kolumnrubrik"]" />
                             <MudTextField @bind-Value="@column.Width" Variant="Variant.Text" Margin="Margin.Dense" Label="@Localizer["Bredd"]" />
                         </div>
-                    </div>
+                    </MudCollapse>
 
                 </td>
             </tr>
@@ -49,24 +49,9 @@
     };
     private IEnumerable<ColumnDefinition> ColumnsInOrder => ColumnList.OrderBy(x => x.Order);
     private ColumnDefinition? CurrentColumn;
-    private ColumnDefinition? LastColumn;
-
-    string CreateEditCss(ColumnDefinition column)
-    {
-        if (column == CurrentColumn)
-        {
-            return "expand";
-        }
-        if (column == LastColumn)
-        {
-            return "minimize";
-        }
-        return "d-none";
-    }
 
     void Edit(ColumnDefinition column)
     {
-        LastColumn = CurrentColumn;
         if (column == CurrentColumn)
         {
             CurrentColumn = null;
@@ -91,7 +76,6 @@
         var temp = column1.Order;
         column1.Order = column2.Order;
         column2.Order = temp;
-        CurrentColumn = null;
-        LastColumn = null;
+        //CurrentColumn = null;
     }
 }
