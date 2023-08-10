@@ -11,8 +11,13 @@
             <MudIconButton Icon="@Icons.Material.Sharp.Add" Color="Color.Primary" Style="height:30px; width: 30px;" OnClick="CreateNew" />
         </MudListSubheader>
         <table style="height: calc(100% - 49px);" class="striped overflow-y-auto">
-
-        
+            @if(TemplateList is not null)
+            {
+                @foreach (var template in TemplateList)
+                {
+                    <MudText Typo="Typo.subtitle2">@template.Name</MudText>
+                }
+            }        
         </table>
     </MudList>
 
