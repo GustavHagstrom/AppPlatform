@@ -1,17 +1,32 @@
 :root {
-    --bidcon-color: #fed932
+    --bidcon-color: #fed932;
+}
+ * {
+    border-color: var(--mud-palette-lines-inputs);
+}
+table.table-row-border {
+    border-collapse: collapse;
+    width: 100%;
+}
+
+table.table-row-border tr:nth-child(n+2) {
+    border-top-width: 1px;
+    border-style: solid;
 }
 
 table.striped {
-    border-collapse: collapse;
     width: 100%;
 }
 table.striped th {
     position: sticky;
     top: 0; /* Don't forget this, required for the stickiness */
 }
+
 table.striped tr:nth-child(even) {
-    background-color: #f2f2f2;
+    background-color: var(--mud-palette-background-grey);
+}
+table.striped tr:nth-child(odd) {
+    background-color: var(--mud-palette-background);
 }
 table.striped .mud-icon-button {
     padding: 8px;

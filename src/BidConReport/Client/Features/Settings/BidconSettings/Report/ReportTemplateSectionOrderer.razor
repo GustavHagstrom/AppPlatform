@@ -1,21 +1,45 @@
-﻿<table style="width: 100%; border-color: var(--mud-palette-lines-inputs);" class="border boder-solid py-2 px-4">
-    @foreach (var section in Template.SectionsInOrder)
-    {
-        <tr class="d-flex">
-            <td class="d-flex flex-grow-1 align-center">
-                <MudText Typo="Typo.subtitle2">@GetSectionName(section)</MudText>
-            </td>
-            <td>
-                <div class="d-flex">
-                    <MudSwitch @bind-Checked="section.IsEnabled" Color="Color.Primary" Style="margin: 0; margin-inline: 0;"/>
-                    <MudIconButton Icon="@Icons.Material.Sharp.ArrowUpward" Color="Color.Primary" Style="height:30px; width: 30px;" Disabled="IsFirst(section)" OnClick="() => MoveUp(section)"/>
-                    <MudIconButton Icon="@Icons.Material.Sharp.ArrowDownward" Color="Color.Primary" Style="height:30px; width: 30px;" Disabled="IsLast(section)" OnClick="() => MoveDown(section)" />
-                    <MudIconButton Icon="@Icons.Material.Sharp.Edit" Color="Color.Primary" Style="height:30px; width: 30px;" OnClick="async () => await OnEditRequest.InvokeAsync(section)"/>
-                </div>
-            </td>
-        </tr>
-    }
-</table>
+﻿<ExpansionFrame TitleText="@Localizer["Sektioner"]">
+    <table class="table-row-border">
+        
+        @foreach (var section in Template.SectionsInOrder)
+        {
+            <tr>
+                <td class="px-2">
+                    <ExpansionFrame Style="width: 100%" IconCollapsed="@Icons.Material.Sharp.Edit" IconExpanded="@Icons.Material.Sharp.Edit" IconHeight="30px" IconWidth="30px" Border="false" Expanded="false">
+                        <TitleContent>
+                            <div class="d-flex">
+                                <MudText Class="flex-grow-1 d-flex align-center" Typo="Typo.subtitle1">@GetSectionName(section)</MudText>
+                                <MudSwitch @bind-Checked="section.IsEnabled" Color="Color.Primary" Style="margin: 0; margin-inline: 0;" />
+                                <MudIconButton Icon="@Icons.Material.Sharp.ArrowUpward" Color="Color.Primary" Class="my-auto" Style="height:30px; width: 30px;" Disabled="IsFirst(section)" OnClick="() => MoveUp(section)" />
+                                <MudIconButton Icon="@Icons.Material.Sharp.ArrowDownward" Color="Color.Primary" Class="my-auto" Style="height:30px; width: 30px;" Disabled="IsLast(section)" OnClick="() => MoveDown(section)" />
+
+                            </div>
+                        </TitleContent>
+                        <ChildContent>
+                            @if (section is TitleSection)
+                            {
+                                <TitleSectionEditor Section="Template.TitleSection" />
+                            }
+                            @if (section is InformationSection)
+                            {
+                                <InformationSectionEditor Section="Template.InformationSection" />
+                            }
+                            @if (section is PriceSection)
+                            {
+                                <PriceSectionEditor Section="Template.PriceSection" />
+                            }
+                            @if (section is TableSection)
+                            {
+                                <TableSectionEditor Section="Template.TableSection" />
+                            }
+                        </ChildContent>
+                    </ExpansionFrame>
+                </td>
+            </tr>         
+        }
+    </table>
+</ExpansionFrame>
+
 
 @code {
     [Parameter] public EventCallback<IReportTemplateSection> OnEditRequest { get; set; }
