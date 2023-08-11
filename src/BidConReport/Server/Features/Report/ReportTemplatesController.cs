@@ -47,12 +47,12 @@ public class ReportTemplatesController : ControllerBase
         await _reportTemplatesCrudService.SetAsDefaultAsync(userId, reportTemplate.Id);
         return Ok();
     }
-    [HttpDelete("Delete")]
-    public async Task<IActionResult> Delete(ReportTemplate reportTemplate)
+    [HttpDelete("Delete/{id}")]
+    public async Task<IActionResult> Delete(int id)
     {
         var userId = User.Claims.Where(x => x.Type == ClaimConstants.ObjectId).FirstOrDefault()?.Value;
         ArgumentNullException.ThrowIfNull(userId);
-        await _reportTemplatesCrudService.DeleteAsync(reportTemplate.Id, userId);
+        await _reportTemplatesCrudService.DeleteAsync(id, userId);
         return Ok();
     }
 }

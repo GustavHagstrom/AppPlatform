@@ -80,7 +80,7 @@ namespace BidConReport.Client.Shared.Services
         {
             try
             {
-                var response = await _httpClient.DeleteAsync(BackendApiEndpoints.ReportTemplatesController.Delete + id.ToString());
+                var response = await _httpClient.DeleteAsync($"{BackendApiEndpoints.ReportTemplatesController.Delete}/{id}");
                 response.EnsureSuccessStatusCode();
             }
             catch (Exception ex)

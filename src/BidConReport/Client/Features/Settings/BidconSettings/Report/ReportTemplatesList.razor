@@ -1,21 +1,29 @@
 ﻿<MudPaper Style="height: 100%" Class="relative">
 
-    <MudOverlay Visible="TemplateList is null" DarkBackground="true" Absolute="true">
+    <MudOverlay @bind-Visible="OverlayVisible" DarkBackground="true" Absolute="true">
         <MudProgressCircular Color="Color.Primary" Indeterminate="true" Size="Size.Large" />
     </MudOverlay>
 
-    <MudList Style="height: 100%; min-width: 100px;" Clickable="true" DisableGutters="true" Dense="true" DisablePadding="true" @bind-SelectedValue="SelectedTemplate">
-        <MudListSubheader Class="border-b pa-2 d-flex" Style="border-color: var(--mud-palette-lines-default)">
-            <MudText Typo="Typo.h6" Class="pr-4" Style="color: var(--mud-palette-text-primary)">@Localizer["Rapportmallar"]</MudText>
-            <MudSpacer/>
+    <MudList Style="height: 100%; min-width: 100px;" Clickable="true" DisableGutters="true" Dense="true" DisablePadding="true">
+        <MudListSubheader Class="border-b pa-2 d-flex">
+            <MudText Typo="Typo.h6" Class="pr-4 d-flex flex-grow-1" Style="color: var(--mud-palette-text-primary)">@Localizer["Rapportmallar"]</MudText>
             <MudIconButton Icon="@Icons.Material.Sharp.Add" Color="Color.Primary" Style="height:30px; width: 30px;" OnClick="CreateNew" />
         </MudListSubheader>
-        <table style="height: calc(100% - 49px);" class="striped overflow-y-auto">
+        <table style="max-height: calc(100% - 49px);" class="striped overflow-y-auto">
             @if(TemplateList is not null)
             {
                 @foreach (var template in TemplateList)
                 {
-                    <MudText Typo="Typo.subtitle2">@template.Name</MudText>
+                    <tr>
+                        <td>
+                            <div class="d-flex px-2">
+                                <MudText Class="d-flex flex-grow-1 mr-2 align-center" Typo="Typo.subtitle2">@template.Name</MudText>
+                                <MudIconButton Class="my-auto" Icon="@Icons.Material.Sharp.Delete" Color="Color.Error" Style="height:30px; width: 30px;" OnClick="async () => await Delete(template)" />
+                                <MudIconButton Class="my-auto" Icon="@Icons.Material.Sharp.Edit" Color="Color.Primary" Style="height:30px; width: 30px;" OnClick="async () => await Edit(template)" />
+                            </div>
+                        </td>
+                    </tr>
+                    
                 }
             }        
         </table>
@@ -30,9 +38,8 @@
     [Inject] public required IStringLocalizer<ReportTemplatesList> Localizer { get; set; }
     [Inject] public required ScreenSizeService ScreenSizeService { get; set; }
 
-
+    bool OverlayVisible { get; set; } = true;
     public ICollection<ReportTemplate>? TemplateList { get; set; }
-    public object? SelectedTemplate { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
@@ -40,22 +47,19 @@
     }
     public async Task RefreshList()
     {
-        TemplateList = null;
-        StateHasChanged();
         TemplateList = await TemplateService.GetAllAsync();
+        OverlayVisible = false;
         StateHasChanged();
     }
     public async Task CreateNew()
     {
         await OpenEditDialog(new ReportTemplate(), Localizer["Ny"]);
     }
-    public async Task EditSelectedTemplate()
+    public async Task Edit(ReportTemplate template)
     {
-        if (SelectedTemplate is not null)
-        {
-            var clone = JsonSerializer.Deserialize<ReportTemplate>(JsonSerializer.Serialize(SelectedTemplate as ReportTemplate));
-            await OpenEditDialog(clone!, Localizer["Redigera"]);
-        }
+        var clone = JsonSerializer.Deserialize<ReportTemplate>(JsonSerializer.Serialize(template));
+        await OpenEditDialog(clone!, Localizer["Redigera"]);
+
     }
     public async Task OpenEditDialog(ReportTemplate template, string title)
     {
@@ -73,21 +77,19 @@
         var result = await dialog.Result;
         if (!result.Canceled)
         {
+            ShowOverlay();
             await TemplateService.UpsertAsync(template!);
             await RefreshList();
         }
     }
-    public async Task DeleteSelectedTemplate()
+    public async Task Delete(ReportTemplate template)
     {
-        if (SelectedTemplate is not null && SelectedTemplate is ReportTemplate template)
+        if (await ConfirmDelete(template))
         {
-            if (await ConfirmDelete(template))
-            {
-                await TemplateService.DeleteAsync(template.Id);
-                await RefreshList();
-            }
+            ShowOverlay();
+            await TemplateService.DeleteAsync(template.Id);
+            await RefreshList();
         }
-
     }
     public async Task<bool> ConfirmDelete(ReportTemplate template)
     {
@@ -104,5 +106,10 @@
         var dialog = await DialogService.ShowAsync<YesNoDialog>(Localizer["Ta bort"], parameters, options);
         var result = await dialog.Result;
         return !result.Canceled;
+    }
+    void ShowOverlay()
+    {
+        OverlayVisible = true;
+        StateHasChanged();
     }
 }
