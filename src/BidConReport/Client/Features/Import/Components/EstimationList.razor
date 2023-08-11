@@ -1,7 +1,8 @@
 ﻿<div style="@($"height: {Height}")">
     <div>
         <div class="d-flex">
-            <input placeholder="Sökfilter" class="pa-2 flex-grow-1" style="outline: none" @bind="Filter" @bind:event="oninput"/>
+            @*<MudTextField Placeholder="@Localizer["Sökfilter"]" Variant="Variant.Outlined" Class="pa-2 flex-grow-1" Style="outline: none" @bind-Value="Filter" />*@
+            <input placeholder="Sökfilter" class="pa-2 flex-grow-1" style="outline: none; background-color: var(--mud-palette-background); color: var(--mud-palette-text-primary)" @bind="Filter" @bind:event="oninput" />
         </div>
         <MudDivider Light="true"/>
     </div>
@@ -20,7 +21,6 @@
                             <td class="d-flex flex-grow-1">
                                 <MudCheckBox @bind-Checked="context.IsSelected" />
                                 <MudIcon Icon="@CustomIcons.BidconIcon" Color="Color.Tertiary" Style="" Class="align-self-center ml-0" />
-                                @*<img src="~/bidcon_icon.png" style="color: var(--bidcon-color); width: 24px; height: 24px" class="align-self-center ml-3" />*@
                                 <MudText Class="align-self-center ml-2">@context.Name</MudText>
                             </td>
                         </tr>
@@ -36,5 +36,6 @@
     [Parameter, EditorRequired] public DbTreeItem? ItemTree { get; set; }
     [Parameter, EditorRequired] public bool IsRefreshing { get; set; }
     [Parameter] public string Height { get; set; } = string.Empty;
+    [Inject] public required IStringLocalizer<EstimationList> Localizer { get; set; }
     private string Filter { get; set; } = string.Empty;
 }

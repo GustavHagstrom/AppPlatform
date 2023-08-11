@@ -1,7 +1,8 @@
 ﻿@using BidConReport.Client.Shared.Constants;
+@implements IDisposable
 @inherits LayoutComponentBase
 
-<MudThemeProvider Theme="CustomThemes.PlatformStandard" IsDarkMode="false" DefaultScrollbar="true" />
+<MudThemeProvider Theme="CustomThemes.PlatformStandard" @bind-IsDarkMode="IsDarkMode" DefaultScrollbar="false" />
 <MudDialogProvider FullWidth="true"
                     MaxWidth="MaxWidth.ExtraSmall"
                     CloseButton="true"
@@ -11,29 +12,33 @@
                     CloseOnEscapeKey="true" />
 <MudSnackbarProvider />
 
-<AppBar Height="50px">
-    <MudIcon Icon="@CustomIcons.ReportsForBidcon" Color="Color.Primary" Style="height: 50px; width: 50px;" Class="pa-1"/>
-    <AuthorizeView>
-        <Authorized>
-            <MudDivider Light="false" Vertical="true" FlexItem="true" Class="my-2 mr-2" />
-            <MudTooltip Text="@Localizer["Startsida"]" RootClass="align-self-center">
-                <MudButton Href="@ClientRoutes.Dashboard" Class="py-1 px-3" Variant="Variant.Text" Color="Color.Inherit" Style="@StyleService.CreateNavigationButtonStyle("dashboard")">
-                    <MudIcon Icon="@Icons.Material.Sharp.Dashboard" />
-                </MudButton>
-            </MudTooltip>
-            <MudTooltip Text="@Localizer["Importera från BidCon"]" RootClass="align-self-center">
-                <MudButton Href="@ClientRoutes.Import" Class="py-1 px-3" Variant="Variant.Text" Color="Color.Inherit" Style="@StyleService.CreateNavigationButtonStyle("bidcon")">
-                    <MudIcon Icon="@CustomIcons.BidconIcon" />
-                </MudButton>
-            </MudTooltip>
-            <MudTooltip Text="@Localizer["Inställningar"]" RootClass="align-self-center">
-                <MudButton Href="@ClientRoutes.Settings" Class="py-1 px-3" Variant="Variant.Text" Color="Color.Inherit" Style="@StyleService.CreateNavigationButtonStyle("settings")">
-                    <MudIcon Icon="@Icons.Material.Sharp.Settings" />
-                </MudButton>
-            </MudTooltip>
-        </Authorized>
-    </AuthorizeView>
-</AppBar>
+<CascadingValue Value="this">
+
+    <AppBar Height="50px">
+        <MudIcon Icon="@CustomIcons.ReportsForBidcon" Color="Color.Primary" Style="height: 50px; width: 50px;" Class="pa-1"/>
+        <AuthorizeView>
+            <Authorized>
+                <MudDivider Light="false" Vertical="true" FlexItem="true" Class="my-2 mr-2" />
+                <MudTooltip Text="@Localizer["Startsida"]" RootClass="align-self-center">
+                    <MudButton Href="@ClientRoutes.Dashboard" Class="py-1 px-3" Variant="Variant.Text" Color="Color.Inherit" Style="@StyleService.CreateNavigationButtonStyle("dashboard")">
+                        <MudIcon Icon="@Icons.Material.Sharp.Dashboard" />
+                    </MudButton>
+                </MudTooltip>
+                <MudTooltip Text="@Localizer["Importera från BidCon"]" RootClass="align-self-center">
+                    <MudButton Href="@ClientRoutes.Import" Class="py-1 px-3" Variant="Variant.Text" Color="Color.Inherit" Style="@StyleService.CreateNavigationButtonStyle("bidcon")">
+                        <MudIcon Icon="@CustomIcons.BidconIcon" />
+                    </MudButton>
+                </MudTooltip>
+                <MudTooltip Text="@Localizer["Inställningar"]" RootClass="align-self-center">
+                    <MudButton Href="@ClientRoutes.Settings" Class="py-1 px-3" Variant="Variant.Text" Color="Color.Inherit" Style="@StyleService.CreateNavigationButtonStyle("settings")">
+                        <MudIcon Icon="@Icons.Material.Sharp.Settings" />
+                    </MudButton>
+                </MudTooltip>
+            </Authorized>
+        </AuthorizeView>
+    </AppBar>
+
+</CascadingValue>
 <div style="position: fixed; height: calc(100% - 50px); width: 100%; top: 50px; background-color: var(--mud-palette-background-grey); z-index: 500;">
     @Body
 </div>
@@ -42,6 +47,32 @@
 @code {
     [Inject] public required IStringLocalizer<MainLayout> Localizer { get; set; }
     [Inject] public required StyleService StyleService { get; set; }
+    [Inject] public required AuthenticationStateProvider AuthStateProvider { get; set; }
+    [Inject] public required IDarkModeService DarkModeService { get; set; }
 
-    public MudTheme Theme { get; set; } = CustomThemes.PlatformStandard;
+    public bool IsDarkMode { get; set; } = false;
+
+    MudTheme Theme { get; set; } = CustomThemes.PlatformStandard;
+
+
+    public void Dispose()
+    {
+        AuthStateProvider.AuthenticationStateChanged -= async (x) => await OnAuthStateChangedAsync(x);
+    }
+    protected override void OnInitialized()
+    {
+        AuthStateProvider.AuthenticationStateChanged += async (x) => await OnAuthStateChangedAsync(x);
+    }
+    protected override async Task OnInitializedAsync()
+    {
+        IsDarkMode = await DarkModeService.GetUserDarkModeSettingAsync();
+    }
+
+    private async Task OnAuthStateChangedAsync(Task<AuthenticationState> task)
+    {
+        IsDarkMode = await DarkModeService.GetUserDarkModeSettingAsync();
+    }
+
+
+    
 }

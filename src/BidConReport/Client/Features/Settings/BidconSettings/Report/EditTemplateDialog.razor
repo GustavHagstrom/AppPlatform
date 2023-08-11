@@ -1,7 +1,7 @@
 ﻿<MudDialog>
     <DialogContent>
         <MudForm Model="Template" @ref="Form" Class="pt-3">
-            <div style="overflow-y: auto; height: calc(100vh - 144.5px - 100px);">
+            <div class="px-2" style="overflow-y: auto; height: calc(100vh - 144.5px - 100px);">
              
                 <MudTextField @bind-Value="Template.Name" For="() => Template.Name" Label="@Localizer["Namn"]" Variant="Variant.Outlined" Margin="Margin.Dense"/>
                 <div class="mt-4" />

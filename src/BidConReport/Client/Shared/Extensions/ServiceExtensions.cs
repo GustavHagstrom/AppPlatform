@@ -23,5 +23,6 @@ public static class ServiceExtensions
         services.AddTransient<IEstimationItemTraverser, EstimationItemTraverser>();
         services.AddTransient<IReportTemplateService, ReportTemplateService>();
         services.AddTransient<IImportSettingsService, ImportSettingsService>();
+        services.AddTransient<IDarkModeService, DarkModeService>();
     }
 }

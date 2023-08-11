@@ -1,4 +1,5 @@
-﻿using BidConReport.Server.Features.Import;
+﻿using BidConReport.Server.Features.DarkMode;
+using BidConReport.Server.Features.Import;
 using BidConReport.Server.Features.Report;
 using BidConReport.Server.Shared.Services;
 
@@ -11,6 +12,7 @@ internal static class ServiceExtensions
         services.UseImportFeature();
         services.UseSharedServices();
         services.UseReportFeature();
+        services.UseDarkModeServices();
     }
     public static void UseImportFeature(this IServiceCollection services)
     {
@@ -27,6 +29,10 @@ internal static class ServiceExtensions
     public static void UseReportFeature(this IServiceCollection services)
     {
         services.AddTransient<IReportTemplatesCrudService, ReportTemplatesCrudService>();
+    }
+    public static void UseDarkModeServices(this IServiceCollection services)
+    {
+        services.AddTransient<IDarkModeService, DarkModeService>();
     }
 }
 

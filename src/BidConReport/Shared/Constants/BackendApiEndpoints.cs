@@ -54,5 +54,16 @@ public static class BackendApiEndpoints
         /// </summary>
         public const string SetDefault = "api/ReportTemplates/SetAsDefault";
     }
+    public static class DarkModeController
+    {
+        /// <summary>
+        /// Get request. Returns a bool indicating user darkmode preference
+        /// </summary>
+        public const string Get = "api/DarkMode";
+        /// <summary>
+        /// Put request. bool as request body
+        /// </summary>
+        public const string Put = "api/DarkMode";
+    }
 }
 
