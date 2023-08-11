@@ -1,5 +1,4 @@
 ﻿@using BidConReport.Client.Shared.Constants;
-@implements IDisposable
 @inherits LayoutComponentBase
 
 <MudThemeProvider Theme="CustomThemes.PlatformStandard" @bind-IsDarkMode="IsDarkMode" DefaultScrollbar="false" />
@@ -12,7 +11,7 @@
                     CloseOnEscapeKey="true" />
 <MudSnackbarProvider />
 
-<CascadingValue Value="this">
+<CascadingValue Name="DarkModeAction" Value="SetDarkMode">
 
     <AppBar Height="50px">
         <MudIcon Icon="@CustomIcons.ReportsForBidcon" Color="Color.Primary" Style="height: 50px; width: 50px;" Class="pa-1"/>
@@ -38,41 +37,31 @@
         </AuthorizeView>
     </AppBar>
 
-</CascadingValue>
+
 <div style="position: fixed; height: calc(100% - 50px); width: 100%; top: 50px; background-color: var(--mud-palette-background-grey); z-index: 500;">
     @Body
 </div>
     
+</CascadingValue>
 
 @code {
     [Inject] public required IStringLocalizer<MainLayout> Localizer { get; set; }
     [Inject] public required StyleService StyleService { get; set; }
-    [Inject] public required AuthenticationStateProvider AuthStateProvider { get; set; }
     [Inject] public required IDarkModeService DarkModeService { get; set; }
 
-    public bool IsDarkMode { get; set; } = false;
-
+    bool IsDarkMode { get; set; } = false;
     MudTheme Theme { get; set; } = CustomThemes.PlatformStandard;
 
-
-    public void Dispose()
-    {
-        AuthStateProvider.AuthenticationStateChanged -= async (x) => await OnAuthStateChangedAsync(x);
-    }
-    protected override void OnInitialized()
-    {
-        AuthStateProvider.AuthenticationStateChanged += async (x) => await OnAuthStateChangedAsync(x);
-    }
     protected override async Task OnInitializedAsync()
     {
-        IsDarkMode = await DarkModeService.GetUserDarkModeSettingAsync();
+        var isDarkMode = await DarkModeService.GetUserDarkModeSettingAsync();
+        SetDarkMode(isDarkMode);
     }
 
-    private async Task OnAuthStateChangedAsync(Task<AuthenticationState> task)
+    void SetDarkMode(bool isDarkMode)
     {
-        IsDarkMode = await DarkModeService.GetUserDarkModeSettingAsync();
+        IsDarkMode = isDarkMode;
+        StateHasChanged();
     }
 
-
-    
 }

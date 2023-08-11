@@ -1,9 +1,32 @@
 ﻿<PageTab HeaderStartIcon="@Icons.Material.Sharp.Person" HeaderText="@Localizer["Allmänt"]" HeaderTooltip="@Localizer["Allmänt"]">
-    <MudContainer MaxWidth="MaxWidth.ExtraLarge">
-        <MudPaper Style="height: 100%" />
+    <MudContainer MaxWidth="MaxWidth.Large" Style="height: 100%">
+        <MudPaper Style="height: 100%">
+            <MudOverlay @bind-Visible="IsLoading" Absolute="true" DarkBackground="true">
+                <MudProgressCircular Indeterminate="true" Size="Size.Large" Color="Color.Primary" />
+            </MudOverlay>
+
+            <MudSwitch Checked="IsDarkMode" CheckedChanged="@(async (bool value) => await OnDarkModeChanged(value))" Color="Color.Primary" Label="@Localizer["DarkMode"]" />
+        </MudPaper>
     </MudContainer>
 </PageTab>
 
 @code {
     [Inject] public required IStringLocalizer<CommonSettingsTab> Localizer { get; set; }
+    [Inject] public required IDarkModeService DarkModeService { get; set; }
+    [CascadingParameter(Name = "DarkModeAction")] public required Action<bool> DarkModeAction { get; set; }
+
+    bool IsLoading { get; set; } = true;
+    bool IsDarkMode { get; set; } = false;
+
+    protected override async Task OnInitializedAsync()
+    {
+        IsDarkMode = await DarkModeService.GetUserDarkModeSettingAsync();
+        IsLoading = false;
+    }
+    public async Task OnDarkModeChanged(bool isDarkMode)
+    {
+        IsDarkMode = isDarkMode;
+        DarkModeAction.Invoke(isDarkMode);
+        await DarkModeService.SetUserDarkModeSettingAsync(isDarkMode);
+    }
 }

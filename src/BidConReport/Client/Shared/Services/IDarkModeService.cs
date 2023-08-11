@@ -3,5 +3,5 @@
 public interface IDarkModeService
 {
     Task<bool> GetUserDarkModeSettingAsync();
-    Task SetUserDarkModeSettingAsync(string userId, bool isDarkMode);
+    Task SetUserDarkModeSettingAsync(bool isDarkMode);
 }

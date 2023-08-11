@@ -20,8 +20,8 @@ public class DarkModeController : ControllerBase
         ArgumentNullException.ThrowIfNull(userId);
         return Ok(await _darkModeService.GetUserDarkModeSettingAsync(userId));
     }
-    [HttpPut()]
-    public async Task<IActionResult> Put(string isDarkMode)
+    [HttpPut]
+    public async Task<IActionResult> Put([FromBody ]string isDarkMode)
     {
         var userId = User.Claims.Where(x => x.Type == ClaimConstants.ObjectId).FirstOrDefault()?.Value;
         ArgumentNullException.ThrowIfNull(userId);

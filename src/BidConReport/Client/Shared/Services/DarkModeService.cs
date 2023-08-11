@@ -29,16 +29,17 @@ public class DarkModeService : IDarkModeService
             return false;
         }
     }
-    public async Task SetUserDarkModeSettingAsync(string userId, bool isDarkMode)
+    public async Task SetUserDarkModeSettingAsync(bool isDarkMode)
     {
         try
         {
-            var result = await _httpClient.PutAsJsonAsync(BackendApiEndpoints.DarkModeController.Put, isDarkMode);
-            result.EnsureSuccessStatusCode();
+            var response = await _httpClient.PutAsJsonAsync(BackendApiEndpoints.DarkModeController.Put, isDarkMode.ToString());
+            response.EnsureSuccessStatusCode();
         }
         catch (Exception ex)
         {
             _logger.LogError(ex, "Error when sending darkmode put request");
+            throw;
         }
     }
 }
