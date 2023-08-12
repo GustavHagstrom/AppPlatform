@@ -1,5 +1,5 @@
 <div style="width: 100%; display: @(TabController.ActiveTab == this ? "block" : "none")">
-    <div class="pa-4" style="height: 100%; width: 100%; overflow: auto">
+    <div class="@Class" style="height: 100%; width: 100%; overflow: auto; @Style">
         @if(TabController.ActiveTab == this || KeepAlive)
         {
             @ChildContent
@@ -14,6 +14,8 @@
     [Parameter] public string HeaderText { get; set; } = string.Empty;
     [Parameter] public string? HeaderTooltip { get; set; } = string.Empty;
     [Parameter] public bool KeepAlive { get; set; } = false;
+    [Parameter] public string Class { get; set; } = string.Empty;
+    [Parameter] public string Style { get; set; } = string.Empty;
 
     protected override void OnAfterRender(bool firstRender)
     {

@@ -58,7 +58,7 @@ namespace BidConReport.Client.Shared.Services
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Error occurred while performing GetDefaultAsync");
-                throw;
+                return null;
             }
         }
 

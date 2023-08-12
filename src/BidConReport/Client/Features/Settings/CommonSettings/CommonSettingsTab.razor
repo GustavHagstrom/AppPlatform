@@ -1,11 +1,17 @@
-﻿<PageTab HeaderStartIcon="@Icons.Material.Sharp.Person" HeaderText="@Localizer["Allmänt"]" HeaderTooltip="@Localizer["Allmänt"]">
+﻿<PageTab HeaderStartIcon="@Icons.Material.Sharp.Person" HeaderText="@Localizer["Allmänt"]" HeaderTooltip="@Localizer["Allmänt"]" Class="pa-4">
     <MudContainer MaxWidth="MaxWidth.Large" Style="height: 100%">
-        <MudPaper Style="height: 100%">
-            <MudOverlay @bind-Visible="IsLoading" Absolute="true" DarkBackground="true">
-                <MudProgressCircular Indeterminate="true" Size="Size.Large" Color="Color.Primary" />
-            </MudOverlay>
-
-            <MudSwitch Checked="IsDarkMode" CheckedChanged="@(async (bool value) => await OnDarkModeChanged(value))" Color="Color.Primary" Label="@Localizer["DarkMode"]" />
+        <MudPaper Style="height: 100%" Class="pa-4">
+            <MudGrid Justify="Justify.FlexStart" Spacing="2">
+                <MudItem xs="12">
+                    <MudSwitch Disabled="IsLoading" Checked="IsDarkMode" CheckedChanged="@(async (bool value) => await OnDarkModeChanged(value))" Color="Color.Primary" Label="@Localizer["Mörkts tema"]" />
+                </MudItem>
+                <MudItem xs="12">
+                    <DefaultImortSettingsSelector />
+                </MudItem>
+                <MudItem xs="12">
+                    <DefaultReportTemplateSelector />
+                </MudItem>
+            </MudGrid>
         </MudPaper>
     </MudContainer>
 </PageTab>

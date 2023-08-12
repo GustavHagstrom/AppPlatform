@@ -37,4 +37,8 @@ public class ReportTemplate
         yield return PriceSection;
         yield return TableSection;
     }
+    public override string ToString()
+    {
+        return Name;
+    }
 }

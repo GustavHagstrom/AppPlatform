@@ -1,10 +1,10 @@
-﻿<MudPaper Style="height: 100%" Class="relative">
+﻿<MudPaper Style="height: 100%" Class="relative d-flex flex-grow-1">
 
     <MudOverlay Visible="ImportProfilesList is null" DarkBackground="true" Absolute="true">
         <MudProgressCircular Color="Color.Primary" Indeterminate="true" Size="Size.Large" />
     </MudOverlay>
 
-    <MudList Style="height: 100%; min-width: 100px;" Clickable="true" DisableGutters="true" Dense="true" DisablePadding="true" @bind-SelectedValue="SelectedSettings">
+    <MudList Style="height: 100%; width: 100%; min-width: 100px;" Clickable="true" DisableGutters="true" Dense="true" DisablePadding="true" @bind-SelectedValue="SelectedSettings">
         <MudListSubheader Class="border-b pa-2 d-flex" Style="border-color: var(--mud-palette-lines-default)">
             <MudText Typo="Typo.h6" Class="pr-4" Style="color: var(--mud-palette-text-primary)">@Localizer["Importprofiler"]</MudText>
             <MudSpacer/>

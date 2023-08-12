@@ -38,5 +38,9 @@ public class EstimationImportSettings
         HiddenUnitTag = string.Empty,
         UseRevisionAsSelectionTags = false,
     };
+    public override string ToString()
+    {
+        return Name;
+    }
 
 }

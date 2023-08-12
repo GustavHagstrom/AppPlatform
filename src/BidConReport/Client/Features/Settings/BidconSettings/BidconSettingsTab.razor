@@ -3,12 +3,14 @@
 @using BidConReport.Client.Features.Settings.BidconSettings.Report
 @using MudBlazor.Services;
 
-<PageTab HeaderStartIcon="@CustomIcons.BidconIcon" HeaderText="@Localizer["Bidcon"]" HeaderTooltip="@Localizer["Bidcon"]">
+<PageTab HeaderStartIcon="@CustomIcons.BidconIcon" HeaderText="@Localizer["Bidcon"]" HeaderTooltip="@Localizer["Bidcon"]" Class="pa-4">
 
-    <MudStack Style="height: 100%" Row="ScreenSizeService.CurrentScreenWidth > 500" Justify="Justify.FlexStart" Spacing="5">
-        <ImportSettignsList />
-        <ReportTemplatesList />
-    </MudStack>
+    <MudContainer MaxWidth="MaxWidth.Medium" Style="height: 100%">
+        <MudStack Style="height: 100%" Row="ScreenSizeService.CurrentScreenWidth > 500" Justify="Justify.Center" Spacing="5">
+            <ImportSettignsList />
+            <ReportTemplatesList />
+        </MudStack>
+    </MudContainer>
       
 </PageTab>
 
