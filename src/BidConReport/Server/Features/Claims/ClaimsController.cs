@@ -1,11 +1,6 @@
-﻿using BidConReport.Server.Data;
-using BidConReport.Server.Shared.Services;
-using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.Identity.Web;
+﻿using Microsoft.AspNetCore.Mvc;
 using SharedPlatformLibrary.Constants;
 using SharedPlatformLibrary.Enteties;
-using System.Net.Http.Headers;
 
 namespace BidConReport.Server.Features.Claims;
 [Route("api/[controller]")]

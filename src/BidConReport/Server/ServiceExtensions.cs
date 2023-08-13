@@ -22,8 +22,10 @@ internal static class ServiceExtensions
     {
 #if DEBUG
         services.AddTransient<IClaimsProvider, ClaimsProvider_debug>();
+        services.AddSingleton<IOrganizationService, OrganizationService_debug>();
 #else
         services.AddTransient<IClaimsProvider, ClaimsProvider>();
+        services.AddTransient<IOrganizationService, OrganizationService>();
 #endif
     }
     public static void UseReportFeature(this IServiceCollection services)

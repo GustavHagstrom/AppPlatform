@@ -2,7 +2,7 @@
 public static class CustomClaimTypes
 {
     public const string OrganizationMemberOf = "OrganizationMemberOf";
-    public const string CurrentOrganization = "CurrentOrganization";
+    public const string CurrentOrganizationId = "Organization";
     public const string License = "License";
 
     public static ICollection<string> GetAllTypesAsCollection()
@@ -10,7 +10,7 @@ public static class CustomClaimTypes
         return new[]
         {
             OrganizationMemberOf,
-            CurrentOrganization,
+            CurrentOrganizationId,
             License,
         };
     }

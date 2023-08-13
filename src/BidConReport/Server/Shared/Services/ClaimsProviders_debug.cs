@@ -6,23 +6,25 @@ namespace BidConReport.Server.Shared.Services;
 
 public class ClaimsProvider_debug : IClaimsProvider
 {
-    private readonly string _role = "admin";
-    private readonly string _organization = "debug_organizationId";
-    private readonly string _organization2 = "debug_organizationId_2";
-    private readonly string _currentOrganization = "debug_organizationId";
-    private readonly string _license = "debug_license";
+    private readonly IOrganizationService _organizationService;
 
-    public Task<ICollection<ClaimModel>> GetClaimsAsync(string userId)
+    public string Role { get; set; } = "admin";
+    public string License { get; set; } = "debug_license";
+    public ClaimsProvider_debug(IOrganizationService organizationService)
     {
+        _organizationService = organizationService;
+    }
+
+    public async Task<ICollection<ClaimModel>> GetClaimsAsync(string userId)
+    {
+        var currentOrg = await _organizationService.GetCurrent(userId);
         var claims = new List<ClaimModel>
         {
-            new ClaimModel(ClaimTypes.Role, _role),
-            new ClaimModel(CustomClaimTypes.OrganizationMemberOf, _organization),
-            new ClaimModel(CustomClaimTypes.OrganizationMemberOf, _organization2),
-            new ClaimModel(CustomClaimTypes.License, _license ),
-            new ClaimModel(CustomClaimTypes.CurrentOrganization, _currentOrganization ),
+            new ClaimModel(ClaimTypes.Role, Role),
+            new ClaimModel(CustomClaimTypes.License, License ),
+            new ClaimModel(CustomClaimTypes.CurrentOrganizationId, currentOrg.Id),
         };
 
-        return Task.FromResult<ICollection<ClaimModel>>(claims);
+        return claims;
     }
 }

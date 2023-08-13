@@ -65,5 +65,24 @@ public static class BackendApiEndpoints
         /// </summary>
         public const string Put = "api/DarkMode";
     }
+    public static class OrganizationsController
+    {
+        /// <summary>
+        /// Get request. Returns all organizations for the user
+        /// </summary>
+        public const string GetAll = "api/Organizations";
+        /// <summary>
+        /// Get request. Returns currently active organization
+        /// </summary>
+        public const string GetCurrent = "api/Organizations/Current";
+        /// <summary>
+        /// Post request. Sets currently active organization. Organization as body
+        /// </summary>
+        public const string SetAsCurrent = "api/Organizations/SetAsCurrent";
+        /// <summary>
+        /// Post request. Creates new and sets it as currently acive organization. Organization as body
+        /// </summary>
+        public const string Create = "api/Organizations/Create";
+    }
 }
 

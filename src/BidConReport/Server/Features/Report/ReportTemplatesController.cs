@@ -17,7 +17,7 @@ public class ReportTemplatesController : ControllerBase
     [HttpPost("Upsert")]
     public async Task<IActionResult> Upsert(ReportTemplate reportTemplate)
     {
-        var currentOrgId = User.Claims.Where(x => x.Type == CustomClaimTypes.CurrentOrganization).FirstOrDefault()?.Value;
+        var currentOrgId = User.Claims.Where(x => x.Type == CustomClaimTypes.CurrentOrganizationId).FirstOrDefault()?.Value;
         ArgumentNullException.ThrowIfNull(currentOrgId);
         reportTemplate.OrganizationId = currentOrgId;
         await _reportTemplatesCrudService.UpsertAsync(reportTemplate);
@@ -26,7 +26,7 @@ public class ReportTemplatesController : ControllerBase
     [HttpGet]
     public async Task<IActionResult> GetAll()
     {
-        var currentOrgId = User.Claims.Where(x => x.Type == CustomClaimTypes.CurrentOrganization).FirstOrDefault()?.Value;
+        var currentOrgId = User.Claims.Where(x => x.Type == CustomClaimTypes.CurrentOrganizationId).FirstOrDefault()?.Value;
         ArgumentNullException.ThrowIfNull(currentOrgId);
         var result = await _reportTemplatesCrudService.GetAllOrganizationTemplatesAsync(currentOrgId);
         return Ok(result);

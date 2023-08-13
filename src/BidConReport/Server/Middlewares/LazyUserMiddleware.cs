@@ -25,20 +25,10 @@ public class LazyUserMiddleware
     {
         try
         {
-            Stopwatch stopwatch = Stopwatch.StartNew();
-            stopwatch.Start();
             using (var scope = _serviceProvider.CreateScope())
             {
-                stopwatch.Stop();
-                _logger.LogInformation($"{stopwatch.ElapsedMilliseconds}ms elapse while creating serviceScope");
-                stopwatch.Restart();
                 await SetUserClaims(scope, context);
-                stopwatch.Stop();
-                _logger.LogInformation($"{stopwatch.ElapsedMilliseconds}ms elapse while setting user claims");
-                stopwatch.Restart();
                 await LazyUser(scope, context);
-                _logger.LogInformation($"{stopwatch.ElapsedMilliseconds}ms elapse while running lazy user");
-                stopwatch.Stop();
             }
         }
         catch (Exception e)
@@ -50,7 +40,7 @@ public class LazyUserMiddleware
     private async Task SetUserClaims(IServiceScope scope, HttpContext context)
     {
         var claimsProvider = scope.ServiceProvider.GetRequiredService<IClaimsProvider>();
-        var userId = context.User.Claims.Where(x => x.Type == ClaimConstants.TenantId).FirstOrDefault()?.Value;
+        var userId = context.User.Claims.Where(x => x.Type == ClaimConstants.ObjectId).FirstOrDefault()?.Value;
         if (userId is not null)
         {
             var customClaims = await claimsProvider.GetClaimsAsync(userId);

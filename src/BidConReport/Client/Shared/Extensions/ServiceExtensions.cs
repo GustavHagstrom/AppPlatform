@@ -24,5 +24,6 @@ public static class ServiceExtensions
         services.AddTransient<IReportTemplateService, ReportTemplateService>();
         services.AddTransient<IImportSettingsService, ImportSettingsService>();
         services.AddTransient<IDarkModeService, DarkModeService>();
+        services.AddTransient<IOrganizationService, OrganizationService>();
     }
 }
