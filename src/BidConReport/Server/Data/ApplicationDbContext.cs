@@ -1,6 +1,5 @@
 ﻿using BidConReport.Server.Enteties;
-using BidConReport.Server.Enteties.ReportTemplate;
-using BidConReport.Server.Shared.Enteties;
+using BidConReport.Server.Enteties.Report;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using System.Text.Json;

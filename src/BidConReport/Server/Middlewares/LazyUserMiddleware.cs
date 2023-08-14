@@ -1,6 +1,6 @@
 ﻿using BidConReport.Server.Data;
-using BidConReport.Server.Shared.Enteties;
-using BidConReport.Server.Shared.Services;
+using BidConReport.Server.Enteties;
+using BidConReport.Server.Services.Authentication;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Identity.Web;
 using SharedPlatformLibrary.Constants;
@@ -39,7 +39,7 @@ public class LazyUserMiddleware
     }
     private async Task SetUserClaims(IServiceScope scope, HttpContext context)
     {
-        var claimsProvider = scope.ServiceProvider.GetRequiredService<IClaimsProvider>();
+        var claimsProvider = scope.ServiceProvider.GetRequiredService<IClaimsService>();
         var userId = context.User.Claims.Where(x => x.Type == ClaimConstants.ObjectId).FirstOrDefault()?.Value;
         if (userId is not null)
         {

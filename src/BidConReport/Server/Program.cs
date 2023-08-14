@@ -16,16 +16,6 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddMicrosoftGraph(builder.Configuration.GetSection("MicrosoftGraph"))
     .AddInMemoryTokenCaches();
 
-builder.Services.AddHttpClient(ServerConstants.LicenseHttpClientName, client =>
-{
-    client.BaseAddress = new Uri(builder.Configuration.GetValue<string>("LicenseApiAdress")!);
-});
-builder.Services.AddScoped(sp =>
-{
-    var client = sp.GetRequiredService<IHttpClientFactory>().CreateClient(ServerConstants.LicenseHttpClientName);
-
-    return client;
-});
 
 builder.Services.AddSwaggerGen();
 builder.Services.AddControllersWithViews();

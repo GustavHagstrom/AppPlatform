@@ -1,6 +1,6 @@
 ﻿using BidConReport.Server.Data;
-using BidConReport.Server.Enteties.ReportTemplate;
-using BidConReport.Server.Features.Report;
+using BidConReport.Server.Enteties.Report;
+using BidConReport.Server.Services.Report;
 using BidConReport.Server.Shared.Enteties;
 using BidConReport.Shared.DTOs.ReportTemplate;
 using Microsoft.EntityFrameworkCore;
@@ -10,7 +10,7 @@ namespace BidconReport.Tests.Server.Features.Report;
 public class ReportTemplatesCrudServiceTests
 {
     private TestDbContext _dbContext;
-    private ReportTemplatesCrudService _service;
+    private ReportTemplatesService _service;
     private readonly string _userId = "userId";
     private readonly string _orgId = "orgId";
 
@@ -30,7 +30,7 @@ public class ReportTemplatesCrudServiceTests
         _dbContext.ReportTemplates.Add(SampleTemaplte(3, "OtherOrgTemplate", "orgId2"));
         _dbContext.SaveChanges();
 
-        _service = new ReportTemplatesCrudService(_dbContext);
+        _service = new ReportTemplatesService(_dbContext);
     }
     private ReportTemplate SampleTemaplte(int id, string name, string orgId)
     {

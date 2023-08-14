@@ -1,5 +1,5 @@
 ﻿using BidConReport.Server.Data;
-using BidConReport.Server.Enteties.ReportTemplate;
+using BidConReport.Server.Enteties.Report;
 using Microsoft.EntityFrameworkCore;
 
 namespace BidconReport.Tests.Server;
