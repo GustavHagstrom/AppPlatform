@@ -17,10 +17,12 @@ public class ReportTemplatesController : ControllerBase
     [HttpPost("Upsert")]
     public async Task<IActionResult> Upsert(ReportTemplate reportTemplate)
     {
+        var userId = User.Claims.Where(x => x.Type == ClaimConstants.ObjectId).FirstOrDefault()?.Value;
         var currentOrgId = User.Claims.Where(x => x.Type == CustomClaimTypes.CurrentOrganizationId).FirstOrDefault()?.Value;
         ArgumentNullException.ThrowIfNull(currentOrgId);
+        ArgumentNullException.ThrowIfNull(userId);
         reportTemplate.OrganizationId = currentOrgId;
-        await _reportTemplatesCrudService.UpsertAsync(reportTemplate);
+        await _reportTemplatesCrudService.UpsertAsync(userId, currentOrgId, reportTemplate);
         return Ok();
     }
     [HttpGet]
@@ -35,24 +37,30 @@ public class ReportTemplatesController : ControllerBase
     public async Task<IActionResult> GetDefault()
     {
         var userId = User.Claims.Where(x => x.Type == ClaimConstants.ObjectId).FirstOrDefault()?.Value;
+        var currentOrgId = User.Claims.Where(x => x.Type == CustomClaimTypes.CurrentOrganizationId).FirstOrDefault()?.Value;
+        ArgumentNullException.ThrowIfNull(currentOrgId);
         ArgumentNullException.ThrowIfNull(userId);
-        var result = await _reportTemplatesCrudService.GetDefaultAsync(userId);
+        var result = await _reportTemplatesCrudService.GetDefaultAsync(userId, currentOrgId);
         return Ok(result);
     }
     [HttpPost("SetAsDefault")]
     public async Task<IActionResult> SetAsDefault(ReportTemplate reportTemplate)
     {
         var userId = User.Claims.Where(x => x.Type == ClaimConstants.ObjectId).FirstOrDefault()?.Value;
+        var currentOrgId = User.Claims.Where(x => x.Type == CustomClaimTypes.CurrentOrganizationId).FirstOrDefault()?.Value;
+        ArgumentNullException.ThrowIfNull(currentOrgId);
         ArgumentNullException.ThrowIfNull(userId);
-        await _reportTemplatesCrudService.SetAsDefaultAsync(userId, reportTemplate.Id);
+        await _reportTemplatesCrudService.SetAsDefaultAsync(userId, currentOrgId, reportTemplate.Id);
         return Ok();
     }
     [HttpDelete("Delete/{id}")]
     public async Task<IActionResult> Delete(int id)
     {
         var userId = User.Claims.Where(x => x.Type == ClaimConstants.ObjectId).FirstOrDefault()?.Value;
+        var currentOrgId = User.Claims.Where(x => x.Type == CustomClaimTypes.CurrentOrganizationId).FirstOrDefault()?.Value;
+        ArgumentNullException.ThrowIfNull(currentOrgId);
         ArgumentNullException.ThrowIfNull(userId);
-        await _reportTemplatesCrudService.DeleteAsync(id, userId);
+        await _reportTemplatesCrudService.DeleteAsync(id, userId, currentOrgId);
         return Ok();
     }
 }

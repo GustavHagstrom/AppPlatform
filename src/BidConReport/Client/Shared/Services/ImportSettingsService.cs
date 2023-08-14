@@ -48,7 +48,7 @@ public class ImportSettingsService : IImportSettingsService
         }
     }
 
-    public async Task<EstimationImportSettings> GetDefaultAsync()
+    public async Task<EstimationImportSettings?> GetDefaultAsync()
     {
 
         try
@@ -61,10 +61,11 @@ public class ImportSettingsService : IImportSettingsService
             var content = await result.Content.ReadFromJsonAsync<EstimationImportSettings>();
             return content!;
         }
-        catch (HttpRequestException ex)
+        catch (Exception ex)
         {
             // Log the exception or handle it in some other way.
-            throw new Exception($"Failed to retrieve standard import settings: {ex.Message}");
+            _logger.LogError(ex, "Failed to retrieve standard import settings");
+            return null;
         }
     }
 
@@ -79,7 +80,8 @@ public class ImportSettingsService : IImportSettingsService
         catch (HttpRequestException ex)
         {
             // Log the exception or handle it appropriately.
-            throw new Exception("An error occurred while saving the standard import setting.", ex);
+            _logger.LogError(ex, "An error occurred while saving the standard import setting.");
+            throw;
         }
     }
 
