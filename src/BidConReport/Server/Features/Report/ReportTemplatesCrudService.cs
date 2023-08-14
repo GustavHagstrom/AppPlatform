@@ -1,5 +1,6 @@
 ﻿using BidConReport.Server.Data;
 using BidConReport.Shared.Entities.ReportTemplate;
+using BidConReport.Shared.Entities.ReportTemplate.Information;
 using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
 
@@ -25,6 +26,22 @@ public class ReportTemplatesCrudService : IReportTemplatesCrudService
         else
         {
             _dbContext.Entry(result).CurrentValues.SetValues(reportTemplate);
+
+            _dbContext.Entry(result.TopLeftHeader).CurrentValues.SetValues(reportTemplate.TopLeftHeader);
+            _dbContext.Entry(result.TopLeftHeader.Font).CurrentValues.SetValues(reportTemplate.TopLeftHeader.Font);
+
+            _dbContext.Entry(result.TopRightHeader).CurrentValues.SetValues(reportTemplate.TopRightHeader);
+            _dbContext.Entry(result.TopRightHeader.Font).CurrentValues.SetValues(reportTemplate.TopRightHeader.Font);
+
+            _dbContext.Entry(result.InformationSection).CurrentValues.SetValues(reportTemplate.InformationSection);
+            _dbContext.Entry(result.InformationSection.TitleFont).CurrentValues.SetValues(reportTemplate.InformationSection.TitleFont);
+            _dbContext.Entry(result.InformationSection.ValueFont).CurrentValues.SetValues(reportTemplate.InformationSection.ValueFont);
+
+            foreach (var item in result.InformationSection.Items.Where(x => reportTemplate.InformationSection.Items.Any(y => y.Id == x.Id)))
+            {
+                _dbContext.Entry(item).CurrentValues.SetValues(reportTemplate.InformationSection.Items.First(x => x.Id == item.Id));
+            }
+            
         }
         await _dbContext.SaveChangesAsync();
     }
@@ -81,6 +98,28 @@ public class ReportTemplatesCrudService : IReportTemplatesCrudService
         }
         await _dbContext.SaveChangesAsync();
     }
+    public async Task SetAsDefaultAsync(string userId, string organizationId, int templateId)
+    {
+        var userOrg = await _dbContext.UserOrganizations.FirstOrDefaultAsync(x => x.UserId == userId && x.OrganizationId == organizationId);
+        var template = await _dbContext.ReportTemplates.FindAsync(templateId);
+        ArgumentNullException.ThrowIfNull(userOrg);
+        ArgumentNullException.ThrowIfNull(template);
+
+        if (template.OrganizationId != organizationId)
+        {
+            return;
+        }
+        userOrg.DefaultReportTemplateId = templateId;
+        await _dbContext.SaveChangesAsync();
+    }
+    private async Task UpdateExisting<T>(IEnumerable<T> dbCollection, IEnumerable<T> memoryCollection)
+    {
+
+    }
+    private async Task AddNew<T>(IEnumerable<T> dbCollection, IEnumerable<T> memoryCollection)
+    {
+
+    }
     private async Task<ReportTemplate?> FirstOrDefaultAsync_IncludAll(Expression<Func<ReportTemplate, bool>> predicate, CancellationToken cancellationToken = default)
     {
         var result = await _dbContext.ReportTemplates
@@ -120,19 +159,6 @@ public class ReportTemplatesCrudService : IReportTemplatesCrudService
 
         return result;
     }
-    public async Task SetAsDefaultAsync(string userId, string organizationId, int templateId)
-    {
-        var userOrg = await _dbContext.UserOrganizations.FirstOrDefaultAsync(x => x.UserId == userId && x.OrganizationId == organizationId);
-        var template = await _dbContext.ReportTemplates.FindAsync(templateId);
-        ArgumentNullException.ThrowIfNull(userOrg);
-        ArgumentNullException.ThrowIfNull(template);
-
-        if (template.OrganizationId != organizationId)
-        {
-            return;
-        }
-        userOrg.DefaultReportTemplateId = templateId;
-        await _dbContext.SaveChangesAsync();
-    }
+    
 }
 

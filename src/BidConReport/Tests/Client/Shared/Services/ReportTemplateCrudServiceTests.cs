@@ -122,7 +122,7 @@ namespace BidConReport.Client.Shared.Services.Tests
         {
             // Arrange
             var id = 123; // Sample report template ID
-            var expectedUri = BackendApiEndpoints.ReportTemplatesController.Delete + id.ToString();
+            var expectedUri = $"{BackendApiEndpoints.ReportTemplatesController.Delete}/{id}";
             _httpClientWrapperMock!
                 .Setup(x => x.DeleteAsync(expectedUri, CancellationToken.None))
                 .ReturnsAsync(new HttpResponseMessage

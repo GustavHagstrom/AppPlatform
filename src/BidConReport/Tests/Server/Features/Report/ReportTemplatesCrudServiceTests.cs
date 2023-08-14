@@ -39,7 +39,7 @@ public class ReportTemplatesCrudServiceTests
         var expectedReportTemplate = new ReportTemplate { Id = 4, Name = "newTemplate" };
 
         //Act
-        await _service.UpsertAsync(expectedReportTemplate);
+        await _service.UpsertAsync(_userId, _orgId, expectedReportTemplate);
         var result = await _dbContext.ReportTemplates.FirstOrDefaultAsync(x => x.Id == 4);
 
         //Assert
@@ -57,7 +57,7 @@ public class ReportTemplatesCrudServiceTests
         var expectedReportTemplate = new ReportTemplate { Id = 3, Name = "updatedTemplate" };
 
         //Act
-        await _service.UpsertAsync(expectedReportTemplate);
+        await _service.UpsertAsync(_userId, _orgId, expectedReportTemplate);
         var result = await _dbContext.ReportTemplates.FirstOrDefaultAsync(x => x.Id == 3);
 
         //Assert
@@ -92,7 +92,7 @@ public class ReportTemplatesCrudServiceTests
         int expectedTemplateId = 1;
 
         //Act
-        var result = await _service.GetDefaultAsync("userId");
+        var result = await _service.GetDefaultAsync(_userId, _orgId);
 
         //Assert
         Assert.That(result, Is.Not.Null);
@@ -110,7 +110,7 @@ public class ReportTemplatesCrudServiceTests
         var firstCount = _dbContext.FontProperties.Count();
 
         //Act
-        await _service.DeleteAsync(2, _userId);
+        await _service.DeleteAsync(2, _userId, _orgId);
         var result = await _dbContext.ReportTemplates.FirstOrDefaultAsync(x => x.Id == 2);
         var secondCount = _dbContext.FontProperties.Count();
 
@@ -124,7 +124,7 @@ public class ReportTemplatesCrudServiceTests
         //Arrange
 
         //Act
-        await _service.DeleteAsync(3, _userId);
+        await _service.DeleteAsync(3, _userId, _orgId);
         var result = await _dbContext.ReportTemplates.FirstOrDefaultAsync(x => x.Id == 3);
 
         //Assert
@@ -137,7 +137,7 @@ public class ReportTemplatesCrudServiceTests
         int expectedTemplateId = 2;
 
         //Act
-        await _service.SetAsDefaultAsync(_userId, expectedTemplateId);
+        await _service.SetAsDefaultAsync(_userId, _orgId, expectedTemplateId);
         var actualUserOrg = _dbContext.UserOrganizations.FirstOrDefault(x => x.UserId == _userId);
 
         //Assert

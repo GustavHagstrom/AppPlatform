@@ -1,11 +1,26 @@
 ﻿@inherits IsLoadingComponent
-<MudSelect T="ReportTemplate" Disabled="IsLoading" Label="@Localizer["Standard Rapportmall"]" Placeholder="@Localizer["Ej vald"]" Dense="true"
+
+<Frame Border="false" UnderlinedTitle="false">
+    <TitleContent>
+        <MudText Typo="Typo.subtitle1">@Localizer["Förhandsval av rapportmall"]</MudText>
+    </TitleContent>
+    <ChildContent>
+        <MudSelect T="ReportTemplate" Disabled="IsLoading" Dense="true" Variant="Variant.Outlined" Value="DefaultTemplate" ValueChanged="OnProfileChanged" Margin="Margin.Dense" AnchorOrigin="Origin.BottomCenter" TransformOrigin="Origin.TopCenter">
+            @foreach (var item in Templates)
+            {
+                <MudSelectItem Value="item" />
+            }
+        </MudSelect>
+    </ChildContent>
+</Frame>
+
+@*<MudSelect T="ReportTemplate" Disabled="IsLoading" Label="@Localizer["Standard Rapportmall"]" Placeholder="@Localizer["Ej vald"]" Dense="true"
            Variant="Variant.Outlined" Value="DefaultTemplate" ValueChanged="OnProfileChanged" Margin="Margin.Dense" AnchorOrigin="Origin.BottomCenter" TransformOrigin="Origin.TopCenter">
     @foreach (var item in Templates)
     {
         <MudSelectItem Value="item"/>
     }
-</MudSelect>
+</MudSelect>*@
 
 
 

@@ -2,7 +2,7 @@
 
     @if(TitleText is not null || TitleContent is not null)
     {
-        <div class="d-flex @(Border && ChildContent is not null ? "border-b border-solid" : string.Empty)">
+        <div class="d-flex @(UnderlinedTitle && ChildContent is not null ? "border-b border-solid" : string.Empty); @TitleClass" style="@TitleStyle">
             <div class="flex-grow-1 align-center">
                 @if (TitleText is not null)
                 {
@@ -13,18 +13,27 @@
         </div>
     }
 
-    @ChildContent
-
+    <div class="@ChildClass" style="@ChildStyle">
+        @ChildContent
+    </div>
 
 </div>
 
 @code{
+    [Parameter] public string ChildClass { get; set; } = string.Empty;
+    [Parameter] public string ChildStyle { get; set; } = string.Empty;
+
+    [Parameter] public string TitleClass { get; set; } = string.Empty;
+    [Parameter] public string TitleStyle { get; set; } = string.Empty;
+
     [Parameter] public string Class { get; set; } = string.Empty;
     [Parameter] public string Style { get; set; } = string.Empty;
+
     [Parameter] public string? TitleText { get; set; }
     [Parameter] public RenderFragment? TitleContent { get; set; }
     [Parameter] public RenderFragment? ChildContent { get; set; }
     [Parameter] public bool Border { get; set; } = true;
+    [Parameter] public bool UnderlinedTitle { get; set; } = true;
 
 
 
