@@ -1,7 +1,7 @@
 ﻿@using SharedPlatformLibrary.Enteties;
 @inherits IsLoadingComponent
 
-<MudSelect T="Organization" Label="@Localizer["Organisation"]" Placeholder="@string.Empty" Dense="true"
+<MudSelect T="Organization" Label="@Localizer["Organisation"]" Placeholder="@Localizer["Ej vald"]" Dense="true"
            Variant="Variant.Outlined" Value="ActiveOrganization" ValueChanged="OnProfileChanged" Margin="Margin.Dense" AnchorOrigin="Origin.BottomCenter" TransformOrigin="Origin.TopCenter">
     @foreach (var item in Organizations)
     {

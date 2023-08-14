@@ -1,6 +1,6 @@
 ﻿@inherits IsLoadingComponent
 
-<MudSelect T="EstimationImportSettings" Label="@Localizer["Standard ImportProfil"]" Placeholder="@string.Empty" Dense="true"
+<MudSelect T="EstimationImportSettings" Label="@Localizer["Standard ImportProfil"]" Placeholder="@Localizer["Ej vald"]" Dense="true"
            Variant="Variant.Outlined" Value="DefaultProfile" ValueChanged="OnProfileChanged" Margin="Margin.Dense" AnchorOrigin="Origin.BottomCenter" TransformOrigin="Origin.TopCenter">
     @foreach (var item in Profiles)
     {
