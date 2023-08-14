@@ -1,7 +1,7 @@
-﻿using SharedPlatformLibrary.Enteties;
+﻿using SharedPlatformLibrary.DTOs;
 
 namespace License.Api.Features.AppSeed;
 public interface IAppSeedService
 {
-    Task SeedAplicationDataAsync(AppSeedModel seedModel);
+    Task SeedAplicationDataAsync(AppSeedDTO seedModel);
 }

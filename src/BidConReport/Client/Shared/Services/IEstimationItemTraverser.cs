@@ -1,8 +1,8 @@
-﻿using BidConReport.Shared.Entities;
+﻿using BidConReport.Shared.DTOs;
 
 namespace BidConReport.Client.Shared.Services;
 public interface IEstimationItemTraverser
 {
-    EstimationItem? FindItem(Estimation estimation, int row);
-    IEnumerable<EstimationItem> GetAllEstimationItems(Estimation estimation);
+    EstimationItemDTO? FindItem(EstimationDTO estimation, int row);
+    IEnumerable<EstimationItemDTO> GetAllEstimationItems(EstimationDTO estimation);
 }

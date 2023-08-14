@@ -1,7 +1,7 @@
-﻿using BidConReport.Shared.Entities;
+﻿using BidConReport.Shared.DTOs;
 
 namespace BidConReport.DesktopBridge.Features.Bidcon.Factories;
 public interface IEstimationItemsFactory
 {
-    ICollection<EstimationItem> Create(BidCon.SDK.EstimationItem root, EstimationImportSettings settings, ref int row, double costFactor);
+    ICollection<EstimationItemDTO> Create(BidCon.SDK.EstimationItem root, EstimationImportSettingsDTO settings, ref int row, double costFactor);
 }

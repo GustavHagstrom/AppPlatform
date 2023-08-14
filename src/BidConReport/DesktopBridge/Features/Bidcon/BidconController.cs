@@ -1,5 +1,6 @@
 ﻿using BidConReport.DesktopBridge.Features.Bidcon.Services;
-using BidConReport.Shared.Entities;
+using BidConReport.Shared.DTOs;
+using BidConReport.Shared.DTOs;
 using Microsoft.AspNetCore.Mvc;
 using System.Data.SqlClient;
 
@@ -20,7 +21,7 @@ public class BidconController : ControllerBase
     public async Task<IActionResult> GetFolders(CancellationToken cancellationToken)
     {
         //TODO implement error message for each failed importation
-        var result = new BidConImportResult<DbFolder>();
+        var result = new BidConImportResultDTO<DbFolderDTO>();
         try
         {
             var folder = _bidConImporter.GetDatabaseFolder();
@@ -37,10 +38,10 @@ public class BidconController : ControllerBase
         return await Task.FromResult(Ok(result));
     }
     [HttpPost("GetEstimation")]
-    public async Task<IActionResult> GetEstimation([FromBody] BidconImportRequest request, CancellationToken cancellationToken)
+    public async Task<IActionResult> GetEstimation([FromBody] BidconImportRequestDTO request, CancellationToken cancellationToken)
     {
         //TODO implement error message 
-        var result = new BidConImportResult<Estimation>();
+        var result = new BidConImportResultDTO<EstimationDTO>();
 
         try
         {

@@ -1,4 +1,5 @@
-﻿using BidConReport.Shared.Entities.ReportTemplate;
+﻿using BidConReport.Server.Enteties.ReportTemplate;
+using BidConReport.Shared.DTOs.ReportTemplate;
 
 namespace BidConReport.Server.Features.Report;
 public interface IReportTemplatesCrudService

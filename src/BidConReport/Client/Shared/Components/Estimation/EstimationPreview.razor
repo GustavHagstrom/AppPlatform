@@ -67,15 +67,15 @@
 </CascadingValue>
 
 @code {
-    [Parameter, EditorRequired] public required Estimation Estimation { get; set; }
-    [Parameter, EditorRequired] public required ReportTemplate Template { get; set; }
+    [Parameter, EditorRequired] public required EstimationDTO Estimation { get; set; }
+    [Parameter, EditorRequired] public required ReportTemplateDTO Template { get; set; }
     
 
     void testui()
     {
         //Estimation.Items.First().Name
     }
-    public string CreateFontStyle(FontProperties properties)
+    public string CreateFontStyle(FontPropertiesDTO properties)
     {
         var builder = new System.Text.StringBuilder($"font-family: {properties.FontFamily}; font-size: {properties.FontSize}px; ");
         if (properties.Bold)

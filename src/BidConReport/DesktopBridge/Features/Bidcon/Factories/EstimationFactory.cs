@@ -1,5 +1,5 @@
 ﻿using BidCon.SDK;
-using BidConReport.Shared.Entities;
+using BidConReport.Shared.DTOs;
 
 namespace BidConReport.DesktopBridge.Features.Bidcon.Factories;
 public class EstimationFactory : IEstimationFactory
@@ -10,7 +10,7 @@ public class EstimationFactory : IEstimationFactory
     {
         _estimationItemsFactory = estimationItemsFactory;
     }
-    public Shared.Entities.Estimation Create(BidCon.SDK.Estimation estimation, EstimationImportSettings settings)
+    public Shared.DTOs.EstimationDTO Create(BidCon.SDK.Estimation estimation, EstimationImportSettingsDTO settings)
     {
         
         var costFactor = GetSummarySheetResourceAccountValue(settings.CostFactorAccount, estimation);
@@ -18,7 +18,7 @@ public class EstimationFactory : IEstimationFactory
         var endPageNetCost = GetSummarySheetResourceAccountValue(settings.NetCostAccount, estimation);
         int startRow = 0;
 
-        return new Shared.Entities.Estimation
+        return new Shared.DTOs.EstimationDTO
         {
             Id = Guid.NewGuid(),
             BidConId = estimation.ID.ToString(),
@@ -42,13 +42,13 @@ public class EstimationFactory : IEstimationFactory
         if (accountSpecifiResources.Count > 1) throw new Exception($"""Required resource with account "{account}" has more than one occurance""");
         return accountSpecifiResources.First().TotalCost;
     }
-    private IEnumerable<LockedCategory> CreateLockedCategories(BidCon.SDK.Estimation estimation, EstimationImportSettings settings, double costFactor)
+    private IEnumerable<LockedCategoryDTO> CreateLockedCategories(BidCon.SDK.Estimation estimation, EstimationImportSettingsDTO settings, double costFactor)
     {
         if (estimation.LockedStages is not null)
         {
             foreach (var category in estimation.LockedStages.Items)
             {
-                yield return new LockedCategory
+                yield return new LockedCategoryDTO
                 {
                     Name = category.Name,
                     LockedStages = CreateLockedStages(category, settings, costFactor).ToList(),
@@ -56,12 +56,12 @@ public class EstimationFactory : IEstimationFactory
             }
         }
     }
-    private IEnumerable<LockedStage> CreateLockedStages(BidCon.SDK.EstimationItem category, EstimationImportSettings settings, double costFactor)
+    private IEnumerable<LockedStageDTO> CreateLockedStages(BidCon.SDK.EstimationItem category, EstimationImportSettingsDTO settings, double costFactor)
     {
         int startRow = 0;
         foreach (var stage in category.Items)
         {
-            yield return new LockedStage
+            yield return new LockedStageDTO
             {
                 Name = stage.Name,
                 Items = _estimationItemsFactory.Create(stage, settings, ref startRow, costFactor)

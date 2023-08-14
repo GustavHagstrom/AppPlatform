@@ -1,11 +1,11 @@
 ﻿using BidConReport.Client.Shared.Services;
-using BidConReport.Shared.Entities;
+using BidConReport.Shared.DTOs;
 using System.Text.Json;
 
 namespace BidconReport.Tests.Client.Shared.Services;
 public class EstimationParentReferencerTests
 {
-    private Estimation? _EstimationData;
+    private EstimationDTO? _EstimationData;
 
     [SetUp]
     public void SetUp()
@@ -13,7 +13,7 @@ public class EstimationParentReferencerTests
         var jsonFIlePath = Path.Combine(TestContext.CurrentContext.TestDirectory, "EstimationSample.json");
         var jsonData = File.ReadAllText(jsonFIlePath);
         var options = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
-        _EstimationData = JsonSerializer.Deserialize<Estimation>(jsonData, options);
+        _EstimationData = JsonSerializer.Deserialize<EstimationDTO>(jsonData, options);
     }
     [Test]
     public void ParentReferencesShouldBeSet()

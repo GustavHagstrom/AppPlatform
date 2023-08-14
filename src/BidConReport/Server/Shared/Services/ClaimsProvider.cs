@@ -1,6 +1,6 @@
 ﻿using BidConReport.Shared.Constants;
 using SharedPlatformLibrary.Constants;
-using SharedPlatformLibrary.Enteties;
+using SharedPlatformLibrary.DTOs;
 using SharedPlatformLibrary.HttpRequests;
 
 namespace BidConReport.Server.Shared.Services;
@@ -13,14 +13,14 @@ public class ClaimsProvider : IClaimsProvider
     {
         _httpClient = httpClient;
     }
-    public async Task<ICollection<ClaimModel>> GetClaimsAsync(string userId)
+    public async Task<ICollection<ClaimDTO>> GetClaimsAsync(string userId)
     {
 
-        var claims = new List<ClaimModel>();
+        var claims = new List<ClaimDTO>();
         var requestBody = new ClaimsRequestBody(userId, CommonAppConstants.ApplicationName);
         var result = await _httpClient.PostAsJsonAsync(LicenseApiEndpoints.Claims, requestBody);
         result.EnsureSuccessStatusCode();
-        var claimResult = await result.Content.ReadFromJsonAsync<ICollection<ClaimModel>>();
+        var claimResult = await result.Content.ReadFromJsonAsync<ICollection<ClaimDTO>>();
         if (claimResult is not null)
         {
             claims.AddRange(claimResult);

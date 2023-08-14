@@ -1,11 +1,11 @@
 ﻿using BidCon.SDK;
 using BidCon.SDK.Database;
-using BidConReport.Shared.Entities;
+using BidConReport.Shared.DTOs;
 
 namespace BidConReport.DesktopBridge.Features.Bidcon.Services;
 public interface IBidconDataConverter
 {
     //IEnumerable<DbEstimation> SimplifieAllEstimations(DatabaseFolder folder);
-    DbFolder ConvertDatabaseFolder(DatabaseFolder folder);
-    Shared.Entities.Estimation ConvertEstimation(BidCon.SDK.Estimation estimation, EstimationImportSettings settings);
+    DbFolderDTO ConvertDatabaseFolder(DatabaseFolder folder);
+    Shared.DTOs.EstimationDTO ConvertEstimation(BidCon.SDK.Estimation estimation, EstimationImportSettingsDTO settings);
 }

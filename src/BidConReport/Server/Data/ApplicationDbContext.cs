@@ -1,10 +1,6 @@
-﻿using BidConReport.Server.Shared.Enteties;
-using BidConReport.Shared.Entities;
-using BidConReport.Shared.Entities.ReportTemplate;
-using BidConReport.Shared.Entities.ReportTemplate.Header;
-using BidConReport.Shared.Entities.ReportTemplate.Information;
-using BidConReport.Shared.Entities.ReportTemplate.Price;
-using BidConReport.Shared.Entities.ReportTemplate.Table;
+﻿using BidConReport.Server.Enteties;
+using BidConReport.Server.Enteties.ReportTemplate;
+using BidConReport.Server.Shared.Enteties;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using System.Text.Json;

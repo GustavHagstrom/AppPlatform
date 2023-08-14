@@ -1,5 +1,5 @@
 ﻿using BidCon.SDK.Database;
-using BidConReport.Shared.Entities;
+using BidConReport.Shared.DTOs;
 
 namespace BidConReport.DesktopBridge.Features.Bidcon.Services;
 public interface IBidConImporter

@@ -87,16 +87,16 @@
     [CascadingParameter] public required MudTheme Theame { get; set; }
     [Inject] public required ImportedEstimationsContainer EstimationsContainer { get; set; }
     [Inject] public required IStringLocalizer<Report> Localizer { get; set; }
-    public Estimation? SelectedEstimation { get; set; }
+    public EstimationDTO? SelectedEstimation { get; set; }
 
-    public void ShowEstimationPreview(Estimation estimation)
+    public void ShowEstimationPreview(EstimationDTO estimation)
     {
         SelectedEstimation = estimation;
         ShowComparePopOver = false;
         ShowPreviewPopOver = true;
         StateHasChanged();
     }
-    public void ShowEstimationComparer(Estimation estimation)
+    public void ShowEstimationComparer(EstimationDTO estimation)
     {
         SelectedEstimation = estimation;
         ShowComparePopOver = true;

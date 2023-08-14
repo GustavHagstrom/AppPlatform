@@ -1,8 +1,8 @@
-﻿using BidConReport.Shared.Entities;
+﻿using BidConReport.Shared.DTOs;
 
 namespace BidConReport.Client.Shared.StateContainers;
 
 public class ImportedEstimationsContainer
 {
-    public ICollection<Estimation> ImportedEstimations { get; set; } = new HashSet<Estimation>();
+    public ICollection<EstimationDTO> ImportedEstimations { get; set; } = new HashSet<EstimationDTO>();
 }

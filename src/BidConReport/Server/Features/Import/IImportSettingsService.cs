@@ -1,4 +1,4 @@
-﻿using BidConReport.Shared.Entities;
+﻿using BidConReport.Server.Enteties;
 
 namespace BidConReport.Server.Features.Import;
 public interface IImportSettingsService

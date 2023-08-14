@@ -1,8 +1,7 @@
 ﻿using System.Net;
 using System.Text.Json;
-using Azure;
 using BidConReport.Shared.Constants;
-using BidConReport.Shared.Entities.ReportTemplate;
+using BidConReport.Shared.DTOs.ReportTemplate;
 using Microsoft.Extensions.Logging;
 using Moq;
 using Moq.Protected;
@@ -23,12 +22,12 @@ namespace BidConReport.Client.Shared.Services.Tests
             var loggerMock = new Mock<ILogger<ReportTemplateService>>();
             _reportTemplateCrudService = new ReportTemplateService(_httpClientWrapperMock.Object, loggerMock.Object);
         }
-        private ReportTemplate GetSampleData()
+        private ReportTemplateDTO GetSampleData()
         {
             var jsonFIlePath = Path.Combine(TestContext.CurrentContext.TestDirectory, "ReportTemplateSample.json");
             var jsonData = File.ReadAllText(jsonFIlePath);
             var options = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
-            return JsonSerializer.Deserialize<ReportTemplate>(jsonData, options)!;
+            return JsonSerializer.Deserialize<ReportTemplateDTO>(jsonData, options)!;
         }
         [Test]
         public async Task UpsertAsync_ShouldCallPostAsJsonAsyncWithCorrectDataAndUri()
@@ -52,7 +51,7 @@ namespace BidConReport.Client.Shared.Services.Tests
         {
             // Arrange
             var expectedUri = BackendApiEndpoints.ReportTemplatesController.All;
-            var expectedReportTemplates = new List<ReportTemplate> { GetSampleData() };
+            var expectedReportTemplates = new List<ReportTemplateDTO> { GetSampleData() };
 
             _httpClientWrapperMock!
                 .Setup(x => x.GetAsync(expectedUri, CancellationToken.None))

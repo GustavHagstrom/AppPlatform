@@ -1,5 +1,6 @@
 ﻿using BidConReport.DesktopBridge.Features.Bidcon.RulesEngine;
-using BidConReport.Shared.Entities;
+using BidConReport.Shared.DTOs;
+using BidConReport.Shared.Enums;
 
 namespace BidConReport.DesktopBridge.Features.Bidcon.Factories;
 
@@ -11,13 +12,13 @@ public class EstimationItemsFactory : IEstimationItemsFactory
     {
         _rulesEngine = rulesEngine;
     }
-    public ICollection<EstimationItem> Create(BidCon.SDK.EstimationItem root, EstimationImportSettings settings, ref int row, double costFactor)
+    public ICollection<EstimationItemDTO> Create(BidCon.SDK.EstimationItem root, EstimationImportSettingsDTO settings, ref int row, double costFactor)
     {
         return CreateItems(root, settings, ref row, costFactor).ToList();
     }
-    private ICollection<EstimationItem> CreateItems(BidCon.SDK.EstimationItem root, EstimationImportSettings settings, ref int row, double costFactor)
+    private ICollection<EstimationItemDTO> CreateItems(BidCon.SDK.EstimationItem root, EstimationImportSettingsDTO settings, ref int row, double costFactor)
     {
-        var items = new List<EstimationItem>();
+        var items = new List<EstimationItemDTO>();
         if (root.Items is null)
         {
             return items;
@@ -32,13 +33,13 @@ public class EstimationItemsFactory : IEstimationItemsFactory
         }
         return items;
     }
-    private EstimationItem CreateItem(BidCon.SDK.EstimationItem item, EstimationImportSettings settings, ref int row, double costFactor)
+    private EstimationItemDTO CreateItem(BidCon.SDK.EstimationItem item, EstimationImportSettingsDTO settings, ref int row, double costFactor)
     {
         var id = Guid.NewGuid();
         var comment = string.Empty;
         var rowNumber = row;
         var changedToRowNumber = row;
-        var itemType = (Shared.Entities.EstimationItemType)Enum.Parse(typeof(Shared.Entities.EstimationItemType), item.ItemType.ToString());
+        var itemType = (EstimationItemType)Enum.Parse(typeof(EstimationItemType), item.ItemType.ToString());
         var quantity = item.Quantity;
         var displayedQuantity = GetDisplayedQuantity(item);
         var unit = item.Unit;
@@ -48,9 +49,9 @@ public class EstimationItemsFactory : IEstimationItemsFactory
         var tags = GetTags(item, settings).ToArray();
         var items = (itemType == EstimationItemType.Group || itemType == EstimationItemType.Part) ? 
             CreateItems(item, settings, ref row, costFactor).ToList() : 
-            new List<EstimationItem>();
+            new List<EstimationItemDTO>();
 
-        return new EstimationItem
+        return new EstimationItemDTO
         {
             Id = id,
             Comment = comment,
@@ -67,7 +68,7 @@ public class EstimationItemsFactory : IEstimationItemsFactory
             Items = items
         };
     }
-    private IEnumerable<string> GetTags(BidCon.SDK.EstimationItem item, EstimationImportSettings settings)
+    private IEnumerable<string> GetTags(BidCon.SDK.EstimationItem item, EstimationImportSettingsDTO settings)
     {
         if (item.ItemType == BidCon.SDK.EstimationItemType.Group)
         {
@@ -85,7 +86,7 @@ public class EstimationItemsFactory : IEstimationItemsFactory
             yield return item.Revision.Code;
         }
     }
-    private double GetUnitCost(double? unitCost, EstimationImportSettings settings, double costFactor)
+    private double GetUnitCost(double? unitCost, EstimationImportSettingsDTO settings, double costFactor)
     {
         if (unitCost is null)
         {
@@ -93,7 +94,7 @@ public class EstimationItemsFactory : IEstimationItemsFactory
         }
         return unitCost.Value * costFactor;
     }
-    private string GetDisplayedUnit(BidCon.SDK.EstimationItem item, EstimationImportSettings settings)
+    private string GetDisplayedUnit(BidCon.SDK.EstimationItem item, EstimationImportSettingsDTO settings)
     {
         if (item.ItemType == BidCon.SDK.EstimationItemType.Group ||
             item.ItemType == BidCon.SDK.EstimationItemType.Part ||

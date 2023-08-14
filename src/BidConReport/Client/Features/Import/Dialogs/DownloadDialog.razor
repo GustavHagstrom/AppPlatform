@@ -50,14 +50,14 @@
 
     @code {
     [CascadingParameter] public required MudDialogInstance MudDialog { get; set; }
-    [Parameter] public required Progress<BidConImportResult<Estimation>> Progress { get; set; }
+    [Parameter] public required Progress<BidConImportResultDTO<EstimationDTO>> Progress { get; set; }
     [Parameter] public required int TotalEstimationCount { get; set; }
     [Parameter] public required CancellationTokenSource CancelTokenSource { get; set; }
     [Inject] public required IStringLocalizer<DownloadDialog> Localizer { get; set; }
     [Inject] public required NavigationManager Navigation { get; set; }
 
     int CurrentCount { get; set; } = 0;
-    HashSet<Estimation> Estimations { get; set; } = new();
+    HashSet<EstimationDTO> Estimations { get; set; } = new();
     List<string> Errors { get; set; } = new();
     bool IsDownloading { get; set; } = true;
 
@@ -65,7 +65,7 @@
     {
         Progress.ProgressChanged += OnProgressReport;
     }
-    void OnProgressReport(object? source, BidConImportResult<Estimation>? result)
+    void OnProgressReport(object? source, BidConImportResultDTO<EstimationDTO>? result)
     {
         if (result is null) return;
         if(result.Value is not null)

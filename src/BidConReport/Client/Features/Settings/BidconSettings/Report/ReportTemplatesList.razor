@@ -1,4 +1,5 @@
-﻿<MudPaper Style="height: 100%" Class="relative d-flex flex-grow-1">
+﻿@using BidConReport.Shared.DTOs.ReportTemplate;
+<MudPaper Style="height: 100%" Class="relative d-flex flex-grow-1">
 
     <MudOverlay @bind-Visible="OverlayVisible" DarkBackground="true" Absolute="true">
         <MudProgressCircular Color="Color.Primary" Indeterminate="true" Size="Size.Large" />
@@ -38,8 +39,8 @@
     [Inject] public required IStringLocalizer<ReportTemplatesList> Localizer { get; set; }
     [Inject] public required ScreenSizeService ScreenSizeService { get; set; }
 
-    bool OverlayVisible { get; set; } = true;
-    public ICollection<ReportTemplate>? TemplateList { get; set; }
+    bool OverlayVisible { get; set; } 
+    public ICollection<ReportTemplateDTO>? TemplateList { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
@@ -53,15 +54,15 @@
     }
     public async Task CreateNew()
     {
-        await OpenEditDialog(new ReportTemplate(), Localizer["Ny"]);
+        await OpenEditDialog(new ReportTemplateDTO(), Localizer["Ny"]);
     }
-    public async Task Edit(ReportTemplate template)
+    public async Task Edit(ReportTemplateDTO template)
     {
-        var clone = JsonSerializer.Deserialize<ReportTemplate>(JsonSerializer.Serialize(template));
+        var clone = JsonSerializer.Deserialize<ReportTemplateDTO>(JsonSerializer.Serialize(template));
         await OpenEditDialog(clone!, Localizer["Redigera"]);
 
     }
-    public async Task OpenEditDialog(ReportTemplate template, string title)
+    public async Task OpenEditDialog(ReportTemplateDTO template, string title)
     {
         var options = new DialogOptions()
             {
@@ -82,7 +83,7 @@
             await RefreshList();
         }
     }
-    public async Task Delete(ReportTemplate template)
+    public async Task Delete(ReportTemplateDTO template)
     {
         if (await ConfirmDelete(template))
         {
@@ -91,7 +92,7 @@
             await RefreshList();
         }
     }
-    public async Task<bool> ConfirmDelete(ReportTemplate template)
+    public async Task<bool> ConfirmDelete(ReportTemplateDTO template)
     {
         var options = new DialogOptions()
             {

@@ -32,7 +32,7 @@
 
 
 @code {
-    [Parameter, EditorRequired] public required ICollection<ColumnDefinition> ColumnList { get; set; }
+    [Parameter, EditorRequired] public required ICollection<ColumnDefinitionDTO> ColumnList { get; set; }
     [Inject] public required IStringLocalizer<TableColumnsList> Localizer { get; set; }
 
     private Dictionary<ColumnDataSource, string> ColumnNameMap => new()
@@ -46,19 +46,19 @@
         { ColumnDataSource.Comment, Localizer["Kommentar"] },
 
     };
-    private IEnumerable<ColumnDefinition> ColumnsInOrder => ColumnList.OrderBy(x => x.Order);
+    private IEnumerable<ColumnDefinitionDTO> ColumnsInOrder => ColumnList.OrderBy(x => x.Order);
 
-    void MoveUp(ColumnDefinition column)
+    void MoveUp(ColumnDefinitionDTO column)
     {
         var orderedList = ColumnsInOrder.ToList();
         SwapOrder(column, orderedList[orderedList.IndexOf(column) - 1]);
     }
-    void MoveDown(ColumnDefinition column)
+    void MoveDown(ColumnDefinitionDTO column)
     {
         var orderedList = ColumnsInOrder.ToList();
         SwapOrder(column, orderedList[orderedList.IndexOf(column) + 1]);
     }
-    void SwapOrder(ColumnDefinition column1, ColumnDefinition column2)
+    void SwapOrder(ColumnDefinitionDTO column1, ColumnDefinitionDTO column2)
     {
         var temp = column1.Order;
         column1.Order = column2.Order;

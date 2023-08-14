@@ -25,15 +25,15 @@
     
 </div>
 @code {
-    [Parameter] public EventCallback<EstimationImportSettings> SelectedSettingChanged { get; set; }
+    [Parameter] public EventCallback<EstimationImportSettingsDTO> SelectedSettingChanged { get; set; }
     [Inject] public required IStringLocalizer<ImportSettingsPicker> Localizer { get; set; }
     [Inject] public required IImportSettingsService ImportSettingsService { get; set; }
     [Inject] public required ISnackbar Snackbar { get; set; }
     
 
-    private EstimationImportSettings? _selectedSetting;
+    private EstimationImportSettingsDTO? _selectedSetting;
 
-    public EstimationImportSettings? SelectedSetting
+    public EstimationImportSettingsDTO? SelectedSetting
     {
         get => _selectedSetting; set
         {
@@ -42,10 +42,10 @@
         }
     }
     public bool PopOverIsVisible { get; set; } = false;
-    public ICollection<EstimationImportSettings> SettingsList { get; set; } = new List<EstimationImportSettings>();
-    public EstimationImportSettings? DefaultSetting { get; set; } = null;
+    public ICollection<EstimationImportSettingsDTO> SettingsList { get; set; } = new List<EstimationImportSettingsDTO>();
+    public EstimationImportSettingsDTO? DefaultSetting { get; set; } = null;
 
-    public string CreateDefaultSettingsIcon(EstimationImportSettings? settings)
+    public string CreateDefaultSettingsIcon(EstimationImportSettingsDTO? settings)
     {
         if(IsDefaultSettings(settings))
         {
@@ -110,7 +110,7 @@
     /// Will also close popover
     /// </summary>
     /// <param name="settings"></param>
-    public void SetSelectedSettings(EstimationImportSettings? settings)
+    public void SetSelectedSettings(EstimationImportSettingsDTO? settings)
     {
         SelectedSetting = settings;
         PopOverIsVisible = false;
@@ -129,7 +129,7 @@
         await RefreshEntireComponent();
     }
 
-    public bool IsDefaultSettings(EstimationImportSettings? settings)
+    public bool IsDefaultSettings(EstimationImportSettingsDTO? settings)
     {
         if (DefaultSetting is null || settings is null) return false;
 

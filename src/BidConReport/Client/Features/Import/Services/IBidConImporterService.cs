@@ -1,9 +1,10 @@
-﻿using BidConReport.Shared.Entities;
+﻿using BidConReport.Shared.DTOs;
+using BidConReport.Shared.DTOs;
 
 namespace BidConReport.Client.Features.Import.Services;
 public interface IBidConImporterService
 {
-    Task<IEnumerable<BidConImportResult<Estimation>>> GetEstimationsAsync(IEnumerable<DbEstimation> estimations, EstimationImportSettings settings, CancellationToken cancelToken, IProgress<BidConImportResult<Estimation>>? progress = null);
-    Task<BidConImportResult<Estimation>> GetEstimationAsync(BidconImportRequest request, CancellationToken cancelToken);
-    Task<BidConImportResult<DbFolder>> GetFoldersAsync();
+    Task<IEnumerable<BidConImportResultDTO<EstimationDTO>>> GetEstimationsAsync(IEnumerable<DbEstimationDTO> estimations, EstimationImportSettingsDTO settings, CancellationToken cancelToken, IProgress<BidConImportResultDTO<EstimationDTO>>? progress = null);
+    Task<BidConImportResultDTO<EstimationDTO>> GetEstimationAsync(BidconImportRequestDTO request, CancellationToken cancelToken);
+    Task<BidConImportResultDTO<DbFolderDTO>> GetFoldersAsync();
 }

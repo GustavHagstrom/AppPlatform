@@ -1,6 +1,7 @@
 ﻿using BidCon.SDK.Database;
-using BidConReport.Shared.Entities;
+using BidConReport.Shared.DTOs;
 using BidConReport.DesktopBridge.Features.Bidcon.Factories;
+using BidConReport.Shared.DTOs;
 
 namespace BidConReport.DesktopBridge.Features.Bidcon.Services;
 public class BidconDataConverter : IBidconDataConverter
@@ -11,9 +12,9 @@ public class BidconDataConverter : IBidconDataConverter
     {
         _estimationFactory = estimationFactory;
     }
-    public DbFolder ConvertDatabaseFolder(DatabaseFolder folder)
+    public DbFolderDTO ConvertDatabaseFolder(DatabaseFolder folder)
     {
-        var returnFolder = new DbFolder { Name = folder.Name, SubFolders = new List<DbFolder>(), DbEstimations = new List<DbEstimation>() };
+        var returnFolder = new DbFolderDTO { Name = folder.Name, SubFolders = new List<DbFolderDTO>(), DbEstimations = new List<DbEstimationDTO>() };
         foreach (var subFolder in folder.Folders)
         {
             returnFolder.SubFolders.Add(ConvertDatabaseFolder(subFolder));
@@ -24,16 +25,16 @@ public class BidconDataConverter : IBidconDataConverter
         }
         return returnFolder;
     }
-    private static DbEstimation CreateDbEstimation(DatabaseEstimation databaseEstimation)
+    private static DbEstimationDTO CreateDbEstimation(DatabaseEstimation databaseEstimation)
     {
-        return new DbEstimation
+        return new DbEstimationDTO
         {
             Id = databaseEstimation.ID,
             Name = databaseEstimation.Name,
             Description = databaseEstimation.Description,
         };
     }
-    public Shared.Entities.Estimation ConvertEstimation(BidCon.SDK.Estimation estimation, EstimationImportSettings settings)
+    public Shared.DTOs.EstimationDTO ConvertEstimation(BidCon.SDK.Estimation estimation, EstimationImportSettingsDTO settings)
     {
         return _estimationFactory.Create(estimation, settings);
     }

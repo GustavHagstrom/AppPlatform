@@ -1,29 +1,29 @@
-﻿using SharedPlatformLibrary.Enteties;
+﻿using SharedPlatformLibrary.DTOs;
 
 namespace BidConReport.Server.Shared.Services;
 
 public class OrganizationService_debug : IOrganizationService
 {
-    private static List<Organization> Organizations { get; } = new List<Organization> 
+    private static List<OrganizationDTO> Organizations { get; } = new List<OrganizationDTO> 
     {
-        new Organization { Id = "debug_organizationId", Name = "debug_organizationName" },
-        new Organization { Id = "debug_organizationId_2", Name = "debug_organizationName2" },
+        new OrganizationDTO { Id = "debug_organizationId", Name = "debug_organizationName" },
+        new OrganizationDTO { Id = "debug_organizationId_2", Name = "debug_organizationName2" },
     };
-    public Organization CurrentOrganization { get; set; } = Organizations.First();
+    public OrganizationDTO CurrentOrganization { get; set; } = Organizations.First();
 
-    public Task CreateNew(string userId, Organization organization)
+    public Task CreateNew(string userId, OrganizationDTO organization)
     {
         return Task.Run(() => Organizations.Add(organization));
     }
-    public async Task<ICollection<Organization>> GetAll(string userId)
+    public async Task<ICollection<OrganizationDTO>> GetAll(string userId)
     {
         return await Task.FromResult(Organizations);
     }
-    public async Task<Organization?> GetCurrent(string userId)
+    public async Task<OrganizationDTO?> GetCurrent(string userId)
     {
         return await Task.FromResult(CurrentOrganization);
     }
-    public async Task SetAsActive(string userId, Organization organization)
+    public async Task SetAsActive(string userId, OrganizationDTO organization)
     {
         await Task.Run(() => CurrentOrganization = organization);
     }

@@ -1,6 +1,6 @@
 ﻿using BidConReport.Shared.Constants;
 using Microsoft.Extensions.Logging;
-using SharedPlatformLibrary.Enteties;
+using SharedPlatformLibrary.DTOs;
 using SharedPlatformLibrary.Wrappers;
 using System.Net.Http.Json;
 
@@ -16,7 +16,7 @@ public class OrganizationService : IOrganizationService
         _httpClient = httpClient;
         _logger = logger;
     }
-    public async Task CreateNew(Organization organization)
+    public async Task CreateNew(OrganizationDTO organization)
     {
         try
         {
@@ -30,13 +30,13 @@ public class OrganizationService : IOrganizationService
         }
     }
 
-    public async Task<ICollection<Organization>> GetAll()
+    public async Task<ICollection<OrganizationDTO>> GetAll()
     {
         try
         {
             var response = await _httpClient.GetAsync(BackendApiEndpoints.OrganizationsController.GetAll);
             response.EnsureSuccessStatusCode();
-            var result = await response.Content.ReadFromJsonAsync<ICollection<Organization>>();
+            var result = await response.Content.ReadFromJsonAsync<ICollection<OrganizationDTO>>();
             return result ?? throw new Exception("Response was null");
         }
         catch (Exception e)
@@ -46,11 +46,11 @@ public class OrganizationService : IOrganizationService
         }
     }
 
-    public async Task<Organization?> GetCurrent()
+    public async Task<OrganizationDTO?> GetCurrent()
     {
         try
         {
-            return await _httpClient.GetFromJsonAsync<Organization>(BackendApiEndpoints.OrganizationsController.GetCurrent);
+            return await _httpClient.GetFromJsonAsync<OrganizationDTO>(BackendApiEndpoints.OrganizationsController.GetCurrent);
         }
         catch (Exception e)
         {
@@ -59,7 +59,7 @@ public class OrganizationService : IOrganizationService
         }
     }
 
-    public async Task SetAsActive(Organization organization)
+    public async Task SetAsActive(OrganizationDTO organization)
     {
         try
         {

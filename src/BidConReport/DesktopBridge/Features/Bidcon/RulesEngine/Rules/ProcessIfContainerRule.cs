@@ -1,10 +1,10 @@
 ﻿using BidCon.SDK;
-using BidConReport.Shared.Entities;
+using BidConReport.Shared.DTOs;
 
 namespace BidConReport.DesktopBridge.Features.Bidcon.RulesEngine.Rules;
 public class ProcessIfContainerRule : IEstimationItemRule
 {
-    public bool Run(BidCon.SDK.EstimationItem estimationItem, EstimationImportSettings settings, IEstimationItemRulesEngine engine)
+    public bool Run(BidCon.SDK.EstimationItem estimationItem, EstimationImportSettingsDTO settings, IEstimationItemRulesEngine engine)
     {
         if (estimationItem.ItemType != BidCon.SDK.EstimationItemType.Group || estimationItem.ItemType != BidCon.SDK.EstimationItemType.Part) return true;
 

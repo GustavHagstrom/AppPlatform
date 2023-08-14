@@ -1,12 +1,12 @@
-﻿using BidConReport.Shared.Entities;
+﻿using BidConReport.Shared.DTOs;
 
 namespace BidConReport.Client.Features.Import.Models;
-public class SelectableDbEstimation : DbEstimation
+public class SelectableDbEstimation : DbEstimationDTO
 {
     private bool _isSelected;
 
 
-    public SelectableDbEstimation(DbEstimation dbEstimation, bool isSelected = false)
+    public SelectableDbEstimation(DbEstimationDTO dbEstimation, bool isSelected = false)
     {
         this.Id = dbEstimation.Id;
         this.Name = dbEstimation.Name;

@@ -1,6 +1,6 @@
 ﻿using BidConReport.Client.Shared.Constants;
 using BidConReport.Shared.Constants;
-using BidConReport.Shared.Entities;
+using BidConReport.Shared.DTOs;
 using System.Net.Http.Json;
 
 namespace BidConReport.Client.Shared.Services;
@@ -30,7 +30,7 @@ public class ImportSettingsService : IImportSettingsService
         }
     }
 
-    public async Task<ICollection<EstimationImportSettings>> GetAllAsync()
+    public async Task<ICollection<EstimationImportSettingsDTO>> GetAllAsync()
     {
         try
         {
@@ -39,7 +39,7 @@ public class ImportSettingsService : IImportSettingsService
             var response = await client.GetAsync(requestUri);
             response.EnsureSuccessStatusCode();
 
-            var settings = await response.Content.ReadFromJsonAsync<ICollection<EstimationImportSettings>>();
+            var settings = await response.Content.ReadFromJsonAsync<ICollection<EstimationImportSettingsDTO>>();
             return settings ?? throw new Exception("Response was null");
         }
         catch (HttpRequestException ex)
@@ -48,7 +48,7 @@ public class ImportSettingsService : IImportSettingsService
         }
     }
 
-    public async Task<EstimationImportSettings?> GetDefaultAsync()
+    public async Task<EstimationImportSettingsDTO?> GetDefaultAsync()
     {
 
         try
@@ -58,7 +58,7 @@ public class ImportSettingsService : IImportSettingsService
             var result = await client.GetAsync(requestUri);
             result.EnsureSuccessStatusCode();
 
-            var content = await result.Content.ReadFromJsonAsync<EstimationImportSettings>();
+            var content = await result.Content.ReadFromJsonAsync<EstimationImportSettingsDTO>();
             return content!;
         }
         catch (Exception ex)
@@ -69,7 +69,7 @@ public class ImportSettingsService : IImportSettingsService
         }
     }
 
-    public async Task SaveAsDefaultAsync(EstimationImportSettings? settings)
+    public async Task SaveAsDefaultAsync(EstimationImportSettingsDTO? settings)
     {
         try
         {
@@ -85,7 +85,7 @@ public class ImportSettingsService : IImportSettingsService
         }
     }
 
-    public async Task UpsertAsync(EstimationImportSettings settings)
+    public async Task UpsertAsync(EstimationImportSettingsDTO settings)
     {
         try
         {

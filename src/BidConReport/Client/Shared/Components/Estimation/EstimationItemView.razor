@@ -26,9 +26,9 @@
 }
 
 @code {
-    [Parameter, EditorRequired] public required EstimationItem Item { get; set; }
+    [Parameter, EditorRequired] public required EstimationItemDTO Item { get; set; }
     [CascadingParameter] public required EstimationPreview ParentComponent { get; set; }
-    Dictionary<ColumnDataSource, Func<EstimationItem, string>> DataSourceFunctions { get; set; } = new()
+    Dictionary<ColumnDataSource, Func<EstimationItemDTO, string>> DataSourceFunctions { get; set; } = new()
     {
         { ColumnDataSource.RowNumber, e => e.RowNumber.ToString() },
         { ColumnDataSource.Name, e => e.Name },
@@ -38,7 +38,7 @@
         { ColumnDataSource.DisplayedQuantity, e => e.DisplayedQuantity },
         { ColumnDataSource.Comment, e => e.Comment },
     };
-    int NumberOfNestedParentGroups(EstimationItem? item)
+    int NumberOfNestedParentGroups(EstimationItemDTO? item)
     {
         if (item is null || item.Parent is null)
         {

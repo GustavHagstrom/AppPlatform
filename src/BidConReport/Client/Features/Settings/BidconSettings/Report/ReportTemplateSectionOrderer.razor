@@ -16,19 +16,19 @@
                             </div>
                         </TitleContent>
                         <ChildContent>
-                            @if (section is TitleSection)
+                            @if (section is TitleSectionDTO)
                             {
                                 <TitleSectionEditor Section="Template.TitleSection" />
                             }
-                            @if (section is InformationSection)
+                            @if (section is InformationSectionDTO)
                             {
                                 <InformationSectionEditor Section="Template.InformationSection" />
                             }
-                            @if (section is PriceSection)
+                            @if (section is PriceSectionDTO)
                             {
                                 <PriceSectionEditor Section="Template.PriceSection" />
                             }
-                            @if (section is TableSection)
+                            @if (section is TableSectionDTO)
                             {
                                 <TableSectionEditor Section="Template.TableSection" />
                             }
@@ -42,39 +42,39 @@
 
 
 @code {
-    [Parameter, EditorRequired] public required ReportTemplate Template { get; set; }
+    [Parameter, EditorRequired] public required ReportTemplateDTO Template { get; set; }
     [Inject] public required IStringLocalizer<ReportTemplateSectionOrderer> Localizer { get; set; }
 
-    private string GetSectionName(IReportTemplateSection section)
+    private string GetSectionName(IReportTemplateSectionDTO section)
     {
-        if (section is TitleSection) return Localizer["Titel"];
-        if (section is InformationSection) return Localizer["Allmän info"];
-        if (section is PriceSection) return Localizer["Prissummering"];
-        if (section is TableSection) return Localizer["Tabell"];
+        if (section is TitleSectionDTO) return Localizer["Titel"];
+        if (section is InformationSectionDTO) return Localizer["Allmän info"];
+        if (section is PriceSectionDTO) return Localizer["Prissummering"];
+        if (section is TableSectionDTO) return Localizer["Tabell"];
 
         throw new Exception("Pattern matching failed");
     }
-    private bool IsFirst(IReportTemplateSection section)
+    private bool IsFirst(IReportTemplateSectionDTO section)
     {
         return Template.SectionsInOrder.First() == section;
     }
-    private bool IsLast(IReportTemplateSection section)
+    private bool IsLast(IReportTemplateSectionDTO section)
     {
         return Template.SectionsInOrder.Last() == section;
     }
-    private void MoveUp(IReportTemplateSection section)
+    private void MoveUp(IReportTemplateSectionDTO section)
     {
         var index = GetIndex(section);
         var otherSection = Template.SectionsInOrder.ElementAt(index - 1);
         Swap(section, otherSection);
     }
-    private void MoveDown(IReportTemplateSection section)
+    private void MoveDown(IReportTemplateSectionDTO section)
     {
         var index = GetIndex(section);
         var otherSection = Template.SectionsInOrder.ElementAt(index + 1);
         Swap(section, otherSection);
     }
-    private int GetIndex(IReportTemplateSection section)
+    private int GetIndex(IReportTemplateSectionDTO section)
     {
         var index = Template.SectionsInOrder
             .Select((x, i) => new { Index = i, Section = x })
@@ -83,7 +83,7 @@
             .Index;
         return index;
     }
-    void Swap(IReportTemplateSection section1, IReportTemplateSection section2)
+    void Swap(IReportTemplateSectionDTO section1, IReportTemplateSectionDTO section2)
     {
         var tempValue = section2.LayoutOrder;
         section2.LayoutOrder = section1.LayoutOrder;

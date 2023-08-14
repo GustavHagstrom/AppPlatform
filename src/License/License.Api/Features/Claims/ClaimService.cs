@@ -1,7 +1,7 @@
 ﻿using LicenseLibrary;
 using Microsoft.EntityFrameworkCore;
 using SharedPlatformLibrary.Constants;
-using SharedPlatformLibrary.Enteties;
+using SharedPlatformLibrary.DTOs;
 using SharedPlatformLibrary.HttpRequests;
 using System.Security.Claims;
 
@@ -14,7 +14,7 @@ public class ClaimService : IClaimService
     {
         _dbContext = dbContext;
     }
-    public  async Task<ICollection<ClaimModel>> GetCustomClaims(ClaimsRequestBody claimsRequestBody)
+    public  async Task<ICollection<ClaimDTO>> GetCustomClaims(ClaimsRequestBody claimsRequestBody)
     {
         var user = await _dbContext.Users
             .Where(x => x.Id == claimsRequestBody.UserId)
@@ -23,21 +23,21 @@ public class ClaimService : IClaimService
             .Include(x => x.Licenses)
             .FirstOrDefaultAsync();
 
-        var claims = new List<ClaimModel>();
+        var claims = new List<ClaimDTO>();
         if (user is not null)
         {
             var roles = user.Roles
-                .Select(x => new ClaimModel(ClaimTypes.Role, x.Name));
+                .Select(x => new ClaimDTO(ClaimTypes.Role, x.Name));
             var orgs = user.Organizations
-                .Select(x => new ClaimModel(CustomClaimTypes.OrganizationMemberOf, x.Id.ToString()));
+                .Select(x => new ClaimDTO(CustomClaimTypes.OrganizationMemberOf, x.Id.ToString()));
             var licenses = user.Licenses
                 .Where(x => x.OrganizationId == user.CurrentOrganizationId && x.ApplicationName == claimsRequestBody.ApplicationName) 
-                .Select(x => new ClaimModel(CustomClaimTypes.License, x.Id.ToString()));
+                .Select(x => new ClaimDTO(CustomClaimTypes.License, x.Id.ToString()));
 
             var currentOrgId = user.CurrentOrganizationId.ToString();
             if (currentOrgId is not null)
             {
-                claims.Add(new ClaimModel(CustomClaimTypes.CurrentOrganizationId, currentOrgId));
+                claims.Add(new ClaimDTO(CustomClaimTypes.CurrentOrganizationId, currentOrgId));
             }
             claims.AddRange(roles);
             claims.AddRange(orgs);

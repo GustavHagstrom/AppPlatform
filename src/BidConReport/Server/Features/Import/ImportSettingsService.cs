@@ -1,5 +1,5 @@
 ﻿using BidConReport.Server.Data;
-using BidConReport.Shared.Entities;
+using BidConReport.Server.Enteties;
 using Microsoft.EntityFrameworkCore;
 
 namespace BidConReport.Server.Features.Import;

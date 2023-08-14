@@ -1,7 +1,7 @@
-﻿using SharedPlatformLibrary.Enteties;
+﻿using SharedPlatformLibrary.DTOs;
 
 namespace BidConReport.Server.Shared.Services;
 public interface IClaimsProvider
 {
-    Task<ICollection<ClaimModel>> GetClaimsAsync(string userId);
+    Task<ICollection<ClaimDTO>> GetClaimsAsync(string userId);
 }

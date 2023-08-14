@@ -5,7 +5,7 @@
         <MudText Typo="Typo.subtitle1">@Localizer["Förhandsval av rapportmall"]</MudText>
     </TitleContent>
     <ChildContent>
-        <MudSelect T="ReportTemplate" Disabled="IsLoading" Dense="true" Variant="Variant.Outlined" Value="DefaultTemplate" ValueChanged="OnProfileChanged" Margin="Margin.Dense" AnchorOrigin="Origin.BottomCenter" TransformOrigin="Origin.TopCenter">
+        <MudSelect T="ReportTemplateDTO" Disabled="IsLoading" Dense="true" Variant="Variant.Outlined" Value="DefaultTemplate" ValueChanged="OnProfileChanged" Margin="Margin.Dense" AnchorOrigin="Origin.BottomCenter" TransformOrigin="Origin.TopCenter">
             @foreach (var item in Templates)
             {
                 <MudSelectItem Value="item" />
@@ -27,8 +27,8 @@
 @code {
     [Inject] public required IStringLocalizer<DefaultReportTemplateSelector> Localizer { get; set; }
     [Inject] public required IReportTemplateService TemplateService { get; set; }
-    List<ReportTemplate> Templates { get; set; } = new List<ReportTemplate>();
-    ReportTemplate? DefaultTemplate { get; set; }
+    List<ReportTemplateDTO> Templates { get; set; } = new List<ReportTemplateDTO>();
+    ReportTemplateDTO? DefaultTemplate { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
@@ -42,7 +42,7 @@
         DefaultTemplate = await TemplateService.GetDefaultAsync();
         await SetLoading(false);
     }
-    async Task OnProfileChanged(ReportTemplate template)
+    async Task OnProfileChanged(ReportTemplateDTO template)
     {
         DefaultTemplate = template;
         await TemplateService.SetAsDefaultAsync(template);

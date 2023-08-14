@@ -1,5 +1,5 @@
 using SharedPlatformLibrary.Constants;
-using SharedPlatformLibrary.Enteties;
+using SharedPlatformLibrary.DTOs;
 using System.Security.Claims;
 
 namespace BidConReport.Server.Shared.Services;
@@ -15,14 +15,14 @@ public class ClaimsProvider_debug : IClaimsProvider
         _organizationService = organizationService;
     }
 
-    public async Task<ICollection<ClaimModel>> GetClaimsAsync(string userId)
+    public async Task<ICollection<ClaimDTO>> GetClaimsAsync(string userId)
     {
         var currentOrg = await _organizationService.GetCurrent(userId);
-        var claims = new List<ClaimModel>
+        var claims = new List<ClaimDTO>
         {
-            new ClaimModel(ClaimTypes.Role, Role),
-            new ClaimModel(CustomClaimTypes.License, License ),
-            new ClaimModel(CustomClaimTypes.CurrentOrganizationId, currentOrg.Id),
+            new ClaimDTO(ClaimTypes.Role, Role),
+            new ClaimDTO(CustomClaimTypes.License, License ),
+            new ClaimDTO(CustomClaimTypes.CurrentOrganizationId, currentOrg.Id),
         };
 
         return claims;

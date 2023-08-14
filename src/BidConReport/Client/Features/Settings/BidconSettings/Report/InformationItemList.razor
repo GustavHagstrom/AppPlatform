@@ -36,13 +36,13 @@
     </table>
 </div>
 @code {
-    [Parameter, EditorRequired] public required List<InformationItem> InformationItems { get; set; }
+    [Parameter, EditorRequired] public required List<InformationItemDTO> InformationItems { get; set; }
     [Inject] public required IStringLocalizer<InformationItemList> Localizer { get; set; }
     [Inject] public required IDialogService DialogService { get; set; }
-    private IEnumerable<InformationItem> ItemsInOrder => InformationItems.OrderBy(x => x.Order);
+    private IEnumerable<InformationItemDTO> ItemsInOrder => InformationItems.OrderBy(x => x.Order);
 
 
-    async Task AddLinkToItem(InformationItem item)
+    async Task AddLinkToItem(InformationItemDTO item)
     {
         item.ValueCode += await GetPlaceholderFromDialog();
     }
@@ -65,13 +65,13 @@
     }
     void AddNewItem()
     {
-        InformationItems.Add(new InformationItem
+        InformationItems.Add(new InformationItemDTO
         {
             Title = Localizer["Ny rubrik"],
             Order = InformationItems.Count,
         });
     }
-    async Task Delete(InformationItem item)
+    async Task Delete(InformationItemDTO item)
     {
         var options = new DialogOptions()
         {
@@ -88,21 +88,21 @@
             InformationItems.Remove(item);
         }
     }
-    async Task AddPlaceholder(InformationItem item)
+    async Task AddPlaceholder(InformationItemDTO item)
     {
         item.ValueCode += await GetPlaceholderFromDialog();
     }
-    void MoveUp(InformationItem item)
+    void MoveUp(InformationItemDTO item)
     {
         var orderedList = ItemsInOrder.ToList();
         SwapOrder(item, orderedList[orderedList.IndexOf(item) - 1]);
     }
-    void MoveDown(InformationItem item)
+    void MoveDown(InformationItemDTO item)
     {
         var orderedList = ItemsInOrder.ToList();
         SwapOrder(item, orderedList[orderedList.IndexOf(item) + 1]);
     }
-    void SwapOrder(InformationItem item1, InformationItem item2)
+    void SwapOrder(InformationItemDTO item1, InformationItemDTO item2)
     {
         var temp = item1.Order;
         item1.Order = item2.Order;

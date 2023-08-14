@@ -53,7 +53,7 @@
     [Inject] public required ImportedEstimationsContainer ImportedEstimationsContainer { get; set; }
     [Inject] public required ISnackbar Snackbar { get; set; }
 
-    public EstimationImportSettings? Settings { get; set; }
+    public EstimationImportSettingsDTO? Settings { get; set; }
     public DbTreeItem? ItemTree { get; set; }
     public bool IsRefreshing { get; set; } = true;
     public bool drawerOpen = false;
@@ -78,7 +78,7 @@
     {
         await GetEstimationItemTreeAsync();
     }
-    public void OnSettingsSelectionChanged(EstimationImportSettings? settings)
+    public void OnSettingsSelectionChanged(EstimationImportSettingsDTO? settings)
     {
         Settings = settings;
     }
@@ -94,7 +94,7 @@
             var selectedEstimations = ItemTree.SelectedEstimations().Select(x => x.DbEstimation!).ToList();
             if (selectedEstimations.Count == 0) return;
             var cancelSource = new CancellationTokenSource();
-            var progress = new Progress<BidConImportResult<Estimation>>();
+            var progress = new Progress<BidConImportResultDTO<EstimationDTO>>();
             var options = new DialogOptions()
             {
                 MaxWidth = MaxWidth.ExtraSmall,

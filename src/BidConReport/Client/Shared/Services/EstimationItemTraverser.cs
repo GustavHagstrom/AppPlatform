@@ -1,15 +1,16 @@
-﻿using BidConReport.Shared.Entities;
+﻿using BidConReport.Shared.DTOs;
+using BidConReport.Shared.Enums;
 
 namespace BidConReport.Client.Shared.Services;
 
 public class EstimationItemTraverser : IEstimationItemTraverser
 {
-    public EstimationItem? FindItem(Estimation estimation, int row)
+    public EstimationItemDTO? FindItem(EstimationDTO estimation, int row)
     {
         var root = CreateRoot(estimation);
         return FindItem(root, row);
     }
-    public IEnumerable<EstimationItem> GetAllEstimationItems(Estimation estimation)
+    public IEnumerable<EstimationItemDTO> GetAllEstimationItems(EstimationDTO estimation)
     {
         foreach (var baseNode in estimation.Items)
         {
@@ -19,7 +20,7 @@ public class EstimationItemTraverser : IEstimationItemTraverser
             }
         }
     }
-    private EstimationItem? FindItem(EstimationItem root, int row)
+    private EstimationItemDTO? FindItem(EstimationItemDTO root, int row)
     {
         if (root.RowNumber == row)
         {
@@ -37,7 +38,7 @@ public class EstimationItemTraverser : IEstimationItemTraverser
 
         return null;
     }
-    private IEnumerable<EstimationItem> GetAllItems(EstimationItem root)
+    private IEnumerable<EstimationItemDTO> GetAllItems(EstimationItemDTO root)
     {
         yield return root;
         foreach (var child in root.Items)
@@ -48,9 +49,9 @@ public class EstimationItemTraverser : IEstimationItemTraverser
             }
         }
     }
-    private EstimationItem CreateRoot(Estimation estimation)
+    private EstimationItemDTO CreateRoot(EstimationDTO estimation)
     {
-        return new EstimationItem
+        return new EstimationItemDTO
         {
             Comment = string.Empty,
             DisplayedQuantity = string.Empty,

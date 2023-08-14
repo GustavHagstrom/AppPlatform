@@ -1,7 +1,7 @@
-﻿@using SharedPlatformLibrary.Enteties;
+﻿@using SharedPlatformLibrary.DTOs;
 @inherits IsLoadingComponent
 
-<MudSelect T="Organization" Label="@Localizer["Organisation"]" Placeholder="@Localizer["Ej vald"]" Dense="true"
+<MudSelect T="OrganizationDTO" Label="@Localizer["Organisation"]" Placeholder="@Localizer["Ej vald"]" Dense="true"
            Variant="Variant.Outlined" Value="ActiveOrganization" ValueChanged="OnProfileChanged" Margin="Margin.Dense" AnchorOrigin="Origin.BottomCenter" TransformOrigin="Origin.TopCenter">
     @foreach (var item in Organizations)
     {
@@ -16,8 +16,8 @@
     [Inject] public required IOrganizationService OrganizationService { get; set; }
     [Inject] public required NavigationManager NavigationManager { get; set; }
 
-    List<Organization> Organizations { get; set; } = new List<Organization>();
-    Organization? ActiveOrganization { get; set; }
+    List<OrganizationDTO> Organizations { get; set; } = new List<OrganizationDTO>();
+    OrganizationDTO? ActiveOrganization { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
@@ -31,7 +31,7 @@
         ActiveOrganization = await OrganizationService.GetCurrent();
         await SetLoading(false);
     }
-    async Task OnProfileChanged(Organization organization)
+    async Task OnProfileChanged(OrganizationDTO organization)
     {
         ActiveOrganization = organization;
         await OrganizationService.SetAsActive(organization);

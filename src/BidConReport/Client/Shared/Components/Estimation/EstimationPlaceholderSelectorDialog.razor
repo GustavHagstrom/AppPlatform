@@ -23,7 +23,7 @@
     [Inject] public required IStringLocalizer<EstimationPlaceholderSelectorDialog> Localizer { get; set; }
     [CascadingParameter] public required MudDialogInstance MudDialog { get; set; }
     Dictionary<string, string> PlaceHolderNameMap { get; set; } = new();
-    ICollection<PlaceholderInfo> PlaceholderInfos { get; set; } = PlaceholderFunctions.GetPlaceholderPreopertyInfos(typeof(Estimation)).ToList();
+    ICollection<PlaceholderInfo> PlaceholderInfos { get; set; } = PlaceholderFunctions.GetPlaceholderPreopertyInfos(typeof(EstimationDTO)).ToList();
 
     MudListItem? SelectedItem { get; set; }
 

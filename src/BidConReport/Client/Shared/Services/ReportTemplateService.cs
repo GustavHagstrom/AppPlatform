@@ -1,5 +1,5 @@
 ﻿using BidConReport.Shared.Constants;
-using BidConReport.Shared.Entities.ReportTemplate;
+using BidConReport.Shared.DTOs.ReportTemplate;
 using SharedPlatformLibrary.Wrappers;
 using System.Net.Http.Json;
 
@@ -16,7 +16,7 @@ namespace BidConReport.Client.Shared.Services
             _logger = logger;
         }
 
-        public async Task UpsertAsync(ReportTemplate reportTemplate)
+        public async Task UpsertAsync(ReportTemplateDTO reportTemplate)
         {
             try
             {
@@ -30,14 +30,14 @@ namespace BidConReport.Client.Shared.Services
             }
         }
 
-        public async Task<ICollection<ReportTemplate>> GetAllAsync()
+        public async Task<ICollection<ReportTemplateDTO>> GetAllAsync()
         {
             try
             {
                 var response = await _httpClient.GetAsync(BackendApiEndpoints.ReportTemplatesController.All);
                 response.EnsureSuccessStatusCode();
-                var data = await response.Content.ReadFromJsonAsync<ICollection<ReportTemplate>>();
-                return data ?? Array.Empty<ReportTemplate>();
+                var data = await response.Content.ReadFromJsonAsync<ICollection<ReportTemplateDTO>>();
+                return data ?? Array.Empty<ReportTemplateDTO>();
             }
             catch (Exception ex)
             {
@@ -46,13 +46,13 @@ namespace BidConReport.Client.Shared.Services
             }
         }
 
-        public async Task<ReportTemplate?> GetDefaultAsync()
+        public async Task<ReportTemplateDTO?> GetDefaultAsync()
         {
             try
             {
                 var response = await _httpClient.GetAsync(BackendApiEndpoints.ReportTemplatesController.Default);
                 response.EnsureSuccessStatusCode();
-                var data = await response.Content.ReadFromJsonAsync<ReportTemplate>();
+                var data = await response.Content.ReadFromJsonAsync<ReportTemplateDTO>();
                 return data;
             }
             catch (Exception ex)
@@ -62,7 +62,7 @@ namespace BidConReport.Client.Shared.Services
             }
         }
 
-        public async Task SetAsDefaultAsync(ReportTemplate? reportTemplate)
+        public async Task SetAsDefaultAsync(ReportTemplateDTO? reportTemplate)
         {
             try
             {

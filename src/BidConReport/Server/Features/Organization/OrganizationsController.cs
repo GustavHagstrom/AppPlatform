@@ -1,6 +1,7 @@
 ﻿using BidConReport.Server.Shared.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Identity.Web;
+using SharedPlatformLibrary.DTOs;
 
 namespace BidConReport.Server.Features.Organization;
 
@@ -29,7 +30,7 @@ public class OrganizationsController : ControllerBase
         return Ok(await _organizationService.GetCurrent(userId));
     }
     [HttpPost("SetAsCurrent")]
-    public async Task<IActionResult> SetAsCurrent([FromBody] SharedPlatformLibrary.Enteties.Organization organization)
+    public async Task<IActionResult> SetAsCurrent([FromBody] OrganizationDTO organization)
     {
         var userId = User.Claims.Where(x => x.Type == ClaimConstants.ObjectId).FirstOrDefault()?.Value;
         ArgumentNullException.ThrowIfNull(userId);
@@ -37,7 +38,7 @@ public class OrganizationsController : ControllerBase
         return Ok();
     }
     [HttpPost("Create")]
-    public async Task<IActionResult> Create([FromBody] SharedPlatformLibrary.Enteties.Organization organization)
+    public async Task<IActionResult> Create([FromBody] OrganizationDTO organization)
     {
         var userId = User.Claims.Where(x => x.Type == ClaimConstants.ObjectId).FirstOrDefault()?.Value;
         ArgumentNullException.ThrowIfNull(userId);

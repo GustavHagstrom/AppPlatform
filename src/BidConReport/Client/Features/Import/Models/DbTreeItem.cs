@@ -1,4 +1,5 @@
-﻿using BidConReport.Shared.Entities;
+﻿using BidConReport.Shared.DTOs;
+using BidConReport.Shared.DTOs;
 
 namespace BidConReport.Client.Features.Import.Models;
 public class DbTreeItem
@@ -6,7 +7,7 @@ public class DbTreeItem
     private bool _isSelected;
     
 
-    public DbTreeItem(DbFolder dbFolder, bool isSelected = false)
+    public DbTreeItem(DbFolderDTO dbFolder, bool isSelected = false)
     {
         Type = DbTreeItemType.Folder;
         _isSelected = isSelected;
@@ -14,7 +15,7 @@ public class DbTreeItem
         AddEstimations(dbFolder);
         AddSubFolders(dbFolder);
     }
-    public DbTreeItem(DbEstimation dbEstimation, bool isSelected = false)
+    public DbTreeItem(DbEstimationDTO dbEstimation, bool isSelected = false)
     {
         Type = DbTreeItemType.Estimation;
         _isSelected = isSelected;
@@ -22,7 +23,7 @@ public class DbTreeItem
         Name = dbEstimation.ToString();
         DbEstimation = dbEstimation;
     }
-    public DbEstimation? DbEstimation { get; set; }
+    public DbEstimationDTO? DbEstimation { get; set; }
     public DbTreeItemType Type { get; private set; }
     public bool IsSelected
     {
@@ -71,7 +72,7 @@ public class DbTreeItem
         }
         return true;
     }
-    private void AddEstimations(DbFolder dbFolder)
+    private void AddEstimations(DbFolderDTO dbFolder)
     {
         foreach (var estimation in dbFolder.DbEstimations)
         {
@@ -80,7 +81,7 @@ public class DbTreeItem
             newItem.SelectionChanged = OnSubItemSelectionChanged;
         }
     }
-    private void AddSubFolders(DbFolder dbFolder)
+    private void AddSubFolders(DbFolderDTO dbFolder)
     {
         foreach (var folder in dbFolder.SubFolders)
         {

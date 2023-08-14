@@ -1,7 +1,8 @@
 ﻿using BidConReport.Server.Data;
+using BidConReport.Server.Enteties.ReportTemplate;
 using BidConReport.Server.Features.Report;
 using BidConReport.Server.Shared.Enteties;
-using BidConReport.Shared.Entities.ReportTemplate;
+using BidConReport.Shared.DTOs.ReportTemplate;
 using Microsoft.EntityFrameworkCore;
 
 namespace BidconReport.Tests.Server.Features.Report;
@@ -24,19 +25,61 @@ public class ReportTemplatesCrudServiceTests
 
         _dbContext.Users.Add(new User { Id = _userId });
         _dbContext.UserOrganizations.Add(new UserOrganization { OrganizationId = _orgId, UserId = _userId, DefaultReportTemplateId = 1 });
-        _dbContext.ReportTemplates.Add(new ReportTemplate { Id = 1, Name = "Default", OrganizationId = _orgId });
-        _dbContext.ReportTemplates.Add(new ReportTemplate { Id = 2, Name = "Option", OrganizationId = _orgId });
-        _dbContext.ReportTemplates.Add(new ReportTemplate { Id = 3, Name = "OtherOrgTemplate", OrganizationId = "orgId2" });
+        _dbContext.ReportTemplates.Add(SampleTemaplte(1, "Default", _orgId));
+        _dbContext.ReportTemplates.Add(SampleTemaplte(2, "Option", _orgId));
+        _dbContext.ReportTemplates.Add(SampleTemaplte(3, "OtherOrgTemplate", "orgId2"));
         _dbContext.SaveChanges();
 
         _service = new ReportTemplatesCrudService(_dbContext);
     }
-
+    private ReportTemplate SampleTemaplte(int id, string name, string orgId)
+    {
+        return new ReportTemplate
+        {
+            Id = id,
+            Name = name,
+            OrganizationId = orgId,
+            
+            TopLeftHeader = new HeaderDefinition()
+            {
+                Font = new FontProperties() { FontFamily = string.Empty },
+                ValueCode = string.Empty,
+            },
+            TopRightHeader = new HeaderDefinition()
+            {
+                Font = new FontProperties() { FontFamily = string.Empty },
+                ValueCode = string.Empty,
+            },
+            TitleSection = new TitleSection()
+            {
+                Font = new FontProperties() { FontFamily = string.Empty },
+            },
+            InformationSection = new InformationSection()
+            {
+                Items = new(),
+                TitleFont = new FontProperties() { FontFamily = string.Empty },
+                ValueFont = new FontProperties() { FontFamily = string.Empty },
+            },
+            PriceSection = new PriceSection()
+            {
+                CommentFont = new FontProperties() { FontFamily = string.Empty },
+                PriceFont = new FontProperties() { FontFamily = string.Empty },
+            },
+            TableSection = new TableSection()
+            {
+                CellFont = new FontProperties() { FontFamily = string.Empty },
+                ColumnHeaderFont = new FontProperties() { FontFamily = string.Empty },
+                GroupFont = new FontProperties() { FontFamily = string.Empty },
+                PartFont = new FontProperties() { FontFamily = string.Empty },
+                Columns = new(),
+            },
+        };
+    }
     [Test]
     public async Task UpsertAsync_ShouldCreateNewIncludingNestedObjects()
     {
         //Arrange
-        var expectedReportTemplate = new ReportTemplate { Id = 4, Name = "newTemplate" };
+        var expectedReportTemplate = SampleTemaplte(4, "newTemplate", _orgId);
 
         //Act
         await _service.UpsertAsync(_userId, _orgId, expectedReportTemplate);
@@ -54,7 +97,7 @@ public class ReportTemplatesCrudServiceTests
     public async Task UpsertAsync_ShouldUpdate()
     {
         //Arrange
-        var expectedReportTemplate = new ReportTemplate { Id = 3, Name = "updatedTemplate" };
+        var expectedReportTemplate = SampleTemaplte(4, "newTemplate", _orgId);
 
         //Act
         await _service.UpsertAsync(_userId, _orgId, expectedReportTemplate);

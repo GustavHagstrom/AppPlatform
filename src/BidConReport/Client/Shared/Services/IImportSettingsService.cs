@@ -1,12 +1,12 @@
-﻿using BidConReport.Shared.Entities;
+﻿using BidConReport.Shared.DTOs;
 
 namespace BidConReport.Client.Shared.Services;
 
 public interface IImportSettingsService
 {
-    Task<ICollection<EstimationImportSettings>> GetAllAsync();
-    Task<EstimationImportSettings?> GetDefaultAsync();
-    Task UpsertAsync(EstimationImportSettings settings);
+    Task<ICollection<EstimationImportSettingsDTO>> GetAllAsync();
+    Task<EstimationImportSettingsDTO?> GetDefaultAsync();
+    Task UpsertAsync(EstimationImportSettingsDTO settings);
     Task DeleteAsync(int settingsId);
-    Task SaveAsDefaultAsync(EstimationImportSettings? settings);
+    Task SaveAsDefaultAsync(EstimationImportSettingsDTO? settings);
 }

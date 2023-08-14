@@ -1,5 +1,6 @@
-﻿using BidConReport.Shared.Entities;
-using BidConReport.Shared.Entities.ReportTemplate;
+﻿using BidConReport.Server.Enteties;
+using BidConReport.Server.Enteties.ReportTemplate;
+using BidConReport.Shared.DTOs.ReportTemplate;
 using System.ComponentModel.DataAnnotations;
 
 namespace BidConReport.Server.Shared.Enteties;

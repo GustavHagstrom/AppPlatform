@@ -1,7 +1,7 @@
-﻿using BidConReport.Shared.Entities;
+﻿using BidConReport.Shared.DTOs;
 
 namespace BidConReport.Shared.Features.ExcelReport.Builders;
 public interface IExcelFileBuilder
 {
-    byte[] BuildFile(Estimation estimation, Entities.ReportTemplate.ReportTemplate layoutDefinition, bool asPdf);
+    byte[] BuildFile(EstimationDTO estimation, DTOs.ReportTemplate.ReportTemplateDTO layoutDefinition, bool asPdf);
 }

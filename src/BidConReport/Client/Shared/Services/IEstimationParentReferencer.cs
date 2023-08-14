@@ -1,7 +1,7 @@
-﻿using BidConReport.Shared.Entities;
+﻿using BidConReport.Shared.DTOs;
 
 namespace BidConReport.Client.Shared.Services;
 public interface IEstimationParentReferencer
 {
-    void SetAllParentReferences(Estimation estimation);
+    void SetAllParentReferences(EstimationDTO estimation);
 }

@@ -1,5 +1,5 @@
 ﻿using BidCon.SDK;
-using BidConReport.Shared.Entities;
+using BidConReport.Shared.DTOs;
 using BidConReport.DesktopBridge.Features.Bidcon.RulesEngine.Rules;
 
 namespace BidConReport.DesktopBridge.Features.Bidcon.RulesEngine;
@@ -12,7 +12,7 @@ public class EstimationItemRulesEngine : IEstimationItemRulesEngine
             new ProcessIfContainerRule(),
         };
 
-    public bool ShouldBeProcessed(BidCon.SDK.EstimationItem estimationItem, EstimationImportSettings settings)
+    public bool ShouldBeProcessed(BidCon.SDK.EstimationItem estimationItem, EstimationImportSettingsDTO settings)
     {
         foreach (var rule in _rules)
         {

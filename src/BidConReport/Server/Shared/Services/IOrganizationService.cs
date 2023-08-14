@@ -1,10 +1,10 @@
-﻿using SharedPlatformLibrary.Enteties;
+﻿using SharedPlatformLibrary.DTOs;
 
 namespace BidConReport.Server.Shared.Services;
 public interface IOrganizationService
 {
-    Task<ICollection<Organization>> GetAll(string userId);
-    Task<Organization?> GetCurrent(string userId);
-    Task SetAsActive(string userId, Organization organization);
-    Task CreateNew(string userId, Organization organization);
+    Task<ICollection<OrganizationDTO>> GetAll(string userId);
+    Task<OrganizationDTO?> GetCurrent(string userId);
+    Task SetAsActive(string userId, OrganizationDTO organization);
+    Task CreateNew(string userId, OrganizationDTO organization);
 }

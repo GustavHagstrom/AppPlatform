@@ -1,7 +1,7 @@
 ﻿using License.Api.Shared.Enteties;
 using LicenseLibrary;
 using Microsoft.EntityFrameworkCore;
-using SharedPlatformLibrary.Enteties;
+using SharedPlatformLibrary.DTOs;
 using System.Runtime.CompilerServices;
 
 namespace License.Api.Features.AppSeed;
@@ -13,7 +13,7 @@ public class AppSeedService : IAppSeedService
     {
         _dbContext = dbContext;
     }
-    public async Task SeedAplicationDataAsync(AppSeedModel seedModel)
+    public async Task SeedAplicationDataAsync(AppSeedDTO seedModel)
     {
         var application = await _dbContext.Applications.Where(x => x.Name == seedModel.ApplicationName).FirstOrDefaultAsync();
         bool changesMade = false;

@@ -12,6 +12,6 @@
 </MudStack>
 
 @code {
-    [Parameter, EditorRequired] public required PriceSection Section { get; set; }
+    [Parameter, EditorRequired] public required PriceSectionDTO Section { get; set; }
     [Inject] public required IStringLocalizer<PriceSectionEditor> Localizer { get; set; }
 }

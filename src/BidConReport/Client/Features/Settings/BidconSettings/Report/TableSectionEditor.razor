@@ -7,6 +7,6 @@
 </MudStack>
 
 @code {
-    [Parameter, EditorRequired] public required TableSection Section { get; set; }
+    [Parameter, EditorRequired] public required TableSectionDTO Section { get; set; }
     [Inject] public required IStringLocalizer<TableSectionEditor> Localizer { get; set; }
 }

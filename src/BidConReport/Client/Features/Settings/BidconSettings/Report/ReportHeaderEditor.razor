@@ -8,7 +8,7 @@
 </ExpansionFrame>
 
 @code {
-    [Parameter, EditorRequired] public required HeaderDefinition Header { get; set; }
+    [Parameter, EditorRequired] public required HeaderDefinitionDTO Header { get; set; }
     [Parameter] public string? Title { get; set; }
 
     [Inject] public required IStringLocalizer<ReportHeaderEditor> Localizer{ get; set; }

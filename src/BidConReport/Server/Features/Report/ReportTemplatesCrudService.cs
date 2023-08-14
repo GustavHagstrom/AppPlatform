@@ -1,6 +1,5 @@
 ﻿using BidConReport.Server.Data;
-using BidConReport.Shared.Entities.ReportTemplate;
-using BidConReport.Shared.Entities.ReportTemplate.Information;
+using BidConReport.Server.Enteties.ReportTemplate;
 using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
 
@@ -37,11 +36,18 @@ public class ReportTemplatesCrudService : IReportTemplatesCrudService
             _dbContext.Entry(result.InformationSection.TitleFont).CurrentValues.SetValues(reportTemplate.InformationSection.TitleFont);
             _dbContext.Entry(result.InformationSection.ValueFont).CurrentValues.SetValues(reportTemplate.InformationSection.ValueFont);
 
-            foreach (var item in result.InformationSection.Items.Where(x => reportTemplate.InformationSection.Items.Any(y => y.Id == x.Id)))
+            foreach (var item in result.InformationSection.Items)
             {
-                _dbContext.Entry(item).CurrentValues.SetValues(reportTemplate.InformationSection.Items.First(x => x.Id == item.Id));
+                var memoryItem = reportTemplate.InformationSection.Items.FirstOrDefault(x => x.Id == item.Id);
+                if (memoryItem is not null)
+                {
+                    _dbContext.Entry(item).CurrentValues.SetValues(memoryItem);
+                }
+                else
+                {
+                    _dbContext.Remove(item);
+                }
             }
-            
         }
         await _dbContext.SaveChangesAsync();
     }
@@ -111,14 +117,6 @@ public class ReportTemplatesCrudService : IReportTemplatesCrudService
         }
         userOrg.DefaultReportTemplateId = templateId;
         await _dbContext.SaveChangesAsync();
-    }
-    private async Task UpdateExisting<T>(IEnumerable<T> dbCollection, IEnumerable<T> memoryCollection)
-    {
-
-    }
-    private async Task AddNew<T>(IEnumerable<T> dbCollection, IEnumerable<T> memoryCollection)
-    {
-
     }
     private async Task<ReportTemplate?> FirstOrDefaultAsync_IncludAll(Expression<Func<ReportTemplate, bool>> predicate, CancellationToken cancellationToken = default)
     {

@@ -40,7 +40,7 @@
     [Inject] public required IDialogService DialogService { get; set; }
     [Inject] public required IStringLocalizer<ImportSettignsList> Localizer { get; set; }
 
-    public ICollection<EstimationImportSettings>? ImportProfilesList { get; set; }
+    public ICollection<EstimationImportSettingsDTO>? ImportProfilesList { get; set; }
     public object? SelectedSettings { get; set; }
 
     protected override async Task OnInitializedAsync()
@@ -57,21 +57,21 @@
 
     public async Task CreateNew()
     {
-        await OpenSettingsDialog(EstimationImportSettings.Empty, Localizer["Ny"]);
+        await OpenSettingsDialog(EstimationImportSettingsDTO.Empty, Localizer["Ny"]);
     }
     public async Task EditSelectedSettings()
     {
-        if (SelectedSettings is not null && SelectedSettings is EstimationImportSettings settings)
+        if (SelectedSettings is not null && SelectedSettings is EstimationImportSettingsDTO settings)
         {
             await EditSettings(settings);
         }
     }
-    public async Task EditSettings(EstimationImportSettings settings)
+    public async Task EditSettings(EstimationImportSettingsDTO settings)
     {
-        var clone = JsonSerializer.Deserialize<EstimationImportSettings>(JsonSerializer.Serialize(settings));
+        var clone = JsonSerializer.Deserialize<EstimationImportSettingsDTO>(JsonSerializer.Serialize(settings));
         await OpenSettingsDialog(clone!, Localizer["Redigera"]);
     }
-    public async Task OpenSettingsDialog(EstimationImportSettings settings, string title)
+    public async Task OpenSettingsDialog(EstimationImportSettingsDTO settings, string title)
     {
         var options = new DialogOptions()
             {
@@ -95,13 +95,13 @@
 
     public async Task DeleteSelectedSettings()
     {
-        if (SelectedSettings is not null && SelectedSettings is EstimationImportSettings settings)
+        if (SelectedSettings is not null && SelectedSettings is EstimationImportSettingsDTO settings)
         {
             await DeleteAsync(settings);
         }
 
     }
-    public async Task DeleteAsync(EstimationImportSettings settings)
+    public async Task DeleteAsync(EstimationImportSettingsDTO settings)
     {
         if (await ConfirmDelete(settings))
         {
@@ -109,7 +109,7 @@
             await RefreshImportProfilesList();
         }
     }
-    public async Task<bool> ConfirmDelete(EstimationImportSettings settings)
+    public async Task<bool> ConfirmDelete(EstimationImportSettingsDTO settings)
     {
         var options = new DialogOptions()
             {

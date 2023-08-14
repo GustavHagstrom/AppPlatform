@@ -1,6 +1,7 @@
 ﻿using BidConReport.Client.Shared.Constants;
 using BidConReport.Client.Shared.Services;
-using BidConReport.Shared.Entities;
+using BidConReport.Shared.DTOs;
+using BidConReport.Shared.DTOs;
 using System;
 using System.Net.Http.Json;
 
@@ -16,31 +17,31 @@ public class BidConImporterService : IBidConImporterService
         _httpClientFactory = httpClientFactory;
         _parentReferencer = parentReferencer;
     }
-    public async Task<BidConImportResult<DbFolder>> GetFoldersAsync()
+    public async Task<BidConImportResultDTO<DbFolderDTO>> GetFoldersAsync()
     {
         try
         {
             var result = await GetHttpClient().GetAsync("bidcon/getfolders");
             result.EnsureSuccessStatusCode();
-            return (await result.Content.ReadFromJsonAsync<BidConImportResult<DbFolder>>())!;
+            return (await result.Content.ReadFromJsonAsync<BidConImportResultDTO<DbFolderDTO>>())!;
         }
         catch (HttpRequestException)
         {
-            return new BidConImportResult<DbFolder> { ErrorMessage = "Failed to connect to the Bidcon link" };
+            return new BidConImportResultDTO<DbFolderDTO> { ErrorMessage = "Failed to connect to the Bidcon link" };
         }
         catch (Exception e)
         {
-            return new BidConImportResult<DbFolder> { ErrorMessage= e.Message };
+            return new BidConImportResultDTO<DbFolderDTO> { ErrorMessage= e.Message };
         }
     }
-    public async Task<BidConImportResult<Estimation>> GetEstimationAsync(BidconImportRequest request, CancellationToken cancelToken)
+    public async Task<BidConImportResultDTO<EstimationDTO>> GetEstimationAsync(BidconImportRequestDTO request, CancellationToken cancelToken)
     {
         
         try
         {
             var result = await GetHttpClient().PostAsJsonAsync($"bidcon/getestimation", request, cancelToken);
             result.EnsureSuccessStatusCode();
-            var importResult = (await result.Content.ReadFromJsonAsync<BidConImportResult<Estimation>>())!;
+            var importResult = (await result.Content.ReadFromJsonAsync<BidConImportResultDTO<EstimationDTO>>())!;
             if (importResult.Value is not null)
             {
                 _parentReferencer.SetAllParentReferences(importResult.Value);
@@ -49,11 +50,11 @@ public class BidConImporterService : IBidConImporterService
         }
         catch (HttpRequestException)
         {
-            return new BidConImportResult<Estimation> { ErrorMessage = "Failed to connect to the Bidcon link" };
+            return new BidConImportResultDTO<EstimationDTO> { ErrorMessage = "Failed to connect to the Bidcon link" };
         }
         catch (Exception e)
         {
-            return new BidConImportResult<Estimation> { ErrorMessage = e.Message };
+            return new BidConImportResultDTO<EstimationDTO> { ErrorMessage = e.Message };
         }
     }
 
@@ -62,13 +63,13 @@ public class BidConImporterService : IBidConImporterService
         return _httpClientFactory.CreateClient(HttpClientNames.DesktopBridgeAddress);
     }
 
-    public async Task<IEnumerable<BidConImportResult<Estimation>>> GetEstimationsAsync(IEnumerable<DbEstimation> estimations, EstimationImportSettings settings, CancellationToken cancelToken, IProgress<BidConImportResult<Estimation>>? progress = null)
+    public async Task<IEnumerable<BidConImportResultDTO<EstimationDTO>>> GetEstimationsAsync(IEnumerable<DbEstimationDTO> estimations, EstimationImportSettingsDTO settings, CancellationToken cancelToken, IProgress<BidConImportResultDTO<EstimationDTO>>? progress = null)
     {
         var batchSize = 1;
         var semaphore = new SemaphoreSlim(batchSize);
 
         var count = 1;
-        var tasks = new List<Task<BidConImportResult<Estimation>>>();
+        var tasks = new List<Task<BidConImportResultDTO<EstimationDTO>>>();
         foreach (var estimation in estimations) 
         {
             await semaphore.WaitAsync();
@@ -76,7 +77,7 @@ public class BidConImporterService : IBidConImporterService
             {
                 try
                 {
-                    var result = await GetEstimationAsync(new BidconImportRequest { Estimation = estimation, Settings = settings}, cancelToken);
+                    var result = await GetEstimationAsync(new BidconImportRequestDTO { Estimation = estimation, Settings = settings}, cancelToken);
                     progress?.Report(result);
                     //var percentComplete = count * 100 / ids.Count();
                     //progress?.Report(percentComplete);

@@ -1,8 +1,4 @@
-﻿using BidConReport.Shared.Constants;
-using SharedPlatformLibrary.Constants;
-using SharedPlatformLibrary.Enteties;
-
-namespace BidConReport.Server;
+﻿namespace BidConReport.Server;
 
 public static class DatabaseSeed
 {

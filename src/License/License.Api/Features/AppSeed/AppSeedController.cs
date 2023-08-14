@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using SharedPlatformLibrary.Enteties;
+using SharedPlatformLibrary.DTOs;
 using System.Linq;
 
 namespace License.Api.Features.AppSeed;
@@ -19,7 +19,7 @@ public class AppSeedController : ControllerBase
         _logger = logger;
     }
     [HttpPost]
-    public async Task<IActionResult> AppSeed([FromBody] AppSeedModel seedModel)
+    public async Task<IActionResult> AppSeed([FromBody] AppSeedDTO seedModel)
     {
         try
         {
