@@ -1,4 +1,6 @@
-﻿<MudSelect T="EstimationImportSettings" Disabled="IsLoading" Label="@Localizer["Standard ImportProfil"]" Placeholder="@Localizer["ImportProfil"]" Dense="true"
+﻿@inherits IsLoadingComponent
+
+<MudSelect T="EstimationImportSettings" Label="@Localizer["Standard ImportProfil"]" Placeholder="@string.Empty" Dense="true"
            Variant="Variant.Outlined" Value="DefaultProfile" ValueChanged="OnProfileChanged" Margin="Margin.Dense" AnchorOrigin="Origin.BottomCenter" TransformOrigin="Origin.TopCenter">
     @foreach (var item in Profiles)
     {
@@ -12,7 +14,6 @@
     [Inject] public required IStringLocalizer<DefaultImortSettingsSelector> Localizer { get; set; }
     [Inject] public required IImportSettingsService ImportSettingsService { get; set; }
 
-    public bool IsLoading { get; set; } = true;
     List<EstimationImportSettings> Profiles { get; set; } = new List<EstimationImportSettings>();
     EstimationImportSettings? DefaultProfile { get; set; }
 
@@ -22,13 +23,11 @@
     }
     async Task Refresh()
     {
-        IsLoading = true;
-        StateHasChanged();
+        await SetLoading(true);
         Profiles.Clear();
         Profiles.AddRange(await ImportSettingsService.GetAllAsync());
         DefaultProfile = await ImportSettingsService.GetDefaultAsync();
-        IsLoading = false;
-        StateHasChanged();
+        await SetLoading(false);
     }
     async Task OnProfileChanged(EstimationImportSettings profile)
     {

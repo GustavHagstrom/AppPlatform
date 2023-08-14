@@ -1,5 +1,7 @@
 ﻿@using SharedPlatformLibrary.Enteties;
-<MudSelect T="Organization" Disabled="IsLoading" Label="@Localizer["Organisation"]" Placeholder="@Localizer["Organisation"]" Dense="true"
+@inherits IsLoadingComponent
+
+<MudSelect T="Organization" Label="@Localizer["Organisation"]" Placeholder="@string.Empty" Dense="true"
            Variant="Variant.Outlined" Value="ActiveOrganization" ValueChanged="OnProfileChanged" Margin="Margin.Dense" AnchorOrigin="Origin.BottomCenter" TransformOrigin="Origin.TopCenter">
     @foreach (var item in Organizations)
     {
@@ -14,7 +16,6 @@
     [Inject] public required IOrganizationService OrganizationService { get; set; }
     [Inject] public required NavigationManager NavigationManager { get; set; }
 
-    public bool IsLoading { get; set; } = true;
     List<Organization> Organizations { get; set; } = new List<Organization>();
     Organization? ActiveOrganization { get; set; }
 
@@ -24,13 +25,11 @@
     }
     async Task Refresh()
     {
-        IsLoading = true;
-        StateHasChanged();
+        await SetLoading(true);
         Organizations.Clear();
         Organizations.AddRange(await OrganizationService.GetAll());
         ActiveOrganization = await OrganizationService.GetCurrent();
-        IsLoading = false;
-        StateHasChanged();
+        await SetLoading(false);
     }
     async Task OnProfileChanged(Organization organization)
     {

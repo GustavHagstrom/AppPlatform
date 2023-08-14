@@ -1,4 +1,5 @@
-﻿<MudSelect T="ReportTemplate" Disabled="IsLoading" Label="@Localizer["Standard Rapportmall"]" Placeholder="@Localizer["Rapportmall"]" Dense="true"
+﻿@inherits IsLoadingComponent
+<MudSelect T="ReportTemplate" Disabled="IsLoading" Label="@Localizer["Standard Rapportmall"]" Placeholder="@string.Empty" Dense="true"
            Variant="Variant.Outlined" Value="DefaultTemplate" ValueChanged="OnProfileChanged" Margin="Margin.Dense" AnchorOrigin="Origin.BottomCenter" TransformOrigin="Origin.TopCenter">
     @foreach (var item in Templates)
     {
@@ -11,8 +12,6 @@
 @code {
     [Inject] public required IStringLocalizer<DefaultReportTemplateSelector> Localizer { get; set; }
     [Inject] public required IReportTemplateService TemplateService { get; set; }
-
-    public bool IsLoading { get; set; } = true;
     List<ReportTemplate> Templates { get; set; } = new List<ReportTemplate>();
     ReportTemplate? DefaultTemplate { get; set; }
 
@@ -22,13 +21,11 @@
     }
     async Task Refresh()
     {
-        IsLoading = true;
-        StateHasChanged();
+        await SetLoading(true);
         Templates.Clear();
         Templates.AddRange(await TemplateService.GetAllAsync());
         DefaultTemplate = await TemplateService.GetDefaultAsync();
-        IsLoading = false;
-        StateHasChanged();
+        await SetLoading(false);
     }
     async Task OnProfileChanged(ReportTemplate template)
     {
