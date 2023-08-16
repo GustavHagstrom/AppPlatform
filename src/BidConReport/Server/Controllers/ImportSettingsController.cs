@@ -1,7 +1,5 @@
-﻿using BidConReport.Server.Data;
-using BidConReport.Server.Enteties;
-using BidConReport.Server.Services.Import;
-using Microsoft.AspNetCore.Authorization;
+﻿using BidConReport.Server.Services.Import;
+using BidConReport.Shared.DTOs;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Identity.Web;
 using SharedPlatformLibrary.Constants;
@@ -49,8 +47,8 @@ public class ImportSettingsController : ControllerBase
             var currentOrgId = User.Claims.Where(x => x.Type == CustomClaimTypes.CurrentOrganizationId).FirstOrDefault()?.Value;
             ArgumentNullException.ThrowIfNull(userId);
             ArgumentNullException.ThrowIfNull(currentOrgId);
-            var settings = await _importSettingsService.GetDefaultSettingsAsync(userId, currentOrgId);
-            return Ok(settings);
+            var settingsDto = await _importSettingsService.GetDefaultSettingsAsync(userId, currentOrgId);
+            return Ok(settingsDto);
         }
         catch (ArgumentNullException e)
         {
@@ -64,15 +62,15 @@ public class ImportSettingsController : ControllerBase
         }
     }
     [HttpPost("upsert")]
-    public async Task<IActionResult> Upsert([FromBody] EstimationImportSettings settings)
+    public async Task<IActionResult> Upsert([FromBody] EstimationImportSettingsDto dto)
     {
         //TODO: add role constraint, maybe admin?? IF update also check for organization
         try
         {
             var currentOrgId = User.Claims.Where(x => x.Type == CustomClaimTypes.CurrentOrganizationId).FirstOrDefault()?.Value;
             ArgumentNullException.ThrowIfNull(currentOrgId);
-            settings.OrganizationId = currentOrgId;
-            await _importSettingsService.UpsertImportSettingsAsync(settings);
+            dto.OrganizationId = currentOrgId;
+            await _importSettingsService.UpsertImportSettingsAsync(dto);
             return Ok();
         }
         catch (ArgumentNullException e)
@@ -102,7 +100,7 @@ public class ImportSettingsController : ControllerBase
         }
     }
     [HttpPost("SetDefault")]
-    public async Task<IActionResult> SetDefault([FromBody] EstimationImportSettings? settings)
+    public async Task<IActionResult> SetDefault([FromBody] EstimationImportSettingsDto? settings)
     {
         //TODO: check for organization
         try

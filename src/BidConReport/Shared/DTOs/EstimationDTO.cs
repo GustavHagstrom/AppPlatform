@@ -1,6 +1,5 @@
-﻿using SharedPlatformLibrary.Features.Placeholder;
+﻿using SharedPlatformLibrary.Utilities.Placeholder;
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 
 namespace BidConReport.Shared.DTOs;
 

@@ -2,7 +2,7 @@
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace BidConReport.Shared.DTOs;
-public class EstimationImportSettingsDTO
+public class EstimationImportSettingsDto
 {
     public int Id { get; set; }
     [MaxLength(50)]
@@ -25,7 +25,7 @@ public class EstimationImportSettingsDTO
     [MaxLength(1000)]
     public ICollection<string>? SelectionTags { get; set; } = new List<string>();
 
-    public static EstimationImportSettingsDTO Empty => new()
+    public static EstimationImportSettingsDto Empty => new()
     {
         Name = string.Empty,
         OrganizationId = string.Empty,

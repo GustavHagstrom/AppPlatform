@@ -1,6 +1,6 @@
 ﻿using Microsoft.JSInterop;
 
-namespace SharedWasmLibrary.Shared.Services;
+namespace SharedWasmLibrary.Services;
 public class ScreenSizeService
 {
     private readonly IJSRuntime _jSRuntime;
@@ -24,7 +24,7 @@ public class ScreenSizeService
         if (_isInitialized) return;
 
         _isInitialized = true;
-        
+
         await _jSRuntime.InvokeVoidAsync("eval", @"
         (function() {
             var script = document.createElement('script');

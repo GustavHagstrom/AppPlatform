@@ -30,7 +30,7 @@ public class ImportSettingsService : IImportSettingsService
         }
     }
 
-    public async Task<ICollection<EstimationImportSettingsDTO>> GetAllAsync()
+    public async Task<ICollection<EstimationImportSettingsDto>> GetAllAsync()
     {
         try
         {
@@ -39,7 +39,7 @@ public class ImportSettingsService : IImportSettingsService
             var response = await client.GetAsync(requestUri);
             response.EnsureSuccessStatusCode();
 
-            var settings = await response.Content.ReadFromJsonAsync<ICollection<EstimationImportSettingsDTO>>();
+            var settings = await response.Content.ReadFromJsonAsync<ICollection<EstimationImportSettingsDto>>();
             return settings ?? throw new Exception("Response was null");
         }
         catch (HttpRequestException ex)
@@ -48,7 +48,7 @@ public class ImportSettingsService : IImportSettingsService
         }
     }
 
-    public async Task<EstimationImportSettingsDTO?> GetDefaultAsync()
+    public async Task<EstimationImportSettingsDto?> GetDefaultAsync()
     {
 
         try
@@ -58,7 +58,7 @@ public class ImportSettingsService : IImportSettingsService
             var result = await client.GetAsync(requestUri);
             result.EnsureSuccessStatusCode();
 
-            var content = await result.Content.ReadFromJsonAsync<EstimationImportSettingsDTO>();
+            var content = await result.Content.ReadFromJsonAsync<EstimationImportSettingsDto>();
             return content!;
         }
         catch (Exception ex)
@@ -69,7 +69,7 @@ public class ImportSettingsService : IImportSettingsService
         }
     }
 
-    public async Task SaveAsDefaultAsync(EstimationImportSettingsDTO? settings)
+    public async Task SaveAsDefaultAsync(EstimationImportSettingsDto? settings)
     {
         try
         {
@@ -85,7 +85,7 @@ public class ImportSettingsService : IImportSettingsService
         }
     }
 
-    public async Task UpsertAsync(EstimationImportSettingsDTO settings)
+    public async Task UpsertAsync(EstimationImportSettingsDto settings)
     {
         try
         {

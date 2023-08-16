@@ -1,7 +1,6 @@
 ﻿using BidConReport.Client.Shared.Constants;
 using BidConReport.Client.Shared.Services;
 using BidConReport.Shared.DTOs;
-using BidConReport.Shared.DTOs;
 using System;
 using System.Net.Http.Json;
 
@@ -63,7 +62,7 @@ public class BidConImporterService : IBidConImporterService
         return _httpClientFactory.CreateClient(HttpClientNames.DesktopBridgeAddress);
     }
 
-    public async Task<IEnumerable<BidConImportResultDTO<EstimationDTO>>> GetEstimationsAsync(IEnumerable<DbEstimationDTO> estimations, EstimationImportSettingsDTO settings, CancellationToken cancelToken, IProgress<BidConImportResultDTO<EstimationDTO>>? progress = null)
+    public async Task<IEnumerable<BidConImportResultDTO<EstimationDTO>>> GetEstimationsAsync(IEnumerable<DbEstimationDTO> estimations, EstimationImportSettingsDto settings, CancellationToken cancelToken, IProgress<BidConImportResultDTO<EstimationDTO>>? progress = null)
     {
         var batchSize = 1;
         var semaphore = new SemaphoreSlim(batchSize);

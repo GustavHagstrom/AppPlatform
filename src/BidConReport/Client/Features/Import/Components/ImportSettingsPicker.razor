@@ -25,15 +25,15 @@
     
 </div>
 @code {
-    [Parameter] public EventCallback<EstimationImportSettingsDTO> SelectedSettingChanged { get; set; }
+    [Parameter] public EventCallback<EstimationImportSettingsDto> SelectedSettingChanged { get; set; }
     [Inject] public required IStringLocalizer<ImportSettingsPicker> Localizer { get; set; }
     [Inject] public required IImportSettingsService ImportSettingsService { get; set; }
     [Inject] public required ISnackbar Snackbar { get; set; }
     
 
-    private EstimationImportSettingsDTO? _selectedSetting;
+    private EstimationImportSettingsDto? _selectedSetting;
 
-    public EstimationImportSettingsDTO? SelectedSetting
+    public EstimationImportSettingsDto? SelectedSetting
     {
         get => _selectedSetting; set
         {
@@ -42,10 +42,10 @@
         }
     }
     public bool PopOverIsVisible { get; set; } = false;
-    public ICollection<EstimationImportSettingsDTO> SettingsList { get; set; } = new List<EstimationImportSettingsDTO>();
-    public EstimationImportSettingsDTO? DefaultSetting { get; set; } = null;
+    public ICollection<EstimationImportSettingsDto> SettingsList { get; set; } = new List<EstimationImportSettingsDto>();
+    public EstimationImportSettingsDto? DefaultSetting { get; set; } = null;
 
-    public string CreateDefaultSettingsIcon(EstimationImportSettingsDTO? settings)
+    public string CreateDefaultSettingsIcon(EstimationImportSettingsDto? settings)
     {
         if(IsDefaultSettings(settings))
         {
@@ -110,7 +110,7 @@
     /// Will also close popover
     /// </summary>
     /// <param name="settings"></param>
-    public void SetSelectedSettings(EstimationImportSettingsDTO? settings)
+    public void SetSelectedSettings(EstimationImportSettingsDto? settings)
     {
         SelectedSetting = settings;
         PopOverIsVisible = false;
@@ -129,7 +129,7 @@
         await RefreshEntireComponent();
     }
 
-    public bool IsDefaultSettings(EstimationImportSettingsDTO? settings)
+    public bool IsDefaultSettings(EstimationImportSettingsDto? settings)
     {
         if (DefaultSetting is null || settings is null) return false;
 

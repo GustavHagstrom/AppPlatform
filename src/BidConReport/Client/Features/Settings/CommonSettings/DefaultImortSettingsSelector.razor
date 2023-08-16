@@ -1,7 +1,7 @@
 ﻿@inherits IsLoadingComponent
 
 <MudText Typo="Typo.subtitle1">@Localizer["Förhandsval av importprofil"]</MudText>
-<MudSelect T="EstimationImportSettingsDTO" Dense="true" Variant="Variant.Outlined" Value="DefaultProfile" ValueChanged="OnProfileChanged" Margin="Margin.Dense" AnchorOrigin="Origin.BottomCenter" TransformOrigin="Origin.TopCenter">
+<MudSelect T="EstimationImportSettingsDto" Dense="true" Variant="Variant.Outlined" Value="DefaultProfile" ValueChanged="OnProfileChanged" Margin="Margin.Dense" AnchorOrigin="Origin.BottomCenter" TransformOrigin="Origin.TopCenter">
     @foreach (var item in Profiles)
     {
         <MudSelectItem Value="item" />
@@ -34,8 +34,8 @@
     [Inject] public required IStringLocalizer<DefaultImortSettingsSelector> Localizer { get; set; }
     [Inject] public required IImportSettingsService ImportSettingsService { get; set; }
 
-    List<EstimationImportSettingsDTO> Profiles { get; set; } = new List<EstimationImportSettingsDTO>();
-    EstimationImportSettingsDTO? DefaultProfile { get; set; }
+    List<EstimationImportSettingsDto> Profiles { get; set; } = new List<EstimationImportSettingsDto>();
+    EstimationImportSettingsDto? DefaultProfile { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
@@ -49,7 +49,7 @@
         DefaultProfile = await ImportSettingsService.GetDefaultAsync();
         await SetLoading(false);
     }
-    async Task OnProfileChanged(EstimationImportSettingsDTO profile)
+    async Task OnProfileChanged(EstimationImportSettingsDto profile)
     {
         DefaultProfile = profile;
         await ImportSettingsService.SaveAsDefaultAsync(profile);

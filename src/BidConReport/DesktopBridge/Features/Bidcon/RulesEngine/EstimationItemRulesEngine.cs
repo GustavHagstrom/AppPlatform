@@ -12,7 +12,7 @@ public class EstimationItemRulesEngine : IEstimationItemRulesEngine
             new ProcessIfContainerRule(),
         };
 
-    public bool ShouldBeProcessed(BidCon.SDK.EstimationItem estimationItem, EstimationImportSettingsDTO settings)
+    public bool ShouldBeProcessed(BidCon.SDK.EstimationItem estimationItem, EstimationImportSettingsDto settings)
     {
         foreach (var rule in _rules)
         {

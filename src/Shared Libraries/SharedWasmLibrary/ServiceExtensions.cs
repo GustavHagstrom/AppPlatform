@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using SharedWasmLibrary.Authentication;
-using SharedWasmLibrary.Shared.Services;
+using SharedWasmLibrary.Services;
 
 namespace SharedWasmLibrary;
 public static class ServiceExtensions

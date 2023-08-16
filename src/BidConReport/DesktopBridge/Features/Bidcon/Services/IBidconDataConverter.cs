@@ -7,5 +7,5 @@ public interface IBidconDataConverter
 {
     //IEnumerable<DbEstimation> SimplifieAllEstimations(DatabaseFolder folder);
     DbFolderDTO ConvertDatabaseFolder(DatabaseFolder folder);
-    Shared.DTOs.EstimationDTO ConvertEstimation(BidCon.SDK.Estimation estimation, EstimationImportSettingsDTO settings);
+    Shared.DTOs.EstimationDTO ConvertEstimation(BidCon.SDK.Estimation estimation, EstimationImportSettingsDto settings);
 }

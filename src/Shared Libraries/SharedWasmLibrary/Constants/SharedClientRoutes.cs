@@ -1,4 +1,4 @@
-﻿namespace SharedWasmLibrary.Shared.Constants;
+﻿namespace SharedWasmLibrary.Constants;
 public static class SharedClientRoutes
 {
     public static class Authentication

@@ -1,7 +1,6 @@
 ﻿using BidCon.SDK.Database;
 using BidConReport.Shared.DTOs;
 using BidConReport.DesktopBridge.Features.Bidcon.Factories;
-using BidConReport.Shared.DTOs;
 
 namespace BidConReport.DesktopBridge.Features.Bidcon.Services;
 public class BidconDataConverter : IBidconDataConverter
@@ -34,7 +33,7 @@ public class BidconDataConverter : IBidconDataConverter
             Description = databaseEstimation.Description,
         };
     }
-    public Shared.DTOs.EstimationDTO ConvertEstimation(BidCon.SDK.Estimation estimation, EstimationImportSettingsDTO settings)
+    public Shared.DTOs.EstimationDTO ConvertEstimation(BidCon.SDK.Estimation estimation, EstimationImportSettingsDto settings)
     {
         return _estimationFactory.Create(estimation, settings);
     }

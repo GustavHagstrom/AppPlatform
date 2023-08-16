@@ -1,5 +1,4 @@
 ﻿@page "/bidcon/import"
-@*@attribute [Authorize]*@
 
 <Toolbar Height="40px">
 
@@ -53,7 +52,7 @@
     [Inject] public required ImportedEstimationsContainer ImportedEstimationsContainer { get; set; }
     [Inject] public required ISnackbar Snackbar { get; set; }
 
-    public EstimationImportSettingsDTO? Settings { get; set; }
+    public EstimationImportSettingsDto? Settings { get; set; }
     public DbTreeItem? ItemTree { get; set; }
     public bool IsRefreshing { get; set; } = true;
     public bool drawerOpen = false;
@@ -78,7 +77,7 @@
     {
         await GetEstimationItemTreeAsync();
     }
-    public void OnSettingsSelectionChanged(EstimationImportSettingsDTO? settings)
+    public void OnSettingsSelectionChanged(EstimationImportSettingsDto? settings)
     {
         Settings = settings;
     }

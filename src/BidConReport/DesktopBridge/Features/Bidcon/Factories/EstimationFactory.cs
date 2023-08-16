@@ -10,7 +10,7 @@ public class EstimationFactory : IEstimationFactory
     {
         _estimationItemsFactory = estimationItemsFactory;
     }
-    public Shared.DTOs.EstimationDTO Create(BidCon.SDK.Estimation estimation, EstimationImportSettingsDTO settings)
+    public Shared.DTOs.EstimationDTO Create(BidCon.SDK.Estimation estimation, EstimationImportSettingsDto settings)
     {
         
         var costFactor = GetSummarySheetResourceAccountValue(settings.CostFactorAccount, estimation);
@@ -42,7 +42,7 @@ public class EstimationFactory : IEstimationFactory
         if (accountSpecifiResources.Count > 1) throw new Exception($"""Required resource with account "{account}" has more than one occurance""");
         return accountSpecifiResources.First().TotalCost;
     }
-    private IEnumerable<LockedCategoryDTO> CreateLockedCategories(BidCon.SDK.Estimation estimation, EstimationImportSettingsDTO settings, double costFactor)
+    private IEnumerable<LockedCategoryDTO> CreateLockedCategories(BidCon.SDK.Estimation estimation, EstimationImportSettingsDto settings, double costFactor)
     {
         if (estimation.LockedStages is not null)
         {
@@ -56,7 +56,7 @@ public class EstimationFactory : IEstimationFactory
             }
         }
     }
-    private IEnumerable<LockedStageDTO> CreateLockedStages(BidCon.SDK.EstimationItem category, EstimationImportSettingsDTO settings, double costFactor)
+    private IEnumerable<LockedStageDTO> CreateLockedStages(BidCon.SDK.EstimationItem category, EstimationImportSettingsDto settings, double costFactor)
     {
         int startRow = 0;
         foreach (var stage in category.Items)

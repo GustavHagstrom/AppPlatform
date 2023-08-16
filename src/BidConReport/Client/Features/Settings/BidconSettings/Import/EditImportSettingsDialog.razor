@@ -52,7 +52,7 @@
 @code{
     [Inject] public required IStringLocalizer<EditImportSettingsDialog> Localizer { get; set; }
     [CascadingParameter] public required MudDialogInstance MudDialog { get; set; }
-    [Parameter, EditorRequired] public required EstimationImportSettingsDTO SelectedSetting { get; set; }
+    [Parameter, EditorRequired] public required EstimationImportSettingsDto SelectedSetting { get; set; }
 
     public MudForm? Form { get; set; }
 

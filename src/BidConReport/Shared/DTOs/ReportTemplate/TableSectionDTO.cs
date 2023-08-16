@@ -1,6 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
-using BidConReport.Shared.DTOs.ReportTemplate;
-using BidConReport.Shared.Enums;
+﻿using BidConReport.Shared.Enums;
 
 namespace BidConReport.Shared.DTOs.ReportTemplate;
 public class TableSectionDTO : IReportTemplateSectionDTO

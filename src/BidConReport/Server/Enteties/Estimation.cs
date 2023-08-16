@@ -1,5 +1,4 @@
-﻿using SharedPlatformLibrary.Features.Placeholder;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace BidConReport.Server.Enteties;
