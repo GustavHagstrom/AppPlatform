@@ -2,7 +2,7 @@
 using BidConReport.Shared.DTOs.ReportTemplate;
 
 namespace BidConReport.Shared.DTOs.ReportTemplate;
-public class PriceSectionDTO : IReportTemplateSectionDTO
+public class PriceSectionDto : IReportTemplateSectionDTO
 {
     public int Id { get; set; }
     public int LayoutOrder { get; set; }
@@ -17,7 +17,7 @@ public class PriceSectionDTO : IReportTemplateSectionDTO
     [MaxLength(50)]
     public string Comment { get; set; } = string.Empty;
     public int PriceFontId { get; set; }
-    public FontPropertiesDTO PriceFont { get; set; } = FontPropertiesDTO.Default;
+    public FontPropertiesDto PriceFont { get; set; } = FontPropertiesDto.Default;
     public int CommentFontId { get; set; }
-    public FontPropertiesDTO CommentFont { get; set; } = FontPropertiesDTO.Default;
+    public FontPropertiesDto CommentFont { get; set; } = FontPropertiesDto.Default;
 }

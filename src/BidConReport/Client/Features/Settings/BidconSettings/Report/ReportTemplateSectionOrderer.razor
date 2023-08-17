@@ -16,19 +16,19 @@
                             </div>
                         </TitleContent>
                         <ChildContent>
-                            @if (section is TitleSectionDTO)
+                            @if (section is TitleSectionDto)
                             {
                                 <TitleSectionEditor Section="Template.TitleSection" />
                             }
-                            @if (section is InformationSectionDTO)
+                            @if (section is InformationSectionDto)
                             {
                                 <InformationSectionEditor Section="Template.InformationSection" />
                             }
-                            @if (section is PriceSectionDTO)
+                            @if (section is PriceSectionDto)
                             {
                                 <PriceSectionEditor Section="Template.PriceSection" />
                             }
-                            @if (section is TableSectionDTO)
+                            @if (section is TableSectionDto)
                             {
                                 <TableSectionEditor Section="Template.TableSection" />
                             }
@@ -47,10 +47,10 @@
 
     private string GetSectionName(IReportTemplateSectionDTO section)
     {
-        if (section is TitleSectionDTO) return Localizer["Titel"];
-        if (section is InformationSectionDTO) return Localizer["Allmän info"];
-        if (section is PriceSectionDTO) return Localizer["Prissummering"];
-        if (section is TableSectionDTO) return Localizer["Tabell"];
+        if (section is TitleSectionDto) return Localizer["Titel"];
+        if (section is InformationSectionDto) return Localizer["Allmän info"];
+        if (section is PriceSectionDto) return Localizer["Prissummering"];
+        if (section is TableSectionDto) return Localizer["Tabell"];
 
         throw new Exception("Pattern matching failed");
     }

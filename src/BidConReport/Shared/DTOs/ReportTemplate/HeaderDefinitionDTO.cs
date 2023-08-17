@@ -5,7 +5,7 @@ public class HeaderDefinitionDto
 {
     public int Id { get; set; }
     public int FontId { get; set; }
-    public FontPropertiesDTO Font { get; set; } = FontPropertiesDTO.Default;
+    public FontPropertiesDto Font { get; set; } = FontPropertiesDto.Default;
     /// <summary>
     /// Text within curly bracers {} will try to find matching dtat form estimation info
     /// </summary>

@@ -25,7 +25,7 @@
 
 
 @code {
-    [Parameter, EditorRequired] public required FontPropertiesDTO Font { get; set; }
+    [Parameter, EditorRequired] public required FontPropertiesDto Font { get; set; }
     [Parameter, EditorRequired] public string SampleText { get; set; } = string.Empty;
     [Inject] public required IStringLocalizer<FontEditor> Localizer { get; set; }
 

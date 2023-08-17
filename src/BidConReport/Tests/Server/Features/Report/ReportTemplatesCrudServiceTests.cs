@@ -1,8 +1,9 @@
 ﻿using BidConReport.Server.Data;
+using BidConReport.Server.Enteties;
 using BidConReport.Server.Enteties.Report;
 using BidConReport.Server.Services.Report;
-using BidConReport.Server.Shared.Enteties;
 using BidConReport.Shared.DTOs.ReportTemplate;
+using Mapster;
 using Microsoft.EntityFrameworkCore;
 
 namespace BidconReport.Tests.Server.Features.Report;
@@ -25,52 +26,52 @@ public class ReportTemplatesCrudServiceTests
 
         _dbContext.Users.Add(new User { Id = _userId });
         _dbContext.UserOrganizations.Add(new UserOrganization { OrganizationId = _orgId, UserId = _userId, DefaultReportTemplateId = 1 });
-        _dbContext.ReportTemplates.Add(SampleTemaplte(1, "Default", _orgId));
-        _dbContext.ReportTemplates.Add(SampleTemaplte(2, "Option", _orgId));
-        _dbContext.ReportTemplates.Add(SampleTemaplte(3, "OtherOrgTemplate", "orgId2"));
+        _dbContext.ReportTemplates.Add(SampleTemaplte(1, "Default", _orgId).Adapt<ReportTemplate>());
+        _dbContext.ReportTemplates.Add(SampleTemaplte(2, "Option", _orgId).Adapt<ReportTemplate>());
+        _dbContext.ReportTemplates.Add(SampleTemaplte(3, "OtherOrgTemplate", "orgId2").Adapt<ReportTemplate>());
         _dbContext.SaveChanges();
 
         _service = new ReportTemplatesService(_dbContext);
     }
-    private ReportTemplate SampleTemaplte(int id, string name, string orgId)
+    private ReportTemplateDto SampleTemaplte(int id, string name, string orgId)
     {
-        return new ReportTemplate
+        return new ReportTemplateDto
         {
             Id = id,
             Name = name,
             OrganizationId = orgId,
             
-            TopLeftHeader = new HeaderDefinition()
+            TopLeftHeader = new HeaderDefinitionDto()
             {
-                Font = new FontProperties() { FontFamily = string.Empty },
+                Font = new FontPropertiesDto() { FontFamily = string.Empty },
                 ValueCode = string.Empty,
             },
-            TopRightHeader = new HeaderDefinition()
+            TopRightHeader = new HeaderDefinitionDto()
             {
-                Font = new FontProperties() { FontFamily = string.Empty },
+                Font = new FontPropertiesDto() { FontFamily = string.Empty },
                 ValueCode = string.Empty,
             },
-            TitleSection = new TitleSection()
+            TitleSection = new TitleSectionDto()
             {
-                Font = new FontProperties() { FontFamily = string.Empty },
+                Font = new FontPropertiesDto() { FontFamily = string.Empty },
             },
-            InformationSection = new InformationSection()
+            InformationSection = new InformationSectionDto()
             {
                 Items = new(),
-                TitleFont = new FontProperties() { FontFamily = string.Empty },
-                ValueFont = new FontProperties() { FontFamily = string.Empty },
+                TitleFont = new FontPropertiesDto() { FontFamily = string.Empty },
+                ValueFont = new FontPropertiesDto() { FontFamily = string.Empty },
             },
-            PriceSection = new PriceSection()
+            PriceSection = new PriceSectionDto()
             {
-                CommentFont = new FontProperties() { FontFamily = string.Empty },
-                PriceFont = new FontProperties() { FontFamily = string.Empty },
+                CommentFont = new FontPropertiesDto() { FontFamily = string.Empty },
+                PriceFont = new FontPropertiesDto() { FontFamily = string.Empty },
             },
-            TableSection = new TableSection()
+            TableSection = new TableSectionDto()
             {
-                CellFont = new FontProperties() { FontFamily = string.Empty },
-                ColumnHeaderFont = new FontProperties() { FontFamily = string.Empty },
-                GroupFont = new FontProperties() { FontFamily = string.Empty },
-                PartFont = new FontProperties() { FontFamily = string.Empty },
+                CellFont = new FontPropertiesDto() { FontFamily = string.Empty },
+                ColumnHeaderFont = new FontPropertiesDto() { FontFamily = string.Empty },
+                GroupFont = new FontPropertiesDto() { FontFamily = string.Empty },
+                PartFont = new FontPropertiesDto() { FontFamily = string.Empty },
                 Columns = new(),
             },
         };
@@ -97,17 +98,20 @@ public class ReportTemplatesCrudServiceTests
     public async Task UpsertAsync_ShouldUpdate()
     {
         //Arrange
-        var expectedReportTemplate = SampleTemaplte(4, "newTemplate", _orgId);
+        //var expectedReportTemplate = SampleTemaplte(3, "updatedTemplate", _orgId);
+        var original = await _dbContext.ReportTemplates.FindAsync(3);
+        var expectedDto = original!.Adapt<ReportTemplateDto>();
+        expectedDto.Name = "updatedTemplate";
 
         //Act
-        await _service.UpsertAsync(_userId, _orgId, expectedReportTemplate);
+        await _service.UpsertAsync(_userId, _orgId, expectedDto);
         var result = await _dbContext.ReportTemplates.FirstOrDefaultAsync(x => x.Id == 3);
 
         //Assert
         Assert.That(result, Is.Not.Null);
         Assert.Multiple(() =>
         {
-            Assert.That(result.Id, Is.EqualTo(expectedReportTemplate.Id));
+            Assert.That(result.Id, Is.EqualTo(expectedDto.Id));
             Assert.That(result.Name, Is.EqualTo("updatedTemplate"));
         });
     }

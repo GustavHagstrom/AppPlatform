@@ -15,13 +15,13 @@ public class ReportTemplateDto
     public int TopRightHeaderId { get; set; }
     public HeaderDefinitionDto TopRightHeader { get; set; } = new();
     public int TitleSectionId { get; set; }
-    public TitleSectionDTO TitleSection { get; set; } = new TitleSectionDTO { LayoutOrder = 1 };
+    public TitleSectionDto TitleSection { get; set; } = new TitleSectionDto { LayoutOrder = 1 };
     public int InformationSectionId { get; set; }
-    public InformationSectionDTO InformationSection { get; set; } = InformationSectionDTO.Default;
+    public InformationSectionDto InformationSection { get; set; } = InformationSectionDto.Default;
     public int PriceSectionId { get; set; }
-    public PriceSectionDTO PriceSection { get; set; } = new PriceSectionDTO { LayoutOrder = 3 };
+    public PriceSectionDto PriceSection { get; set; } = new PriceSectionDto { LayoutOrder = 3 };
     public int TableSectionId { get; set; }
-    public TableSectionDTO TableSection { get; set; } = TableSectionDTO.Default;
+    public TableSectionDto TableSection { get; set; } = TableSectionDto.Default;
 
     public ICollection<IReportTemplateSectionDTO> SectionsInOrder => AllSections().OrderBy(x => x.LayoutOrder).ToArray();
 

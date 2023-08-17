@@ -1,7 +1,7 @@
 ﻿using BidConReport.Shared.Enums;
 
 namespace BidConReport.Shared.DTOs.ReportTemplate;
-public class TableSectionDTO : IReportTemplateSectionDTO
+public class TableSectionDto : IReportTemplateSectionDTO
 {
     public int Id { get; set; }
     public int LayoutOrder { get; set; }
@@ -17,42 +17,42 @@ public class TableSectionDTO : IReportTemplateSectionDTO
         new ColumnDefinitionDTO{ DataSource = ColumnDataSource.Unit, Width = 10, Order = 6 },
     };
     public int GroupFontId { get; set; }
-    public FontPropertiesDTO GroupFont { get; set; } = DefaultGroupFont();
+    public FontPropertiesDto GroupFont { get; set; } = DefaultGroupFont();
     public int PartFontId { get; set; }
-    public FontPropertiesDTO PartFont { get; set; } = DefaultPartFont();
+    public FontPropertiesDto PartFont { get; set; } = DefaultPartFont();
     public int CellFontId { get; set; }
-    public FontPropertiesDTO CellFont { get; set; } = DefaultCellFont();
+    public FontPropertiesDto CellFont { get; set; } = DefaultCellFont();
     public int ColumnHeaderFontId { get; set; }
-    public FontPropertiesDTO ColumnHeaderFont { get; set; } = DefaultColumnHeaderFont();
+    public FontPropertiesDto ColumnHeaderFont { get; set; } = DefaultColumnHeaderFont();
 
-    public static TableSectionDTO Default => new()
+    public static TableSectionDto Default => new()
     {
         LayoutOrder = 4,
     };
-    private static FontPropertiesDTO DefaultGroupFont()
+    private static FontPropertiesDto DefaultGroupFont()
     {
-        var font = FontPropertiesDTO.Default;
+        var font = FontPropertiesDto.Default;
         font.Bold = true;
         font.FontSize = 20;
         return font;
     }
-    private static FontPropertiesDTO DefaultPartFont()
+    private static FontPropertiesDto DefaultPartFont()
     {
-        var font = FontPropertiesDTO.Default;
+        var font = FontPropertiesDto.Default;
         font.Bold = true;
         font.FontSize = 14;
         return font;
     }
-    private static FontPropertiesDTO DefaultCellFont()
+    private static FontPropertiesDto DefaultCellFont()
     {
-        var font = FontPropertiesDTO.Default;
+        var font = FontPropertiesDto.Default;
         font.Bold = false;
         font.FontSize = 11;
         return font;
     }
-    private static FontPropertiesDTO DefaultColumnHeaderFont()
+    private static FontPropertiesDto DefaultColumnHeaderFont()
     {
-        var font = FontPropertiesDTO.Default;
+        var font = FontPropertiesDto.Default;
         font.Bold = true;
         font.FontSize = 14;
         return font;

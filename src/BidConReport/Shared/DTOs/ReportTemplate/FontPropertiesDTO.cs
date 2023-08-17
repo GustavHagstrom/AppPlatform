@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
 namespace BidConReport.Shared.DTOs.ReportTemplate;
-public class FontPropertiesDTO
+public class FontPropertiesDto
 {
     public int Id { get; set; }
     [Required]
@@ -13,7 +13,7 @@ public class FontPropertiesDTO
     public bool Italic { get; set; }
     public bool Underline { get; set; }
 
-    public static FontPropertiesDTO Default => new()
+    public static FontPropertiesDto Default => new()
     {
         FontFamily = "Calibri",
         FontSize = 11,

@@ -75,7 +75,7 @@
     {
         //Estimation.Items.First().Name
     }
-    public string CreateFontStyle(FontPropertiesDTO properties)
+    public string CreateFontStyle(FontPropertiesDto properties)
     {
         var builder = new System.Text.StringBuilder($"font-family: {properties.FontFamily}; font-size: {properties.FontSize}px; ");
         if (properties.Bold)
