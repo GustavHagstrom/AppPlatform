@@ -23,7 +23,7 @@ public class ClaimsService_debug : IClaimsService
         {
             new ClaimDTO(ClaimTypes.Role, Role),
             new ClaimDTO(CustomClaimTypes.License, License ),
-            new ClaimDTO(CustomClaimTypes.CurrentOrganizationId, currentOrg.Id),
+            new ClaimDTO(CustomClaimTypes.CurrentOrganizatio, currentOrg.Id),
         };
 
         return claims;

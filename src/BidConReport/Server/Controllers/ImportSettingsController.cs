@@ -22,7 +22,7 @@ public class ImportSettingsController : ControllerBase
     {
         try
         {
-            var currentOrgId = User.Claims.Where(x => x.Type == CustomClaimTypes.CurrentOrganizationId).FirstOrDefault()?.Value;
+            var currentOrgId = User.Claims.Where(x => x.Type == CustomClaimTypes.CurrentOrganizatio).FirstOrDefault()?.Value;
             ArgumentNullException.ThrowIfNull(currentOrgId);
             var result = await _importSettingsService.GetOrganizationSettingsAsync(currentOrgId);
             return Ok(result);
@@ -44,7 +44,7 @@ public class ImportSettingsController : ControllerBase
         try
         {
             var userId = User.Claims.Where(x => x.Type == ClaimConstants.ObjectId).FirstOrDefault()?.Value;
-            var currentOrgId = User.Claims.Where(x => x.Type == CustomClaimTypes.CurrentOrganizationId).FirstOrDefault()?.Value;
+            var currentOrgId = User.Claims.Where(x => x.Type == CustomClaimTypes.CurrentOrganizatio).FirstOrDefault()?.Value;
             ArgumentNullException.ThrowIfNull(userId);
             ArgumentNullException.ThrowIfNull(currentOrgId);
             var settingsDto = await _importSettingsService.GetDefaultSettingsAsync(userId, currentOrgId);
@@ -67,7 +67,7 @@ public class ImportSettingsController : ControllerBase
         //TODO: add role constraint, maybe admin?? IF update also check for organization
         try
         {
-            var currentOrgId = User.Claims.Where(x => x.Type == CustomClaimTypes.CurrentOrganizationId).FirstOrDefault()?.Value;
+            var currentOrgId = User.Claims.Where(x => x.Type == CustomClaimTypes.CurrentOrganizatio).FirstOrDefault()?.Value;
             ArgumentNullException.ThrowIfNull(currentOrgId);
             dto.OrganizationId = currentOrgId;
             await _importSettingsService.UpsertImportSettingsAsync(dto);
@@ -106,7 +106,7 @@ public class ImportSettingsController : ControllerBase
         try
         {
             var userId = User.Claims.Where(x => x.Type == ClaimConstants.ObjectId).FirstOrDefault()?.Value;
-            var currentOrgId = User.Claims.Where(x => x.Type == CustomClaimTypes.CurrentOrganizationId).FirstOrDefault()?.Value;
+            var currentOrgId = User.Claims.Where(x => x.Type == CustomClaimTypes.CurrentOrganizatio).FirstOrDefault()?.Value;
             ArgumentNullException.ThrowIfNull(userId);
             ArgumentNullException.ThrowIfNull(currentOrgId);
             await _importSettingsService.SetAsUserDefault(userId, currentOrgId, settings?.Id);

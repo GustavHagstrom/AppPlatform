@@ -37,7 +37,7 @@ public class ClaimService : IClaimService
             var currentOrgId = user.CurrentOrganizationId.ToString();
             if (currentOrgId is not null)
             {
-                claims.Add(new ClaimDTO(CustomClaimTypes.CurrentOrganizationId, currentOrgId));
+                claims.Add(new ClaimDTO(CustomClaimTypes.CurrentOrganizatio, currentOrgId));
             }
             claims.AddRange(roles);
             claims.AddRange(orgs);

@@ -53,16 +53,16 @@ public class LazyUserMiddleware
         var dbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
         var userId = context.User.Claims.Where(x => x.Type == ClaimConstants.ObjectId).FirstOrDefault()?.Value;
         var organizationIds = context.User.Claims
-            .Where(x => x.Type == CustomClaimTypes.OrganizationMemberOf)
+            .Where(x => x.Type == CustomClaimTypes.CurrentOrganizatio)
             .Select(x => x.Value)
-            .ToArray();
+            .FirstOrDefault();
         if (userId is not null)
         {
             await AddNewUserToDbIfNeeded(userId, dbContext);
         }
         if (userId is not null && organizationIds is not null)
         {
-            await AddUnlistedUserOrgsIfNeeded(userId, organizationIds, dbContext);
+            await AddUnlistedUserOrgIfNeeded(userId, organizationIds, dbContext);
         }
     }
     private async Task AddNewUserToDbIfNeeded(string userId, ApplicationDbContext dbContext)
@@ -79,31 +79,20 @@ public class LazyUserMiddleware
         }
         
     }
-    private async Task AddUnlistedUserOrgsIfNeeded(string userId, ICollection<string> organizationIds, ApplicationDbContext dbContext)
+    private async Task AddUnlistedUserOrgIfNeeded(string userId, string organizationId, ApplicationDbContext dbContext)
     {
-        var userOrganizations = await dbContext.UserOrganizations
-            .Where(x => x.UserId == userId)
+        var userOrganization = await dbContext.UserOrganizations
+            .Where(x => x.UserId == userId && x.OrganizationId == organizationId)
             .Select(x => x.OrganizationId)
-            .ToListAsync();
-        var unlistedUserOrgs = new List<UserOrganization>();
-        bool addRecords = false;
-        foreach (var id in organizationIds)
+            .FirstOrDefaultAsync();
+        if (userOrganization is null)
         {
-            if (!userOrganizations.Contains(id))
+            _logger.LogInformation("Adding missing userOrganization");
+            await dbContext.UserOrganizations.AddAsync(new UserOrganization
             {
-                addRecords = true;
-                unlistedUserOrgs.Add(new UserOrganization
-                {
-                    UserId = userId,
-                    OrganizationId = id,
-                });
-            }
-        }
-
-        if (addRecords)
-        {
-            _logger.LogInformation("Adding userOrganizations");
-            await dbContext.UserOrganizations.AddRangeAsync(unlistedUserOrgs);
+                UserId = userId,
+                OrganizationId = organizationId,
+            });
             await dbContext.SaveChangesAsync();
         }
     }

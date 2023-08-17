@@ -20,7 +20,7 @@ public class ReportTemplatesController : ControllerBase
     public async Task<IActionResult> Upsert(ReportTemplateDto dto)
     {
         var userId = User.Claims.Where(x => x.Type == ClaimConstants.ObjectId).FirstOrDefault()?.Value;
-        var currentOrgId = User.Claims.Where(x => x.Type == CustomClaimTypes.CurrentOrganizationId).FirstOrDefault()?.Value;
+        var currentOrgId = User.Claims.Where(x => x.Type == CustomClaimTypes.CurrentOrganizatio).FirstOrDefault()?.Value;
         ArgumentNullException.ThrowIfNull(currentOrgId);
         ArgumentNullException.ThrowIfNull(userId);
         dto.OrganizationId = currentOrgId;
@@ -30,7 +30,7 @@ public class ReportTemplatesController : ControllerBase
     [HttpGet]
     public async Task<IActionResult> GetAll()
     {
-        var currentOrgId = User.Claims.Where(x => x.Type == CustomClaimTypes.CurrentOrganizationId).FirstOrDefault()?.Value;
+        var currentOrgId = User.Claims.Where(x => x.Type == CustomClaimTypes.CurrentOrganizatio).FirstOrDefault()?.Value;
         ArgumentNullException.ThrowIfNull(currentOrgId);
         var result = await _reportTemplatesCrudService.GetAllOrganizationTemplatesAsync(currentOrgId);
         return Ok(result);
@@ -39,7 +39,7 @@ public class ReportTemplatesController : ControllerBase
     public async Task<IActionResult> GetDefault()
     {
         var userId = User.Claims.Where(x => x.Type == ClaimConstants.ObjectId).FirstOrDefault()?.Value;
-        var currentOrgId = User.Claims.Where(x => x.Type == CustomClaimTypes.CurrentOrganizationId).FirstOrDefault()?.Value;
+        var currentOrgId = User.Claims.Where(x => x.Type == CustomClaimTypes.CurrentOrganizatio).FirstOrDefault()?.Value;
         ArgumentNullException.ThrowIfNull(currentOrgId);
         ArgumentNullException.ThrowIfNull(userId);
         var result = await _reportTemplatesCrudService.GetDefaultAsync(userId, currentOrgId);
@@ -49,7 +49,7 @@ public class ReportTemplatesController : ControllerBase
     public async Task<IActionResult> SetAsDefault(ReportTemplateDto dto)
     {
         var userId = User.Claims.Where(x => x.Type == ClaimConstants.ObjectId).FirstOrDefault()?.Value;
-        var currentOrgId = User.Claims.Where(x => x.Type == CustomClaimTypes.CurrentOrganizationId).FirstOrDefault()?.Value;
+        var currentOrgId = User.Claims.Where(x => x.Type == CustomClaimTypes.CurrentOrganizatio).FirstOrDefault()?.Value;
         ArgumentNullException.ThrowIfNull(currentOrgId);
         ArgumentNullException.ThrowIfNull(userId);
         await _reportTemplatesCrudService.SetAsDefaultAsync(userId, currentOrgId, dto.Id);
@@ -59,7 +59,7 @@ public class ReportTemplatesController : ControllerBase
     public async Task<IActionResult> Delete(int id)
     {
         var userId = User.Claims.Where(x => x.Type == ClaimConstants.ObjectId).FirstOrDefault()?.Value;
-        var currentOrgId = User.Claims.Where(x => x.Type == CustomClaimTypes.CurrentOrganizationId).FirstOrDefault()?.Value;
+        var currentOrgId = User.Claims.Where(x => x.Type == CustomClaimTypes.CurrentOrganizatio).FirstOrDefault()?.Value;
         ArgumentNullException.ThrowIfNull(currentOrgId);
         ArgumentNullException.ThrowIfNull(userId);
         await _reportTemplatesCrudService.DeleteAsync(id, userId, currentOrgId);
