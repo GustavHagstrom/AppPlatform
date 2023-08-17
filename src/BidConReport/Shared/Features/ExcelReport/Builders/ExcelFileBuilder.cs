@@ -24,7 +24,7 @@ public class ExcelFileBuilder : IExcelFileBuilder
         _excelPriceBuilder = excelPriceBuilder;
         _excelTableBuilder = excelTableBuilder;
     }
-    public byte[] BuildFile(EstimationDTO estimation, DTOs.ReportTemplate.ReportTemplateDTO layoutDefinition, bool asPdf)
+    public byte[] BuildFile(EstimationDTO estimation, DTOs.ReportTemplate.ReportTemplateDto layoutDefinition, bool asPdf)
     {
         using (ExcelEngine engine = new ExcelEngine())
 
@@ -57,7 +57,7 @@ public class ExcelFileBuilder : IExcelFileBuilder
 
     }
 
-    private void AddContent(EstimationDTO estimation, DTOs.ReportTemplate.ReportTemplateDTO layoutDefinition, IWorksheet sheet)
+    private void AddContent(EstimationDTO estimation, DTOs.ReportTemplate.ReportTemplateDto layoutDefinition, IWorksheet sheet)
     {
         //_excelHeaderBuilder.AddHeader(sheet);
         //foreach (var sectionType in layoutDefinition.Sections)

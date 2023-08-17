@@ -42,7 +42,7 @@
 
 
 @code {
-    [Parameter, EditorRequired] public required ReportTemplateDTO Template { get; set; }
+    [Parameter, EditorRequired] public required ReportTemplateDto Template { get; set; }
     [Inject] public required IStringLocalizer<ReportTemplateSectionOrderer> Localizer { get; set; }
 
     private string GetSectionName(IReportTemplateSectionDTO section)

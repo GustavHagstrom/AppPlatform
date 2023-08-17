@@ -25,15 +25,15 @@
     
 </div>
 @code {
-    [Parameter] public EventCallback<ReportTemplateDTO> SelectedTemplateChanged { get; set; }
+    [Parameter] public EventCallback<ReportTemplateDto> SelectedTemplateChanged { get; set; }
     [Inject] public required IStringLocalizer<ReportTemplatePicker> Localizer { get; set; }
     [Inject] public required IReportTemplateService TemplateService { get; set; }
     [Inject] public required ISnackbar Snackbar { get; set; }
     
 
-    private ReportTemplateDTO? _selectedTemplate;
+    private ReportTemplateDto? _selectedTemplate;
 
-    public ReportTemplateDTO? SelectedTemplate
+    public ReportTemplateDto? SelectedTemplate
     {
         get => _selectedTemplate; set
         {
@@ -42,10 +42,10 @@
         }
     }
     public bool PopOverIsVisible { get; set; } = false;
-    public ICollection<ReportTemplateDTO> TemplatesList { get; set; } = new List<ReportTemplateDTO>();
-    public ReportTemplateDTO? DefaultTemplate { get; set; } = null;
+    public ICollection<ReportTemplateDto> TemplatesList { get; set; } = new List<ReportTemplateDto>();
+    public ReportTemplateDto? DefaultTemplate { get; set; } = null;
 
-    public string CreateDefaultIcon(ReportTemplateDTO? template)
+    public string CreateDefaultIcon(ReportTemplateDto? template)
     {
         if(IsDefault(template))
         {
@@ -110,7 +110,7 @@
     /// Will also close popover
     /// </summary>
     /// <param name="template"></param>
-    public void SetSelectedTemplate(ReportTemplateDTO? template)
+    public void SetSelectedTemplate(ReportTemplateDto? template)
     {
         SelectedTemplate = template;
         PopOverIsVisible = false;
@@ -129,7 +129,7 @@
         await RefreshEntireComponent();
     }
 
-    public bool IsDefault(ReportTemplateDTO? template)
+    public bool IsDefault(ReportTemplateDto? template)
     {
         if (DefaultTemplate is null || template is null) return false;
 

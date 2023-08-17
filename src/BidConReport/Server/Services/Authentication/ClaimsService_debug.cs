@@ -1,3 +1,4 @@
+using BidConReport.Server.Services.Settings;
 using SharedPlatformLibrary.Constants;
 using SharedPlatformLibrary.DTOs;
 using System.Security.Claims;

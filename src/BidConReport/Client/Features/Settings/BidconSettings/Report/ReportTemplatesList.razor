@@ -40,7 +40,7 @@
     [Inject] public required ScreenSizeService ScreenSizeService { get; set; }
 
     bool OverlayVisible { get; set; } 
-    public ICollection<ReportTemplateDTO>? TemplateList { get; set; }
+    public ICollection<ReportTemplateDto>? TemplateList { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
@@ -54,15 +54,15 @@
     }
     public async Task CreateNew()
     {
-        await OpenEditDialog(new ReportTemplateDTO(), Localizer["Ny"]);
+        await OpenEditDialog(new ReportTemplateDto(), Localizer["Ny"]);
     }
-    public async Task Edit(ReportTemplateDTO template)
+    public async Task Edit(ReportTemplateDto template)
     {
-        var clone = JsonSerializer.Deserialize<ReportTemplateDTO>(JsonSerializer.Serialize(template));
+        var clone = JsonSerializer.Deserialize<ReportTemplateDto>(JsonSerializer.Serialize(template));
         await OpenEditDialog(clone!, Localizer["Redigera"]);
 
     }
-    public async Task OpenEditDialog(ReportTemplateDTO template, string title)
+    public async Task OpenEditDialog(ReportTemplateDto template, string title)
     {
         var options = new DialogOptions()
             {
@@ -83,7 +83,7 @@
             await RefreshList();
         }
     }
-    public async Task Delete(ReportTemplateDTO template)
+    public async Task Delete(ReportTemplateDto template)
     {
         if (await ConfirmDelete(template))
         {
@@ -92,7 +92,7 @@
             await RefreshList();
         }
     }
-    public async Task<bool> ConfirmDelete(ReportTemplateDTO template)
+    public async Task<bool> ConfirmDelete(ReportTemplateDto template)
     {
         var options = new DialogOptions()
             {

@@ -1,7 +1,7 @@
 ﻿using BidConReport.Shared.DTOs.ReportTemplate;
 
 namespace BidConReport.Shared.DTOs.ReportTemplate;
-public class HeaderDefinitionDTO
+public class HeaderDefinitionDto
 {
     public int Id { get; set; }
     public int FontId { get; set; }

@@ -1,6 +1,6 @@
 ﻿using SharedPlatformLibrary.DTOs;
 
-namespace BidConReport.Server.Services.Authentication;
+namespace BidConReport.Server.Services.Settings;
 
 public class OrganizationService : IOrganizationService
 {

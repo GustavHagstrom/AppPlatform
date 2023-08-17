@@ -1,6 +1,7 @@
 using BidConReport.Server;
 using BidConReport.Server.Data;
 using BidConReport.Server.Middlewares;
+using Mapster;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Components.WebAssembly.Authentication;
 using Microsoft.EntityFrameworkCore;
@@ -27,6 +28,8 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 });
 
 builder.Services.UseAllServices();
+
+//TypeAdapterConfig.GlobalSettings.Default.PreserveReference(true);
 
 var app = builder.Build();
 

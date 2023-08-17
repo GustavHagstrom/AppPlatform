@@ -16,7 +16,7 @@ namespace BidConReport.Client.Shared.Services
             _logger = logger;
         }
 
-        public async Task UpsertAsync(ReportTemplateDTO reportTemplate)
+        public async Task UpsertAsync(ReportTemplateDto reportTemplate)
         {
             try
             {
@@ -30,14 +30,14 @@ namespace BidConReport.Client.Shared.Services
             }
         }
 
-        public async Task<ICollection<ReportTemplateDTO>> GetAllAsync()
+        public async Task<ICollection<ReportTemplateDto>> GetAllAsync()
         {
             try
             {
                 var response = await _httpClient.GetAsync(BackendApiEndpoints.ReportTemplatesController.All);
                 response.EnsureSuccessStatusCode();
-                var data = await response.Content.ReadFromJsonAsync<ICollection<ReportTemplateDTO>>();
-                return data ?? Array.Empty<ReportTemplateDTO>();
+                var data = await response.Content.ReadFromJsonAsync<ICollection<ReportTemplateDto>>();
+                return data ?? Array.Empty<ReportTemplateDto>();
             }
             catch (Exception ex)
             {
@@ -46,13 +46,13 @@ namespace BidConReport.Client.Shared.Services
             }
         }
 
-        public async Task<ReportTemplateDTO?> GetDefaultAsync()
+        public async Task<ReportTemplateDto?> GetDefaultAsync()
         {
             try
             {
                 var response = await _httpClient.GetAsync(BackendApiEndpoints.ReportTemplatesController.Default);
                 response.EnsureSuccessStatusCode();
-                var data = await response.Content.ReadFromJsonAsync<ReportTemplateDTO>();
+                var data = await response.Content.ReadFromJsonAsync<ReportTemplateDto>();
                 return data;
             }
             catch (Exception ex)
@@ -62,7 +62,7 @@ namespace BidConReport.Client.Shared.Services
             }
         }
 
-        public async Task SetAsDefaultAsync(ReportTemplateDTO? reportTemplate)
+        public async Task SetAsDefaultAsync(ReportTemplateDto? reportTemplate)
         {
             try
             {

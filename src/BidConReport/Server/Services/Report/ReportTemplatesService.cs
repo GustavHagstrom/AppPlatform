@@ -1,5 +1,7 @@
 ﻿using BidConReport.Server.Data;
 using BidConReport.Server.Enteties.Report;
+using BidConReport.Shared.DTOs.ReportTemplate;
+using Mapster;
 using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
 
@@ -13,50 +15,28 @@ public class ReportTemplatesService : IReportTemplatesService
     {
         _dbContext = dbContext;
     }
-    public async Task UpsertAsync(string userId, string organizationId, ReportTemplate reportTemplate)
+    public async Task UpsertAsync(string userId, string organizationId, ReportTemplateDto dto)
     {
-        reportTemplate.OrganizationId = organizationId;
-        var result = await FirstOrDefaultAsync_IncludAll(x => x.Id == reportTemplate.Id);
+        dto.OrganizationId = organizationId;
+        var result = await FirstOrDefaultAsync_IncludAll(x => x.Id == dto.Id);
 
         if (result == null)
         {
-            await _dbContext.ReportTemplates.AddAsync(reportTemplate);
+            await _dbContext.ReportTemplates.AddAsync(dto.Adapt<ReportTemplate>());
         }
         else
         {
-            _dbContext.Entry(result).CurrentValues.SetValues(reportTemplate);
-
-            _dbContext.Entry(result.TopLeftHeader).CurrentValues.SetValues(reportTemplate.TopLeftHeader);
-            _dbContext.Entry(result.TopLeftHeader.Font).CurrentValues.SetValues(reportTemplate.TopLeftHeader.Font);
-
-            _dbContext.Entry(result.TopRightHeader).CurrentValues.SetValues(reportTemplate.TopRightHeader);
-            _dbContext.Entry(result.TopRightHeader.Font).CurrentValues.SetValues(reportTemplate.TopRightHeader.Font);
-
-            _dbContext.Entry(result.InformationSection).CurrentValues.SetValues(reportTemplate.InformationSection);
-            _dbContext.Entry(result.InformationSection.TitleFont).CurrentValues.SetValues(reportTemplate.InformationSection.TitleFont);
-            _dbContext.Entry(result.InformationSection.ValueFont).CurrentValues.SetValues(reportTemplate.InformationSection.ValueFont);
-
-            foreach (var item in result.InformationSection.Items)
-            {
-                var memoryItem = reportTemplate.InformationSection.Items.FirstOrDefault(x => x.Id == item.Id);
-                if (memoryItem is not null)
-                {
-                    _dbContext.Entry(item).CurrentValues.SetValues(memoryItem);
-                }
-                else
-                {
-                    _dbContext.Remove(item);
-                }
-            }
+            dto.Adapt(result);
         }
         await _dbContext.SaveChangesAsync();
     }
-    public async Task<ICollection<ReportTemplate>> GetAllOrganizationTemplatesAsync(string organizationId)
+    public async Task<ICollection<ReportTemplateDto>> GetAllOrganizationTemplatesAsync(string organizationId)
     {
         var result = await ToListAsync_IncludAll(x => x.OrganizationId == organizationId);
-        return result;
+
+        return result.Select(x => x.Adapt<ReportTemplateDto>()).ToList();
     }
-    public async Task<ReportTemplate?> GetDefaultAsync(string userId, string organizationId)
+    public async Task<ReportTemplateDto?> GetDefaultAsync(string userId, string organizationId)
     {
         var userOrg = await _dbContext.UserOrganizations.FirstAsync(x => x.UserId == userId && x.OrganizationId == organizationId);
         ArgumentNullException.ThrowIfNull(userOrg);
@@ -67,7 +47,7 @@ public class ReportTemplatesService : IReportTemplatesService
         else
         {
             var result = await FirstOrDefaultAsync_IncludAll(x => x.Id == userOrg.DefaultReportTemplateId);
-            return result;
+            return result is null ? null : result.Adapt<ReportTemplateDto>();
         }
     }
     public async Task DeleteAsync(int templateId, string userId, string organizationId)
@@ -133,6 +113,7 @@ public class ReportTemplatesService : IReportTemplatesService
             .Include(x => x.TableSection).ThenInclude(x => x.CellFont)
             .Include(x => x.TableSection).ThenInclude(x => x.GroupFont)
             .Include(x => x.TableSection).ThenInclude(x => x.PartFont)
+            .Include(x => x.TableSection).ThenInclude(x => x.ColumnHeaderFont)
             .FirstOrDefaultAsync(predicate);
 
         return result;
@@ -152,6 +133,7 @@ public class ReportTemplatesService : IReportTemplatesService
             .Include(x => x.TableSection).ThenInclude(x => x.CellFont)
             .Include(x => x.TableSection).ThenInclude(x => x.GroupFont)
             .Include(x => x.TableSection).ThenInclude(x => x.PartFont)
+            .Include(x => x.TableSection).ThenInclude(x => x.ColumnHeaderFont)
             .Where(predicate)
             .ToListAsync();
 

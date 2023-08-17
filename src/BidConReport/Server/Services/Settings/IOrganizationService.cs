@@ -1,6 +1,6 @@
 ﻿using SharedPlatformLibrary.DTOs;
 
-namespace BidConReport.Server.Services.Authentication;
+namespace BidConReport.Server.Services.Settings;
 public interface IOrganizationService
 {
     Task<ICollection<OrganizationDTO>> GetAll(string userId);

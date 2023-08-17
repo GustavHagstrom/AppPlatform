@@ -3,9 +3,9 @@
 namespace BidConReport.Client.Shared.Services;
 public interface IReportTemplateService
 {
-    Task UpsertAsync(ReportTemplateDTO reportTemplate);
+    Task UpsertAsync(ReportTemplateDto reportTemplate);
     Task DeleteAsync(int id);
-    Task<ICollection<ReportTemplateDTO>> GetAllAsync();
-    Task<ReportTemplateDTO?> GetDefaultAsync();
-    Task SetAsDefaultAsync(ReportTemplateDTO? reportTemplate);
+    Task<ICollection<ReportTemplateDto>> GetAllAsync();
+    Task<ReportTemplateDto?> GetDefaultAsync();
+    Task SetAsDefaultAsync(ReportTemplateDto? reportTemplate);
 }

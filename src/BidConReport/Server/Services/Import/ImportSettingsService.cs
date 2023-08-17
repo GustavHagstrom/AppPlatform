@@ -1,8 +1,7 @@
 ﻿using BidConReport.Server.Data;
 using BidConReport.Server.Enteties;
-using BidConReport.Server.Mappers;
 using BidConReport.Shared.DTOs;
-using Microsoft.AspNetCore.Mvc.Routing;
+using Mapster;
 using Microsoft.EntityFrameworkCore;
 
 namespace BidConReport.Server.Services.Import;
@@ -10,12 +9,10 @@ namespace BidConReport.Server.Services.Import;
 public class ImportSettingsService : IImportSettingsService
 {
     private readonly ApplicationDbContext _dbContext;
-    private readonly ImportSettingsMapper _mapper;
 
     public ImportSettingsService(ApplicationDbContext dbContext)
     {
         _dbContext = dbContext;
-        _mapper = new ImportSettingsMapper();
     }
     public async Task<EstimationImportSettingsDto?> GetDefaultSettingsAsync(string userId, string organizationId)
     {
@@ -30,8 +27,7 @@ public class ImportSettingsService : IImportSettingsService
         }
         else
         {
-            var dto = _mapper.ToDto(userOrg?.DefaultEstimationSettings!);
-            return dto;
+            return userOrg.DefaultEstimationSettings.Adapt<EstimationImportSettingsDto>();
         }
     }
     public async Task<ICollection<EstimationImportSettingsDto>> GetOrganizationSettingsAsync(string organizationId)
@@ -39,18 +35,18 @@ public class ImportSettingsService : IImportSettingsService
         var settings = await _dbContext.EstimationImportSettings
             .Where(x => x.OrganizationId == organizationId)
             .ToArrayAsync();
-        return settings.Select(x => _mapper.ToDto(x)).ToList();
+        return settings.Select(x => x.Adapt<EstimationImportSettingsDto>()).ToList();
     }
     public async Task UpsertImportSettingsAsync(EstimationImportSettingsDto dto)
     {
         var dbSettings = await _dbContext.EstimationImportSettings.FindAsync(dto.Id);
         if (dbSettings is null)
         {
-            await _dbContext.EstimationImportSettings.AddAsync(_mapper.FromDto(dto));
+            await _dbContext.EstimationImportSettings.AddAsync(dto.Adapt<EstimationImportSettings>());
         }
         else
         {
-            dbSettings = _mapper.FromDto(dto);
+            dto.Adapt(dbSettings);
         }
         await _dbContext.SaveChangesAsync();
     }

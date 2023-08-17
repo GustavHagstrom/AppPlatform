@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 using BidConReport.Shared.DTOs.ReportTemplate;
 
 namespace BidConReport.Shared.DTOs.ReportTemplate;
-public class ReportTemplateDTO
+public class ReportTemplateDto
 {
     public int Id { get; set; }
     [StringLength(50, MinimumLength = 1)]
@@ -11,9 +11,9 @@ public class ReportTemplateDTO
     [MaxLength(50)]
     public string OrganizationId { get; set; } = string.Empty;
     public int TopLeftHeaderId { get; set; }
-    public HeaderDefinitionDTO TopLeftHeader { get; set; } = new();
+    public HeaderDefinitionDto TopLeftHeader { get; set; } = new();
     public int TopRightHeaderId { get; set; }
-    public HeaderDefinitionDTO TopRightHeader { get; set; } = new();
+    public HeaderDefinitionDto TopRightHeader { get; set; } = new();
     public int TitleSectionId { get; set; }
     public TitleSectionDTO TitleSection { get; set; } = new TitleSectionDTO { LayoutOrder = 1 };
     public int InformationSectionId { get; set; }
