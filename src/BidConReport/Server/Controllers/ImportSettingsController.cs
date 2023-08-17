@@ -22,12 +22,12 @@ public class ImportSettingsController : ControllerBase
     {
         try
         {
-            var currentOrgId = User.Claims.Where(x => x.Type == CustomClaimTypes.CurrentOrganizatio).FirstOrDefault()?.Value;
-            ArgumentNullException.ThrowIfNull(currentOrgId);
-            var result = await _importSettingsService.GetOrganizationSettingsAsync(currentOrgId);
+            var currentOrgId = User.Claims.Where(x => x.Type == CustomClaimTypes.CurrentOrganization).FirstOrDefault()?.Value;
+            ArgumentException.ThrowIfNullOrEmpty(currentOrgId);
+            var result = await _importSettingsService.GetOrganizationSettingsAsync(int.Parse(currentOrgId));
             return Ok(result);
         }
-        catch (ArgumentNullException e)
+        catch (ArgumentException e)
         {
             _logger.LogError(e, "CurrentOrganization claim was not found");
             return Problem("CurrentOrganization claim was not found");
@@ -44,13 +44,13 @@ public class ImportSettingsController : ControllerBase
         try
         {
             var userId = User.Claims.Where(x => x.Type == ClaimConstants.ObjectId).FirstOrDefault()?.Value;
-            var currentOrgId = User.Claims.Where(x => x.Type == CustomClaimTypes.CurrentOrganizatio).FirstOrDefault()?.Value;
-            ArgumentNullException.ThrowIfNull(userId);
-            ArgumentNullException.ThrowIfNull(currentOrgId);
-            var settingsDto = await _importSettingsService.GetDefaultSettingsAsync(userId, currentOrgId);
+            var currentOrgId = User.Claims.Where(x => x.Type == CustomClaimTypes.CurrentOrganization).FirstOrDefault()?.Value;
+            ArgumentException.ThrowIfNullOrEmpty(userId);
+            ArgumentException.ThrowIfNullOrEmpty(currentOrgId);
+            var settingsDto = await _importSettingsService.GetDefaultSettingsAsync(userId, int.Parse(currentOrgId));
             return Ok(settingsDto);
         }
-        catch (ArgumentNullException e)
+        catch (ArgumentException e)
         {
             _logger.LogError(e, "UserId claim or CurrentOrganization claim was null");
             return Problem("UserId claim or CurrentOrganization claim was null");
@@ -67,13 +67,13 @@ public class ImportSettingsController : ControllerBase
         //TODO: add role constraint, maybe admin?? IF update also check for organization
         try
         {
-            var currentOrgId = User.Claims.Where(x => x.Type == CustomClaimTypes.CurrentOrganizatio).FirstOrDefault()?.Value;
-            ArgumentNullException.ThrowIfNull(currentOrgId);
-            dto.OrganizationId = currentOrgId;
+            var currentOrgId = User.Claims.Where(x => x.Type == CustomClaimTypes.CurrentOrganization).FirstOrDefault()?.Value;
+            ArgumentException.ThrowIfNullOrEmpty(currentOrgId);
+            dto.OrganizationId = int.Parse(currentOrgId);
             await _importSettingsService.UpsertImportSettingsAsync(dto);
             return Ok();
         }
-        catch (ArgumentNullException e)
+        catch (ArgumentException e)
         {
             _logger.LogError(e, "CurrentOrganization claim was not found");
             return Problem("CurrentOrganization claim was not found");
@@ -106,13 +106,13 @@ public class ImportSettingsController : ControllerBase
         try
         {
             var userId = User.Claims.Where(x => x.Type == ClaimConstants.ObjectId).FirstOrDefault()?.Value;
-            var currentOrgId = User.Claims.Where(x => x.Type == CustomClaimTypes.CurrentOrganizatio).FirstOrDefault()?.Value;
-            ArgumentNullException.ThrowIfNull(userId);
-            ArgumentNullException.ThrowIfNull(currentOrgId);
-            await _importSettingsService.SetAsUserDefault(userId, currentOrgId, settings?.Id);
+            var currentOrgId = User.Claims.Where(x => x.Type == CustomClaimTypes.CurrentOrganization).FirstOrDefault()?.Value;
+            ArgumentException.ThrowIfNullOrEmpty(userId);
+            ArgumentException.ThrowIfNullOrEmpty(currentOrgId);
+            await _importSettingsService.SetAsUserDefault(userId, int.Parse(currentOrgId), settings?.Id);
             return Ok();
         }
-        catch (ArgumentNullException e)
+        catch (ArgumentException e)
         {
             _logger.LogError(e, "UserId claim or CurrentOrganization claim was null");
             return Problem("UserId claim or CurrentOrganization claim was null");

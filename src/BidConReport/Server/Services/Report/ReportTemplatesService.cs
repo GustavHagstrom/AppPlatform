@@ -15,7 +15,7 @@ public class ReportTemplatesService : IReportTemplatesService
     {
         _dbContext = dbContext;
     }
-    public async Task UpsertAsync(string userId, string organizationId, ReportTemplateDto dto)
+    public async Task UpsertAsync(string userId, int organizationId, ReportTemplateDto dto)
     {
         dto.OrganizationId = organizationId;
         var result = await FirstOrDefaultAsync_IncludAll(x => x.Id == dto.Id);
@@ -30,13 +30,13 @@ public class ReportTemplatesService : IReportTemplatesService
         }
         await _dbContext.SaveChangesAsync();
     }
-    public async Task<ICollection<ReportTemplateDto>> GetAllOrganizationTemplatesAsync(string organizationId)
+    public async Task<ICollection<ReportTemplateDto>> GetAllOrganizationTemplatesAsync(int organizationId)
     {
         var result = await ToListAsync_IncludAll(x => x.OrganizationId == organizationId);
 
         return result.Select(x => x.Adapt<ReportTemplateDto>()).ToList();
     }
-    public async Task<ReportTemplateDto?> GetDefaultAsync(string userId, string organizationId)
+    public async Task<ReportTemplateDto?> GetDefaultAsync(string userId, int organizationId)
     {
         var userOrg = await _dbContext.UserOrganizations.FirstAsync(x => x.UserId == userId && x.OrganizationId == organizationId);
         ArgumentNullException.ThrowIfNull(userOrg);
@@ -50,7 +50,7 @@ public class ReportTemplatesService : IReportTemplatesService
             return result is null ? null : result.Adapt<ReportTemplateDto>();
         }
     }
-    public async Task DeleteAsync(int templateId, string userId, string organizationId)
+    public async Task DeleteAsync(int templateId, string userId, int organizationId)
     {
         var userOrg = await _dbContext.UserOrganizations.FirstAsync(x => x.UserId == userId && x.OrganizationId == organizationId);
         var template = await FirstOrDefaultAsync_IncludAll(x => x.Id == templateId);
@@ -84,7 +84,7 @@ public class ReportTemplatesService : IReportTemplatesService
         }
         await _dbContext.SaveChangesAsync();
     }
-    public async Task SetAsDefaultAsync(string userId, string organizationId, int templateId)
+    public async Task SetAsDefaultAsync(string userId, int organizationId, int templateId)
     {
         var userOrg = await _dbContext.UserOrganizations.FirstOrDefaultAsync(x => x.UserId == userId && x.OrganizationId == organizationId);
         var template = await _dbContext.ReportTemplates.FindAsync(templateId);

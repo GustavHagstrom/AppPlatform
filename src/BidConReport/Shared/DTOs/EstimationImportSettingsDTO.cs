@@ -5,8 +5,7 @@ namespace BidConReport.Shared.DTOs;
 public class EstimationImportSettingsDto
 {
     public int Id { get; set; }
-    [MaxLength(50)]
-    public required string OrganizationId { get; set; }
+    public int OrganizationId { get; set; }
     [MaxLength(30)]
     public required string Name { get; set; }
     [MaxLength(10)]
@@ -28,7 +27,6 @@ public class EstimationImportSettingsDto
     public static EstimationImportSettingsDto Empty => new()
     {
         Name = string.Empty,
-        OrganizationId = string.Empty,
         CostFactorAccount = string.Empty,
         NetCostAccount = string.Empty,
         CostBeforeChangesAccount = string.Empty,

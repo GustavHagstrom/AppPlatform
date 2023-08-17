@@ -1,18 +1,26 @@
 ﻿@using SharedPlatformLibrary.DTOs;
 @inherits IsLoadingComponent
 
-<MudSelect T="OrganizationDTO" Label="@Localizer["Organisation"]" Placeholder="@Localizer["Ej vald"]" Dense="true"
-           Variant="Variant.Outlined" Value="ActiveOrganization" ValueChanged="OnProfileChanged" Margin="Margin.Dense" AnchorOrigin="Origin.BottomCenter" TransformOrigin="Origin.TopCenter">
-    @foreach (var item in Organizations)
-    {
-        <MudSelectItem Value="item"/>
-    }
-</MudSelect>
+<MudText Typo="Typo.subtitle1">@Localizer["Organisation"]</MudText>
+<div class="d-flex gap-1">
+    <MudSelect Class="d-flex flex-grow-1" T="OrganizationDTO" Placeholder="@Localizer["Välj organisation"]" Dense="true"
+               Variant="Variant.Outlined" Value="ActiveOrganization" ValueChanged="ChangeOrganization" Margin="Margin.Dense" AnchorOrigin="Origin.BottomCenter" TransformOrigin="Origin.TopCenter">
+        @foreach (var item in Organizations)
+        {
+            <MudSelectItem Value="item" />
+        }
+    </MudSelect>
+    <MudTooltip Text="@Localizer["Skapa ny organisation"]">
+        <MudIconButton Style="height: 40px; width: 40px; margin-top: 3px; margin-bottom: 2px;" Icon="@Icons.Material.Sharp.Add" Color="Color.Primary" Variant="Variant.Filled" Size="Size.Large" OnClick="NewOrganization"/>
+    </MudTooltip>
+</div>
+
 
 
 
 @code {
     [Inject] public required IStringLocalizer<DefaultReportTemplateSelector> Localizer { get; set; }
+    [Inject] public required IDialogService DialogService { get; set; }
     [Inject] public required IOrganizationService OrganizationService { get; set; }
     [Inject] public required NavigationManager NavigationManager { get; set; }
 
@@ -31,10 +39,28 @@
         ActiveOrganization = await OrganizationService.GetCurrent();
         await SetLoading(false);
     }
-    async Task OnProfileChanged(OrganizationDTO organization)
+    async Task ChangeOrganization(OrganizationDTO organization)
     {
-        ActiveOrganization = organization;
         await OrganizationService.SetAsActive(organization);
         NavigationManager.NavigateTo(NavigationManager.Uri, true);
+    }
+    async Task NewOrganization()
+    {
+        var options = new DialogOptions()
+        {
+            MaxWidth = MaxWidth.ExtraSmall,
+            CloseButton = true,
+            NoHeader = false,
+            DisableBackdropClick = true,
+        };
+        var dialog = await DialogService.ShowAsync<NewOrganizationDialog>(Localizer["Ny organisation"], options);
+        var result = await dialog.Result;
+        if (!result.Canceled)
+        {
+            var name = result.Data as string;
+            await OrganizationService.CreateNew(new OrganizationDTO { Name = name! });
+            var allOrgs = await OrganizationService.GetAll();
+            await ChangeOrganization(allOrgs.Last());
+        }
     }
 }

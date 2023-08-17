@@ -7,28 +7,6 @@
         <MudSelectItem Value="item" />
     }
 </MudSelect>
-@*<Frame Border="false" UnderlinedTitle="false">
-    <TitleContent>
-        <MudText Typo="Typo.subtitle1">@Localizer["Förhandsval av importprofil"]</MudText>
-    </TitleContent>
-    <ChildContent>
-        <MudSelect T="EstimationImportSettings" Dense="true" Variant="Variant.Outlined" Value="DefaultProfile" ValueChanged="OnProfileChanged" Margin="Margin.Dense" AnchorOrigin="Origin.BottomCenter" TransformOrigin="Origin.TopCenter">
-            @foreach (var item in Profiles)
-            {
-                <MudSelectItem Value="item" />
-            }
-        </MudSelect>
-    </ChildContent>
-</Frame>*@
-@*<MudSelect T="EstimationImportSettings" Label="@Localizer["Standard ImportProfil"]" Placeholder="@Localizer["Ej vald"]" Dense="true"
-           Variant="Variant.Outlined" Value="DefaultProfile" ValueChanged="OnProfileChanged" Margin="Margin.Dense" AnchorOrigin="Origin.BottomCenter" TransformOrigin="Origin.TopCenter">
-    @foreach (var item in Profiles)
-    {
-        <MudSelectItem Value="item"/>
-    }
-</MudSelect>
-*@
-
 
 @code {
     [Inject] public required IStringLocalizer<DefaultImortSettingsSelector> Localizer { get; set; }

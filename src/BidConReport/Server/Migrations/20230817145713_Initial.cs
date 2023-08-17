@@ -17,7 +17,7 @@ namespace BidConReport.Server.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    OrganizationId = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    OrganizationId = table.Column<int>(type: "int", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: false),
                     CostFactorAccount = table.Column<string>(type: "nvarchar(10)", maxLength: 10, nullable: false),
                     CostBeforeChangesAccount = table.Column<string>(type: "nvarchar(10)", maxLength: 10, nullable: false),
@@ -39,10 +39,10 @@ namespace BidConReport.Server.Migrations
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     BidConId = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    OrganizationId = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    OrganizationId = table.Column<int>(type: "int", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     Description = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
-                    Representative = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
+                    Representative = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Supervisor = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
                     Currency = table.Column<string>(type: "nvarchar(10)", maxLength: 10, nullable: false),
                     CostBeforeChanges = table.Column<double>(type: "float", nullable: false),
@@ -63,7 +63,7 @@ namespace BidConReport.Server.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    FontFamily = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    FontFamily = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     FontSize = table.Column<int>(type: "int", nullable: false),
                     Bold = table.Column<bool>(type: "bit", nullable: false),
                     Italic = table.Column<bool>(type: "bit", nullable: false),
@@ -174,10 +174,10 @@ namespace BidConReport.Server.Migrations
                     LayoutOrder = table.Column<int>(type: "int", nullable: false),
                     IsEnabled = table.Column<bool>(type: "bit", nullable: false),
                     ShowChanges = table.Column<bool>(type: "bit", nullable: false),
-                    PriceWithoutChangesDescription = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    ChangesDescription = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    PriceWithChangesDescription = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    Comment = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    PriceWithoutChangesDescription = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
+                    ChangesDescription = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
+                    PriceWithChangesDescription = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
+                    Comment = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
                     PriceFontId = table.Column<int>(type: "int", nullable: false),
                     CommentFontId = table.Column<int>(type: "int", nullable: false)
                 },
@@ -241,9 +241,9 @@ namespace BidConReport.Server.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     LayoutOrder = table.Column<int>(type: "int", nullable: false),
-                    Title = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    Title = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
                     FontId = table.Column<int>(type: "int", nullable: false),
-                    Image = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Image = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     IsEnabled = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
@@ -310,7 +310,7 @@ namespace BidConReport.Server.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    OrganizationId = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    OrganizationId = table.Column<int>(type: "int", nullable: false),
                     TopLeftHeaderId = table.Column<int>(type: "int", nullable: false),
                     TopRightHeaderId = table.Column<int>(type: "int", nullable: false),
                     TitleSectionId = table.Column<int>(type: "int", nullable: false),
@@ -364,7 +364,7 @@ namespace BidConReport.Server.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     UserId = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    OrganizationId = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    OrganizationId = table.Column<int>(type: "int", nullable: false),
                     DefaultEstimationSettingsId = table.Column<int>(type: "int", nullable: true),
                     DefaultReportTemplateId = table.Column<int>(type: "int", nullable: true)
                 },

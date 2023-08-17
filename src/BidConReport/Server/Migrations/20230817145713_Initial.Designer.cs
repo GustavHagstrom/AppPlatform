@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BidConReport.Server.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230808133439_ColumnHeaderBoolRemoved")]
-    partial class ColumnHeaderBoolRemoved
+    [Migration("20230817145713_Initial")]
+    partial class Initial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -25,56 +25,7 @@ namespace BidConReport.Server.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("BidConReport.Server.Shared.Enteties.User", b =>
-                {
-                    b.Property<string>("Id")
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
-                    b.Property<bool>("IsDarkMode")
-                        .HasColumnType("bit");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Users");
-                });
-
-            modelBuilder.Entity("BidConReport.Server.Shared.Enteties.UserOrganization", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int?>("DefaultEstimationSettingsId")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("DefaultReportTemplateId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("OrganizationId")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
-                    b.Property<string>("UserId")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("DefaultEstimationSettingsId");
-
-                    b.HasIndex("DefaultReportTemplateId");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("UserOrganizations");
-                });
-
-            modelBuilder.Entity("BidConReport.Shared.Entities.Estimation", b =>
+            modelBuilder.Entity("BidConReport.Server.Enteties.Estimation", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -112,18 +63,15 @@ namespace BidConReport.Server.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
-                    b.Property<string>("OrganizationId")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                    b.Property<int>("OrganizationId")
+                        .HasColumnType("int");
 
                     b.Property<string>("QuickTags")
                         .IsRequired()
                         .HasColumnType("NVARCHAR(1000)");
 
                     b.Property<string>("Representative")
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("SelectionTags")
                         .IsRequired()
@@ -138,7 +86,7 @@ namespace BidConReport.Server.Migrations
                     b.ToTable("Estimations");
                 });
 
-            modelBuilder.Entity("BidConReport.Shared.Entities.EstimationImportSettings", b =>
+            modelBuilder.Entity("BidConReport.Server.Enteties.EstimationImportSettings", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -174,10 +122,8 @@ namespace BidConReport.Server.Migrations
                         .HasMaxLength(10)
                         .HasColumnType("nvarchar(10)");
 
-                    b.Property<string>("OrganizationId")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                    b.Property<int>("OrganizationId")
+                        .HasColumnType("int");
 
                     b.Property<string>("QuickTags")
                         .HasMaxLength(1000)
@@ -195,7 +141,7 @@ namespace BidConReport.Server.Migrations
                     b.ToTable("EstimationImportSettings");
                 });
 
-            modelBuilder.Entity("BidConReport.Shared.Entities.EstimationItem", b =>
+            modelBuilder.Entity("BidConReport.Server.Enteties.EstimationItem", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -259,222 +205,7 @@ namespace BidConReport.Server.Migrations
                     b.ToTable("EstimationItem");
                 });
 
-            modelBuilder.Entity("BidConReport.Shared.Entities.ReportTemplate.FontProperties", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<bool>("Bold")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("FontFamily")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
-                    b.Property<int>("FontSize")
-                        .HasColumnType("int");
-
-                    b.Property<bool>("Italic")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("Underline")
-                        .HasColumnType("bit");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("FontProperties");
-                });
-
-            modelBuilder.Entity("BidConReport.Shared.Entities.ReportTemplate.Header.HeaderDefinition", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("FontId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("ValueCode")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("FontId");
-
-                    b.ToTable("HeaderDefinition");
-                });
-
-            modelBuilder.Entity("BidConReport.Shared.Entities.ReportTemplate.Information.InformationItem", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("InformationSectionId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Order")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Title")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("ValueCode")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("InformationSectionId");
-
-                    b.ToTable("InformationItem");
-                });
-
-            modelBuilder.Entity("BidConReport.Shared.Entities.ReportTemplate.Information.InformationSection", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<bool>("IsEnabled")
-                        .HasColumnType("bit");
-
-                    b.Property<int>("LayoutOrder")
-                        .HasColumnType("int");
-
-                    b.Property<int>("TitleFontId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("ValueFontId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("TitleFontId");
-
-                    b.HasIndex("ValueFontId");
-
-                    b.ToTable("InformationSection");
-                });
-
-            modelBuilder.Entity("BidConReport.Shared.Entities.ReportTemplate.Price.PriceSection", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("ChangesDescription")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
-                    b.Property<string>("Comment")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
-                    b.Property<int>("CommentFontId")
-                        .HasColumnType("int");
-
-                    b.Property<bool>("IsEnabled")
-                        .HasColumnType("bit");
-
-                    b.Property<int>("LayoutOrder")
-                        .HasColumnType("int");
-
-                    b.Property<int>("PriceFontId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("PriceWithChangesDescription")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
-                    b.Property<string>("PriceWithoutChangesDescription")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
-                    b.Property<bool>("ShowChanges")
-                        .HasColumnType("bit");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("CommentFontId");
-
-                    b.HasIndex("PriceFontId");
-
-                    b.ToTable("PriceSection");
-                });
-
-            modelBuilder.Entity("BidConReport.Shared.Entities.ReportTemplate.ReportTemplate", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("InformationSectionId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
-                    b.Property<string>("OrganizationId")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
-                    b.Property<int>("PriceSectionId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("TableSectionId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("TitleSectionId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("TopLeftHeaderId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("TopRightHeaderId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("InformationSectionId");
-
-                    b.HasIndex("PriceSectionId");
-
-                    b.HasIndex("TableSectionId");
-
-                    b.HasIndex("TitleSectionId");
-
-                    b.HasIndex("TopLeftHeaderId");
-
-                    b.HasIndex("TopRightHeaderId");
-
-                    b.ToTable("ReportTemplates");
-                });
-
-            modelBuilder.Entity("BidConReport.Shared.Entities.ReportTemplate.Table.ColumnDefinition", b =>
+            modelBuilder.Entity("BidConReport.Server.Enteties.Report.ColumnDefinition", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -509,7 +240,216 @@ namespace BidConReport.Server.Migrations
                     b.ToTable("ColumnDefinition");
                 });
 
-            modelBuilder.Entity("BidConReport.Shared.Entities.ReportTemplate.Table.TableSection", b =>
+            modelBuilder.Entity("BidConReport.Server.Enteties.Report.FontProperties", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<bool>("Bold")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("FontFamily")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<int>("FontSize")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("Italic")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("Underline")
+                        .HasColumnType("bit");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("FontProperties");
+                });
+
+            modelBuilder.Entity("BidConReport.Server.Enteties.Report.HeaderDefinition", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("FontId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("ValueCode")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("FontId");
+
+                    b.ToTable("HeaderDefinition");
+                });
+
+            modelBuilder.Entity("BidConReport.Server.Enteties.Report.InformationItem", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("InformationSectionId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Order")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ValueCode")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("InformationSectionId");
+
+                    b.ToTable("InformationItem");
+                });
+
+            modelBuilder.Entity("BidConReport.Server.Enteties.Report.InformationSection", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<bool>("IsEnabled")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("LayoutOrder")
+                        .HasColumnType("int");
+
+                    b.Property<int>("TitleFontId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ValueFontId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("TitleFontId");
+
+                    b.HasIndex("ValueFontId");
+
+                    b.ToTable("InformationSection");
+                });
+
+            modelBuilder.Entity("BidConReport.Server.Enteties.Report.PriceSection", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("ChangesDescription")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<string>("Comment")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<int>("CommentFontId")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("IsEnabled")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("LayoutOrder")
+                        .HasColumnType("int");
+
+                    b.Property<int>("PriceFontId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("PriceWithChangesDescription")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<string>("PriceWithoutChangesDescription")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<bool>("ShowChanges")
+                        .HasColumnType("bit");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CommentFontId");
+
+                    b.HasIndex("PriceFontId");
+
+                    b.ToTable("PriceSection");
+                });
+
+            modelBuilder.Entity("BidConReport.Server.Enteties.Report.ReportTemplate", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("InformationSectionId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<int>("OrganizationId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("PriceSectionId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("TableSectionId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("TitleSectionId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("TopLeftHeaderId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("TopRightHeaderId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("InformationSectionId");
+
+                    b.HasIndex("PriceSectionId");
+
+                    b.HasIndex("TableSectionId");
+
+                    b.HasIndex("TitleSectionId");
+
+                    b.HasIndex("TopLeftHeaderId");
+
+                    b.HasIndex("TopRightHeaderId");
+
+                    b.ToTable("ReportTemplates");
+                });
+
+            modelBuilder.Entity("BidConReport.Server.Enteties.Report.TableSection", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -548,7 +488,7 @@ namespace BidConReport.Server.Migrations
                     b.ToTable("TableSection");
                 });
 
-            modelBuilder.Entity("BidConReport.Shared.Entities.ReportTemplate.Title.TitleSection", b =>
+            modelBuilder.Entity("BidConReport.Server.Enteties.Report.TitleSection", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -560,7 +500,6 @@ namespace BidConReport.Server.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("Image")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("IsEnabled")
@@ -570,7 +509,6 @@ namespace BidConReport.Server.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("Title")
-                        .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
@@ -581,43 +519,76 @@ namespace BidConReport.Server.Migrations
                     b.ToTable("TitleSection");
                 });
 
-            modelBuilder.Entity("BidConReport.Server.Shared.Enteties.UserOrganization", b =>
+            modelBuilder.Entity("BidConReport.Server.Enteties.User", b =>
                 {
-                    b.HasOne("BidConReport.Shared.Entities.EstimationImportSettings", "DefaultEstimationSettings")
-                        .WithMany()
-                        .HasForeignKey("DefaultEstimationSettingsId");
+                    b.Property<string>("Id")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
-                    b.HasOne("BidConReport.Shared.Entities.ReportTemplate.ReportTemplate", "DefaultReportTemplate")
-                        .WithMany()
-                        .HasForeignKey("DefaultReportTemplateId");
+                    b.Property<bool>("IsDarkMode")
+                        .HasColumnType("bit");
 
-                    b.HasOne("BidConReport.Server.Shared.Enteties.User", "User")
-                        .WithMany("UserOrganizations")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.HasKey("Id");
 
-                    b.Navigation("DefaultEstimationSettings");
-
-                    b.Navigation("DefaultReportTemplate");
-
-                    b.Navigation("User");
+                    b.ToTable("Users");
                 });
 
-            modelBuilder.Entity("BidConReport.Shared.Entities.EstimationItem", b =>
+            modelBuilder.Entity("BidConReport.Server.Enteties.UserOrganization", b =>
                 {
-                    b.HasOne("BidConReport.Shared.Entities.Estimation", null)
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int?>("DefaultEstimationSettingsId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("DefaultReportTemplateId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("OrganizationId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("DefaultEstimationSettingsId");
+
+                    b.HasIndex("DefaultReportTemplateId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("UserOrganizations");
+                });
+
+            modelBuilder.Entity("BidConReport.Server.Enteties.EstimationItem", b =>
+                {
+                    b.HasOne("BidConReport.Server.Enteties.Estimation", null)
                         .WithMany("Items")
                         .HasForeignKey("EstimationId");
 
-                    b.HasOne("BidConReport.Shared.Entities.EstimationItem", null)
+                    b.HasOne("BidConReport.Server.Enteties.EstimationItem", null)
                         .WithMany("Items")
                         .HasForeignKey("EstimationItemId");
                 });
 
-            modelBuilder.Entity("BidConReport.Shared.Entities.ReportTemplate.Header.HeaderDefinition", b =>
+            modelBuilder.Entity("BidConReport.Server.Enteties.Report.ColumnDefinition", b =>
                 {
-                    b.HasOne("BidConReport.Shared.Entities.ReportTemplate.FontProperties", "Font")
+                    b.HasOne("BidConReport.Server.Enteties.Report.TableSection", null)
+                        .WithMany("Columns")
+                        .HasForeignKey("TableSectionId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("BidConReport.Server.Enteties.Report.HeaderDefinition", b =>
+                {
+                    b.HasOne("BidConReport.Server.Enteties.Report.FontProperties", "Font")
                         .WithMany()
                         .HasForeignKey("FontId")
                         .OnDelete(DeleteBehavior.NoAction)
@@ -626,24 +597,24 @@ namespace BidConReport.Server.Migrations
                     b.Navigation("Font");
                 });
 
-            modelBuilder.Entity("BidConReport.Shared.Entities.ReportTemplate.Information.InformationItem", b =>
+            modelBuilder.Entity("BidConReport.Server.Enteties.Report.InformationItem", b =>
                 {
-                    b.HasOne("BidConReport.Shared.Entities.ReportTemplate.Information.InformationSection", null)
+                    b.HasOne("BidConReport.Server.Enteties.Report.InformationSection", null)
                         .WithMany("Items")
                         .HasForeignKey("InformationSectionId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("BidConReport.Shared.Entities.ReportTemplate.Information.InformationSection", b =>
+            modelBuilder.Entity("BidConReport.Server.Enteties.Report.InformationSection", b =>
                 {
-                    b.HasOne("BidConReport.Shared.Entities.ReportTemplate.FontProperties", "TitleFont")
+                    b.HasOne("BidConReport.Server.Enteties.Report.FontProperties", "TitleFont")
                         .WithMany()
                         .HasForeignKey("TitleFontId")
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
-                    b.HasOne("BidConReport.Shared.Entities.ReportTemplate.FontProperties", "ValueFont")
+                    b.HasOne("BidConReport.Server.Enteties.Report.FontProperties", "ValueFont")
                         .WithMany()
                         .HasForeignKey("ValueFontId")
                         .OnDelete(DeleteBehavior.NoAction)
@@ -654,15 +625,15 @@ namespace BidConReport.Server.Migrations
                     b.Navigation("ValueFont");
                 });
 
-            modelBuilder.Entity("BidConReport.Shared.Entities.ReportTemplate.Price.PriceSection", b =>
+            modelBuilder.Entity("BidConReport.Server.Enteties.Report.PriceSection", b =>
                 {
-                    b.HasOne("BidConReport.Shared.Entities.ReportTemplate.FontProperties", "CommentFont")
+                    b.HasOne("BidConReport.Server.Enteties.Report.FontProperties", "CommentFont")
                         .WithMany()
                         .HasForeignKey("CommentFontId")
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
-                    b.HasOne("BidConReport.Shared.Entities.ReportTemplate.FontProperties", "PriceFont")
+                    b.HasOne("BidConReport.Server.Enteties.Report.FontProperties", "PriceFont")
                         .WithMany()
                         .HasForeignKey("PriceFontId")
                         .OnDelete(DeleteBehavior.NoAction)
@@ -673,39 +644,39 @@ namespace BidConReport.Server.Migrations
                     b.Navigation("PriceFont");
                 });
 
-            modelBuilder.Entity("BidConReport.Shared.Entities.ReportTemplate.ReportTemplate", b =>
+            modelBuilder.Entity("BidConReport.Server.Enteties.Report.ReportTemplate", b =>
                 {
-                    b.HasOne("BidConReport.Shared.Entities.ReportTemplate.Information.InformationSection", "InformationSection")
+                    b.HasOne("BidConReport.Server.Enteties.Report.InformationSection", "InformationSection")
                         .WithMany()
                         .HasForeignKey("InformationSectionId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("BidConReport.Shared.Entities.ReportTemplate.Price.PriceSection", "PriceSection")
+                    b.HasOne("BidConReport.Server.Enteties.Report.PriceSection", "PriceSection")
                         .WithMany()
                         .HasForeignKey("PriceSectionId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("BidConReport.Shared.Entities.ReportTemplate.Table.TableSection", "TableSection")
+                    b.HasOne("BidConReport.Server.Enteties.Report.TableSection", "TableSection")
                         .WithMany()
                         .HasForeignKey("TableSectionId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("BidConReport.Shared.Entities.ReportTemplate.Title.TitleSection", "TitleSection")
+                    b.HasOne("BidConReport.Server.Enteties.Report.TitleSection", "TitleSection")
                         .WithMany()
                         .HasForeignKey("TitleSectionId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("BidConReport.Shared.Entities.ReportTemplate.Header.HeaderDefinition", "TopLeftHeader")
+                    b.HasOne("BidConReport.Server.Enteties.Report.HeaderDefinition", "TopLeftHeader")
                         .WithMany()
                         .HasForeignKey("TopLeftHeaderId")
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
-                    b.HasOne("BidConReport.Shared.Entities.ReportTemplate.Header.HeaderDefinition", "TopRightHeader")
+                    b.HasOne("BidConReport.Server.Enteties.Report.HeaderDefinition", "TopRightHeader")
                         .WithMany()
                         .HasForeignKey("TopRightHeaderId")
                         .OnDelete(DeleteBehavior.NoAction)
@@ -724,36 +695,27 @@ namespace BidConReport.Server.Migrations
                     b.Navigation("TopRightHeader");
                 });
 
-            modelBuilder.Entity("BidConReport.Shared.Entities.ReportTemplate.Table.ColumnDefinition", b =>
+            modelBuilder.Entity("BidConReport.Server.Enteties.Report.TableSection", b =>
                 {
-                    b.HasOne("BidConReport.Shared.Entities.ReportTemplate.Table.TableSection", null)
-                        .WithMany("Columns")
-                        .HasForeignKey("TableSectionId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("BidConReport.Shared.Entities.ReportTemplate.Table.TableSection", b =>
-                {
-                    b.HasOne("BidConReport.Shared.Entities.ReportTemplate.FontProperties", "CellFont")
+                    b.HasOne("BidConReport.Server.Enteties.Report.FontProperties", "CellFont")
                         .WithMany()
                         .HasForeignKey("CellFontId")
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
-                    b.HasOne("BidConReport.Shared.Entities.ReportTemplate.FontProperties", "ColumnHeaderFont")
+                    b.HasOne("BidConReport.Server.Enteties.Report.FontProperties", "ColumnHeaderFont")
                         .WithMany()
                         .HasForeignKey("ColumnHeaderFontId")
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
-                    b.HasOne("BidConReport.Shared.Entities.ReportTemplate.FontProperties", "GroupFont")
+                    b.HasOne("BidConReport.Server.Enteties.Report.FontProperties", "GroupFont")
                         .WithMany()
                         .HasForeignKey("GroupFontId")
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
-                    b.HasOne("BidConReport.Shared.Entities.ReportTemplate.FontProperties", "PartFont")
+                    b.HasOne("BidConReport.Server.Enteties.Report.FontProperties", "PartFont")
                         .WithMany()
                         .HasForeignKey("PartFontId")
                         .OnDelete(DeleteBehavior.NoAction)
@@ -768,9 +730,9 @@ namespace BidConReport.Server.Migrations
                     b.Navigation("PartFont");
                 });
 
-            modelBuilder.Entity("BidConReport.Shared.Entities.ReportTemplate.Title.TitleSection", b =>
+            modelBuilder.Entity("BidConReport.Server.Enteties.Report.TitleSection", b =>
                 {
-                    b.HasOne("BidConReport.Shared.Entities.ReportTemplate.FontProperties", "Font")
+                    b.HasOne("BidConReport.Server.Enteties.Report.FontProperties", "Font")
                         .WithMany()
                         .HasForeignKey("FontId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -779,29 +741,52 @@ namespace BidConReport.Server.Migrations
                     b.Navigation("Font");
                 });
 
-            modelBuilder.Entity("BidConReport.Server.Shared.Enteties.User", b =>
+            modelBuilder.Entity("BidConReport.Server.Enteties.UserOrganization", b =>
                 {
-                    b.Navigation("UserOrganizations");
+                    b.HasOne("BidConReport.Server.Enteties.EstimationImportSettings", "DefaultEstimationSettings")
+                        .WithMany()
+                        .HasForeignKey("DefaultEstimationSettingsId");
+
+                    b.HasOne("BidConReport.Server.Enteties.Report.ReportTemplate", "DefaultReportTemplate")
+                        .WithMany()
+                        .HasForeignKey("DefaultReportTemplateId");
+
+                    b.HasOne("BidConReport.Server.Enteties.User", "User")
+                        .WithMany("UserOrganizations")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("DefaultEstimationSettings");
+
+                    b.Navigation("DefaultReportTemplate");
+
+                    b.Navigation("User");
                 });
 
-            modelBuilder.Entity("BidConReport.Shared.Entities.Estimation", b =>
+            modelBuilder.Entity("BidConReport.Server.Enteties.Estimation", b =>
                 {
                     b.Navigation("Items");
                 });
 
-            modelBuilder.Entity("BidConReport.Shared.Entities.EstimationItem", b =>
+            modelBuilder.Entity("BidConReport.Server.Enteties.EstimationItem", b =>
                 {
                     b.Navigation("Items");
                 });
 
-            modelBuilder.Entity("BidConReport.Shared.Entities.ReportTemplate.Information.InformationSection", b =>
+            modelBuilder.Entity("BidConReport.Server.Enteties.Report.InformationSection", b =>
                 {
                     b.Navigation("Items");
                 });
 
-            modelBuilder.Entity("BidConReport.Shared.Entities.ReportTemplate.Table.TableSection", b =>
+            modelBuilder.Entity("BidConReport.Server.Enteties.Report.TableSection", b =>
                 {
                     b.Navigation("Columns");
+                });
+
+            modelBuilder.Entity("BidConReport.Server.Enteties.User", b =>
+                {
+                    b.Navigation("UserOrganizations");
                 });
 #pragma warning restore 612, 618
         }

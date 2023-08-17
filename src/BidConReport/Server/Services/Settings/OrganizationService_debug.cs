@@ -6,8 +6,8 @@ public class OrganizationService_debug : IOrganizationService
 {
     private static List<OrganizationDTO> Organizations { get; } = new List<OrganizationDTO>
     {
-        new OrganizationDTO { Id = "debug_organizationId", Name = "debug_organizationName" },
-        new OrganizationDTO { Id = "debug_organizationId_2", Name = "debug_organizationName2" },
+        new OrganizationDTO { Id = 1, Name = "debug_organizationName" },
+        new OrganizationDTO { Id = 2, Name = "debug_organizationName2" },
     };
     public OrganizationDTO CurrentOrganization { get; set; } = Organizations.First();
 

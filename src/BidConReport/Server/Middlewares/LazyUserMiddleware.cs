@@ -52,17 +52,18 @@ public class LazyUserMiddleware
     {
         var dbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
         var userId = context.User.Claims.Where(x => x.Type == ClaimConstants.ObjectId).FirstOrDefault()?.Value;
-        var organizationIds = context.User.Claims
-            .Where(x => x.Type == CustomClaimTypes.CurrentOrganizatio)
+        var orgStringResult = context.User.Claims
+            .Where(x => x.Type == CustomClaimTypes.CurrentOrganization)
             .Select(x => x.Value)
             .FirstOrDefault();
+        var organizationId = int.TryParse(orgStringResult, out int tempVal) ? tempVal : 0;
         if (userId is not null)
         {
             await AddNewUserToDbIfNeeded(userId, dbContext);
         }
-        if (userId is not null && organizationIds is not null)
+        if (userId is not null && organizationId != 0)
         {
-            await AddUnlistedUserOrgIfNeeded(userId, organizationIds, dbContext);
+            await AddUnlistedUserOrgIfNeeded(userId, organizationId, dbContext);
         }
     }
     private async Task AddNewUserToDbIfNeeded(string userId, ApplicationDbContext dbContext)
@@ -79,13 +80,13 @@ public class LazyUserMiddleware
         }
         
     }
-    private async Task AddUnlistedUserOrgIfNeeded(string userId, string organizationId, ApplicationDbContext dbContext)
+    private async Task AddUnlistedUserOrgIfNeeded(string userId, int organizationId, ApplicationDbContext dbContext)
     {
         var userOrganization = await dbContext.UserOrganizations
             .Where(x => x.UserId == userId && x.OrganizationId == organizationId)
             .Select(x => x.OrganizationId)
             .FirstOrDefaultAsync();
-        if (userOrganization is null)
+        if (userOrganization == 0)
         {
             _logger.LogInformation("Adding missing userOrganization");
             await dbContext.UserOrganizations.AddAsync(new UserOrganization

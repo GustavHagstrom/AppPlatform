@@ -60,10 +60,8 @@ namespace BidConReport.Server.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
-                    b.Property<string>("OrganizationId")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                    b.Property<int>("OrganizationId")
+                        .HasColumnType("int");
 
                     b.Property<string>("QuickTags")
                         .IsRequired()
@@ -121,10 +119,8 @@ namespace BidConReport.Server.Migrations
                         .HasMaxLength(10)
                         .HasColumnType("nvarchar(10)");
 
-                    b.Property<string>("OrganizationId")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                    b.Property<int>("OrganizationId")
+                        .HasColumnType("int");
 
                     b.Property<string>("QuickTags")
                         .HasMaxLength(1000)
@@ -415,10 +411,8 @@ namespace BidConReport.Server.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
-                    b.Property<string>("OrganizationId")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                    b.Property<int>("OrganizationId")
+                        .HasColumnType("int");
 
                     b.Property<int>("PriceSectionId")
                         .HasColumnType("int");
@@ -550,10 +544,8 @@ namespace BidConReport.Server.Migrations
                     b.Property<int?>("DefaultReportTemplateId")
                         .HasColumnType("int");
 
-                    b.Property<string>("OrganizationId")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                    b.Property<int>("OrganizationId")
+                        .HasColumnType("int");
 
                     b.Property<string>("UserId")
                         .IsRequired()

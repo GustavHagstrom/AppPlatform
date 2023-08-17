@@ -23,9 +23,12 @@ public class ClaimsService_debug : IClaimsService
         {
             new ClaimDTO(ClaimTypes.Role, Role),
             new ClaimDTO(CustomClaimTypes.License, License ),
-            new ClaimDTO(CustomClaimTypes.CurrentOrganizatio, currentOrg.Id),
+            //new ClaimDTO(CustomClaimTypes.CurrentOrganization, currentOrg.Id),
         };
-
+        if (currentOrg is not null)
+        {
+            claims.Add(new ClaimDTO(CustomClaimTypes.CurrentOrganization, currentOrg.Id.ToString()));
+        }
         return claims;
     }
 }

@@ -8,8 +8,7 @@ public class ReportTemplateDto
     public int Id { get; set; }
     [StringLength(50, MinimumLength = 1)]
     public string Name { get; set; } = string.Empty;
-    [MaxLength(50)]
-    public string OrganizationId { get; set; } = string.Empty;
+    public int OrganizationId { get; set; }
     public int TopLeftHeaderId { get; set; }
     public HeaderDefinitionDto TopLeftHeader { get; set; } = new();
     public int TopRightHeaderId { get; set; }

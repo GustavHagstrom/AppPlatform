@@ -28,8 +28,6 @@ public class ClaimService : IClaimService
         {
             var roles = user.Roles
                 .Select(x => new ClaimDTO(ClaimTypes.Role, x.Name));
-            var orgs = user.Organizations
-                .Select(x => new ClaimDTO(CustomClaimTypes.OrganizationMemberOf, x.Id.ToString()));
             var licenses = user.Licenses
                 .Where(x => x.OrganizationId == user.CurrentOrganizationId && x.ApplicationName == claimsRequestBody.ApplicationName) 
                 .Select(x => new ClaimDTO(CustomClaimTypes.License, x.Id.ToString()));
@@ -37,10 +35,9 @@ public class ClaimService : IClaimService
             var currentOrgId = user.CurrentOrganizationId.ToString();
             if (currentOrgId is not null)
             {
-                claims.Add(new ClaimDTO(CustomClaimTypes.CurrentOrganizatio, currentOrgId));
+                claims.Add(new ClaimDTO(CustomClaimTypes.CurrentOrganization, currentOrgId));
             }
             claims.AddRange(roles);
-            claims.AddRange(orgs);
             claims.AddRange(licenses);
         }
         return claims;

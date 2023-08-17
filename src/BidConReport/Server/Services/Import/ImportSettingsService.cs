@@ -14,7 +14,7 @@ public class ImportSettingsService : IImportSettingsService
     {
         _dbContext = dbContext;
     }
-    public async Task<EstimationImportSettingsDto?> GetDefaultSettingsAsync(string userId, string organizationId)
+    public async Task<EstimationImportSettingsDto?> GetDefaultSettingsAsync(string userId, int organizationId)
     {
         var userOrg = await _dbContext.UserOrganizations
             .Where(x => x.UserId == userId && x.OrganizationId == organizationId)
@@ -30,7 +30,7 @@ public class ImportSettingsService : IImportSettingsService
             return userOrg.DefaultEstimationSettings.Adapt<EstimationImportSettingsDto>();
         }
     }
-    public async Task<ICollection<EstimationImportSettingsDto>> GetOrganizationSettingsAsync(string organizationId)
+    public async Task<ICollection<EstimationImportSettingsDto>> GetOrganizationSettingsAsync(int organizationId)
     {
         var settings = await _dbContext.EstimationImportSettings
             .Where(x => x.OrganizationId == organizationId)
@@ -59,7 +59,7 @@ public class ImportSettingsService : IImportSettingsService
             await _dbContext.SaveChangesAsync();
         }
     }
-    public async Task SetAsUserDefault(string userId, string organizationId, int? settingsId)
+    public async Task SetAsUserDefault(string userId, int organizationId, int? settingsId)
     {
         var userOrg = await _dbContext.UserOrganizations
             .FirstOrDefaultAsync(x => x.UserId == userId && x.OrganizationId == organizationId);

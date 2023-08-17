@@ -9,8 +9,7 @@ public class UserOrganization
     [StringLength(50)]
     public required string UserId { get; set; }
     public User? User { get; set; }
-    [StringLength(50)]
-    public required string OrganizationId { get; set; }
+    public int OrganizationId { get; set; }
     public int? DefaultEstimationSettingsId { get; set; }
     public EstimationImportSettings? DefaultEstimationSettings { get; set; }
     public int? DefaultReportTemplateId { get; set; }

@@ -5,8 +5,7 @@ namespace BidConReport.Server.Enteties;
 public class EstimationImportSettings
 {
     public int Id { get; set; }
-    [MaxLength(50)]
-    public required string OrganizationId { get; set; }
+    public int OrganizationId { get; set; }
     [MaxLength(30)]
     public required string Name { get; set; }
     [MaxLength(10)]

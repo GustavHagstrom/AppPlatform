@@ -10,8 +10,7 @@ public class Estimation
     public required Guid Id { get; set; }
     [MaxLength(50)]
     public required string BidConId { get; set; }
-    [MaxLength(50)]
-    public required string OrganizationId { get; set; }
+    public int OrganizationId { get; set; }
     [MaxLength(50)]
     public required string Name { get; set; }
     [MaxLength(50)]
