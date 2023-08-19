@@ -1,6 +1,7 @@
 ﻿namespace BidConReport.DirectAccess.Enums;
 internal enum SheetTypes
 {
-    LockedStage = 64,
-
+    NetSheet = 1,
+    ReconciliationSheet = 16,
+    LockedStageSheet = 64,
 }

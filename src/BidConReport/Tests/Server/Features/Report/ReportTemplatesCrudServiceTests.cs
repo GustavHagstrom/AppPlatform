@@ -1,8 +1,7 @@
 ﻿using BidConReport.Server.Data;
+using BidConReport.Server.Enteties;
 using BidConReport.Server.Enteties.Report;
 using BidConReport.Server.Services.Report;
-using BidConReport.Server.Shared.Enteties;
-using BidConReport.Shared.DTOs.ReportTemplate;
 using Microsoft.EntityFrameworkCore;
 
 namespace BidconReport.Tests.Server.Features.Report;
