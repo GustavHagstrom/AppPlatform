@@ -5,7 +5,7 @@ using Microsoft.Data.SqlClient;
 using System.Data;
 
 namespace BidConReport.DirectAccess.Services;
-public class EstimationQueryService
+public class EstimationQueryService : IEstimationQueryService
 {
     private readonly string _connectionString;
 
@@ -17,7 +17,7 @@ public class EstimationQueryService
     {
         var sql = @"
 SELECT EstimationID, Name, Description, Customer, Place, HandlingOfficer, ConfirmationOfficer, IsLocked, FolderNum FROM Estimation WHERE EstimationId = @Id;
-SELECT EstimationID, LayerID, RowNum as Row, FatherRowNum as ParentRow, RowDescription as Description, Remark, Quantity, Unit, Quantity * UnitPriceManual as Cost, Active as IsActive, RowType, LayerType FROM EstimationSheet WHERE EstimationID = @Id;
+SELECT EstimationID, LayerID, RowNum as Row, FatherRowNum as ParentRow, RowDescription as Description, Remark, Quantity, Unit, Active as IsActive, RowType, SheetType, LayerType FROM EstimationSheet WHERE EstimationID = @Id;
 SELECT ID, EstimationID, LayerID, IsActive, Cons, LayerType FROM MELayer WHERE EstimationID = @Id;
 SELECT ID, EstimationID, Unit FROM DE WHERE EstimationID = @Id;
 SELECT ID, EstimationID, LayerID, IsActive, Cons FROM DELayer WHERE EstimationID = @Id;
@@ -25,7 +25,7 @@ SELECT ID, EstimationID, Unit FROM PR WHERE EstimationID = @Id;
 SELECT ID, EstimationID, LayerID, IsActive, Cons, ConsFactor, Waste FROM PRLayer WHERE EstimationID = @Id;
 SELECT ID, EstimationID, Unit, Price FROM Resource WHERE EstimationID = @Id;
 ";
-        using(IDbConnection cnn = new SqlConnection(_connectionString))
+        using (IDbConnection cnn = new SqlConnection(_connectionString))
         {
             using (var multi = await cnn.QueryMultipleAsync(sql, new { Id = estimationId.ToString() }))
             {
@@ -38,13 +38,13 @@ SELECT ID, EstimationID, Unit, Price FROM Resource WHERE EstimationID = @Id;
                 var workResultLayers = await multi.ReadAsync<WorkResultLayerResult>();
                 var resources = await multi.ReadAsync<ResourceResult>();
                 return new EstimationBatch(
-                    estimation, 
-                    sheets.ToList(), 
-                    mixedLayers.ToList(), 
-                    designElements.ToList(), 
-                    designElementLayers.ToList(), 
-                    workResults.ToList(), 
-                    workResultLayers.ToList(), 
+                    estimation,
+                    sheets.ToList(),
+                    mixedLayers.ToList(),
+                    designElements.ToList(),
+                    designElementLayers.ToList(),
+                    workResults.ToList(),
+                    workResultLayers.ToList(),
                     resources.ToList());
             }
         }
