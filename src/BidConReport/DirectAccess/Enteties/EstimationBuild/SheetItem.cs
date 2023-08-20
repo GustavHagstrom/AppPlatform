@@ -17,6 +17,7 @@ public class SheetItem
     public double? Quantity { get; set; }
     public string? Unit { get; set; }
     public double? UnitCost {get;set; }
+    public double? TotalCost { get; set; }
     public bool IsActive { get; set; }
     public RowType RowType { get; set; }
     public LayerType LayerType { get; set; }

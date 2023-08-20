@@ -23,7 +23,7 @@ SELECT ID, EstimationID, Unit FROM DE WHERE EstimationID = @Id;
 SELECT ID, EstimationID, LayerID, IsActive, Cons FROM DELayer WHERE EstimationID = @Id;
 SELECT ID, EstimationID, Unit FROM PR WHERE EstimationID = @Id;
 SELECT ID, EstimationID, LayerID, IsActive, Cons, ConsFactor, Waste FROM PRLayer WHERE EstimationID = @Id;
-SELECT ID, EstimationID, Unit, Price FROM Resource WHERE EstimationID = @Id;
+SELECT ID, EstimationID, Description, Unit, Price FROM Resource WHERE EstimationID = @Id;
 ";
         using (IDbConnection cnn = new SqlConnection(_connectionString))
         {

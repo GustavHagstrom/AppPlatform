@@ -59,42 +59,58 @@ public class EstimationBuilder
 
         //return map.First(x => x.Value.ParentRow < 0).Value;
     }
-    private void SetCost(SheetItem item, EstimationBatch batch)
+    private double? SetCost(SheetItem item, EstimationBatch batch)
     {
         switch (item.LayerType)
         {
             case LayerType.None:
+                //foreach (var child in item.SheetItems)
+                //{
+                //    SetCost(child, batch);
+                //}
+                //var childCostSum = item.SheetItems.Sum(x => x.Quantity is null ? x.UnitCost * 1 : x.UnitCost * x.Quantity);
+                //item.UnitCost = childCostSum;
                 foreach (var child in item.SheetItems)
                 {
                     SetCost(child, batch);
                 }
-                var childCostSum = item.SheetItems.Sum(x => x.Quantity is null ? x.UnitCost * 1 : x.UnitCost * x.Quantity);
-                item.UnitCost = childCostSum;
+                item.UnitCost = item.SheetItems.Where(x => x.IsActive).Sum(x => x.TotalCost);
+                item.TotalCost = item.UnitCost * (item.Quantity is null ? 1 : item.Quantity);
                 break;
             case LayerType.WorkResult:
                 item.UnitCost = GetWorkResultLayerCost(batch, item.LayerId);
+                item.TotalCost = item.UnitCost * item.Quantity;
                 break;
             case LayerType.DesignElement:
+                if (item.Description == "Nedpendlat undertak med system av stålprofiler till undersida betongbjälklag")
+                {
+                    var a = 0;
+                }
                 item.UnitCost = GetDesignElementLayerCost(batch, item.LayerId);
+                item.TotalCost = item.UnitCost * item.Quantity;
                 break;
             case LayerType.MixedElement:
                 item.UnitCost = GetMixedElementLayerCost(batch, item.LayerId);
+                item.TotalCost = item.UnitCost * item.Quantity;
                 break;
         }
+        return item.TotalCost;
     }
     private double GetMixedElementLayerCost(EstimationBatch batch, string layerId)
     {
         double sum = 0;
-        var layerItem = batch.MELayer.Where(x => x.Id == layerId);
+        var layerItem = batch.MELayer.Where(x => x.Id == layerId && x.IsActive).ToList();
         foreach (var item in layerItem)
         {
             if (item.LayerType == (int)LayerType.DesignElement)
             {
-                sum += GetDesignElementLayerCost(batch, item.LayerId) * item.Cons;
+                var cost = GetDesignElementLayerCost(batch, item.LayerId);
+                sum += cost * item.Cons;
             }
             else if(item.LayerType == (int)LayerType.WorkResult)
             {
-                sum += GetWorkResultLayerCost(batch, item.LayerId) * item.Cons;
+                var cost = GetWorkResultLayerCost(batch, item.LayerId);
+                sum += cost * item.Cons;
             }
         }
         return sum;
@@ -102,20 +118,23 @@ public class EstimationBuilder
     private double GetDesignElementLayerCost(EstimationBatch batch, string layerId)
     {
         double sum = 0;
-        var layerItem = batch.DELayer.Where(x => x.Id == layerId);
+        var layerItem = batch.DELayer.Where(x => x.Id == layerId && x.IsActive).ToList();
         foreach (var item in layerItem)
         {
-            sum += GetWorkResultLayerCost(batch, item.LayerId) * item.Cons;
+            var cost = GetWorkResultLayerCost(batch, item.LayerId);
+            sum += cost * item.Cons;
         }
         return sum;
     }
     private double GetWorkResultLayerCost(EstimationBatch batch, string layerId)
     {
         double sum = 0;
-        var layerItem = batch.WRLayer.Where(x => x.Id == layerId);
+        var layerItem = batch.WRLayer.Where(x => x.Id == layerId && x.IsActive).ToList();
         foreach (var item in layerItem)
         {
-            sum += batch.Resource.Single(x => x.Id == item.LayerId).Price * item.Cons * item.ConsFactor * (1 + (item.Waste / 100));
+            var resource = batch.Resource.Single(x => x.Id == item.LayerId);
+            var cost = resource.Price * item.Cons * item.ConsFactor * (1 + (item.Waste / 100.0));
+            sum += cost;
         }
         return sum;
     }
