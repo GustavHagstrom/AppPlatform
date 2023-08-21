@@ -2,8 +2,11 @@
 using BidConReport.Server.Enteties;
 using BidConReport.Server.Enteties.Report;
 using BidConReport.Server.Services.Report;
+<<<<<<< HEAD
 using BidConReport.Shared.DTOs.ReportTemplate;
 using Mapster;
+=======
+>>>>>>> 866fa7baa79a3b8dd6e60e7162eb4271f58c873c
 using Microsoft.EntityFrameworkCore;
 
 namespace BidconReport.Tests.Server.Features.Report;

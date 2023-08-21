@@ -1,17 +1,16 @@
-﻿using BidConReport.Shared.DTOs;
-using Syncfusion.DocIO.DLS;
-
-namespace BidConReport.Shared.DTOs;
-public class DbFolderDTO
+﻿namespace BidConReport.DirectAccess.Enteties;
+public class DbFolder
 {
+    public int FolderNum { get; set; }
+    public int ParentNum { get; set; }
     public required string Name { get; set; }
-    public required ICollection<DbFolderDTO> SubFolders { get; set; }
-    public required ICollection<DbEstimationDTO> DbEstimations { get; set; }
-    public IEnumerable<DbEstimationDTO> GetAllEstimations()
+    public required ICollection<DbFolder> SubFolders { get; set; }
+    public required ICollection<DbEstimation> DbEstimations { get; set; }
+    public IEnumerable<DbEstimation> GetAllEstimations()
     {
         return GetAllEstimations(this);
     }
-    private IEnumerable<DbEstimationDTO> GetAllEstimations(DbFolderDTO folder)
+    private IEnumerable<DbEstimation> GetAllEstimations(DbFolder folder)
     {
         foreach (var subFolder in folder.SubFolders)
         {

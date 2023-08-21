@@ -17,6 +17,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BidconReport.Tests", "Tests
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SharedPlatformLibrary", "..\SharedPlatformLibrary\SharedPlatformLibrary.csproj", "{0D2A8C0B-8C02-426B-8708-515452C220EB}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BidConReport.DirectAccess", "DirectAccess\BidConReport.DirectAccess.csproj", "{49D45D48-8221-438B-B52E-43667B2796E8}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -51,6 +53,10 @@ Global
 		{0D2A8C0B-8C02-426B-8708-515452C220EB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0D2A8C0B-8C02-426B-8708-515452C220EB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0D2A8C0B-8C02-426B-8708-515452C220EB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{49D45D48-8221-438B-B52E-43667B2796E8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{49D45D48-8221-438B-B52E-43667B2796E8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{49D45D48-8221-438B-B52E-43667B2796E8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{49D45D48-8221-438B-B52E-43667B2796E8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
