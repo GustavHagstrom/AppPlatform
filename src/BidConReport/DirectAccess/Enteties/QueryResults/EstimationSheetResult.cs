@@ -13,4 +13,6 @@ public class EstimationSheetResult
     public int RowType { get; set; }
     public int SheetType { get; set; }
     public int? LayerType { get; set; }
+    public int Version { get; set; }
+    public string? RevisionCode { get; set; }
 }

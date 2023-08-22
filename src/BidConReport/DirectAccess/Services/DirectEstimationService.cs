@@ -32,8 +32,8 @@ public class DirectEstimationService : IDirectEstimationService
     private SheetItem CreateSheetTree(EstimationBatch batch, SheetTypes sheetType)
     {
         Dictionary<int, SheetItem> map = new Dictionary<int, SheetItem>();
-
-        foreach (var item in batch.Sheet.Where(x => x.SheetType == (int)sheetType).OrderBy(x => x.Row))
+        var items = batch.Sheet.Where(x => x.SheetType == (int)sheetType && x.Version == batch.Estimation.CurrentVersion).OrderBy(x => x.Row);
+        foreach (var item in items)
         {
             var node = CreateSheetItem(item);
             map[item.Row] = node;
@@ -80,8 +80,8 @@ public class DirectEstimationService : IDirectEstimationService
     private double GetMixedElementLayerCost(EstimationBatch batch, string layerId)
     {
         double sum = 0;
-        var layerItem = batch.MELayer.Where(x => x.Id == layerId && x.IsActive).ToList();
-        foreach (var item in layerItem)
+        var layerItems = batch.MELayer.Where(x => x.Id == layerId && x.IsActive && x.Version == batch.Estimation.CurrentVersion).ToList();
+        foreach (var item in layerItems)
         {
             if (item.LayerType == (int)LayerType.DesignElement)
             {
@@ -99,8 +99,8 @@ public class DirectEstimationService : IDirectEstimationService
     private double GetDesignElementLayerCost(EstimationBatch batch, string layerId)
     {
         double sum = 0;
-        var layerItem = batch.DELayer.Where(x => x.Id == layerId && x.IsActive).ToList();
-        foreach (var item in layerItem)
+        var layerItems = batch.DELayer.Where(x => x.Id == layerId && x.IsActive && x.Version == batch.Estimation.CurrentVersion).ToList();
+        foreach (var item in layerItems)
         {
             var cost = GetWorkResultLayerCost(batch, item.LayerId);
             sum += cost * item.Cons;
@@ -110,10 +110,10 @@ public class DirectEstimationService : IDirectEstimationService
     private double GetWorkResultLayerCost(EstimationBatch batch, string layerId)
     {
         double sum = 0;
-        var layerItem = batch.WRLayer.Where(x => x.Id == layerId && x.IsActive).ToList();
-        foreach (var item in layerItem)
+        var layerItems = batch.WRLayer.Where(x => x.Id == layerId && x.IsActive && x.Version == batch.Estimation.CurrentVersion).ToList();
+        foreach (var item in layerItems)
         {
-            var resource = batch.Resource.Single(x => x.Id == item.LayerId);
+            var resource = batch.Resource.Single(x => x.Id == item.LayerId && x.Version == batch.Estimation.CurrentVersion);
             var cost = resource.Price * item.Cons * item.ConsFactor * (1 + (item.Waste / 100.0));
             sum += cost;
         }

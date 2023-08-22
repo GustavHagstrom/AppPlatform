@@ -11,4 +11,5 @@ public class WorkResultLayerResult
     public double Cons { get; set; }
     public double ConsFactor { get; set; }
     public int Waste { get; set; }
+    public int Version { get; set; }
 }

@@ -1,7 +1,7 @@
 ﻿using System.Security.Cryptography;
 
 namespace BidConReport.DirectAccess.Services;
-internal class ConnectionStringBuilder : IConnectionStringBuilder
+public class ConnectionStringBuilder : IConnectionStringBuilder
 {
     private readonly byte[] ENCRYPTION_KEY = new byte[8] { 45, 103, 246, 79, 36, 99, 167, 3 };
     private readonly IDatabaseCredentialsService _databaseCredentialsService;
@@ -13,9 +13,15 @@ internal class ConnectionStringBuilder : IConnectionStringBuilder
     public async Task<string> BuildAsync()
     {
         var credentials = await _databaseCredentialsService.GetAsync();
-        var password = Decrypt(credentials.PwHash);
-        var security = credentials.ServerAuthentication ? $"uid={credentials.User};pwd={password}" : "Integrated security=true";
-        return $"Data Source={credentials.Server};Initial Catalog={credentials.Databse}; Connect Timeout = 60;{security}";
+        if (credentials.ServerAuthentication)
+        {
+            var password = Decrypt(credentials.PwHash);
+            return $"Data Source={credentials.Server};Initial Catalog={credentials.Databse}; Connect Timeout = 60;uid={credentials.User};pwd={password};TrustServerCertificate=True";
+        }
+        else
+        {
+            return $"Data Source={credentials.Server};Initial Catalog={credentials.Databse}; Connect Timeout = 60;Integrated security=true;TrustServerCertificate=True";
+        }
     }
 
     private string Decrypt(string encryptedPassword)

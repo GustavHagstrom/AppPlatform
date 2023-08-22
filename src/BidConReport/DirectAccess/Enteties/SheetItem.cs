@@ -1,10 +1,4 @@
-﻿using BidConReport.DirectAccess.Enteties.EstimationBuild.SheetItems;
-using BidConReport.DirectAccess.Enums;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using BidConReport.DirectAccess.Enums;
 
 namespace BidConReport.DirectAccess.Enteties;
 public class SheetItem

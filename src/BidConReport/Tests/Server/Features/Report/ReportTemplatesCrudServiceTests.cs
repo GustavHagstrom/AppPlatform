@@ -2,11 +2,8 @@
 using BidConReport.Server.Enteties;
 using BidConReport.Server.Enteties.Report;
 using BidConReport.Server.Services.Report;
-<<<<<<< HEAD
 using BidConReport.Shared.DTOs.ReportTemplate;
 using Mapster;
-=======
->>>>>>> 866fa7baa79a3b8dd6e60e7162eb4271f58c873c
 using Microsoft.EntityFrameworkCore;
 
 namespace BidconReport.Tests.Server.Features.Report;
@@ -16,7 +13,8 @@ public class ReportTemplatesCrudServiceTests
     private TestDbContext _dbContext;
     private ReportTemplatesService _service;
     private readonly string _userId = "userId";
-    private readonly string _orgId = "orgId";
+    //private readonly string _orgId = "orgId";
+    private readonly int _orgId = 1;
 
     [SetUp]
     public void Setup()
@@ -31,12 +29,12 @@ public class ReportTemplatesCrudServiceTests
         _dbContext.UserOrganizations.Add(new UserOrganization { OrganizationId = _orgId, UserId = _userId, DefaultReportTemplateId = 1 });
         _dbContext.ReportTemplates.Add(SampleTemaplte(1, "Default", _orgId).Adapt<ReportTemplate>());
         _dbContext.ReportTemplates.Add(SampleTemaplte(2, "Option", _orgId).Adapt<ReportTemplate>());
-        _dbContext.ReportTemplates.Add(SampleTemaplte(3, "OtherOrgTemplate", "orgId2").Adapt<ReportTemplate>());
+        _dbContext.ReportTemplates.Add(SampleTemaplte(3, "OtherOrgTemplate", 2).Adapt<ReportTemplate>());
         _dbContext.SaveChanges();
 
         _service = new ReportTemplatesService(_dbContext);
     }
-    private ReportTemplateDto SampleTemaplte(int id, string name, string orgId)
+    private ReportTemplateDto SampleTemaplte(int id, string name, int orgId)
     {
         return new ReportTemplateDto
         {

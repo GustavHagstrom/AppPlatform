@@ -1,6 +1,6 @@
 ﻿namespace BidConReport.DirectAccess.Services;
 
-internal interface IConnectionStringBuilder
+public interface IConnectionStringBuilder
 {
     Task<string> BuildAsync();
 }

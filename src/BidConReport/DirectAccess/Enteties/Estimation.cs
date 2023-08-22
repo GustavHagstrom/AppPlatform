@@ -1,7 +1,4 @@
-﻿using BidConReport.DirectAccess.Enteties.EstimationBuild.SheetItems;
-using System.Collections.Generic;
-
-namespace BidConReport.DirectAccess.Enteties;
+﻿namespace BidConReport.DirectAccess.Enteties;
 public class Estimation
 {
     public Guid EstimationId { get; set; }
