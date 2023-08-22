@@ -31,7 +31,7 @@ public class EstimationQueryService : IEstimationQueryService
     public async Task<EstimationBatch> GetEstimationBatchAsync(string estimationId)
     {
         var sql = @"
-SELECT EstimationID, Name, Description, Customer, Place, HandlingOfficer, ConfirmationOfficer, IsLocked, FolderNum, CurrentVersion FROM Estimation WHERE EstimationId = @Id;
+SELECT E.EstimationID, E.Name, E.Description, E.Customer, E.Place, E.HandlingOfficer, E.ConfirmationOfficer, E.IsLocked, E.FolderNum, E.CurrentVersion, EV.EstCurrency as Currency FROM Estimation AS E LEFT JOIN EstimationVersion AS EV ON E.EstimationID = EV.EstimationID and E.CurrentVersion = EV.Version WHERE E.EstimationId = @Id;
 SELECT EstimationID, LayerID, RowNum as Row, FatherRowNum as ParentRow, RowDescription as Description, Remark, Quantity, Unit, Active as IsActive, RowType, SheetType, LayerType, Version, RevisionCode FROM EstimationSheet WHERE EstimationID = @Id;
 SELECT ID, EstimationID, LayerID, IsActive, Cons, LayerType, Version FROM MELayer WHERE EstimationID = @Id;
 SELECT ID, EstimationID, LayerID, IsActive, Cons, Version FROM DELayer WHERE EstimationID = @Id;
@@ -61,7 +61,7 @@ SELECT ID, EstimationID, Description, Unit, Price, Version FROM Resource WHERE E
     public async Task<IEnumerable<EstimationBatch>> GetEstimationBatchesAsync(IEnumerable<string> estimationIds)
     {
         var sql = @"
-SELECT EstimationID, Name, Description, Customer, Place, HandlingOfficer, ConfirmationOfficer, IsLocked, FolderNum, CurrentVersion FROM Estimation WHERE EstimationId IN @Ids;
+SELECT E.EstimationID, E.Name, E.Description, E.Customer, E.Place, E.HandlingOfficer, E.ConfirmationOfficer, E.IsLocked, E.FolderNum, E.CurrentVersion, EV.EstCurrency as Currency FROM Estimation AS E LEFT JOIN EstimationVersion AS EV ON E.EstimationID = EV.EstimationID and E.CurrentVersion = EV.Version WHERE E.EstimationId = @Id;
 SELECT EstimationID, LayerID, RowNum as Row, FatherRowNum as ParentRow, RowDescription as Description, Remark, Quantity, Unit, Active as IsActive, RowType, SheetType, LayerType, Version, RevisionCode FROM EstimationSheet WHERE EstimationID IN @Ids;
 SELECT ID, EstimationID, LayerID, IsActive, Cons, LayerType, Version FROM MELayer WHERE EstimationID IN @Ids;
 SELECT ID, EstimationID, LayerID, IsActive, Cons, Version FROM DELayer WHERE EstimationID IN @Ids;

@@ -1,6 +1,7 @@
 ﻿using BidConReport.DirectAccess.Enteties;
 using BidConReport.DirectAccess.Enteties.QueryResults;
 using BidConReport.DirectAccess.Enums;
+using Syncfusion.Compression.Zip;
 
 namespace BidConReport.DirectAccess.Services;
 public class DirectEstimationService : IDirectEstimationService
@@ -15,7 +16,19 @@ public class DirectEstimationService : IDirectEstimationService
     {
         var batch = await _queryService.GetEstimationBatchAsync(estimationId);
         var netSheet = CreateSheet(batch, SheetTypes.NetSheet);
-        throw new NotImplementedException();
+        var estimation = new Estimation
+        {
+            Name = batch.Estimation.Name,
+            Description = batch.Estimation.Description,
+            Customer = batch.Estimation.Customer,
+            HandlingOfficer = batch.Estimation.HandlingOfficer,
+            ConfirmationOfficer = batch.Estimation.ConfirmationOfficer,
+            EstimationId = batch.Estimation.EstimationID,
+            Place = batch.Estimation.Place,
+            IsLocked = batch.Estimation.IsLocked,
+            NetSheet = netSheet,
+        };
+        return estimation;
     }
     public async Task<IEnumerable<Estimation>> GetEstimationsAsync(IEnumerable<string> estimationIds)
     {

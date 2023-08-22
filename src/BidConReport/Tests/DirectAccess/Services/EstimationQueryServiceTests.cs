@@ -6,15 +6,9 @@ public class EstimationQueryServiceTests
 {
     private class CredProvider : IDatabaseCredentialsService
     {
-        //public string Get()
-        //{
-        //    //return "Data Source=RHUSAPP02\\ELECOSOFT;Initial Catalog=BidConEstimation;Connect Timeout = 10;uid=sa;pwd=Putlig@15;TrustServerCertificate=True";
-        //    return "Data Source=(localdb)\\MSSQLLocalDB;Initial Catalog=BidconEstimationDB;Integrated Security=True;Connect Timeout=5;Encrypt=False;Trust Server Certificate=False;Application Intent=ReadWrite;Multi Subnet Failover=False";
-        //}
-
         public async Task<DatabaseCredentials> GetAsync()
         {
-            //return await Task.FromResult(new DatabaseCredentials("MSSQLLocalDB", "BidconEstimationDB", "user", "someHshe", false));
+            return await Task.FromResult(new DatabaseCredentials("(localdb)\\MSSQLLocalDB", "BidconEstimation", "user", "someHash", false));
             return await Task.FromResult(new DatabaseCredentials("RHUSAPP02\\ELECOSOFT", "BidConEstimation", "sa", "VX3EEWKNQrrBQp+52Ct5Gw==", true));
         }
     }

@@ -11,4 +11,5 @@ public class EstimationResult
     public bool IsLocked { get; set; }
     public int FolderNum { get; set; }
     public int CurrentVersion { get; set; }
+    public required string Currency { get; set; }
 }

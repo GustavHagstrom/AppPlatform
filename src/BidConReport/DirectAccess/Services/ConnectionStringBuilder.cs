@@ -20,7 +20,7 @@ public class ConnectionStringBuilder : IConnectionStringBuilder
         }
         else
         {
-            return $"Data Source={credentials.Server};Initial Catalog={credentials.Databse}; Connect Timeout = 60;Integrated security=true;TrustServerCertificate=True";
+            return $"Data Source={credentials.Server};Initial Catalog={credentials.Databse}; Connect Timeout = 60;Integrated security=true;TrustServerCertificate=True;Encrypt=False;Multi Subnet Failover=False";
         }
     }
 
