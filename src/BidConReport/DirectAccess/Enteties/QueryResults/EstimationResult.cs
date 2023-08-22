@@ -12,4 +12,5 @@ public class EstimationResult
     public int FolderNum { get; set; }
     public int CurrentVersion { get; set; }
     public required string Currency { get; set; }
+    //Add ObjecFactor, TenderTotal
 }

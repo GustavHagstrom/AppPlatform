@@ -101,7 +101,6 @@ SELECT ID, EstimationID, Description, Unit, Price, Version FROM Resource WHERE E
                         resources));
                     }
                 }
-
                 return batches;
             }
         }
