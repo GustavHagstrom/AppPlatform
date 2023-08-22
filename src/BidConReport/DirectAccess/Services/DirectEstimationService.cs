@@ -15,6 +15,24 @@ public class DirectEstimationService : IDirectEstimationService
     public async Task<Estimation> GetEstimationAsync(string estimationId)
     {
         var batch = await _queryService.GetEstimationBatchAsync(estimationId);
+        return BuildEstimation(batch);
+    }
+    public async Task<IEnumerable<Estimation>> GetEstimationsAsync(IEnumerable<string> estimationIds)
+    {
+        var batches = await _queryService.GetEstimationBatchesAsync(estimationIds);
+        var estimations = new List<Estimation>();
+
+        foreach (var batch in batches)
+        {
+            var estimation = BuildEstimation(batch);
+            estimations.Add(estimation);
+        }
+
+        return estimations;
+
+    }
+    private Estimation BuildEstimation(EstimationBatch batch)
+    {
         var netSheet = CreateSheet(batch, SheetTypes.NetSheet);
         var estimation = new Estimation
         {
@@ -30,12 +48,6 @@ public class DirectEstimationService : IDirectEstimationService
         };
         return estimation;
     }
-    public async Task<IEnumerable<Estimation>> GetEstimationsAsync(IEnumerable<string> estimationIds)
-    {
-        var batches = await _queryService.GetEstimationBatchesAsync(estimationIds);
-        throw new NotImplementedException();
-    }
-
     private SheetItem CreateSheet(EstimationBatch batch, SheetTypes sheetType)
     {
         var root = CreateSheetTree(batch, sheetType);
