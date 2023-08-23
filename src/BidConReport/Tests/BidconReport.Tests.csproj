@@ -25,7 +25,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Client\BidConReport.Client.csproj" />
-    <ProjectReference Include="..\DirectAccess\BidConReport.DirectAccess.csproj" />
+    <ProjectReference Include="..\DirectAccess\BidConReport.BidconDatabaseAccess.csproj" />
     <ProjectReference Include="..\Server\BidConReport.Server.csproj" />
     <ProjectReference Include="..\Shared\BidConReport.Shared.csproj" />
   </ItemGroup>

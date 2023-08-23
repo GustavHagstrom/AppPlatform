@@ -8,7 +8,7 @@ public class EstimationQueryServiceTests
     {
         public async Task<DatabaseCredentials> GetAsync()
         {
-            return await Task.FromResult(new DatabaseCredentials("(localdb)\\MSSQLLocalDB", "BidconEstimation", "user", "someHash", false));
+            //return await Task.FromResult(new DatabaseCredentials("(localdb)\\MSSQLLocalDB", "BidconEstimation", "user", "someHash", false));
             return await Task.FromResult(new DatabaseCredentials("RHUSAPP02\\ELECOSOFT", "BidConEstimation", "sa", "VX3EEWKNQrrBQp+52Ct5Gw==", true));
         }
     }

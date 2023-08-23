@@ -6,5 +6,5 @@ public class ResourceResult
     public Guid EstimationId { get; set; }
     public required string Unit { get; set; }
     public double Price { get; set; }
-    public int Version { get; set; }
+    //public int Version { get; set; }
 }

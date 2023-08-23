@@ -48,7 +48,8 @@ public class DirectEstimationService : IDirectEstimationService
     private SheetItem CreateSheetTree(EstimationBatch batch, SheetTypes sheetType)
     {
         Dictionary<int, SheetItem> map = new Dictionary<int, SheetItem>();
-        var items = batch.Sheet.Where(x => x.SheetType == (int)sheetType && x.Version == batch.Estimation.CurrentVersion).OrderBy(x => x.Row);
+        //var items = batch.Sheet.Where(x => x.SheetType == (int)sheetType && x.Version == batch.Estimation.CurrentVersion).OrderBy(x => x.Row);
+        var items = batch.Sheet.Where(x => x.SheetType == (int)sheetType).OrderBy(x => x.Row);
         foreach (var item in items)
         {
             var node = CreateSheetItem(item);
@@ -104,7 +105,8 @@ public class DirectEstimationService : IDirectEstimationService
     private double GetMixedElementLayerCost(EstimationBatch batch, string layerId)
     {
         double sum = 0;
-        var layerItems = batch.MELayer.Where(x => x.Id == layerId && x.IsActive && x.Version == batch.Estimation.CurrentVersion).ToList();
+        //var layerItems = batch.MELayer.Where(x => x.Id == layerId && x.IsActive && x.Version == batch.Estimation.CurrentVersion).ToList();
+        var layerItems = batch.MELayer.Where(x => x.Id == layerId).ToList();
         foreach (var item in layerItems)
         {
             if (item.LayerType == (int)LayerType.DesignElement)
@@ -123,7 +125,8 @@ public class DirectEstimationService : IDirectEstimationService
     private double GetDesignElementLayerCost(EstimationBatch batch, string layerId)
     {
         double sum = 0;
-        var layerItems = batch.DELayer.Where(x => x.Id == layerId && x.IsActive && x.Version == batch.Estimation.CurrentVersion).ToList();
+        //var layerItems = batch.DELayer.Where(x => x.Id == layerId && x.IsActive && x.Version == batch.Estimation.CurrentVersion).ToList();
+        var layerItems = batch.DELayer.Where(x => x.Id == layerId).ToList();
         foreach (var item in layerItems)
         {
             var cost = GetWorkResultLayerCost(batch, item.LayerId);
@@ -134,10 +137,12 @@ public class DirectEstimationService : IDirectEstimationService
     private double GetWorkResultLayerCost(EstimationBatch batch, string layerId)
     {
         double sum = 0;
-        var layerItems = batch.WRLayer.Where(x => x.Id == layerId && x.IsActive && x.Version == batch.Estimation.CurrentVersion).ToList();
+        //var layerItems = batch.WRLayer.Where(x => x.Id == layerId && x.IsActive && x.Version == batch.Estimation.CurrentVersion).ToList();
+        var layerItems = batch.WRLayer.Where(x => x.Id == layerId && x.IsActive).ToList();
         foreach (var item in layerItems)
         {
-            var resource = batch.Resource.Single(x => x.Id == item.LayerId && x.Version == batch.Estimation.CurrentVersion);
+            //var resource = batch.Resource.Single(x => x.Id == item.LayerId && x.Version == batch.Estimation.CurrentVersion);
+            var resource = batch.Resource.Single(x => x.Id == item.LayerId);
             var cost = resource.Price * item.Cons * item.ConsFactor * (1 + (item.Waste / 100.0));
             sum += cost;
         }

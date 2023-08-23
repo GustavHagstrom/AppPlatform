@@ -10,5 +10,5 @@ public class MixedElementLayerResult
     /// </summary>
     public double Cons { get; set; }
     public int LayerType { get; set; }
-    public int Version { get; set; }
+    //public int Version { get; set; }
 }

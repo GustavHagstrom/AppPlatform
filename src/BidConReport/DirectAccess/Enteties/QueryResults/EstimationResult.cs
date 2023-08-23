@@ -10,7 +10,7 @@ public class EstimationResult
     public string? ConfirmationOfficer { get; set; }
     public bool IsLocked { get; set; }
     public int FolderNum { get; set; }
-    public int CurrentVersion { get; set; }
+    //public int CurrentVersion { get; set; }
     public required string Currency { get; set; }
     //Add ObjecFactor, TenderTotal
 }

@@ -21,7 +21,7 @@ public class EstimationQueryService : IEstimationQueryService
         {
             return _connectionString!;
         }
-        else
+        else //SELECT EstimationID, ResourceType, Factor FROM ResourceFactors WHERE EstimationID = @Id AND Version = (SELECT CurrentVersion FROM Estimation WHERE EstimationID = @Id);
         {
             _isInitialized = true;
             _connectionString = await _connectionStringBuilder.BuildAsync();
@@ -32,12 +32,13 @@ public class EstimationQueryService : IEstimationQueryService
     {
         //TODO add ResourceFactor, ATA, ATAFactors
         var sql = @"
-SELECT E.EstimationID, E.Name, E.Description, E.Customer, E.Place, E.HandlingOfficer, E.ConfirmationOfficer, E.IsLocked, E.FolderNum, E.CurrentVersion, EV.EstCurrency as Currency FROM Estimation AS E LEFT JOIN EstimationVersion AS EV ON E.EstimationID = EV.EstimationID and E.CurrentVersion = EV.Version WHERE E.EstimationId = @Id;
-SELECT EstimationID, LayerID, RowNum as Row, FatherRowNum as ParentRow, RowDescription as Description, Remark, Quantity, Unit, Active as IsActive, RowType, SheetType, LayerType, Version, RevisionCode FROM EstimationSheet WHERE EstimationID = @Id;
-SELECT ID, EstimationID, LayerID, IsActive, Cons, LayerType, Version FROM MELayer WHERE EstimationID = @Id;
-SELECT ID, EstimationID, LayerID, IsActive, Cons, Version FROM DELayer WHERE EstimationID = @Id;
-SELECT ID, EstimationID, LayerID, IsActive, Cons, ConsFactor, Waste, Version FROM PRLayer WHERE EstimationID = @Id;
-SELECT ID, EstimationID, Description, Unit, Price, Version FROM Resource WHERE EstimationID = @Id;
+SELECT E.EstimationID, E.Name, E.Description, E.Customer, E.Place, E.HandlingOfficer, E.ConfirmationOfficer, E.IsLocked, E.FolderNum, EV.EstCurrency as Currency FROM Estimation AS E LEFT JOIN EstimationVersion AS EV ON E.EstimationID = EV.EstimationID and E.CurrentVersion = EV.Version WHERE E.EstimationId = @Id;
+SELECT EstimationID, LayerID, RowNum as Row, FatherRowNum as ParentRow, RowDescription as Description, Remark, Quantity, Unit, Active as IsActive, RowType, SheetType, LayerType, RevisionCode FROM EstimationSheet WHERE EstimationID = @Id AND Version = (SELECT CurrentVersion FROM Estimation WHERE EstimationID = @Id);
+SELECT ID, EstimationID, LayerID, IsActive, Cons, LayerType FROM MELayer WHERE EstimationID = @Id AND Version = (SELECT CurrentVersion FROM Estimation WHERE EstimationID = @Id);
+SELECT ID, EstimationID, LayerID, IsActive, Cons FROM DELayer WHERE EstimationID = @Id AND Version = (SELECT CurrentVersion FROM Estimation WHERE EstimationID = @Id);
+SELECT ID, EstimationID, LayerID, IsActive, Cons, ConsFactor, Waste FROM PRLayer WHERE EstimationID = @Id AND Version = (SELECT CurrentVersion FROM Estimation WHERE EstimationID = @Id);
+SELECT ID, EstimationID, Description, Unit, Price FROM Resource WHERE EstimationID = @Id AND Version = (SELECT CurrentVersion FROM Estimation WHERE EstimationID = @Id);
+SELECT EstimationID, ResourceType, Factor FROM ResourceFactors WHERE EstimationID = @Id AND Version = (SELECT CurrentVersion FROM Estimation WHERE EstimationID = @Id);
 ";
         using (IDbConnection cnn = new SqlConnection(await GetLasyConnectionString()))
         {
@@ -68,6 +69,7 @@ SELECT ID, EstimationID, LayerID, IsActive, Cons, LayerType, Version FROM MELaye
 SELECT ID, EstimationID, LayerID, IsActive, Cons, Version FROM DELayer WHERE EstimationID IN @Ids;
 SELECT ID, EstimationID, LayerID, IsActive, Cons, ConsFactor, Waste, Version FROM PRLayer WHERE EstimationID IN @Ids;
 SELECT ID, EstimationID, Description, Unit, Price, Version FROM Resource WHERE EstimationID IN @Ids;
+SELECT EstimationID, ResourceType, Factor FROM ResourceFactors WHERE EstimationID IN @Ids AND Version IN (SELECT CurrentVersion FROM Estimation WHERE EstimationID IN @Ids);
 ";
         using (IDbConnection cnn = new SqlConnection(await GetLasyConnectionString()))
         {

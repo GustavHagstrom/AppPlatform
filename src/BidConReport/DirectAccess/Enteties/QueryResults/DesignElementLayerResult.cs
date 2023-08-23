@@ -9,5 +9,5 @@ public class DesignElementLayerResult
     /// Quantity
     /// </summary>
     public double Cons { get; set; }
-    public int Version { get; set; }
+    //public int Version { get; set; }
 }
