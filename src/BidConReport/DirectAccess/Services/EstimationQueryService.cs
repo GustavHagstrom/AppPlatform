@@ -30,6 +30,7 @@ public class EstimationQueryService : IEstimationQueryService
     }
     public async Task<EstimationBatch> GetEstimationBatchAsync(string estimationId)
     {
+        //TODO add ResourceFactor, ATA, ATAFactors
         var sql = @"
 SELECT E.EstimationID, E.Name, E.Description, E.Customer, E.Place, E.HandlingOfficer, E.ConfirmationOfficer, E.IsLocked, E.FolderNum, E.CurrentVersion, EV.EstCurrency as Currency FROM Estimation AS E LEFT JOIN EstimationVersion AS EV ON E.EstimationID = EV.EstimationID and E.CurrentVersion = EV.Version WHERE E.EstimationId = @Id;
 SELECT EstimationID, LayerID, RowNum as Row, FatherRowNum as ParentRow, RowDescription as Description, Remark, Quantity, Unit, Active as IsActive, RowType, SheetType, LayerType, Version, RevisionCode FROM EstimationSheet WHERE EstimationID = @Id;
