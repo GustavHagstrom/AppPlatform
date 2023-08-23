@@ -13,4 +13,5 @@ public class EstimationResult
     //public int CurrentVersion { get; set; }
     public required string Currency { get; set; }
     //Add ObjecFactor, TenderTotal
+    public double ObjectFactor { get; set; }
 }

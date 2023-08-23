@@ -138,6 +138,7 @@ public class DirectEstimationService : IDirectEstimationService
         foreach (var item in layerItems)
         {
             var resource = batch.Resource.Single(x => x.Id == item.LayerId);
+            
             var cost = resource.Price * item.Cons * item.ConsFactor * (1 + (item.Waste / 100.0));
             sum += cost;
         }
