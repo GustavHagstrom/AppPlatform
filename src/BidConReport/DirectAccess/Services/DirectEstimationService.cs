@@ -19,8 +19,8 @@ public class DirectEstimationService : IDirectEstimationService
     public async Task<List<Estimation>> GetEstimationsAsync(IEnumerable<string> estimationIds)
     {
         var batches = await _queryService.GetEstimationBatchesAsync(estimationIds);
-        var estimations = batches.Select(BuildEstimation);
-        return estimations.ToList();
+        var estimations = batches.Select(BuildEstimation).ToList();
+        return estimations;
     }
     private Estimation BuildEstimation(EstimationBatch batch)
     {

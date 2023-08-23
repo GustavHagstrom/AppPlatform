@@ -1,7 +1,7 @@
 ﻿namespace BidConReport.BidconDatabaseAccess.Enteties.QueryResults;
 public class ATAFactorResult
 {
-    public Guid EstimationID { get; set; }
+    public Guid EstimationId { get; set; }
     public int PMATANum { get; set; }
     public int ResourceType { get; set; }
     public double RemovalPercent { get; set; }

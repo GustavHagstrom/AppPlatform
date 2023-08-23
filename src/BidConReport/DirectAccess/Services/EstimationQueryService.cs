@@ -21,7 +21,7 @@ public class EstimationQueryService : IEstimationQueryService
         {
             return _connectionString!;
         }
-        else //SELECT EstimationID, ResourceType, Factor FROM ResourceFactors WHERE EstimationID = @Id AND Version = (SELECT CurrentVersion FROM Estimation WHERE EstimationID = @Id);
+        else 
         {
             _isInitialized = true;
             _connectionString = await _connectionStringBuilder.BuildAsync();
@@ -32,13 +32,15 @@ public class EstimationQueryService : IEstimationQueryService
     {
         //TODO add ResourceFactor, ATA, ATAFactors
         var sql = @"
-SELECT E.EstimationID, E.Name, E.Description, E.Customer, E.Place, E.HandlingOfficer, E.ConfirmationOfficer, E.IsLocked, E.FolderNum, EV.EstCurrency as Currency FROM Estimation AS E LEFT JOIN EstimationVersion AS EV ON E.EstimationID = EV.EstimationID and E.CurrentVersion = EV.Version WHERE E.EstimationId = @Id;
+SELECT E.EstimationID, E.Name, E.Description, E.Customer, E.Place, E.HandlingOfficer, E.ConfirmationOfficer, E.IsLocked, E.FolderNum, EV.EstCurrency as Currency FROM Estimation AS E LEFT JOIN EstimationVersion AS EV ON E.EstimationID = EV.EstimationID and EV.Version = E.CurrentVersion WHERE E.EstimationId = @Id;
 SELECT EstimationID, LayerID, RowNum as Row, FatherRowNum as ParentRow, RowDescription as Description, Remark, Quantity, Unit, Active as IsActive, RowType, SheetType, LayerType, RevisionCode FROM EstimationSheet WHERE EstimationID = @Id AND Version = (SELECT CurrentVersion FROM Estimation WHERE EstimationID = @Id);
 SELECT ID, EstimationID, LayerID, IsActive, Cons, LayerType FROM MELayer WHERE EstimationID = @Id AND Version = (SELECT CurrentVersion FROM Estimation WHERE EstimationID = @Id);
 SELECT ID, EstimationID, LayerID, IsActive, Cons FROM DELayer WHERE EstimationID = @Id AND Version = (SELECT CurrentVersion FROM Estimation WHERE EstimationID = @Id);
 SELECT ID, EstimationID, LayerID, IsActive, Cons, ConsFactor, Waste FROM PRLayer WHERE EstimationID = @Id AND Version = (SELECT CurrentVersion FROM Estimation WHERE EstimationID = @Id);
 SELECT ID, EstimationID, Description, Unit, Price FROM Resource WHERE EstimationID = @Id AND Version = (SELECT CurrentVersion FROM Estimation WHERE EstimationID = @Id);
 SELECT EstimationID, ResourceType, Factor FROM ResourceFactors WHERE EstimationID = @Id AND Version = (SELECT CurrentVersion FROM Estimation WHERE EstimationID = @Id);
+SELECT EstimationID, PMATANum, Description FROM PM_ATA WHERE EstimationID = @Id AND Version = (SELECT CurrentVersion FROM Estimation WHERE EstimationID = @Id);
+SELECT EstimationID, PMATANum, ResourceType, RemovalPer as RemovealPercent, RemovalExpensePer AS RemovalExpensePercent, AdditionalPer AS AdditionalPercent, AdditionalExpensePer AS AdditionalExpensePercent FROM PM_ATAFactor WHERE EstimationID = @Id AND Version = (SELECT CurrentVersion FROM Estimation WHERE EstimationID = @Id);
 ";
         using (IDbConnection cnn = new SqlConnection(await GetLasyConnectionString()))
         {
@@ -50,26 +52,34 @@ SELECT EstimationID, ResourceType, Factor FROM ResourceFactors WHERE EstimationI
                 var designElementLayers = await multi.ReadAsync<DesignElementLayerResult>();
                 var workResultLayers = await multi.ReadAsync<WorkResultLayerResult>();
                 var resources = await multi.ReadAsync<ResourceResult>();
+                var resourceFactors = await multi.ReadAsync<ResourceFactorResult>();
+                var ataResults = await multi.ReadAsync<ATAResult>();
+                var ataFactorResults = await multi.ReadAsync<ATAFactorResult>();
                 return new EstimationBatch(
                     estimation,
                     sheets.ToList(),
                     mixedLayers.ToList(),
                     designElementLayers.ToList(),
                     workResultLayers.ToList(),
-                    resources.ToList());
+                    resources.ToList(),
+                    resourceFactors.ToList(),
+                    ataResults.ToList(),
+                    ataFactorResults.ToList());
             }
         }
     }
     public async Task<IEnumerable<EstimationBatch>> GetEstimationBatchesAsync(IEnumerable<string> estimationIds)
     {
         var sql = @"
-SELECT E.EstimationID, E.Name, E.Description, E.Customer, E.Place, E.HandlingOfficer, E.ConfirmationOfficer, E.IsLocked, E.FolderNum, E.CurrentVersion, EV.EstCurrency as Currency FROM Estimation AS E LEFT JOIN EstimationVersion AS EV ON E.EstimationID = EV.EstimationID and E.CurrentVersion = EV.Version WHERE E.EstimationId IN @Ids;
-SELECT EstimationID, LayerID, RowNum as Row, FatherRowNum as ParentRow, RowDescription as Description, Remark, Quantity, Unit, Active as IsActive, RowType, SheetType, LayerType, Version, RevisionCode FROM EstimationSheet WHERE EstimationID IN @Ids;
-SELECT ID, EstimationID, LayerID, IsActive, Cons, LayerType, Version FROM MELayer WHERE EstimationID IN @Ids;
-SELECT ID, EstimationID, LayerID, IsActive, Cons, Version FROM DELayer WHERE EstimationID IN @Ids;
-SELECT ID, EstimationID, LayerID, IsActive, Cons, ConsFactor, Waste, Version FROM PRLayer WHERE EstimationID IN @Ids;
-SELECT ID, EstimationID, Description, Unit, Price, Version FROM Resource WHERE EstimationID IN @Ids;
-SELECT EstimationID, ResourceType, Factor FROM ResourceFactors WHERE EstimationID IN @Ids AND Version IN (SELECT CurrentVersion FROM Estimation WHERE EstimationID IN @Ids);
+SELECT E.EstimationID, E.Name, E.Description, E.Customer, E.Place, E.HandlingOfficer, E.ConfirmationOfficer, E.IsLocked, E.FolderNum, EV.EstCurrency as Currency FROM Estimation AS E LEFT JOIN EstimationVersion AS EV ON E.EstimationID = EV.EstimationID and EV.Version = E.CurrentVersion WHERE E.EstimationId IN @Ids;
+SELECT EstimationID, LayerID, RowNum as Row, FatherRowNum as ParentRow, RowDescription as Description, Remark, Quantity, Unit, Active as IsActive, RowType, SheetType, LayerType, RevisionCode FROM EstimationSheet WHERE EstimationID IN @Ids AND Version IN (SELECT CurrentVersion FROM Estimation WHERE EstimationID = EstimationSheet.EstimationID);
+SELECT ID, EstimationID, LayerID, IsActive, Cons, LayerType FROM MELayer WHERE EstimationID IN @Ids AND Version IN (SELECT CurrentVersion FROM Estimation WHERE EstimationID = MELayer.EstimationID);
+SELECT ID, EstimationID, LayerID, IsActive, Cons FROM DELayer WHERE EstimationID IN @Ids AND Version IN (SELECT CurrentVersion FROM Estimation WHERE EstimationID = DELayer.EstimationID);
+SELECT ID, EstimationID, LayerID, IsActive, Cons, ConsFactor, Waste FROM PRLayer WHERE EstimationID IN @Ids AND Version IN (SELECT CurrentVersion FROM Estimation WHERE EstimationID = PRLayer.EstimationID);
+SELECT ID, EstimationID, Description, Unit, Price FROM Resource WHERE EstimationID IN @Ids AND Version IN (SELECT CurrentVersion FROM Estimation WHERE EstimationID = Resource.EstimationID);
+SELECT EstimationID, ResourceType, Factor FROM ResourceFactors WHERE EstimationID IN @Ids AND Version IN (SELECT CurrentVersion FROM Estimation WHERE EstimationID = ResourceFactors.EstimationId);
+SELECT EstimationID, PMATANum, Description FROM PM_ATA WHERE EstimationID IN @Ids AND Version IN (SELECT CurrentVersion FROM Estimation WHERE EstimationID = PM_ATA.EstimationID);
+SELECT EstimationID, PMATANum, ResourceType, RemovalPer as RemovealPercent, RemovalExpensePer AS RemovalExpensePercent, AdditionalPer AS AdditionalPercent, AdditionalExpensePer AS AdditionalExpensePercent FROM PM_ATAFactor WHERE EstimationID IN @Ids AND Version IN (SELECT CurrentVersion FROM Estimation WHERE EstimationID = PM_ATAFactor.EstimationID);
 ";
         using (IDbConnection cnn = new SqlConnection(await GetLasyConnectionString()))
         {
@@ -81,6 +91,9 @@ SELECT EstimationID, ResourceType, Factor FROM ResourceFactors WHERE EstimationI
                 var designElementLayerResults = await multi.ReadAsync<DesignElementLayerResult>();
                 var workResultLayerResults = await multi.ReadAsync<WorkResultLayerResult>();
                 var resourceResults = await multi.ReadAsync<ResourceResult>();
+                var resourceFactorsResults = await multi.ReadAsync<ResourceFactorResult>();
+                var ataResults = await multi.ReadAsync<ATAResult>();
+                var ataFactorResults = await multi.ReadAsync<ATAFactorResult>();
 
                 var batches = new List<EstimationBatch>();
                 var estimationResultsMap = estimationResults.ToLookup(er => er.EstimationID);
@@ -91,6 +104,9 @@ SELECT EstimationID, ResourceType, Factor FROM ResourceFactors WHERE EstimationI
                     var designElementLayers = designElementLayerResults.Where(delr => delr.EstimationId == estimationId).ToList();
                     var workResultLayers = workResultLayerResults.Where(wrlr => wrlr.EstimationId == estimationId).ToList();
                     var resources = resourceResults.Where(rr => rr.EstimationId == estimationId).ToList();
+                    var resourceFactors = resourceFactorsResults.Where(rf => rf.EstimationId == estimationId).ToList();
+                    var ata = ataResults.Where(rf => rf.EstimationId == estimationId).ToList();
+                    var ataFactor = ataFactorResults.Where(rf => rf.EstimationId == estimationId).ToList();
 
                     var estimation = estimationResultsMap[estimationId].FirstOrDefault();
                     if (estimation is not null)
@@ -101,7 +117,10 @@ SELECT EstimationID, ResourceType, Factor FROM ResourceFactors WHERE EstimationI
                         mixedLayers,
                         designElementLayers,
                         workResultLayers,
-                        resources));
+                        resources,
+                        resourceFactors,
+                        ata,
+                        ataFactor));
                     }
                 }
                 return batches;
