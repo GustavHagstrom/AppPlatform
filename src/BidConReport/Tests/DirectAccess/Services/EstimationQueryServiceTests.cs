@@ -1,5 +1,5 @@
-﻿using BidConReport.DirectAccess.Enteties;
-using BidConReport.DirectAccess.Services;
+﻿using BidConReport.BidconDatabaseAccess.Enteties;
+using BidConReport.BidconDatabaseAccess.Services;
 
 namespace BidconReport.Tests.DirectAccess.Services;
 public class EstimationQueryServiceTests
@@ -15,7 +15,7 @@ public class EstimationQueryServiceTests
 
 
 
-    private readonly EstimationQueryService _service = new(new ConnectionStringBuilder(new CredProvider()));
+    private readonly EstimationQueryService _service = new(new ConnectionstringService(new CredProvider()));
 
     [Test]
     public async Task EstimationBatch()

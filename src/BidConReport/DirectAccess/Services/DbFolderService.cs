@@ -1,8 +1,7 @@
-﻿using BidConReport.DirectAccess.Enteties;
-using BidConReport.DirectAccess.Enteties.QueryResults;
-using Syncfusion.DocIO.DLS;
+﻿using BidConReport.BidconDatabaseAccess.Enteties;
+using BidConReport.BidconDatabaseAccess.Enteties.QueryResults;
 
-namespace BidConReport.DirectAccess.Services;
+namespace BidConReport.BidconDatabaseAccess.Services;
 public class DbFolderService : IDbFolderService
 {
     public DbFolder CreateFromBatch(EstimationFolderBatch batch)

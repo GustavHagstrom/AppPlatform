@@ -1,4 +1,4 @@
-﻿namespace BidConReport.DirectAccess.Enums;
+﻿namespace BidConReport.BidconDatabaseAccess.Enums;
 public enum LayerType
 {
     None = 0,

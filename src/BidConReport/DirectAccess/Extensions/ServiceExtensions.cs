@@ -1,7 +1,7 @@
-﻿using BidConReport.DirectAccess.Services;
+﻿using BidConReport.BidconDatabaseAccess.Services;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace BidConReport.DirectAccess.Extensions;
+namespace BidConReport.BidconDatabaseAccess.Extensions;
 public static class ServiceExtensions
 {
     public static void UseDirectAccess<TImplementation>(this IServiceCollection services) where TImplementation : class, IDatabaseCredentialsService
@@ -10,6 +10,6 @@ public static class ServiceExtensions
         services.AddTransient<IEstimationQueryService, EstimationQueryService>();
         services.AddTransient<IDbFolderService, DbFolderService>();
         services.AddTransient<IDirectEstimationService, DirectEstimationService>();
-        services.AddTransient<IConnectionStringBuilder, ConnectionStringBuilder>();
+        services.AddTransient<IConnectionstringService, ConnectionstringService>();
     }
 }

@@ -1,4 +1,4 @@
-﻿namespace BidConReport.DirectAccess.Enteties.QueryResults;
+﻿namespace BidConReport.BidconDatabaseAccess.Enteties.QueryResults;
 public class DesignElementLayerResult
 {
     public required string Id { get; set; }

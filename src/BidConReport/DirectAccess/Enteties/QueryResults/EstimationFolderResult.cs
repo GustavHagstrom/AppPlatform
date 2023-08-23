@@ -1,4 +1,4 @@
-﻿namespace BidConReport.DirectAccess.Enteties.QueryResults;
+﻿namespace BidConReport.BidconDatabaseAccess.Enteties.QueryResults;
 public class EstimationFolderResult
 {
     public int FolderNum { get; set; }

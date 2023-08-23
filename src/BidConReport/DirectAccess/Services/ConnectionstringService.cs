@@ -1,12 +1,12 @@
 ﻿using System.Security.Cryptography;
 
-namespace BidConReport.DirectAccess.Services;
-public class ConnectionStringBuilder : IConnectionStringBuilder
+namespace BidConReport.BidconDatabaseAccess.Services;
+public class ConnectionstringService : IConnectionstringService
 {
     private readonly byte[] ENCRYPTION_KEY = new byte[8] { 45, 103, 246, 79, 36, 99, 167, 3 };
     private readonly IDatabaseCredentialsService _databaseCredentialsService;
 
-    public ConnectionStringBuilder(IDatabaseCredentialsService databaseCredentialsService)
+    public ConnectionstringService(IDatabaseCredentialsService databaseCredentialsService)
     {
         _databaseCredentialsService = databaseCredentialsService;
     }

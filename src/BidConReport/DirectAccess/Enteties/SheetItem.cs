@@ -1,6 +1,6 @@
-﻿using BidConReport.DirectAccess.Enums;
+﻿using BidConReport.BidconDatabaseAccess.Enums;
 
-namespace BidConReport.DirectAccess.Enteties;
+namespace BidConReport.BidconDatabaseAccess.Enteties;
 public class SheetItem
 {
     public int Row { get; set; }
@@ -13,8 +13,8 @@ public class SheetItem
     public double? UnitCost { get; set; }
     public double? TotalCost { get; set; }
     public bool IsActive { get; set; }
-    public RowType RowType { get; set; }
-    public LayerType LayerType { get; set; }
+    public int RowType { get; set; }
+    public int? LayerType { get; set; }
     public required string LayerId { get; set; }
     public List<SheetItem> SheetItems { get; set; } = new();
 

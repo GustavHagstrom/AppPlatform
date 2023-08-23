@@ -1,9 +1,8 @@
-﻿using BidConReport.DirectAccess.Enteties;
-using BidConReport.DirectAccess.Enteties.QueryResults;
-using BidConReport.DirectAccess.Enums;
-using Syncfusion.Compression.Zip;
+﻿using BidConReport.BidconDatabaseAccess.Enteties;
+using BidConReport.BidconDatabaseAccess.Enteties.QueryResults;
+using BidConReport.BidconDatabaseAccess.Enums;
 
-namespace BidConReport.DirectAccess.Services;
+namespace BidConReport.BidconDatabaseAccess.Services;
 public class DirectEstimationService : IDirectEstimationService
 {
     private readonly IEstimationQueryService _queryService;
@@ -17,19 +16,11 @@ public class DirectEstimationService : IDirectEstimationService
         var batch = await _queryService.GetEstimationBatchAsync(estimationId);
         return BuildEstimation(batch);
     }
-    public async Task<IEnumerable<Estimation>> GetEstimationsAsync(IEnumerable<string> estimationIds)
+    public async Task<List<Estimation>> GetEstimationsAsync(IEnumerable<string> estimationIds)
     {
         var batches = await _queryService.GetEstimationBatchesAsync(estimationIds);
-        var estimations = new List<Estimation>();
-
-        foreach (var batch in batches)
-        {
-            var estimation = BuildEstimation(batch);
-            estimations.Add(estimation);
-        }
-
-        return estimations;
-
+        var estimations = batches.Select(BuildEstimation);
+        return estimations.ToList();
     }
     private Estimation BuildEstimation(EstimationBatch batch)
     {
@@ -62,45 +53,53 @@ public class DirectEstimationService : IDirectEstimationService
         {
             var node = CreateSheetItem(item);
             map[item.Row] = node;
-            if (map.ContainsKey(node.ParentRow))
+            if (map.TryGetValue(node.ParentRow, out var parent))
             {
-                var parent = map[node.ParentRow];
                 node.Parent = parent;
                 parent.SheetItems.Add(node);
             }
         }
-        return map.First(x => x.Value.Parent is null).Value;
+        return map.Values.First(x => x.Parent is null);
     }
-    private double? SetCost(SheetItem item, EstimationBatch batch)
+    private void SetCost(SheetItem item, EstimationBatch batch)
     {
-        switch (item.LayerType)
+        switch (item.RowType)
         {
-            case LayerType.None:
+            case (int)RowType.Group:
+                foreach (var child in item.SheetItems)
+                {
+                    SetCost(child, batch);
+                }
+                item.TotalCost = item.SheetItems.Where(x => x.IsActive).Sum(x => x.TotalCost);
+                break;
+            case (int)RowType.Part:
                 foreach (var child in item.SheetItems)
                 {
                     SetCost(child, batch);
                 }
                 item.UnitCost = item.SheetItems.Where(x => x.IsActive).Sum(x => x.TotalCost);
-                item.TotalCost = item.UnitCost * (item.Quantity is null ? 1 : item.Quantity);
-                break;
-            case LayerType.WorkResult:
-                item.UnitCost = GetWorkResultLayerCost(batch, item.LayerId);
                 item.TotalCost = item.UnitCost * item.Quantity;
                 break;
-            case LayerType.DesignElement:
-                if (item.Description == "Nedpendlat undertak med system av stålprofiler till undersida betongbjälklag")
+            case (int)RowType.LayeredItem:
+                if (item.LayerType == (int)LayerType.MixedElement)
                 {
-                    var a = 0;
+                    item.UnitCost = GetMixedElementLayerCost(batch, item.LayerId);
                 }
-                item.UnitCost = GetDesignElementLayerCost(batch, item.LayerId);
-                item.TotalCost = item.UnitCost * item.Quantity;
-                break;
-            case LayerType.MixedElement:
-                item.UnitCost = GetMixedElementLayerCost(batch, item.LayerId);
+                else if(item.LayerType == (int)LayerType.DesignElement)
+                {
+                    item.UnitCost = GetDesignElementLayerCost(batch, item.LayerId);
+                }
+                else if (item.LayerType == (int)LayerType.WorkResult)
+                {
+                    item.UnitCost = GetWorkResultLayerCost(batch, item.LayerId);
+                }
+                else
+                {
+                    throw new InvalidOperationException("Unknown layertype");
+                }
                 item.TotalCost = item.UnitCost * item.Quantity;
                 break;
         }
-        return item.TotalCost;
     }
     private double GetMixedElementLayerCost(EstimationBatch batch, string layerId)
     {
@@ -154,8 +153,8 @@ public class DirectEstimationService : IDirectEstimationService
             ParentRow = sheetResult.ParentRow,
             Remark = sheetResult.Remark,
             Unit = sheetResult.Unit,
-            LayerType = sheetResult.LayerType is not null ? (LayerType)sheetResult.LayerType : LayerType.None,
-            RowType = (RowType)sheetResult.RowType,
+            LayerType = sheetResult.LayerType,
+            RowType = sheetResult.RowType,
             LayerId = sheetResult.LayerId,
             Quantity = sheetResult.Quantity,
         };

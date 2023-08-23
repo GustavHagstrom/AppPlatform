@@ -1,17 +1,17 @@
-﻿using BidConReport.DirectAccess.Enteties;
-using BidConReport.DirectAccess.Enteties.QueryResults;
+﻿using BidConReport.BidconDatabaseAccess.Enteties;
+using BidConReport.BidconDatabaseAccess.Enteties.QueryResults;
 using Dapper;
 using Microsoft.Data.SqlClient;
 using System.Data;
 
-namespace BidConReport.DirectAccess.Services;
+namespace BidConReport.BidconDatabaseAccess.Services;
 public class EstimationQueryService : IEstimationQueryService
 {
-    private readonly IConnectionStringBuilder _connectionStringBuilder;
+    private readonly IConnectionstringService _connectionStringBuilder;
     private string? _connectionString;
     private bool _isInitialized = false;
 
-    public EstimationQueryService(IConnectionStringBuilder connectionStringBuilder)
+    public EstimationQueryService(IConnectionstringService connectionStringBuilder)
     {
         _connectionStringBuilder = connectionStringBuilder;
     }

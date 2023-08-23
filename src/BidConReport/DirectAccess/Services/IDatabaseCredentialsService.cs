@@ -1,6 +1,6 @@
-﻿using BidConReport.DirectAccess.Enteties;
+﻿using BidConReport.BidconDatabaseAccess.Enteties;
 
-namespace BidConReport.DirectAccess.Services;
+namespace BidConReport.BidconDatabaseAccess.Services;
 public interface IDatabaseCredentialsService
 {
     Task<DatabaseCredentials> GetAsync();

@@ -1,8 +1,8 @@
-﻿using BidConReport.DirectAccess.Enteties;
+﻿using BidConReport.BidconDatabaseAccess.Enteties;
 
-namespace BidConReport.DirectAccess.Services;
+namespace BidConReport.BidconDatabaseAccess.Services;
 public interface IDirectEstimationService
 {
     Task<Estimation> GetEstimationAsync(string estimationId);
-    Task<IEnumerable<Estimation>> GetEstimationsAsync(IEnumerable<string> estimationIds);
+    Task<List<Estimation>> GetEstimationsAsync(IEnumerable<string> estimationIds);
 }
