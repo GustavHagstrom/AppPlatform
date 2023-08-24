@@ -1,5 +1,6 @@
 ﻿using BidConReport.BidconDatabaseAccess.Enteties;
 using BidConReport.BidconDatabaseAccess.Services;
+using BidConReport.BidconDatabaseAccess.Services.CostCalculation;
 
 namespace BidconReport.Tests.DirectAccess.Services;
 public class EstimationQueryServiceTests
@@ -8,7 +9,7 @@ public class EstimationQueryServiceTests
     {
         public async Task<DatabaseCredentials> GetAsync()
         {
-            //return await Task.FromResult(new DatabaseCredentials("(localdb)\\MSSQLLocalDB", "BidconEstimation", "user", "someHash", false));
+            return await Task.FromResult(new DatabaseCredentials("(localdb)\\MSSQLLocalDB", "BidconEstimationDB", "user", "someHash", false));
             return await Task.FromResult(new DatabaseCredentials("RHUSAPP02\\ELECOSOFT", "BidConEstimation", "sa", "VX3EEWKNQrrBQp+52Ct5Gw==", true));
         }
     }
@@ -20,10 +21,15 @@ public class EstimationQueryServiceTests
     [Test]
     public async Task EstimationBatch()
     {
+        var costService = new EstimationCostService();
         var estimationService = new DirectEstimationService(_service);
         var estimationId = "7E3C42C5-60B1-424E-9787-FD892E819066";
 
         var result = await estimationService.GetEstimationAsync(estimationId);
+        var queryResult = await _service.GetEstimationBatchAsync(estimationId);
+        //var unitCost = costService.UnitCosts(result.NetSheet, queryResult);
+        var totalCosts = result.NetSheet.SheetItems.Select(x => costService.TotalCosts(x, queryResult)).ToList();
+        var totalSums = totalCosts.Select(x => x.Sum(x => x.Value)).ToList();// .Sum(x => x.Value);
 
         Assert.IsNotNull(result);
     }

@@ -4,13 +4,22 @@ using BidConReport.BidconDatabaseAccess.Enteties.QueryResults;
 namespace BidConReport.BidconDatabaseAccess.Services.CostCalculation.SheetItemClalcuation;
 public class GroupCalculator : ISheetItemCostCalculator
 {
-    private readonly PartCalculator _partCalculator = new();
+    private readonly EstimationCostService _estimationCostService;
+
+    public GroupCalculator(EstimationCostService estimationCostService)
+    {
+        _estimationCostService = estimationCostService;
+    }
     public Dictionary<int, double?> CalculateTotalCosts(SheetItem item, EstimationBatch batch)
     {
+        if (item.Description == "Övrigt")
+        {
+            var a = 0;
+        }
         Dictionary<int, double?> costs = new();
         foreach (var child in item.SheetItems)
         {
-            var calculatedCosts = _partCalculator.CalculateTotalCosts(child, batch);
+            var calculatedCosts = _estimationCostService.TotalCosts(child, batch);
             foreach (var cost in calculatedCosts)
             {
                 if (costs.ContainsKey(cost.Key))
