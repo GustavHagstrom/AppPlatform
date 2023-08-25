@@ -1,6 +1,6 @@
 ﻿using System.Security.Cryptography;
 
-namespace BidConReport.BidconDatabaseAccess.Services.BidconAccess;
+namespace BidConReport.BidconAccess.Services.BidconAccess;
 public class ConnectionstringService : IConnectionstringService
 {
     private readonly byte[] ENCRYPTION_KEY = new byte[8] { 45, 103, 246, 79, 36, 99, 167, 3 };

@@ -1,6 +1,6 @@
-﻿using BidConReport.BidconDatabaseAccess.Enteties.EstimationBuild.Sheets;
+﻿using BidConReport.BidconAccess.Enteties.EstimationBuild.Sheets;
 
-namespace BidConReport.BidconDatabaseAccess.Enteties.EstimationBuild;
+namespace BidConReport.BidconAccess.Enteties.EstimationBuild;
 public class Estimation
 {
     public required string Name { get; set; }

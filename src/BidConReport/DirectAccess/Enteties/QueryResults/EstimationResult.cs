@@ -1,4 +1,4 @@
-﻿namespace BidConReport.BidconDatabaseAccess.Enteties;
+﻿namespace BidConReport.BidconAccess.Enteties;
 public class EstimationResult
 {
     public Guid EstimationID { get; set; }

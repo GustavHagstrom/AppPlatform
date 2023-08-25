@@ -1,8 +1,8 @@
-﻿using BidConReport.BidconDatabaseAccess.Enteties;
-using BidConReport.BidconDatabaseAccess.Enteties.EstimationBuild;
-using BidConReport.BidconDatabaseAccess.Enteties.QueryResults;
+﻿using BidConReport.BidconAccess.Enteties;
+using BidConReport.BidconAccess.Enteties.EstimationBuild;
+using BidConReport.BidconAccess.Enteties.QueryResults;
 
-namespace BidConReport.BidconDatabaseAccess.Services;
+namespace BidConReport.BidconAccess.Services;
 public class DbFolderService : IDbFolderService
 {
     public DbFolder CreateFromBatch(EstimationFolderBatch batch)

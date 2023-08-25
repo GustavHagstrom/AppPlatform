@@ -1,4 +1,4 @@
-﻿namespace BidConReport.BidconDatabaseAccess.Enteties.QueryResults;
+﻿namespace BidConReport.BidconAccess.Enteties.QueryResults;
 public class ResourceResult
 {
     public required string Id { get; set; }

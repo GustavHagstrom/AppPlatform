@@ -1,6 +1,6 @@
 ﻿using Syncfusion.DocIO.DLS;
 
-namespace BidConReport.BidconDatabaseAccess.Enteties.EstimationBuild.Sheets;
+namespace BidConReport.BidconAccess.Enteties.EstimationBuild.Sheets;
 
 public interface ISheetItem
 {

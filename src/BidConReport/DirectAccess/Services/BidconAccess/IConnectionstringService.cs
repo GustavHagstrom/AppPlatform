@@ -1,4 +1,4 @@
-﻿namespace BidConReport.BidconDatabaseAccess.Services.BidconAccess;
+﻿namespace BidConReport.BidconAccess.Services.BidconAccess;
 
 public interface IConnectionstringService
 {

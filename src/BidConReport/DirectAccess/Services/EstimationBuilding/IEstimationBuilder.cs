@@ -1,7 +1,7 @@
-﻿using BidConReport.BidconDatabaseAccess.Enteties.EstimationBuild;
-using BidConReport.BidconDatabaseAccess.Enteties.QueryResults;
+﻿using BidConReport.BidconAccess.Enteties.EstimationBuild;
+using BidConReport.BidconAccess.Enteties.QueryResults;
 
-namespace BidConReport.BidconDatabaseAccess.Services.EstimationBuilding;
+namespace BidConReport.BidconAccess.Services.EstimationBuilding;
 public interface IEstimationBuilder
 {
     Estimation Build(EstimationBatch batch);

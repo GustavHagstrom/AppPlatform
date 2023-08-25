@@ -1,7 +1,7 @@
-﻿using BidConReport.BidconDatabaseAccess.Enteties;
-using BidConReport.BidconDatabaseAccess.Enteties.QueryResults;
+﻿using BidConReport.BidconAccess.Enteties;
+using BidConReport.BidconAccess.Enteties.QueryResults;
 
-namespace BidConReport.BidconDatabaseAccess.Services.EstimationBuilding;
+namespace BidConReport.BidconAccess.Services.EstimationBuilding;
 public interface ILayerCostCalculator
 {
     void Calculate(EstimationBatch batch, string layerId, out double unitCost, out double unitAskingPrice);

@@ -1,8 +1,8 @@
-﻿using BidConReport.BidconDatabaseAccess.Enteties;
-using BidConReport.BidconDatabaseAccess.Enteties.QueryResults;
-using BidConReport.BidconDatabaseAccess.Enums;
+﻿using BidConReport.BidconAccess.Enteties;
+using BidConReport.BidconAccess.Enteties.QueryResults;
+using BidConReport.BidconAccess.Enums;
 
-namespace BidConReport.BidconDatabaseAccess.Services.EstimationBuilding;
+namespace BidConReport.BidconAccess.Services.EstimationBuilding;
 public class LayerdItemCalculator : ILayerdItemCalculator
 {
     private readonly Dictionary<int, ILayerCostCalculator> _calculatorMap = new()

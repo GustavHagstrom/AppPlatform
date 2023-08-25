@@ -1,4 +1,4 @@
-﻿namespace BidConReport.BidconDatabaseAccess.Enteties.QueryResults;
+﻿namespace BidConReport.BidconAccess.Enteties.QueryResults;
 public record EstimationBatch(
     EstimationResult Estimation,
     ICollection<EstimationSheetResult> SheetResults,

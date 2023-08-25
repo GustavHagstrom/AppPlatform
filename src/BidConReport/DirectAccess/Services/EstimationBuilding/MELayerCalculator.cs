@@ -1,7 +1,7 @@
-﻿using BidConReport.BidconDatabaseAccess.Enteties.QueryResults;
-using BidConReport.BidconDatabaseAccess.Enums;
+﻿using BidConReport.BidconAccess.Enteties.QueryResults;
+using BidConReport.BidconAccess.Enums;
 
-namespace BidConReport.BidconDatabaseAccess.Services.EstimationBuilding;
+namespace BidConReport.BidconAccess.Services.EstimationBuilding;
 public class MELayerCalculator : ILayerCostCalculator
 {
     private readonly WRLayerCalculator _wRLayerCalculator = new();

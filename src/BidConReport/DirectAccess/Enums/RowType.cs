@@ -1,4 +1,4 @@
-﻿namespace BidConReport.BidconDatabaseAccess.Enums;
+﻿namespace BidConReport.BidconAccess.Enums;
 public enum RowType
 {
     None = 0,

@@ -1,4 +1,4 @@
-﻿namespace BidConReport.BidconDatabaseAccess.Enteties.EstimationBuild.Sheets;
+﻿namespace BidConReport.BidconAccess.Enteties.EstimationBuild.Sheets;
 public class Group : ISheetItem
 {
     public required string Description { get; set; }

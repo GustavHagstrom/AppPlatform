@@ -1,4 +1,4 @@
-﻿namespace BidConReport.BidconDatabaseAccess.Enteties;
+﻿namespace BidConReport.BidconAccess.Enteties;
 public class MixedElementLayerResult
 {
     public required string Id { get; set; }
