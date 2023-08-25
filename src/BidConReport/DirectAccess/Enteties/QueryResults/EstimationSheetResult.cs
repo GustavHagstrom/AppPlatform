@@ -5,6 +5,7 @@ public class EstimationSheetResult
     public required string LayerId { get; set; }
     public int Row { get; set; }
     public int ParentRow { get; set; }
+    public int Position { get; set; }
     public required string Description { get; set; }
     public required string Remark { get; set; }
     public double? Quantity { get; set; }

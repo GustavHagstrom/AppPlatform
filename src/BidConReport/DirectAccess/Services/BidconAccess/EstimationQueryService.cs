@@ -33,7 +33,7 @@ public class EstimationQueryService : IEstimationQueryService
         //TODO add ResourceFactor, ATA, ATAFactors, only include active items?
         var sql = @"
 SELECT E.EstimationID, E.Name, E.Description, E.Customer, E.Place, E.HandlingOfficer, E.ConfirmationOfficer, E.IsLocked, E.FolderNum, EV.EstCurrency as Currency, EV.ObjectFactor FROM Estimation AS E LEFT JOIN EstimationVersion AS EV ON E.EstimationID = EV.EstimationID and EV.Version = E.CurrentVersion WHERE E.EstimationId = @Id;
-SELECT EstimationID, LayerID, RowNum as Row, FatherRowNum as ParentRow, RowDescription as Description, Remark, Quantity, Unit, RowType, SheetType, LayerType, RevisionCode FROM EstimationSheet WHERE EstimationID = @Id AND Active = 1 AND Version = (SELECT CurrentVersion FROM Estimation WHERE EstimationID = @Id);
+SELECT EstimationID, LayerID, RowNum as Row, FatherRowNum as ParentRow, RowDescription as Description, Remark, Quantity, Unit, RowType, SheetType, LayerType, RevisionCode, Position FROM EstimationSheet WHERE EstimationID = @Id AND Active = 1 AND Version = (SELECT CurrentVersion FROM Estimation WHERE EstimationID = @Id);
 SELECT ID, EstimationID, LayerID, Cons, LayerType FROM MELayer WHERE EstimationID = @Id AND IsActive = 1 AND Version = (SELECT CurrentVersion FROM Estimation WHERE EstimationID = @Id);
 SELECT ID, EstimationID, LayerID, Cons FROM DELayer WHERE EstimationID = @Id AND IsActive = 1 AND Version = (SELECT CurrentVersion FROM Estimation WHERE EstimationID = @Id);
 SELECT ID, EstimationID, LayerID, Cons, ConsFactor, Waste FROM PRLayer WHERE EstimationID = @Id AND IsActive = 1 AND Version = (SELECT CurrentVersion FROM Estimation WHERE EstimationID = @Id);

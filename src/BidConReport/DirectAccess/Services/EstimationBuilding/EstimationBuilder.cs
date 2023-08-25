@@ -41,7 +41,7 @@ public class EstimationBuilder : IEstimationBuilder
     private IEnumerable<ISheetItem> CreateSheetRoots(EstimationBatch batch, SheetType sheetType)
     {
         Dictionary<int, ISheetItem> sheetItemMap = new();
-        foreach (var sheetResult in batch.SheetResults.Where(x => x.SheetType == (int)sheetType).OrderBy(x => x.Row))
+        foreach (var sheetResult in batch.SheetResults.Where(x => x.SheetType == (int)sheetType).OrderBy(x => x.ParentRow).ThenBy(x => x.Position))
         {
             sheetItemMap.TryGetValue(sheetResult.ParentRow, out ISheetItem? parent);
             var item = _createSheetItemFunctionMap[sheetResult.RowType].Invoke(sheetResult, batch, parent);
