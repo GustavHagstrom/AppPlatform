@@ -25,7 +25,7 @@ public class EstimationQueryServiceTests
         //var costService = new EstimationCostService();
         //var estimationService = new DirectEstimationService(_service);
         var builder = new EstimationBuilder(new LayerdItemCalculator());
-        var estimationId = "7E3C42C5-60B1-424E-9787-FD892E819066";
+        var estimationId = "7D7D4069-75CE-4646-8269-3ACEF88B4934";// "7E3C42C5-60B1-424E-9787-FD892E819066";
 
         //var result = await estimationService.GetEstimationAsync(estimationId);
         var queryResult = await _service.GetEstimationBatchAsync(estimationId);
