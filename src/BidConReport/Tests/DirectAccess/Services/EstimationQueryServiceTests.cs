@@ -1,4 +1,5 @@
 ﻿using BidConReport.BidconDatabaseAccess.Enteties;
+using BidConReport.BidconDatabaseAccess.Enums;
 using BidConReport.BidconDatabaseAccess.Services.BidconAccess;
 using BidConReport.BidconDatabaseAccess.Services.EstimationBuilding;
 
@@ -29,11 +30,13 @@ public class EstimationQueryServiceTests
         //var result = await estimationService.GetEstimationAsync(estimationId);
         var queryResult = await _service.GetEstimationBatchAsync(estimationId);
         var buildResult = builder.Build(queryResult);
+        var unbuiltSheetList = queryResult.SheetResults.Where(x => x.SheetType == (int)SheetType.NetSheet).OrderBy(x => x.Row).ToList();
+        var builtSheetList = buildResult.NetSheet.AllInOrder.ToList();
         //var unitCost = costService.UnitCosts(result.NetSheet, queryResult);
         //var totalCosts = result.NetSheet.SheetItems.Select(x => costService.TotalCosts(x, queryResult)).ToList();
         //var totalSums = totalCosts.Select(x => x.Sum(x => x.Value)).ToList();// .Sum(x => x.Value);
 
-        Assert.IsNotNull(queryResult);
+        Assert.That(unbuiltSheetList.Count, Is.EqualTo(builtSheetList.Count));
     }
     [Test]
     public async Task EstimationBatches()

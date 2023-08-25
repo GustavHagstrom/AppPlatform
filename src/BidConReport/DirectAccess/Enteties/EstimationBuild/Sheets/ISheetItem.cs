@@ -1,4 +1,6 @@
-﻿namespace BidConReport.BidconDatabaseAccess.Enteties.EstimationBuild.Sheets;
+﻿using Syncfusion.DocIO.DLS;
+
+namespace BidConReport.BidconDatabaseAccess.Enteties.EstimationBuild.Sheets;
 
 public interface ISheetItem
 {
@@ -16,4 +18,18 @@ public interface ISheetItem
     string? Unit { get; }
     double? UnitCost { get; }
     double? TotalCost { get; }
+    public IEnumerable<ISheetItem> AllInOrder  
+    {
+        get
+        {
+            yield return this;
+            foreach (var child in Children)
+            {
+                foreach (var subChild in child.AllInOrder)
+                {
+                    yield return subChild;
+                }
+            }
+        }
+    }
 }

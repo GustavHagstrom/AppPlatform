@@ -1,5 +1,5 @@
 ﻿namespace BidConReport.BidconDatabaseAccess.Enteties.EstimationBuild.Sheets;
-public class Layered: ISheetItem
+public class Layered : ISheetItem
 {
     public required string Description { get; set; }
     public ISheetItem? Parent {get; set;}
@@ -9,4 +9,8 @@ public class Layered: ISheetItem
     public double? UnitCost => UnitResourceCosts.Sum(x => x.Value);
     public double? TotalCost => UnitCost * Quantity;
     public Dictionary<int, double?> UnitResourceCosts { get; set; } = new();
+    public override string ToString()
+    {
+        return $"{Description}";
+    }
 }

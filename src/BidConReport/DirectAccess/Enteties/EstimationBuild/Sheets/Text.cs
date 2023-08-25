@@ -12,4 +12,8 @@ public class Text : ISheetItem
     public string? Unit => null;
     public double? UnitCost => null;
     public double? TotalCost => UnitCost * Quantity;
+    public override string ToString()
+    {
+        return $"{Description}";
+    }
 }

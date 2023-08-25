@@ -8,4 +8,8 @@ public class Part : ISheetItem
     public string? Unit { get; set; }
     public double? UnitCost => Children?.Sum(x => x.TotalCost);
     public double? TotalCost => UnitCost * Quantity;
+    public override string ToString()
+    {
+        return $"{Description}";
+    }
 }

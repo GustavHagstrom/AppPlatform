@@ -8,4 +8,8 @@ public class QuantityItem : ISheetItem
     public string? Unit { get; set; }
     public double? UnitCost => null;
     public double? TotalCost => UnitCost * Quantity;
+    public override string ToString()
+    {
+        return $"{Description}";
+    }
 }
