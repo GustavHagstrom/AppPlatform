@@ -1,14 +1,14 @@
 ﻿using BidConReport.BidconDatabaseAccess.Enteties.QueryResults;
 using BidConReport.BidconDatabaseAccess.Enums;
 
-namespace BidConReport.BidconDatabaseAccess.Services.CostCalculation.LayerCalculation;
+namespace BidConReport.BidconDatabaseAccess.Services.EstimationBuilding;
 public class WRLayerCalculator : ILayerCostCalculator
 {
     public void Calculate(EstimationBatch batch, string layerId, out double unitCost, out double unitAskingPrice)
     {
         unitCost = 0;
         unitAskingPrice = 0;
-        var layerItems = batch.WRLayer.Where(x => x.Id == layerId && x.IsActive).ToList();
+        var layerItems = batch.WRLayer.Where(x => x.Id == layerId).ToList();
         foreach (var item in layerItems)
         {
             var resource = batch.Resource.Single(x => x.Id == item.LayerId);
@@ -22,7 +22,7 @@ public class WRLayerCalculator : ILayerCostCalculator
 
     public Dictionary<int, double?> Calculate(EstimationBatch batch, string layerId)
     {
-        var activeLayerItems = batch.WRLayer.Where(x => x.Id == layerId && x.IsActive).ToList();
+        var activeLayerItems = batch.WRLayer.Where(x => x.Id == layerId).ToList();
         Dictionary<int, double?> costs = new();
         foreach (var item in activeLayerItems)
         {

@@ -1,6 +1,7 @@
 ﻿namespace BidConReport.BidconDatabaseAccess.Enums;
 public enum ResourceType
 {
+    None = 0,
     Arbetare = 1,
     Tjänstemen = 2,
     Material = 3,

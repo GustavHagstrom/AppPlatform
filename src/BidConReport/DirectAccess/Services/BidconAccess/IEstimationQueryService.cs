@@ -1,7 +1,7 @@
 ﻿using BidConReport.BidconDatabaseAccess.Enteties;
 using BidConReport.BidconDatabaseAccess.Enteties.QueryResults;
 
-namespace BidConReport.BidconDatabaseAccess.Services;
+namespace BidConReport.BidconDatabaseAccess.Services.BidconAccess;
 public interface IEstimationQueryService
 {
     Task<EstimationBatch> GetEstimationBatchAsync(string estimationId);

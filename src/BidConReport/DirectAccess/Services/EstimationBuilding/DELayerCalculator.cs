@@ -1,7 +1,7 @@
 ﻿using BidConReport.BidconDatabaseAccess.Enteties;
 using BidConReport.BidconDatabaseAccess.Enteties.QueryResults;
 
-namespace BidConReport.BidconDatabaseAccess.Services.CostCalculation.LayerCalculation;
+namespace BidConReport.BidconDatabaseAccess.Services.EstimationBuilding;
 public class DELayerCalculator : ILayerCostCalculator
 {
     private readonly WRLayerCalculator _wRLayerCalculator = new();
@@ -9,7 +9,7 @@ public class DELayerCalculator : ILayerCostCalculator
     {
         unitCost = 0;
         unitAskingPrice = 0;
-        var layerItems = batch.DELayer.Where(x => x.Id == layerId && x.IsActive).ToList();
+        var layerItems = batch.DELayer.Where(x => x.Id == layerId).ToList();
         foreach (var item in layerItems)
         {
             _wRLayerCalculator.Calculate(batch, item.LayerId, out double layerUnitCost, out double layerAskingPrice);
@@ -20,7 +20,7 @@ public class DELayerCalculator : ILayerCostCalculator
 
     public Dictionary<int, double?> Calculate(EstimationBatch batch, string layerId)
     {
-        var activeLayerItems = batch.DELayer.Where(item => item.Id == layerId && item.IsActive);
+        var activeLayerItems = batch.DELayer.Where(item => item.Id == layerId);
         Dictionary<int, double?> costs = new();
         foreach (var layerItem in activeLayerItems)
         {

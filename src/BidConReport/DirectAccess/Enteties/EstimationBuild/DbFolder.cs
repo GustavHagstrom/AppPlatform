@@ -1,4 +1,4 @@
-﻿namespace BidConReport.BidconDatabaseAccess.Enteties;
+﻿namespace BidConReport.BidconDatabaseAccess.Enteties.EstimationBuild;
 public class DbFolder
 {
     public int FolderNum { get; set; }

@@ -1,5 +1,5 @@
 ﻿namespace BidConReport.BidconDatabaseAccess.Enums;
-public enum SheetTypes
+public enum SheetType
 {
     None = 0,
     NetSheet = 1,

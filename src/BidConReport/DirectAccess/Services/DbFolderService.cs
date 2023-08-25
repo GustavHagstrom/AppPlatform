@@ -1,4 +1,5 @@
 ﻿using BidConReport.BidconDatabaseAccess.Enteties;
+using BidConReport.BidconDatabaseAccess.Enteties.EstimationBuild;
 using BidConReport.BidconDatabaseAccess.Enteties.QueryResults;
 
 namespace BidConReport.BidconDatabaseAccess.Services;

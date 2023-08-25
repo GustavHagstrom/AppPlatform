@@ -1,7 +1,7 @@
 ﻿namespace BidConReport.BidconDatabaseAccess.Enteties.QueryResults;
 public record EstimationBatch(
     EstimationResult Estimation,
-    ICollection<EstimationSheetResult> Sheet,
+    ICollection<EstimationSheetResult> SheetResults,
     ICollection<MixedElementLayerResult> MELayer,
     ICollection<DesignElementLayerResult> DELayer,
     ICollection<WorkResultLayerResult> WRLayer,

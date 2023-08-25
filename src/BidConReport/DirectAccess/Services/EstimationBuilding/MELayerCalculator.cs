@@ -1,7 +1,7 @@
 ﻿using BidConReport.BidconDatabaseAccess.Enteties.QueryResults;
 using BidConReport.BidconDatabaseAccess.Enums;
 
-namespace BidConReport.BidconDatabaseAccess.Services.CostCalculation.LayerCalculation;
+namespace BidConReport.BidconDatabaseAccess.Services.EstimationBuilding;
 public class MELayerCalculator : ILayerCostCalculator
 {
     private readonly WRLayerCalculator _wRLayerCalculator = new();
@@ -10,7 +10,7 @@ public class MELayerCalculator : ILayerCostCalculator
     {
         unitCost = 0;
         unitAskingPrice = 0;
-        var layerItems = batch.MELayer.Where(x => x.Id == layerId && x.IsActive).ToList();
+        var layerItems = batch.MELayer.Where(x => x.Id == layerId).ToList();
         foreach (var item in layerItems)
         {
             if (item.LayerType == (int)LayerType.DesignElement)
@@ -31,7 +31,7 @@ public class MELayerCalculator : ILayerCostCalculator
     public Dictionary<int, double?> Calculate(EstimationBatch batch, string layerId)
     {
         var activeLayerItems = batch.MELayer
-            .Where(item => item.Id == layerId && item.IsActive);
+            .Where(item => item.Id == layerId);
         Dictionary<int, double?> costs = new();
         foreach (var item in activeLayerItems)
         {
