@@ -16,4 +16,5 @@ public class EstimationSheetResult
     public int? LayerType { get; set; }
     //public int Version { get; set; }
     public string? RevisionCode { get; set; }
+    public int? PMATANum { get; set; }
 }
