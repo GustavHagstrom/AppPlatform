@@ -2,6 +2,7 @@
 using BidConReport.BidconAccess.Enums;
 using BidConReport.BidconAccess.Services.BidconAccess;
 using BidConReport.BidconAccess.Services.EstimationBuilding;
+using System.Text.Json;
 
 namespace BidconReport.Tests.DirectAccess.Services;
 public class EstimationQueryServiceTests
@@ -25,13 +26,14 @@ public class EstimationQueryServiceTests
         //var costService = new EstimationCostService();
         //var estimationService = new DirectEstimationService(_service);
         var builder = new EstimationBuilder(new LayerdItemCalculator());
-        var estimationId = "7D7D4069-75CE-4646-8269-3ACEF88B4934";// "7E3C42C5-60B1-424E-9787-FD892E819066";
-
+        //var estimationId = "7D7D4069-75CE-4646-8269-3ACEF88B4934";// "7E3C42C5-60B1-424E-9787-FD892E819066";
+        var estimationId = "E2217CB2-3C68-4EC3-91CD-DAF28F55FE39";
         //var result = await estimationService.GetEstimationAsync(estimationId);
         var queryResult = await _service.GetEstimationBatchAsync(estimationId);
         var buildResult = builder.Build(queryResult);
         var unbuiltSheetList = queryResult.SheetResults.Where(x => x.SheetType == (int)SheetType.NetSheet).OrderBy(x => x.Row).ToList();
         var builtSheetList = buildResult.NetSheet.AllInOrder.ToList();
+        var json = JsonSerializer.Serialize(queryResult);
         //var unitCost = costService.UnitCosts(result.NetSheet, queryResult);
         //var totalCosts = result.NetSheet.SheetItems.Select(x => costService.TotalCosts(x, queryResult)).ToList();
         //var totalSums = totalCosts.Select(x => x.Sum(x => x.Value)).ToList();// .Sum(x => x.Value);
