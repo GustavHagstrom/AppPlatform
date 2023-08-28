@@ -1,6 +1,4 @@
 ﻿using BidConReport.BidconAccess.Services;
-using BidConReport.BidconAccess.Services.BidconAccess;
-using BidConReport.BidconAccess.Services.EstimationBuilding;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace BidConReport.BidconAccess.Extensions;
@@ -10,10 +8,6 @@ public static class ServiceExtensions
     {
         services.AddTransient<IDatabaseCredentialsService, TImplementation>();
         services.AddTransient<IEstimationQueryService, EstimationQueryService>();
-        services.AddTransient<IDbFolderService, DbFolderService>();
-        //services.AddTransient<IDirectEstimationService, DirectEstimationService>();
         services.AddTransient<IConnectionstringService, ConnectionstringService>();
-        services.AddTransient<ILayerdItemCalculator, LayerdItemCalculator>();
-        services.AddTransient<IEstimationBuilder, EstimationBuilder>();
     }
 }

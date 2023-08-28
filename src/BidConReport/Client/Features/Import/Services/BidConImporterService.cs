@@ -9,12 +9,12 @@ namespace BidConReport.Client.Features.Import.Services;
 public class BidConImporterService : IBidConImporterService
 {
     private readonly IHttpClientFactory _httpClientFactory;
-    private readonly IEstimationParentReferencer _parentReferencer;
+    //private readonly IEstimationParentReferencer _parentReferencer;
 
-    public BidConImporterService(IHttpClientFactory httpClientFactory, IEstimationParentReferencer parentReferencer)
+    public BidConImporterService(IHttpClientFactory httpClientFactory)//, IEstimationParentReferencer parentReferencer)
     {
         _httpClientFactory = httpClientFactory;
-        _parentReferencer = parentReferencer;
+        //_parentReferencer = parentReferencer;
     }
     public async Task<BidConImportResultDTO<DbFolderDTO>> GetFoldersAsync()
     {
@@ -43,7 +43,7 @@ public class BidConImporterService : IBidConImporterService
             var importResult = (await result.Content.ReadFromJsonAsync<BidConImportResultDTO<EstimationDTO>>())!;
             if (importResult.Value is not null)
             {
-                _parentReferencer.SetAllParentReferences(importResult.Value);
+                //_parentReferencer.SetAllParentReferences(importResult.Value);
             }
             return importResult;
         }

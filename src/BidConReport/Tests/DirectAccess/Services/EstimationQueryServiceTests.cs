@@ -1,8 +1,5 @@
 ﻿using BidConReport.BidconAccess.Enteties;
-using BidConReport.BidconAccess.Enums;
-using BidConReport.BidconAccess.Services.BidconAccess;
-using BidConReport.BidconAccess.Services.EstimationBuilding;
-using System.Text.Json;
+using BidConReport.BidconAccess.Services;
 
 namespace BidconReport.Tests.DirectAccess.Services;
 public class EstimationQueryServiceTests
@@ -23,18 +20,14 @@ public class EstimationQueryServiceTests
     [Test]
     public async Task EstimationBatch()
     {
-        var builder = new EstimationBuilder(new LayerdItemCalculator());
         var estimationId = "E2217CB2-3C68-4EC3-91CD-DAF28F55FE39";
 
         var queryResult = await _service.GetEstimationBatchAsync(estimationId);
-        var buildResult = builder.Build(queryResult);
-
         Assert.That(queryResult, Is.Not.Null);
     }
     [Test]
     public async Task EstimationBatches()
     {
-        var builder = new EstimationBuilder(new LayerdItemCalculator());
         var ids = new string[]
         {
             "7FF66EAD-FD4D-4D90-8295-00A8A977E2AA",
@@ -54,7 +47,6 @@ public class EstimationQueryServiceTests
         };
 
         var results = await _service.GetEstimationBatchesAsync(ids);
-        var builds = results.Select(x => builder.Build(x)).ToList();
         foreach (var result in results)
         {
             Assert.That(result, Is.Not.Null);

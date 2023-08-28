@@ -22,6 +22,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\Shared Libraries\SharedWasmLibrary\SharedWasmLibrary.csproj" />
     <ProjectReference Include="..\..\SharedPlatformLibrary\SharedPlatformLibrary.csproj" />
+    <ProjectReference Include="..\DirectAccess\BidConReport.BidconAccess.csproj" />
     <ProjectReference Include="..\Shared\BidConReport.Shared.csproj" />
   </ItemGroup>
 
