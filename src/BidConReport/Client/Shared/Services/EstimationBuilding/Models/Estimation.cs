@@ -9,4 +9,5 @@ public class Estimation
     public string? ConfirmationOfficer { get; set; }
     public required ISheetItem NetSheet { get; set; }
     public ICollection<ISheetItem> LockedStages { get; set; } = new List<ISheetItem>();
+    public double? TenderTotal { get; set; }
 }

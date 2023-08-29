@@ -11,6 +11,7 @@ public interface ISheetItem
     double? TotalCost { get; }
     double? UnitAskingPrice { get; }
     double? TotalAskingPrice { get; }
+    int? AddedInPhase { get; }
     public IEnumerable<ISheetItem> AllInOrder
     {
         get

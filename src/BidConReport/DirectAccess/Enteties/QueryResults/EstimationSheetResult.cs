@@ -10,11 +10,11 @@ public class EstimationSheetResult
     public required string Remark { get; set; }
     public double? Quantity { get; set; }
     public required string Unit { get; set; }
-    //public bool IsActive { get; set; }
     public int RowType { get; set; }
     public int SheetType { get; set; }
     public int? LayerType { get; set; }
-    //public int Version { get; set; }
     public string? RevisionCode { get; set; }
     public int? PMATANum { get; set; }
+    public int? AddedInPhase { get; set; }
+    public double? UnitPriceManual { get; set; }
 }

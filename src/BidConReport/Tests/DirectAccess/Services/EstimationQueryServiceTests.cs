@@ -1,5 +1,6 @@
 ﻿using BidConReport.BidconAccess.Enteties;
 using BidConReport.BidconAccess.Services;
+using System.Text.Json;
 
 namespace BidconReport.Tests.DirectAccess.Services;
 public class EstimationQueryServiceTests
@@ -23,6 +24,7 @@ public class EstimationQueryServiceTests
         var estimationId = "E2217CB2-3C68-4EC3-91CD-DAF28F55FE39";
 
         var queryResult = await _service.GetEstimationBatchAsync(estimationId);
+        var json = JsonSerializer.Serialize(queryResult);
         Assert.That(queryResult, Is.Not.Null);
     }
     [Test]

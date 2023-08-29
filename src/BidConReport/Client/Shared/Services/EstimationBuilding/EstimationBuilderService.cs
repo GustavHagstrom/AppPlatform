@@ -33,9 +33,19 @@ public class EstimationBuilderService : IEstimationBuilderService
             ConfirmationOfficer = batch.Estimation.ConfirmationOfficer,
             Place = batch.Estimation.Place,
             NetSheet = netSheet,
+            TenderTotal = GetTenderTotal(batch),
         };
         return estimation;
     }
+
+    private double? GetTenderTotal(EstimationBatch batch)
+    {
+        int tenderType = batch.Estimation.TenderType;
+        bool isValidTenderType = tenderType != (int)TenderType.None && tenderType != (int)TenderType.Unspecified;
+
+        return isValidTenderType ? batch.Estimation.TenderTotal : null;
+    }
+
     private IEnumerable<ISheetItem> CreateSheetRoots(EstimationBatch batch, SheetType sheetType)
     {
         Dictionary<int, ISheetItem> sheetItemMap = new();
@@ -86,6 +96,7 @@ public class EstimationBuilderService : IEstimationBuilderService
             Description = result.Description,
             Parent = parent,
             Quantity = result.Quantity,
+            AddedInPhase = result.AddedInPhase,
         };
         parent?.Children.Add(group);
         return group;
@@ -98,6 +109,7 @@ public class EstimationBuilderService : IEstimationBuilderService
             Parent = parent,
             Quantity = result.Quantity,
             Unit = result.Unit,
+            AddedInPhase = result.AddedInPhase,
         };
         parent?.Children.Add(item);
         return item;
@@ -115,6 +127,9 @@ public class EstimationBuilderService : IEstimationBuilderService
             ResourceUnitCosts = resourceCosts,
             ATA = ata,
             AskingPriceFactors = new Dictionary<int, double>(batch.ResourceFactors.Select(x => new KeyValuePair<int, double>(x.ResourceType, x.Factor))),
+            AddedInPhase = result.AddedInPhase,
+            TenderType = batch.Estimation.TenderType,
+            ManualAskingUnitPrice = result.UnitPriceManual,
         };
         parent?.Children.Add(item);
         return item;
@@ -127,6 +142,7 @@ public class EstimationBuilderService : IEstimationBuilderService
             Parent = parent,
             Quantity = result.Quantity,
             Unit = result.Unit,
+            AddedInPhase = result.AddedInPhase,
         };
         parent?.Children.Add(item);
         return item;
@@ -138,6 +154,7 @@ public class EstimationBuilderService : IEstimationBuilderService
             Description = result.Description,
             Parent = parent,
             Quantity = result.Quantity,
+            AddedInPhase = result.AddedInPhase,
         };
         parent?.Children.Add(item);
         return item;
@@ -149,6 +166,7 @@ public class EstimationBuilderService : IEstimationBuilderService
             Description = result.Description,
             Parent = parent,
             Quantity = result.Quantity,
+            AddedInPhase = result.AddedInPhase,
         };
         parent?.Children.Add(item);
         return item;

@@ -10,6 +10,7 @@ public class QuantityItem : ISheetItem
     public double? TotalCost => UnitCost * Quantity;
     public double? UnitAskingPrice => null;
     public double? TotalAskingPrice => null;
+    public int? AddedInPhase { get; set; }
     public override string ToString()
     {
         return $"{Description}";

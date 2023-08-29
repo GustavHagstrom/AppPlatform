@@ -10,8 +10,9 @@ public class EstimationResult
     public string? ConfirmationOfficer { get; set; }
     public bool IsLocked { get; set; }
     public int FolderNum { get; set; }
-    //public int CurrentVersion { get; set; }
     public required string Currency { get; set; }
-    //Add ObjecFactor, TenderTotal
     public double ObjectFactor { get; set; }
+    public double TenderTotal { get; set; }
+    public required int TenderType { get; set; }
+    public required int EstimationState { get; set; }
 }
