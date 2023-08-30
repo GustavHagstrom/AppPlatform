@@ -2,6 +2,7 @@
 using BidConReport.BidconAccess.Enteties.QueryResults;
 using BidConReport.BidconAccess.Enums;
 using BidConReport.Client.Shared.Services.EstimationBuilding.Models;
+using BidConReport.Shared.DTOs.ReportTemplate;
 
 namespace BidConReport.Client.Shared.Services.EstimationBuilding;
 public class EstimationBuilderService : IEstimationBuilderService

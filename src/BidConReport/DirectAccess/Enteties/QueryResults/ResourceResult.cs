@@ -7,4 +7,8 @@ public class ResourceResult
     public int ResourceType { get; set; }
     public double Price { get; set; }
     //public int Version { get; set; }
+    public override string ToString()
+    {
+        return Description ?? "ResourceResult";
+    }
 }
