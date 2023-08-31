@@ -1,14 +1,9 @@
-﻿using BidConReport.Shared.DTOs.ReportTemplate;
-using System.ComponentModel.DataAnnotations;
+﻿namespace BidConReport.Client.Shared.Services.EstimationReport.Models;
 
-namespace BidConReport.Client.Shared.Services.EstimationReport.Models;
 public class CellFormat
 {
-    public int Id { get; set; }
-    [Required]
-    [StringLength(50)]
+    public Guid Id { get; set; }
     public string FontFamily { get; set; } = "Calibri";
-    [Range(1, 200)]
     public int FontSize { get; set; } = 11;
     public bool Bold { get; set; } = false;
     public bool Italic { get; set; } = false;
@@ -19,4 +14,10 @@ public class CellFormat
     public bool ThoasandsSeparator { get; set; } = true;
     public int DecimalCount { get; set; } = 0;
     public bool IncludeTimeOfDay { get; set; } = false;
+    public bool BorderLeft { get; set; }
+    public bool BorderTop { get; set; }
+    public bool BorderRight { get; set; }
+    public bool BorderBottom { get; set; }
+    public int BorderThickness => 1;
+    public BorderStyle Style { get; set; }
 }
