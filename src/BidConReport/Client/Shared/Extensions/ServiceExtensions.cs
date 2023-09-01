@@ -1,9 +1,8 @@
-﻿using BidConReport.Client.Features.Authentication;
-using BidConReport.Client.Features.Import.Services;
+﻿using BidConReport.Client.Features.Import.Services;
 using BidConReport.Client.Shared.Services;
-using BidConReport.Client.Shared.Services.EstimationBuilding;
+using BidConReport.Client.Shared.Services.EstimationBuildingServices;
+using BidConReport.Client.Shared.Services.EstimationReportServices;
 using BidConReport.Client.Shared.StateContainers;
-using Microsoft.AspNetCore.Components.Authorization;
 
 namespace BidConReport.Client.Shared.Extensions;
 
@@ -18,7 +17,7 @@ public static class ServiceExtensions
     {
         services.AddScoped<ImportedEstimationsContainer>();
     }
-    public static void UserSharedServices(this IServiceCollection services)
+    public static void UseSharedServices(this IServiceCollection services)
     {
         services.AddTransient<IReportTemplateService, ReportTemplateService>();
         services.AddTransient<IImportSettingsService, ImportSettingsService>();
@@ -28,5 +27,6 @@ public static class ServiceExtensions
         services.AddTransient<IFolderService, FolderService>();
         services.AddTransient<ILayerdItemCalculator, LayerdItemCalculator>();
         services.AddTransient<IEstimationBuilderService, EstimationBuilderService>();
+        services.AddTransient<IEstimationReportService, EstimationReportService>();
     }
 }

@@ -1,5 +1,5 @@
 ﻿using BidConReport.BidconAccess.Enteties.QueryResults;
-using BidConReport.Client.Shared.Services.EstimationBuilding;
+using BidConReport.Client.Shared.Services.EstimationBuildingServices;
 using System.Text.Json;
 
 namespace BidconReport.Tests.Client.Shared.Services.EstimationBuilding;
