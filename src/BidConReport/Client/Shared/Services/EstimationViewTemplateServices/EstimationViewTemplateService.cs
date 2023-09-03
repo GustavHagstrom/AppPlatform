@@ -2,21 +2,21 @@
 
 namespace BidConReport.Client.Shared.Services.EstimationViewTemplateServices;
 
-public class EstimationReportService : IEstimationReportService
+public class EstimationViewTemplateService : IEstimationViewTemplateServices
 {
-    public async Task UpsertAsync(EstimationReport estimationReport, CancellationToken cancellationToken)
+    public async Task UpsertAsync(EstimationViewTemplate estimationReport, CancellationToken cancellationToken)
     {
         throw new NotImplementedException();
     }
-    public async Task DeleteAsync(EstimationReport estimationReport, CancellationToken cancellationToken)
+    public async Task DeleteAsync(EstimationViewTemplate estimationReport, CancellationToken cancellationToken)
     {
         throw new NotImplementedException();
     }
-    public async Task<EstimationReport> GetAsync(Guid id, CancellationToken cancellationToken)
+    public async Task<EstimationViewTemplate> GetAsync(Guid id, CancellationToken cancellationToken)
     {
         throw new NotImplementedException();
     }
-    public async Task<IEnumerable<EstimationReport>> GetAllShallowAsync(CancellationToken cancellationToken)
+    public async Task<IEnumerable<EstimationViewTemplate>> GetAllShallowAsync(CancellationToken cancellationToken)
     {
         throw new NotImplementedException();
     }
