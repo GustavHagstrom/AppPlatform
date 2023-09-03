@@ -1,4 +1,4 @@
-﻿using BidConReport.BidconAccess.Enums;
+﻿using BidConReport.Shared.Enums.BidconAccess;
 
 namespace BidConReport.Client.Shared.Services.EstimationBuildingServices.Models;
 public class Layered : ISheetItem
@@ -30,7 +30,7 @@ public class Layered : ISheetItem
         {
             return ResourceUnitCosts.Sum(x => x.Value * GetATAAskingFactor(x.Key));
         }
-        if (TenderType == (int)BidconAccess.Enums.TenderType.None)
+        if (TenderType == (int)BidConReport.Shared.Enums.BidconAccess.TenderType.None)
         {
             return null;
         }    

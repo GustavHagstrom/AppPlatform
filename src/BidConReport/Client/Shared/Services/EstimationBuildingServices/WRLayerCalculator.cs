@@ -1,5 +1,5 @@
 ﻿using BidConReport.BidconAccess.Enteties;
-using BidConReport.BidconAccess.Enums;
+using BidConReport.Shared.Enums.BidconAccess;
 
 namespace BidConReport.Client.Shared.Services.EstimationBuildingServices;
 public class WRLayerCalculator : ILayerCostCalculator

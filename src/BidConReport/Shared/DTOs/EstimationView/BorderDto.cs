@@ -1,6 +1,8 @@
-﻿namespace BidConReport.Client.Shared.Services.EstimationViewTemplateServices.Models.CellModels.CellModels;
+﻿using BidConReport.Shared.Enums.ViewTemplate;
 
-public class Border
+namespace BidConReport.Shared.DTOs.EstimationView;
+
+public class BorderDto
 {
     public bool BorderLeft { get; set; }
     public bool BorderTop { get; set; }

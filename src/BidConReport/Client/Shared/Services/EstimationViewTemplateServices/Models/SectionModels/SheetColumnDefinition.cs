@@ -1,4 +1,5 @@
 ﻿using BidConReport.Client.Shared.Services.EstimationViewTemplateServices.Models.CellModels;
+using BidConReport.Shared.Enums.ViewTemplate;
 
 namespace BidConReport.Client.Shared.Services.EstimationViewTemplateServices.Models.SectionModels;
 

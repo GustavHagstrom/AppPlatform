@@ -1,4 +1,4 @@
-﻿namespace BidConReport.Client.Shared.Services.EstimationViewTemplateServices.Models.SectionModels;
+﻿namespace BidConReport.Shared.Enums.ViewTemplate;
 
 public enum SheetColumnType
 {

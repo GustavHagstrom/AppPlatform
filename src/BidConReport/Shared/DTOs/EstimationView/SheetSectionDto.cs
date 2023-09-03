@@ -1,12 +1,12 @@
 ﻿using BidConReport.Shared.Enums.BidconAccess;
 
-namespace BidConReport.Client.Shared.Services.EstimationViewTemplateServices.Models.SectionModels;
+namespace BidConReport.Shared.DTOs.EstimationView;
 
-public class SheetSection : IReportSection
+public class SheetSectionDto
 {
     public Guid Id { get; set; }
     public required string Name { get; set; }
     public int Order { get; set; }
     public SheetType SheetType { get; set; }
-    public List<SheetColumnDefinition> Columns { get; set; } = new();
+    public List<ColumnDefinitionDto> Columns { get; set; } = new();
 }

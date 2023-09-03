@@ -1,4 +1,6 @@
-﻿namespace BidConReport.Client.Shared.Services.EstimationViewTemplateServices.Models.CellModels;
+﻿using BidConReport.Shared.Enums.ViewTemplate;
+
+namespace BidConReport.Client.Shared.Services.EstimationViewTemplateServices.Models.CellModels;
 
 public class CellFormat
 {
@@ -18,5 +20,5 @@ public class CellFormat
     public bool BorderRight { get; set; }
     public bool BorderBottom { get; set; }
     public int BorderThickness => 1;
-    public BorderStyle Style { get; set; }
+    public BorderStyle BorderStyle { get; set; }
 }

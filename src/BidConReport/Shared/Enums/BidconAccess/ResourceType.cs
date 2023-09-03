@@ -1,4 +1,4 @@
-﻿namespace BidConReport.BidconAccess.Enums;
+﻿namespace BidConReport.Shared.Enums.BidconAccess;
 public enum ResourceType
 {
     None = 0,
