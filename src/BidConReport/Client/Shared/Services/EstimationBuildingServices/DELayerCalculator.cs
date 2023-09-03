@@ -1,4 +1,4 @@
-﻿using BidConReport.BidconAccess.Enteties.QueryResults;
+﻿using BidConReport.BidconAccess.Enteties;
 
 namespace BidConReport.Client.Shared.Services.EstimationBuildingServices;
 public class DELayerCalculator : ILayerCostCalculator

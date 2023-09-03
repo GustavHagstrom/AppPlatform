@@ -1,5 +1,4 @@
 ﻿using BidConReport.BidconAccess.Enteties;
-using BidConReport.BidconAccess.Enteties.QueryResults;
 using BidConReport.BidconAccess.Enums;
 using BidConReport.Client.Shared.Services.EstimationBuildingServices.Models;
 using BidConReport.Shared.DTOs.ReportTemplate;

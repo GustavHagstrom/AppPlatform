@@ -1,5 +1,4 @@
 ﻿using BidConReport.BidconAccess.Enteties;
-using BidConReport.BidconAccess.Enteties.QueryResults;
 
 namespace BidConReport.BidconAccess.Services;
 public interface IEstimationQueryService

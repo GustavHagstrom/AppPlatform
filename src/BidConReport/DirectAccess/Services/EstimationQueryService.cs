@@ -1,5 +1,4 @@
 ﻿using BidConReport.BidconAccess.Enteties;
-using BidConReport.BidconAccess.Enteties.QueryResults;
 using Dapper;
 using Microsoft.Data.SqlClient;
 using System.Data;

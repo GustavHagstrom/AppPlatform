@@ -1,4 +1,4 @@
-﻿using BidConReport.BidconAccess.Enteties.QueryResults;
+﻿using BidConReport.BidconAccess.Enteties;
 using BidConReport.Client.Shared.Services.EstimationBuildingServices;
 using System.Text.Json;
 
