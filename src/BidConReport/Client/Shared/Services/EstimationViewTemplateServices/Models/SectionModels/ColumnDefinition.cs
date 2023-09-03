@@ -1,4 +1,4 @@
-﻿namespace BidConReport.Client.Shared.Services.EstimationReportServices.Models.SectionModels;
+﻿namespace BidConReport.Client.Shared.Services.EstimationViewTemplateServices.Models.SectionModels;
 
 public class ColumnDefinition : IColumnDefinition
 {

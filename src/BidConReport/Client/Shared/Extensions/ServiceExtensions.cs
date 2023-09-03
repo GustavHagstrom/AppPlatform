@@ -1,7 +1,7 @@
 ﻿using BidConReport.Client.Features.Import.Services;
 using BidConReport.Client.Shared.Services;
 using BidConReport.Client.Shared.Services.EstimationBuildingServices;
-using BidConReport.Client.Shared.Services.EstimationReportServices;
+using BidConReport.Client.Shared.Services.EstimationViewTemplateServices;
 using BidConReport.Client.Shared.StateContainers;
 
 namespace BidConReport.Client.Shared.Extensions;
@@ -27,6 +27,6 @@ public static class ServiceExtensions
         services.AddTransient<IFolderService, FolderService>();
         services.AddTransient<ILayerdItemCalculator, LayerdItemCalculator>();
         services.AddTransient<IEstimationBuilderService, EstimationBuilderService>();
-        services.AddTransient<IEstimationReportService, EstimationReportService>();
+        services.AddTransient<IEstimationViewTemplateServices, EstimationViewTemplateService>();
     }
 }

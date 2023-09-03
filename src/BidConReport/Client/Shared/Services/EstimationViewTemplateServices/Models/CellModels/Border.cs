@@ -1,4 +1,4 @@
-﻿namespace BidConReport.Client.Shared.Services.EstimationReportServices.Models.CellModels.CellModels;
+﻿namespace BidConReport.Client.Shared.Services.EstimationViewTemplateServices.Models.CellModels.CellModels;
 
 public class Border
 {

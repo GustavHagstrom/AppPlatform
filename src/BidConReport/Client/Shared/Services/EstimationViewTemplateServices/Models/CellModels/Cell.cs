@@ -1,4 +1,4 @@
-﻿namespace BidConReport.Client.Shared.Services.EstimationReportServices.Models.CellModels;
+﻿namespace BidConReport.Client.Shared.Services.EstimationViewTemplateServices.Models.CellModels;
 public class Cell
 {
     public Guid Id { get; set; }

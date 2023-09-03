@@ -1,6 +1,6 @@
-﻿using BidConReport.Client.Shared.Services.EstimationReportServices.Models;
+﻿using BidConReport.Client.Shared.Services.EstimationViewTemplateServices.Models;
 
-namespace BidConReport.Client.Shared.Services.EstimationReportServices;
+namespace BidConReport.Client.Shared.Services.EstimationViewTemplateServices;
 
 public class EstimationReportService : IEstimationReportService
 {
