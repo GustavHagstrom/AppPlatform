@@ -7,7 +7,7 @@ using BidConReport.Shared.DTOs.ReportTemplate;
 namespace BidConReport.Client.Shared.Services.EstimationBuildingServices;
 public class EstimationBuilderService : IEstimationBuilderService
 {
-    private readonly Dictionary<int, Func<EstimationSheetResult, EstimationBatch, ISheetItem?, ICollection<ATA>, ISheetItem>> _createSheetItemFunctionMap;
+    private readonly Dictionary<int, Func<EstimationSheet, EstimationBatch, ISheetItem?, ICollection<Models.ATA>, ISheetItem>> _createSheetItemFunctionMap;
     private readonly ILayerdItemCalculator _layerdItemCalculator = new LayerdItemCalculator();
 
     public EstimationBuilderService()
@@ -61,7 +61,7 @@ public class EstimationBuilderService : IEstimationBuilderService
         return roots;
     }
 
-    private IEnumerable<ATA> CreateATAs(EstimationBatch batch)
+    private IEnumerable<Models.ATA> CreateATAs(EstimationBatch batch)
     {
         foreach (var item in batch.ATAResults)
         {
@@ -77,7 +77,7 @@ public class EstimationBuilderService : IEstimationBuilderService
             var removalAskingFactors = batch.ATAFactorResults
                 .Where(x => x.PMATANum == item.PMATANum)
                 .Select(x => new KeyValuePair<int, double>(x.ResourceType, x.RemovalPercent / 100.0 + 1));
-            yield return new ATA()
+            yield return new Models.ATA()
             {
                 PMATANum = item.PMATANum,
                 Name = item.Name,
@@ -90,7 +90,7 @@ public class EstimationBuilderService : IEstimationBuilderService
         }
     }
 
-    private static ISheetItem CreateGroup(EstimationSheetResult result, EstimationBatch batch, ISheetItem? parent, ICollection<ATA> atas)
+    private static ISheetItem CreateGroup(EstimationSheet result, EstimationBatch batch, ISheetItem? parent, ICollection<Models.ATA> atas)
     {
         var group = new Group
         {
@@ -101,7 +101,7 @@ public class EstimationBuilderService : IEstimationBuilderService
         parent?.Children.Add(group);
         return group;
     }
-    private static ISheetItem CreatePart(EstimationSheetResult result, EstimationBatch batch, ISheetItem? parent, ICollection<ATA> atas)
+    private static ISheetItem CreatePart(EstimationSheet result, EstimationBatch batch, ISheetItem? parent, ICollection<Models.ATA> atas)
     {
         var item = new Part
         {
@@ -113,10 +113,10 @@ public class EstimationBuilderService : IEstimationBuilderService
         parent?.Children.Add(item);
         return item;
     }
-    private ISheetItem CreateLayered(EstimationSheetResult result, EstimationBatch batch, ISheetItem? parent, ICollection<ATA> atas)
+    private ISheetItem CreateLayered(EstimationSheet result, EstimationBatch batch, ISheetItem? parent, ICollection<Models.ATA> atas)
     {
         Dictionary<int, double?> resourceCosts = _layerdItemCalculator.CalculateUnitCosts(result, batch);
-        ATA? ata = atas.FirstOrDefault(x => x.PMATANum == result.PMATANum);
+        Models.ATA? ata = atas.FirstOrDefault(x => x.PMATANum == result.PMATANum);
         var item = new Layered
         {
             Description = result.Description,
@@ -133,7 +133,7 @@ public class EstimationBuilderService : IEstimationBuilderService
         parent?.Children.Add(item);
         return item;
     }
-    private ISheetItem CreateQuantity(EstimationSheetResult result, EstimationBatch batch, ISheetItem? parent, ICollection<ATA> atas)
+    private ISheetItem CreateQuantity(EstimationSheet result, EstimationBatch batch, ISheetItem? parent, ICollection<Models.ATA> atas)
     {
         var item = new QuantityItem
         {
@@ -145,7 +145,7 @@ public class EstimationBuilderService : IEstimationBuilderService
         parent?.Children.Add(item);
         return item;
     }
-    private ISheetItem CreateLockedStage(EstimationSheetResult result, EstimationBatch batch, ISheetItem? parent, ICollection<ATA> atas)
+    private ISheetItem CreateLockedStage(EstimationSheet result, EstimationBatch batch, ISheetItem? parent, ICollection<Models.ATA> atas)
     {
         var item = new LockedStage
         {
@@ -156,7 +156,7 @@ public class EstimationBuilderService : IEstimationBuilderService
         parent?.Children.Add(item);
         return item;
     }
-    private ISheetItem CreateText(EstimationSheetResult result, EstimationBatch batch, ISheetItem? parent, ICollection<ATA> atas)
+    private ISheetItem CreateText(EstimationSheet result, EstimationBatch batch, ISheetItem? parent, ICollection<Models.ATA> atas)
     {
         var item = new Text
         {

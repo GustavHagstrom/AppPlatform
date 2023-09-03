@@ -1,5 +1,5 @@
 ﻿namespace BidConReport.BidconAccess.Enteties;
-public class EstimationResult
+public class Estimation
 {
     public Guid EstimationID { get; set; }
     public required string Name { get; set; }

@@ -1,2 +1,2 @@
 ﻿namespace BidConReport.BidconAccess.Enteties.QueryResults;
-public record EstimationFolderBatch(IEnumerable<EstimationResult> Estimations, IEnumerable<EstimationFolderResult> Folders);
+public record EstimationFolderBatch(IEnumerable<Estimation> Estimations, IEnumerable<EstimationFolder> Folders);

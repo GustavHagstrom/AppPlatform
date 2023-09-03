@@ -1,5 +1,5 @@
 ﻿namespace BidConReport.BidconAccess.Enteties.QueryResults;
-public class ATAFactorResult
+public class ATAFactor
 {
     public Guid EstimationId { get; set; }
     public int PMATANum { get; set; }

@@ -1,5 +1,5 @@
 ﻿namespace BidConReport.BidconAccess.Enteties.QueryResults;
-public class EstimationFolderResult
+public class EstimationFolder
 {
     public int FolderNum { get; set; }
     public int ParentNum { get; set; }

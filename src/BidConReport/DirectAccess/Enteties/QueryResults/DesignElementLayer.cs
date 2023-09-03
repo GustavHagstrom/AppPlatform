@@ -1,5 +1,5 @@
-﻿namespace BidConReport.BidconAccess.Enteties;
-public class MixedElementLayerResult
+﻿namespace BidConReport.BidconAccess.Enteties.QueryResults;
+public class DesignElementLayer
 {
     public required string Id { get; set; }
     public Guid EstimationId { get; set; }
@@ -9,6 +9,5 @@ public class MixedElementLayerResult
     /// Quantity
     /// </summary>
     public double Cons { get; set; }
-    public int LayerType { get; set; }
     //public int Version { get; set; }
 }

@@ -1,11 +1,11 @@
 ﻿namespace BidConReport.BidconAccess.Enteties.QueryResults;
 public record EstimationBatch(
-    EstimationResult Estimation,
-    ICollection<EstimationSheetResult> SheetResults,
-    ICollection<MixedElementLayerResult> MELayer,
-    ICollection<DesignElementLayerResult> DELayer,
-    ICollection<WorkResultLayerResult> WRLayer,
-    ICollection<ResourceResult> Resource,
-    ICollection<ResourceFactorResult> ResourceFactors,
-    ICollection<ATAResult> ATAResults,
-    ICollection<ATAFactorResult> ATAFactorResults);
+    Estimation Estimation,
+    ICollection<EstimationSheet> SheetResults,
+    ICollection<MixedElementLayer> MELayers,
+    ICollection<DesignElementLayer> DELayers,
+    ICollection<WorkResultLayer> WRLayers,
+    ICollection<Resource> Resources,
+    ICollection<ResourceFactor> ResourceFactors,
+    ICollection<ATA> ATAs,
+    ICollection<ATAFactor> ATAFactors);

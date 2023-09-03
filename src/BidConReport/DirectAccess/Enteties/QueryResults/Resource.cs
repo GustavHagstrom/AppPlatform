@@ -1,5 +1,5 @@
 ﻿namespace BidConReport.BidconAccess.Enteties.QueryResults;
-public class ResourceResult
+public class Resource
 {
     public required string Id { get; set; }
     public string? Description { get; set; }

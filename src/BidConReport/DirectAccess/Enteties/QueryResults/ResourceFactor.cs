@@ -1,5 +1,5 @@
 ﻿namespace BidConReport.BidconAccess.Enteties.QueryResults;
-public class ResourceFactorResult
+public class ResourceFactor
 {
     public Guid EstimationId { get; set; }
     public required int ResourceType { get; set; }

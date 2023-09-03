@@ -46,15 +46,15 @@ SELECT EstimationID, PMATANum, ResourceType, RemovalPer as RemovealPercent, Remo
         {
             using (var multi = await cnn.QueryMultipleAsync(sql, new { Id = estimationId.ToString() }))
             {
-                var estimation = await multi.ReadFirstAsync<EstimationResult>();
-                var sheets = await multi.ReadAsync<EstimationSheetResult>();
-                var mixedLayers = await multi.ReadAsync<MixedElementLayerResult>();
-                var designElementLayers = await multi.ReadAsync<DesignElementLayerResult>();
-                var workResultLayers = await multi.ReadAsync<WorkResultLayerResult>();
-                var resources = await multi.ReadAsync<ResourceResult>();
-                var resourceFactors = await multi.ReadAsync<ResourceFactorResult>();
-                var ataResults = await multi.ReadAsync<ATAResult>();
-                var ataFactorResults = await multi.ReadAsync<ATAFactorResult>();
+                var estimation = await multi.ReadFirstAsync<Estimation>();
+                var sheets = await multi.ReadAsync<EstimationSheet>();
+                var mixedLayers = await multi.ReadAsync<MixedElementLayer>();
+                var designElementLayers = await multi.ReadAsync<DesignElementLayer>();
+                var workResultLayers = await multi.ReadAsync<WorkResultLayer>();
+                var resources = await multi.ReadAsync<Resource>();
+                var resourceFactors = await multi.ReadAsync<ResourceFactor>();
+                var ataResults = await multi.ReadAsync<ATA>();
+                var ataFactorResults = await multi.ReadAsync<ATAFactor>();
                 return new EstimationBatch(
                     estimation,
                     sheets.ToList(),
@@ -85,15 +85,15 @@ SELECT EstimationID, PMATANum, ResourceType, RemovalPer as RemovealPercent, Remo
         {
             using (var multi = await cnn.QueryMultipleAsync(sql, new { Ids = estimationIds }))
             {
-                var estimationResults = await multi.ReadAsync<EstimationResult>();
-                var sheetResults = await multi.ReadAsync<EstimationSheetResult>();
-                var mixedLayerResults = await multi.ReadAsync<MixedElementLayerResult>();
-                var designElementLayerResults = await multi.ReadAsync<DesignElementLayerResult>();
-                var workResultLayerResults = await multi.ReadAsync<WorkResultLayerResult>();
-                var resourceResults = await multi.ReadAsync<ResourceResult>();
-                var resourceFactorsResults = await multi.ReadAsync<ResourceFactorResult>();
-                var ataResults = await multi.ReadAsync<ATAResult>();
-                var ataFactorResults = await multi.ReadAsync<ATAFactorResult>();
+                var estimationResults = await multi.ReadAsync<Estimation>();
+                var sheetResults = await multi.ReadAsync<EstimationSheet>();
+                var mixedLayerResults = await multi.ReadAsync<MixedElementLayer>();
+                var designElementLayerResults = await multi.ReadAsync<DesignElementLayer>();
+                var workResultLayerResults = await multi.ReadAsync<WorkResultLayer>();
+                var resourceResults = await multi.ReadAsync<Resource>();
+                var resourceFactorsResults = await multi.ReadAsync<ResourceFactor>();
+                var ataResults = await multi.ReadAsync<ATA>();
+                var ataFactorResults = await multi.ReadAsync<ATAFactor>();
 
                 var batches = new List<EstimationBatch>();
                 var estimationResultsMap = estimationResults.ToLookup(er => er.EstimationID);
@@ -128,12 +128,12 @@ SELECT EstimationID, PMATANum, ResourceType, RemovalPer as RemovealPercent, Remo
         }
     }
 
-    public async Task<IEnumerable<EstimationResult>> GetEstimationListAsync()
+    public async Task<IEnumerable<Estimation>> GetEstimationListAsync()
     {
         var sql = "SELECT EstimationID, Name, Description, Customer, Place, HandlingOfficer, ConfirmationOfficer, IsLocked, FolderNum, CurrentVersion FROM Estimation";
         using (IDbConnection cnn = new SqlConnection(await GetLasyConnectionString()))
         {
-            return await cnn.QueryAsync<EstimationResult>(sql);
+            return await cnn.QueryAsync<Estimation>(sql);
         }
     }
     public async Task<EstimationFolderBatch> GetFolderBatchAsync()
@@ -146,8 +146,8 @@ SELECT FolderNum, ParentNum, Name FROM EstimationFolder;
         {
             using (var multi = await cnn.QueryMultipleAsync(sql))
             {
-                var estimations = await multi.ReadAsync<EstimationResult>();
-                var folders = await multi.ReadAsync<EstimationFolderResult>();
+                var estimations = await multi.ReadAsync<Estimation>();
+                var folders = await multi.ReadAsync<EstimationFolder>();
                 return new EstimationFolderBatch(estimations, folders);
             }
         }

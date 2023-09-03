@@ -35,7 +35,7 @@ public class FolderService : IFolderService
 
         return root;
     }
-    private Folder CreateDbFolder(EstimationFolderResult folder)
+    private Folder CreateDbFolder(EstimationFolder folder)
     {
         return new Folder
         {
@@ -46,7 +46,7 @@ public class FolderService : IFolderService
             Name = folder.Name,
         };
     }
-    private EstimationInfo CreateEstimationInfo(EstimationResult estimation)
+    private EstimationInfo CreateEstimationInfo(BidconAccess.Enteties.Estimation estimation)
     {
         return new EstimationInfo
         {

@@ -1,5 +1,5 @@
 ﻿namespace BidConReport.BidconAccess.Enteties;
-public class EstimationSheetResult
+public class EstimationSheet
 {
     public Guid EstimationId { get; set; }
     public required string LayerId { get; set; }
