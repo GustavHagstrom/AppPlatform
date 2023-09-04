@@ -3,5 +3,5 @@
 namespace BidConReport.Client.Shared.BidconAccess.Services;
 public interface IDatabaseCredentialsService
 {
-    Task<DatabaseCredentials> GetAsync();
+    Task<BC_DatabaseCredentials> GetAsync();
 }

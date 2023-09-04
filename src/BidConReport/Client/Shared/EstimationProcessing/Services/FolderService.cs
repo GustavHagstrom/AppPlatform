@@ -5,7 +5,7 @@ using BidConReport.Shared.DTOs.BidconAccess;
 namespace BidConReport.Client.Shared.EstimationProcessing.Services;
 public class FolderService : IFolderService
 {
-    public Folder CreateFromBatch(EstimationFolderBatch batch)
+    public Folder CreateFromBatch(BC_EstimationFolderBatch batch)
     {
         Dictionary<int, Folder> map = new();
         var root = new Folder

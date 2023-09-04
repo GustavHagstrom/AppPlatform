@@ -4,7 +4,7 @@ using BidConReport.Shared.Enums.BidconAccess;
 namespace BidConReport.Client.Shared.EstimationProcessing.Calculations;
 public class WRLayerCalculator : ILayerCostCalculator
 {
-    public void Calculate(EstimationBatch batch, string layerId, out double unitCost, out double unitAskingPrice)
+    public void Calculate(BC_EstimationBatch batch, string layerId, out double unitCost, out double unitAskingPrice)
     {
         unitCost = 0;
         unitAskingPrice = 0;
@@ -20,7 +20,7 @@ public class WRLayerCalculator : ILayerCostCalculator
         }
     }
 
-    public Dictionary<int, double?> Calculate(EstimationBatch batch, string layerId)
+    public Dictionary<int, double?> Calculate(BC_EstimationBatch batch, string layerId)
     {
         var activeLayerItems = batch.WRLayers.Where(x => x.Id == layerId).ToList();
         Dictionary<int, double?> costs = new();
@@ -46,7 +46,7 @@ public class WRLayerCalculator : ILayerCostCalculator
         return costs;
     }
 
-    private double AskingPriceResourceFactor(EstimationBatch batch, int resourceType)
+    private double AskingPriceResourceFactor(BC_EstimationBatch batch, int resourceType)
     {
         return batch.ResourceFactors.Where(x => x.ResourceType == resourceType).Select(x => x.Factor).First();
     }

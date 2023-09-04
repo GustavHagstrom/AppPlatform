@@ -3,8 +3,8 @@
 namespace BidConReport.Client.Shared.BidconAccess.Services;
 public interface IEstimationQueryService
 {
-    Task<EstimationBatch> GetEstimationBatchAsync(string estimationId);
-    Task<IEnumerable<EstimationBatch>> GetEstimationBatchesAsync(IEnumerable<string> estimationIds);
+    Task<BC_EstimationBatch> GetEstimationBatchAsync(string estimationId);
+    Task<IEnumerable<BC_EstimationBatch>> GetEstimationBatchesAsync(IEnumerable<string> estimationIds);
     Task<IEnumerable<BC_Estimation>> GetEstimationListAsync();
-    Task<EstimationFolderBatch> GetFolderBatchAsync();
+    Task<BC_EstimationFolderBatch> GetFolderBatchAsync();
 }

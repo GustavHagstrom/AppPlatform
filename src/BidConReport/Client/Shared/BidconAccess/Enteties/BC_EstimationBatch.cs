@@ -1,5 +1,5 @@
 ﻿namespace BidConReport.Client.Shared.BidconAccess.Enteties;
-public record EstimationBatch(
+public record BC_EstimationBatch(
     BC_Estimation Estimation,
     ICollection<BC_EstimationSheet> SheetResults,
     ICollection<BC_MixedElementLayer> MELayers,

@@ -5,5 +5,5 @@ using BidConReport.Shared.DTOs.BidconAccess;
 namespace BidConReport.Client.Shared.EstimationProcessing.Services;
 public interface IFolderService
 {
-    Folder CreateFromBatch(EstimationFolderBatch batch);
+    Folder CreateFromBatch(BC_EstimationFolderBatch batch);
 }
