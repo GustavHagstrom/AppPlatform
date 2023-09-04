@@ -1,7 +1,8 @@
 ﻿using BidConReport.Client.Features.Import.Services;
+using BidConReport.Client.Shared.EstimationProcessing.Calculations;
+using BidConReport.Client.Shared.EstimationProcessing.Services;
+using BidConReport.Client.Shared.EstimationViewTemplate.Services;
 using BidConReport.Client.Shared.Services;
-using BidConReport.Client.Shared.Services.EstimationBuildingServices;
-using BidConReport.Client.Shared.Services.EstimationViewTemplateServices;
 using BidConReport.Client.Shared.StateContainers;
 
 namespace BidConReport.Client.Shared.Extensions;

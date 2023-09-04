@@ -1,5 +1,5 @@
-﻿namespace BidConReport.Shared.DTOs.EstimationView;
-public class CellDto
+﻿namespace BidConReport.Client.Shared.EstimationViewTemplate.Models.CellModels;
+public class Cell
 {
     public Guid Id { get; set; }
     public int Row { get; set; }
@@ -7,5 +7,5 @@ public class CellDto
     public int ColumnSpan { get; set; }
     public string Value { get; set; } = string.Empty;
     public bool IsFormula => Value.StartsWith("=");
-    public required CellFormatDto Format { get; set; }
+    public CellFormat Format { get; set; } = new();
 }

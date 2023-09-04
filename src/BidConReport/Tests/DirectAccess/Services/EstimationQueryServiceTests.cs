@@ -1,5 +1,5 @@
-﻿using BidConReport.BidconAccess.Enteties;
-using BidConReport.BidconAccess.Services;
+﻿using BidConReport.Client.Shared.BidconAccess.Enteties;
+using BidConReport.Client.Shared.BidconAccess.Services;
 using System.Text.Json;
 
 namespace BidconReport.Tests.DirectAccess.Services;
