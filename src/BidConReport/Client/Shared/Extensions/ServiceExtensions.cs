@@ -1,5 +1,4 @@
 ﻿using BidConReport.Client.Features.Import.Services;
-using BidConReport.Client.Shared.BidconAccess.Services;
 using BidConReport.Client.Shared.EstimationProcessing.Calculations;
 using BidConReport.Client.Shared.EstimationProcessing.Services;
 using BidConReport.Client.Shared.EstimationViewTemplate.Services;
@@ -30,11 +29,5 @@ public static class ServiceExtensions
         services.AddTransient<ILayerdItemCalculator, LayerdItemCalculator>();
         services.AddTransient<IEstimationBuilderService, EstimationBuilderService>();
         services.AddTransient<IEstimationViewTemplateServices, EstimationViewTemplateService>();
-    }
-    public static void UseDirectAccess<TImplementation>(this IServiceCollection services) where TImplementation : class, IDatabaseCredentialsService
-    {
-        services.AddTransient<IDatabaseCredentialsService, TImplementation>();
-        services.AddTransient<IEstimationQueryService, EstimationQueryService>();
-        services.AddTransient<IConnectionstringService, ConnectionstringService>();
     }
 }

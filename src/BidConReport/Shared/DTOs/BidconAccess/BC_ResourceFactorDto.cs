@@ -1,5 +1,5 @@
-﻿namespace BidConReport.Client.Shared.BidconAccess.Enteties;
-public class BC_ResourceFactor
+﻿namespace BidConReport.Shared.DTOs.BidconAccess;
+public class BC_ResourceFactorDto
 {
     public Guid EstimationId { get; set; }
     public required int ResourceType { get; set; }

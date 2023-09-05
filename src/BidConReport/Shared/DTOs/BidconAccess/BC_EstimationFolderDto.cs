@@ -1,5 +1,5 @@
-﻿namespace BidConReport.Client.Shared.BidconAccess.Enteties;
-public class BC_EstimationFolder
+﻿namespace BidConReport.Shared.DTOs.BidconAccess;
+public class BC_EstimationFolderDto
 {
     public int FolderNum { get; set; }
     public int ParentNum { get; set; }

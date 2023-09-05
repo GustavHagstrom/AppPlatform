@@ -1,5 +1,5 @@
 ﻿namespace BidConReport.Shared.DTOs.BidconAccess;
-public class ATADto
+public class BC_ATADto
 {
     public Guid EstimationId { get; set; }
     public int PMATANum { get; set; }

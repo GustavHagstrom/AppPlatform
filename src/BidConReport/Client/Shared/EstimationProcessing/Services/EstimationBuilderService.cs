@@ -1,12 +1,12 @@
-﻿using BidConReport.Client.Shared.BidconAccess.Enteties;
-using BidConReport.Client.Shared.EstimationProcessing.Calculations;
+﻿using BidConReport.Client.Shared.EstimationProcessing.Calculations;
 using BidConReport.Client.Shared.EstimationProcessing.Models;
+using BidConReport.Shared.DTOs.BidconAccess;
 using BidConReport.Shared.Enums.BidconAccess;
 
 namespace BidConReport.Client.Shared.EstimationProcessing.Services;
 public class EstimationBuilderService : IEstimationBuilderService
 {
-    private readonly Dictionary<int, Func<BC_EstimationSheet, BC_EstimationBatch, ISheetItem?, ICollection<Models.ATA>, ISheetItem>> _createSheetItemFunctionMap;
+    private readonly Dictionary<int, Func<BC_EstimationSheetDto, BC_EstimationBatchDto, ISheetItem?, ICollection<Models.ATA>, ISheetItem>> _createSheetItemFunctionMap;
     private readonly ILayerdItemCalculator _layerdItemCalculator = new LayerdItemCalculator();
 
     public EstimationBuilderService()
@@ -21,7 +21,7 @@ public class EstimationBuilderService : IEstimationBuilderService
             { (int)RowType.Text, CreateText },
         };
     }
-    public Estimation Build(BC_EstimationBatch batch)
+    public Estimation Build(BC_EstimationBatchDto batch)
     {
         var netSheet = CreateSheetRoots(batch, SheetType.NetSheet).Single();
         var estimation = new Estimation
@@ -38,7 +38,7 @@ public class EstimationBuilderService : IEstimationBuilderService
         return estimation;
     }
 
-    private double? GetTenderTotal(BC_EstimationBatch batch)
+    private double? GetTenderTotal(BC_EstimationBatchDto batch)
     {
         int tenderType = batch.Estimation.TenderType;
         bool isValidTenderType = tenderType != (int)TenderType.None && tenderType != (int)TenderType.Unspecified;
@@ -46,7 +46,7 @@ public class EstimationBuilderService : IEstimationBuilderService
         return isValidTenderType ? batch.Estimation.TenderTotal : null;
     }
 
-    private IEnumerable<ISheetItem> CreateSheetRoots(BC_EstimationBatch batch, SheetType sheetType)
+    private IEnumerable<ISheetItem> CreateSheetRoots(BC_EstimationBatchDto batch, SheetType sheetType)
     {
         Dictionary<int, ISheetItem> sheetItemMap = new();
         var atas = CreateATAs(batch).ToList();
@@ -60,7 +60,7 @@ public class EstimationBuilderService : IEstimationBuilderService
         return roots;
     }
 
-    private IEnumerable<ATA> CreateATAs(BC_EstimationBatch batch)
+    private IEnumerable<ATA> CreateATAs(BC_EstimationBatchDto batch)
     {
         foreach (var item in batch.ATAs)
         {
@@ -89,7 +89,7 @@ public class EstimationBuilderService : IEstimationBuilderService
         }
     }
 
-    private static ISheetItem CreateGroup(BC_EstimationSheet result, BC_EstimationBatch batch, ISheetItem? parent, ICollection<Models.ATA> atas)
+    private static ISheetItem CreateGroup(BC_EstimationSheetDto result, BC_EstimationBatchDto batch, ISheetItem? parent, ICollection<Models.ATA> atas)
     {
         var group = new Group
         {
@@ -100,7 +100,7 @@ public class EstimationBuilderService : IEstimationBuilderService
         parent?.Children.Add(group);
         return group;
     }
-    private static ISheetItem CreatePart(BC_EstimationSheet result, BC_EstimationBatch batch, ISheetItem? parent, ICollection<Models.ATA> atas)
+    private static ISheetItem CreatePart(BC_EstimationSheetDto result, BC_EstimationBatchDto batch, ISheetItem? parent, ICollection<Models.ATA> atas)
     {
         var item = new Part
         {
@@ -112,7 +112,7 @@ public class EstimationBuilderService : IEstimationBuilderService
         parent?.Children.Add(item);
         return item;
     }
-    private ISheetItem CreateLayered(BC_EstimationSheet result, BC_EstimationBatch batch, ISheetItem? parent, ICollection<Models.ATA> atas)
+    private ISheetItem CreateLayered(BC_EstimationSheetDto result, BC_EstimationBatchDto batch, ISheetItem? parent, ICollection<Models.ATA> atas)
     {
         Dictionary<int, double?> resourceCosts = _layerdItemCalculator.CalculateUnitCosts(result, batch);
         Models.ATA? ata = atas.FirstOrDefault(x => x.PMATANum == result.PMATANum);
@@ -132,7 +132,7 @@ public class EstimationBuilderService : IEstimationBuilderService
         parent?.Children.Add(item);
         return item;
     }
-    private ISheetItem CreateQuantity(BC_EstimationSheet result, BC_EstimationBatch batch, ISheetItem? parent, ICollection<Models.ATA> atas)
+    private ISheetItem CreateQuantity(BC_EstimationSheetDto result, BC_EstimationBatchDto batch, ISheetItem? parent, ICollection<Models.ATA> atas)
     {
         var item = new QuantityItem
         {
@@ -144,7 +144,7 @@ public class EstimationBuilderService : IEstimationBuilderService
         parent?.Children.Add(item);
         return item;
     }
-    private ISheetItem CreateLockedStage(BC_EstimationSheet result, BC_EstimationBatch batch, ISheetItem? parent, ICollection<Models.ATA> atas)
+    private ISheetItem CreateLockedStage(BC_EstimationSheetDto result, BC_EstimationBatchDto batch, ISheetItem? parent, ICollection<Models.ATA> atas)
     {
         var item = new LockedStage
         {
@@ -155,7 +155,7 @@ public class EstimationBuilderService : IEstimationBuilderService
         parent?.Children.Add(item);
         return item;
     }
-    private ISheetItem CreateText(BC_EstimationSheet result, BC_EstimationBatch batch, ISheetItem? parent, ICollection<Models.ATA> atas)
+    private ISheetItem CreateText(BC_EstimationSheetDto result, BC_EstimationBatchDto batch, ISheetItem? parent, ICollection<Models.ATA> atas)
     {
         var item = new Text
         {

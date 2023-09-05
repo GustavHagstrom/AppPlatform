@@ -1,4 +1,6 @@
-﻿public static class Api
+﻿using BidconLink.Services;
+
+public static class Api
 {
     public static void Begin()
     {
@@ -6,6 +8,9 @@
 
         builder.Services.AddControllers();
         builder.Services.AddSwaggerGen();
+
+        builder.Services.AddTransient<IEstimationQueryService, EstimationQueryService>();
+        builder.Services.AddTransient<IConnectionstringService, ConnectionstringService>();
 
         var app = builder.Build();
 

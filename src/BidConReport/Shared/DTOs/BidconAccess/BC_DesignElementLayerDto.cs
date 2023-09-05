@@ -1,5 +1,5 @@
-﻿namespace BidConReport.Client.Shared.BidconAccess.Enteties;
-public class BC_WorkResultLayer
+﻿namespace BidConReport.Shared.DTOs.BidconAccess;
+public class BC_DesignElementLayerDto
 {
     public required string Id { get; set; }
     public Guid EstimationId { get; set; }
@@ -8,6 +8,4 @@ public class BC_WorkResultLayer
     /// Quantity
     /// </summary>
     public double Cons { get; set; }
-    public double ConsFactor { get; set; }
-    public int Waste { get; set; }
 }

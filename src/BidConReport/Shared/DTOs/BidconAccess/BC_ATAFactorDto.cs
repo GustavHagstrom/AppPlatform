@@ -1,5 +1,5 @@
-﻿namespace BidConReport.Client.Shared.BidconAccess.Enteties;
-public class BC_ATAFactor
+﻿namespace BidConReport.Shared.DTOs.BidconAccess;
+public class BC_ATAFactorDto
 {
     public Guid EstimationId { get; set; }
     public int PMATANum { get; set; }

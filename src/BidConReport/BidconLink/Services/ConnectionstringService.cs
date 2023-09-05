@@ -1,18 +1,13 @@
-﻿using System.Security.Cryptography;
+﻿using BidConReport.Shared.DTOs.BidconAccess;
+using System.Security.Cryptography;
 
-namespace BidConReport.Client.Shared.BidconAccess.Services;
+namespace BidconLink.Services;
 public class ConnectionstringService : IConnectionstringService
 {
     private readonly byte[] ENCRYPTION_KEY = new byte[8] { 45, 103, 246, 79, 36, 99, 167, 3 };
-    private readonly IDatabaseCredentialsService _databaseCredentialsService;
-
-    public ConnectionstringService(IDatabaseCredentialsService databaseCredentialsService)
+    private readonly byte[] VECTOR = new byte[8] { 55, 103, 246, 79, 36, 99, 167, 3 };
+    public string Build(BC_DatabaseCredentialsDto credentials)
     {
-        _databaseCredentialsService = databaseCredentialsService;
-    }
-    public async Task<string> BuildAsync()
-    {
-        var credentials = await _databaseCredentialsService.GetAsync();
         if (credentials.ServerAuthentication)
         {
             var password = Decrypt(credentials.PwHash);
@@ -26,8 +21,6 @@ public class ConnectionstringService : IConnectionstringService
 
     private string Decrypt(string encryptedPassword)
     {
-        byte[] encryptionKey = ENCRYPTION_KEY;
-        byte[] rgbIV = new byte[8] { 55, 103, 246, 79, 36, 99, 167, 3 };
         if (!string.IsNullOrEmpty(encryptedPassword))
         {
 #pragma warning disable SYSLIB0021 // Type or member is obsolete
@@ -42,7 +35,7 @@ public class ConnectionstringService : IConnectionstringService
             {
                 return string.Empty;
             }
-            using StreamReader streamReader = new StreamReader(new CryptoStream(new MemoryStream(array), desCryptoServiceProvider.CreateDecryptor(encryptionKey, rgbIV), CryptoStreamMode.Read));
+            using StreamReader streamReader = new StreamReader(new CryptoStream(new MemoryStream(array), desCryptoServiceProvider.CreateDecryptor(ENCRYPTION_KEY, VECTOR), CryptoStreamMode.Read));
             return streamReader.ReadToEnd();
         }
         return string.Empty;

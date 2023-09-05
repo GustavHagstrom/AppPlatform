@@ -1,5 +1,5 @@
 ﻿namespace BidConReport.Shared.DTOs.BidconAccess;
-public class EstimationDto
+public class BC_EstimationDto
 {
     public Guid EstimationID { get; set; }
     public required string Name { get; set; }

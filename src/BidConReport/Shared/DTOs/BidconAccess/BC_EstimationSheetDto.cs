@@ -1,5 +1,5 @@
-﻿namespace BidConReport.Client.Shared.BidconAccess.Enteties;
-public class BC_EstimationSheet
+﻿namespace BidConReport.Shared.DTOs.BidconAccess;
+public class BC_EstimationSheetDto
 {
     public Guid EstimationId { get; set; }
     public required string LayerId { get; set; }

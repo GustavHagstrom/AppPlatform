@@ -1,5 +1,4 @@
-﻿using BidConReport.Client.Shared.BidconAccess.Enteties;
-using BidConReport.Client.Shared.EstimationProcessing.Models;
+﻿using BidConReport.Client.Shared.EstimationProcessing.Models;
 using BidConReport.Shared.DTOs.BidconAccess;
 
 namespace BidConReport.Client.Shared.EstimationProcessing.Services;
@@ -35,7 +34,7 @@ public class FolderService : IFolderService
 
         return root;
     }
-    private Folder CreateDbFolder(BC_EstimationFolder folder)
+    private Folder CreateDbFolder(BC_EstimationFolderDto folder)
     {
         return new Folder
         {
@@ -46,7 +45,7 @@ public class FolderService : IFolderService
             Name = folder.Name,
         };
     }
-    private EstimationInfo CreateEstimationInfo(BidconAccess.Enteties.BC_Estimation estimation)
+    private EstimationInfo CreateEstimationInfo(BC_EstimationDto estimation)
     {
         return new EstimationInfo
         {

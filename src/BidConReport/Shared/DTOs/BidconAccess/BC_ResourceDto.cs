@@ -1,5 +1,5 @@
 ﻿namespace BidConReport.Shared.DTOs.BidconAccess;
-public class ResourceDto
+public class BC_ResourceDto
 {
     public required string Id { get; set; }
     public string? Description { get; set; }
