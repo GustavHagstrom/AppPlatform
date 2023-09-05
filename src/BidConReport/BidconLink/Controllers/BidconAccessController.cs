@@ -15,11 +15,6 @@ public class BidconAccessController : ControllerBase
     {
         _estimationQueryService = estimationQueryService;
     }
-    [HttpGet]
-    public IActionResult Get()
-    {
-        return Ok("Hello world!");
-    }
 
     [HttpPost("GetEstimationBatch")]
     public async Task<IActionResult> GetEstimationBatch([FromBody] EstimationRequestBatchModelDto request)

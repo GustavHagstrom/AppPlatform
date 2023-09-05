@@ -29,5 +29,7 @@ public static class ServiceExtensions
         services.AddTransient<ILayerdItemCalculator, LayerdItemCalculator>();
         services.AddTransient<IEstimationBuilderService, EstimationBuilderService>();
         services.AddTransient<IEstimationViewTemplateServices, EstimationViewTemplateService>();
+
+        services.AddTransient<IBidconLinkService, BidconLinkService>();
     }
 }

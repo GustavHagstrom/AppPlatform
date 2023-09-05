@@ -1,4 +1,6 @@
 ﻿@page "/bidcon/import"
+@using BidConReport.Client.Shared.EstimationProcessing.Services;
+@using BidConReport.Shared.DTOs.BidconAccess;
 
 <Toolbar Height="40px">
 
@@ -49,11 +51,13 @@
     [Inject] public required IDialogService DialogService { get; set; }
     [Inject] public required IStringLocalizer<Import> Localizer { get; set; }
     [Inject] public required IBidConImporterService _importer { get; set; }
+    [Inject] public required IBidconLinkService _linkService { get; set; }
+    [Inject] public required IFolderService _folderService { get; set; }
     [Inject] public required ImportedEstimationsContainer ImportedEstimationsContainer { get; set; }
     [Inject] public required ISnackbar Snackbar { get; set; }
 
     public EstimationImportSettingsDto? Settings { get; set; }
-    public DbTreeItem? ItemTree { get; set; }
+    public TreeItem? ItemTree { get; set; }
     public bool IsRefreshing { get; set; } = true;
     public bool drawerOpen = false;
 
@@ -83,55 +87,59 @@
     }
     private async Task DownloadAsync()
     {
-        if (ItemTree is null || Settings is null)
-        {
-            return;
-        }
+        return;
+        //if (ItemTree is null || Settings is null)
+        //{
+        //    return;
+        //}
 
-        try
-        {
-            var selectedEstimations = ItemTree.SelectedEstimations().Select(x => x.DbEstimation!).ToList();
-            if (selectedEstimations.Count == 0) return;
-            var cancelSource = new CancellationTokenSource();
-            var progress = new Progress<BidConImportResultDTO<EstimationDTO>>();
-            var options = new DialogOptions()
-            {
-                MaxWidth = MaxWidth.ExtraSmall,
-                CloseButton = false,
-                NoHeader = false,
-                DisableBackdropClick = true,
+        //try
+        //{
+        //    var selectedEstimations = ItemTree.SelectedEstimations().Select(x => x.DbEstimation!).ToList();
+        //    if (selectedEstimations.Count == 0) return;
+        //    var cancelSource = new CancellationTokenSource();
+        //    var progress = new Progress<BidConImportResultDTO<EstimationDTO>>();
+        //    var options = new DialogOptions()
+        //    {
+        //        MaxWidth = MaxWidth.ExtraSmall,
+        //        CloseButton = false,
+        //        NoHeader = false,
+        //        DisableBackdropClick = true,
 
-            };
-            var parameters = new DialogParameters();
-            parameters.Add(nameof(DownloadDialog.Progress), progress);
-            parameters.Add(nameof(DownloadDialog.TotalEstimationCount), selectedEstimations.Count);
-            parameters.Add(nameof(DownloadDialog.CancelTokenSource), cancelSource);
-            DialogService.Show<DownloadDialog>(Localizer["Hämtar"], parameters, options);
-            var result = await _importer.GetEstimationsAsync(selectedEstimations, Settings, cancelSource.Token, progress);
+        //    };
+        //    var parameters = new DialogParameters();
+        //    parameters.Add(nameof(DownloadDialog.Progress), progress);
+        //    parameters.Add(nameof(DownloadDialog.TotalEstimationCount), selectedEstimations.Count);
+        //    parameters.Add(nameof(DownloadDialog.CancelTokenSource), cancelSource);
+        //    DialogService.Show<DownloadDialog>(Localizer["Hämtar"], parameters, options);
+        //    var result = await _importer.GetEstimationsAsync(selectedEstimations, Settings, cancelSource.Token, progress);
 
-            ImportedEstimationsContainer.ImportedEstimations = result
-                .Where(x => x.Value is not null)
-                .Select(x => x.Value)
-                .ToArray()!;
-        }
-        catch (Exception e)
-        {
-            Snackbar.Add(Localizer[$"Misslyckades att importera kalkyler. Error: {e.Message}"], Severity.Error);
-        }
+        //    ImportedEstimationsContainer.ImportedEstimations = result
+        //        .Where(x => x.Value is not null)
+        //        .Select(x => x.Value)
+        //        .ToArray()!;
+        //}
+        //catch (Exception e)
+        //{
+        //    Snackbar.Add(Localizer[$"Misslyckades att importera kalkyler. Error: {e.Message}"], Severity.Error);
+        //}
     }
     private async Task GetEstimationItemTreeAsync()
     {
         IsRefreshing = true;
         ItemTree = null;
-        var dbFolderResult = await _importer.GetFoldersAsync();
-        if (dbFolderResult.Value is not null)
+        //var dbFolderResult = await _importer.GetFoldersAsync();
+        var credentials = new BC_DatabaseCredentialsDto("RHUSAPP02\\ELECOSOFT", "BidConEstimation", "sa", "VX3EEWKNQrrBQp+52Ct5Gw==", true);
+        var batch = await _linkService.GetFolderBatchAsync(credentials);
+        if (batch is not null)
         {
-            ItemTree = new DbTreeItem(dbFolderResult.Value);
+            var folder = _folderService.CreateFromBatch(batch);
+            ItemTree = new TreeItem(folder);
             ItemTree.SelectionChanged = StateHasChanged;
         }
         else
         {
-            Snackbar.Add($"Error: {dbFolderResult.ErrorMessage}", Severity.Error);
+            Snackbar.Add($"Error: no folders returned", Severity.Error);
         }
         IsRefreshing = false;
         StateHasChanged();

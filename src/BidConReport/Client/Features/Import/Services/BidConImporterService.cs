@@ -59,7 +59,7 @@ public class BidConImporterService : IBidConImporterService
 
     private HttpClient GetHttpClient()
     {
-        return _httpClientFactory.CreateClient(HttpClientNames.DesktopBridgeAddress);
+        return _httpClientFactory.CreateClient(HttpClientNames.BidconLink);
     }
 
     public async Task<IEnumerable<BidConImportResultDTO<EstimationDTO>>> GetEstimationsAsync(IEnumerable<DbEstimationDTO> estimations, EstimationImportSettingsDto settings, CancellationToken cancelToken, IProgress<BidConImportResultDTO<EstimationDTO>>? progress = null)

@@ -1,28 +1,29 @@
-﻿using BidConReport.Shared.DTOs;
+﻿using BidConReport.Client.Shared.EstimationProcessing.Models;
+using BidConReport.Shared.DTOs;
 
 namespace BidConReport.Client.Features.Import.Models;
-public class DbTreeItem
+public class TreeItem
 {
     private bool _isSelected;
     
 
-    public DbTreeItem(DbFolderDTO dbFolder, bool isSelected = false)
+    public TreeItem(Folder folder, bool isSelected = false)
     {
         Type = DbTreeItemType.Folder;
         _isSelected = isSelected;
-        Name = dbFolder.Name;
-        AddEstimations(dbFolder);
-        AddSubFolders(dbFolder);
+        Name = folder.Name;
+        AddEstimations(folder);
+        AddSubFolders(folder);
     }
-    public DbTreeItem(DbEstimationDTO dbEstimation, bool isSelected = false)
+    public TreeItem(EstimationInfo estimation, bool isSelected = false)
     {
         Type = DbTreeItemType.Estimation;
         _isSelected = isSelected;
-        Id = dbEstimation.Id;
-        Name = dbEstimation.ToString();
-        DbEstimation = dbEstimation;
+        Id = estimation.Id;
+        Name = estimation.ToString();
+        DbEstimation = estimation;
     }
-    public DbEstimationDTO? DbEstimation { get; set; }
+    public EstimationInfo? DbEstimation { get; set; }
     public DbTreeItemType Type { get; private set; }
     public bool IsSelected
     {
@@ -35,9 +36,9 @@ public class DbTreeItem
     }
     public string Id { get; private set; } = string.Empty;
     public string Name { get; private set; } = string.Empty;
-    public HashSet<DbTreeItem> Items { get; private set; } = new();
+    public HashSet<TreeItem> Items { get; private set; } = new();
     public Action? SelectionChanged { get; set; }
-    public IEnumerable<DbTreeItem> GetAllEstimations()
+    public IEnumerable<TreeItem> GetAllEstimations()
     {
         foreach (var item in Items)
         {
@@ -51,16 +52,16 @@ public class DbTreeItem
             }
         }
     }
-    public IEnumerable<DbTreeItem> SelectedEstimations()
+    public IEnumerable<TreeItem> SelectedEstimations()
     {
         return GetAllEstimations().Where(x => x.IsSelected == true);
     }
-    public IEnumerable<DbTreeItem> SearchEstimations(string filterString)
+    public IEnumerable<TreeItem> SearchEstimations(string filterString)
     {
         var parameters = filterString.Split(" ");
         return GetAllEstimations().Where(x => AllParametersExists(x, parameters));
     }
-    private static bool AllParametersExists(DbTreeItem estimationItem, IEnumerable<string> parameters)
+    private static bool AllParametersExists(TreeItem estimationItem, IEnumerable<string> parameters)
     {
         foreach (var parameter in parameters)
         {
@@ -71,20 +72,20 @@ public class DbTreeItem
         }
         return true;
     }
-    private void AddEstimations(DbFolderDTO dbFolder)
+    private void AddEstimations(Folder folder)
     {
-        foreach (var estimation in dbFolder.DbEstimations)
+        foreach (var estimation in folder.DbEstimations)
         {
-            var newItem = new DbTreeItem(estimation);
+            var newItem = new TreeItem(estimation);
             Items.Add(newItem);
             newItem.SelectionChanged = OnSubItemSelectionChanged;
         }
     }
-    private void AddSubFolders(DbFolderDTO dbFolder)
+    private void AddSubFolders(Folder folder)
     {
-        foreach (var folder in dbFolder.SubFolders)
+        foreach (var subFolder in folder.SubFolders)
         {
-            var newItem = new DbTreeItem(folder);
+            var newItem = new TreeItem(subFolder);
             Items.Add(newItem);
             newItem.SelectionChanged = OnSubItemSelectionChanged;
         }

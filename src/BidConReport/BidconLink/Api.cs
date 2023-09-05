@@ -12,6 +12,16 @@ public static class Api
         builder.Services.AddTransient<IEstimationQueryService, EstimationQueryService>();
         builder.Services.AddTransient<IConnectionstringService, ConnectionstringService>();
 
+        //builder.Services.AddCors(options =>
+        //{
+        //    options.AddDefaultPolicy(builder =>
+        //    {
+        //        builder.AllowAnyOrigin()
+        //               .AllowAnyHeader()
+        //               .AllowAnyMethod();
+        //    });
+        //});
+
         var app = builder.Build();
 
         if (app.Environment.IsDevelopment())
@@ -19,6 +29,12 @@ public static class Api
             app.UseSwagger();
             app.UseSwaggerUI();
         }
+        app.UseCors(builder =>
+        {
+            builder.AllowAnyOrigin();
+            builder.AllowAnyHeader();
+            builder.AllowAnyMethod();
+        });
 
         app.UseRouting();
 

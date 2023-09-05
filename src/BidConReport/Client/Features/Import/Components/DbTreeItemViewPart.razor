@@ -32,7 +32,7 @@
     </MudCollapse>
 }
 @code{
-    [Parameter, EditorRequired] public DbTreeItem? TreeItem { get; set; }
+    [Parameter, EditorRequired] public TreeItem? TreeItem { get; set; }
     [Parameter, EditorRequired] public int IndentLevel { get; set; } = 0;
     private bool IsNested => TreeItem!.Items.Count > 0;
     private bool IsExpanded { get; set; } = false;
