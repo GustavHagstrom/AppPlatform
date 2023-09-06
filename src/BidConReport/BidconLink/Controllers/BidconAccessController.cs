@@ -10,10 +10,11 @@ namespace BidconLink.Controllers;
 public class BidconAccessController : ControllerBase
 {
     private readonly IEstimationQueryService _estimationQueryService;
-
-    public BidconAccessController(IEstimationQueryService estimationQueryService)
+    private readonly ILogger<BidconAccessController> _logger;
+    public BidconAccessController(IEstimationQueryService estimationQueryService, ILogger<BidconAccessController> logger)
     {
         _estimationQueryService = estimationQueryService;
+        _logger = logger;
     }
 
     [HttpPost("GetEstimationBatch")]
@@ -40,6 +41,7 @@ public class BidconAccessController : ControllerBase
     [HttpPost("GetFolderBatch")]
     public async Task<IActionResult> GetFolderBatch([FromBody] BC_DatabaseCredentialsDto credentials)
     {
+        _logger.LogInformation("testing");
         var result = await _estimationQueryService.GetFolderBatchAsync(credentials);
         return Ok(result);
     }

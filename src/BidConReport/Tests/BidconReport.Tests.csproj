@@ -24,6 +24,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\BidconLink\BidconLink.csproj" />
     <ProjectReference Include="..\Client\BidConReport.Client.csproj" />
     <ProjectReference Include="..\Server\BidConReport.Server.csproj" />
     <ProjectReference Include="..\Shared\BidConReport.Shared.csproj" />

@@ -1,7 +1,4 @@
-﻿using BidConReport.Shared.DTOs;
-using Syncfusion.DocIO.DLS;
-
-namespace BidConReport.Shared.DTOs;
+﻿namespace BidConReport.Shared.DTOs;
 public class DbFolderDTO
 {
     public required string Name { get; set; }
