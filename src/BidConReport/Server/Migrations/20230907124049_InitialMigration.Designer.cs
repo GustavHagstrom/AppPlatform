@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BidConReport.Server.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230817145713_Initial")]
-    partial class Initial
+    [Migration("20230907124049_InitialMigration")]
+    partial class InitialMigration
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -203,6 +203,17 @@ namespace BidConReport.Server.Migrations
                     b.HasIndex("EstimationItemId");
 
                     b.ToTable("EstimationItem");
+                });
+
+            modelBuilder.Entity("BidConReport.Server.Enteties.Organization", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Organizations");
                 });
 
             modelBuilder.Entity("BidConReport.Server.Enteties.Report.ColumnDefinition", b =>
@@ -414,8 +425,9 @@ namespace BidConReport.Server.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
-                    b.Property<int>("OrganizationId")
-                        .HasColumnType("int");
+                    b.Property<string>("OrganizationId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("PriceSectionId")
                         .HasColumnType("int");
@@ -528,42 +540,16 @@ namespace BidConReport.Server.Migrations
                     b.Property<bool>("IsDarkMode")
                         .HasColumnType("bit");
 
-                    b.HasKey("Id");
-
-                    b.ToTable("Users");
-                });
-
-            modelBuilder.Entity("BidConReport.Server.Enteties.UserOrganization", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int?>("DefaultEstimationSettingsId")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("DefaultReportTemplateId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("OrganizationId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("UserId")
+                    b.Property<string>("OrganizationId")
                         .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("DefaultEstimationSettingsId");
+                    b.HasIndex("OrganizationId");
 
-                    b.HasIndex("DefaultReportTemplateId");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("UserOrganizations");
+                    b.ToTable("Users");
                 });
 
             modelBuilder.Entity("BidConReport.Server.Enteties.EstimationItem", b =>
@@ -741,27 +727,15 @@ namespace BidConReport.Server.Migrations
                     b.Navigation("Font");
                 });
 
-            modelBuilder.Entity("BidConReport.Server.Enteties.UserOrganization", b =>
+            modelBuilder.Entity("BidConReport.Server.Enteties.User", b =>
                 {
-                    b.HasOne("BidConReport.Server.Enteties.EstimationImportSettings", "DefaultEstimationSettings")
-                        .WithMany()
-                        .HasForeignKey("DefaultEstimationSettingsId");
-
-                    b.HasOne("BidConReport.Server.Enteties.Report.ReportTemplate", "DefaultReportTemplate")
-                        .WithMany()
-                        .HasForeignKey("DefaultReportTemplateId");
-
-                    b.HasOne("BidConReport.Server.Enteties.User", "User")
-                        .WithMany("UserOrganizations")
-                        .HasForeignKey("UserId")
+                    b.HasOne("BidConReport.Server.Enteties.Organization", "Organization")
+                        .WithMany("Users")
+                        .HasForeignKey("OrganizationId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("DefaultEstimationSettings");
-
-                    b.Navigation("DefaultReportTemplate");
-
-                    b.Navigation("User");
+                    b.Navigation("Organization");
                 });
 
             modelBuilder.Entity("BidConReport.Server.Enteties.Estimation", b =>
@@ -774,6 +748,11 @@ namespace BidConReport.Server.Migrations
                     b.Navigation("Items");
                 });
 
+            modelBuilder.Entity("BidConReport.Server.Enteties.Organization", b =>
+                {
+                    b.Navigation("Users");
+                });
+
             modelBuilder.Entity("BidConReport.Server.Enteties.Report.InformationSection", b =>
                 {
                     b.Navigation("Items");
@@ -782,11 +761,6 @@ namespace BidConReport.Server.Migrations
             modelBuilder.Entity("BidConReport.Server.Enteties.Report.TableSection", b =>
                 {
                     b.Navigation("Columns");
-                });
-
-            modelBuilder.Entity("BidConReport.Server.Enteties.User", b =>
-                {
-                    b.Navigation("UserOrganizations");
                 });
 #pragma warning restore 612, 618
         }

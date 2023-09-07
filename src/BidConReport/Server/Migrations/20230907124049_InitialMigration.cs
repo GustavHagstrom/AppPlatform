@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace BidConReport.Server.Migrations
 {
     /// <inheritdoc />
-    public partial class Initial : Migration
+    public partial class InitialMigration : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -75,15 +75,14 @@ namespace BidConReport.Server.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Users",
+                name: "Organizations",
                 columns: table => new
                 {
-                    Id = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    IsDarkMode = table.Column<bool>(type: "bit", nullable: false)
+                    Id = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Users", x => x.Id);
+                    table.PrimaryKey("PK_Organizations", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -258,6 +257,25 @@ namespace BidConReport.Server.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Users",
+                columns: table => new
+                {
+                    Id = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    OrganizationId = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    IsDarkMode = table.Column<bool>(type: "bit", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Users", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Users_Organizations_OrganizationId",
+                        column: x => x.OrganizationId,
+                        principalTable: "Organizations",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "InformationItem",
                 columns: table => new
                 {
@@ -310,7 +328,7 @@ namespace BidConReport.Server.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    OrganizationId = table.Column<int>(type: "int", nullable: false),
+                    OrganizationId = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     TopLeftHeaderId = table.Column<int>(type: "int", nullable: false),
                     TopRightHeaderId = table.Column<int>(type: "int", nullable: false),
                     TitleSectionId = table.Column<int>(type: "int", nullable: false),
@@ -353,38 +371,6 @@ namespace BidConReport.Server.Migrations
                         name: "FK_ReportTemplates_TitleSection_TitleSectionId",
                         column: x => x.TitleSectionId,
                         principalTable: "TitleSection",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "UserOrganizations",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    UserId = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    OrganizationId = table.Column<int>(type: "int", nullable: false),
-                    DefaultEstimationSettingsId = table.Column<int>(type: "int", nullable: true),
-                    DefaultReportTemplateId = table.Column<int>(type: "int", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_UserOrganizations", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_UserOrganizations_EstimationImportSettings_DefaultEstimationSettingsId",
-                        column: x => x.DefaultEstimationSettingsId,
-                        principalTable: "EstimationImportSettings",
-                        principalColumn: "Id");
-                    table.ForeignKey(
-                        name: "FK_UserOrganizations_ReportTemplates_DefaultReportTemplateId",
-                        column: x => x.DefaultReportTemplateId,
-                        principalTable: "ReportTemplates",
-                        principalColumn: "Id");
-                    table.ForeignKey(
-                        name: "FK_UserOrganizations_Users_UserId",
-                        column: x => x.UserId,
-                        principalTable: "Users",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -490,19 +476,9 @@ namespace BidConReport.Server.Migrations
                 column: "FontId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_UserOrganizations_DefaultEstimationSettingsId",
-                table: "UserOrganizations",
-                column: "DefaultEstimationSettingsId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_UserOrganizations_DefaultReportTemplateId",
-                table: "UserOrganizations",
-                column: "DefaultReportTemplateId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_UserOrganizations_UserId",
-                table: "UserOrganizations",
-                column: "UserId");
+                name: "IX_Users_OrganizationId",
+                table: "Users",
+                column: "OrganizationId");
         }
 
         /// <inheritdoc />
@@ -512,25 +488,22 @@ namespace BidConReport.Server.Migrations
                 name: "ColumnDefinition");
 
             migrationBuilder.DropTable(
+                name: "EstimationImportSettings");
+
+            migrationBuilder.DropTable(
                 name: "EstimationItem");
 
             migrationBuilder.DropTable(
                 name: "InformationItem");
 
             migrationBuilder.DropTable(
-                name: "UserOrganizations");
-
-            migrationBuilder.DropTable(
-                name: "Estimations");
-
-            migrationBuilder.DropTable(
-                name: "EstimationImportSettings");
-
-            migrationBuilder.DropTable(
                 name: "ReportTemplates");
 
             migrationBuilder.DropTable(
                 name: "Users");
+
+            migrationBuilder.DropTable(
+                name: "Estimations");
 
             migrationBuilder.DropTable(
                 name: "HeaderDefinition");
@@ -546,6 +519,9 @@ namespace BidConReport.Server.Migrations
 
             migrationBuilder.DropTable(
                 name: "TitleSection");
+
+            migrationBuilder.DropTable(
+                name: "Organizations");
 
             migrationBuilder.DropTable(
                 name: "FontProperties");

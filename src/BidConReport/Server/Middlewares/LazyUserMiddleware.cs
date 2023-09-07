@@ -1,10 +1,7 @@
 ﻿using BidConReport.Server.Data;
 using BidConReport.Server.Enteties;
 using BidConReport.Server.Services.Authentication;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Identity.Web;
-using SharedPlatformLibrary.Constants;
-using System.Diagnostics;
 using System.Security.Claims;
 
 namespace BidConReport.Server.Middlewares;
@@ -51,22 +48,19 @@ public class LazyUserMiddleware
     private async Task LazyUser(IServiceScope scope, HttpContext context)
     {
         var dbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
-        var userId = context.User.Claims.Where(x => x.Type == ClaimConstants.ObjectId).FirstOrDefault()?.Value;
-        var orgStringResult = context.User.Claims
-            .Where(x => x.Type == CustomClaimTypes.CurrentOrganization)
-            .Select(x => x.Value)
-            .FirstOrDefault();
-        var organizationId = int.TryParse(orgStringResult, out int tempVal) ? tempVal : 0;
-        if (userId is not null)
+        var userId = context.User.FindFirstValue(ClaimConstants.ObjectId);
+        var organizationId = context.User.FindFirstValue(ClaimConstants.TenantId);
+
+        if (organizationId is not null)
         {
-            await AddNewUserToDbIfNeeded(userId, dbContext);
+            await AddUnlistedUserOrgIfNeeded(organizationId, dbContext);
         }
-        if (userId is not null && organizationId != 0)
+        if (userId is not null && organizationId is not null)
         {
-            await AddUnlistedUserOrgIfNeeded(userId, organizationId, dbContext);
+            await AddNewUserToDbIfNeeded(userId, organizationId, dbContext);
         }
     }
-    private async Task AddNewUserToDbIfNeeded(string userId, ApplicationDbContext dbContext)
+    private async Task AddNewUserToDbIfNeeded(string userId, string organizationId, ApplicationDbContext dbContext)
     {
         var user = await dbContext.Users.FindAsync(userId);
         if (user == null)
@@ -74,25 +68,21 @@ public class LazyUserMiddleware
             _logger.LogInformation("User was not found in DB. Creating new user");
             await dbContext.Users.AddAsync(new User
             {
-                Id = userId
+                Id = userId,
+                OrganizationId = organizationId,
             });
             await dbContext.SaveChangesAsync();
         }
-        
     }
-    private async Task AddUnlistedUserOrgIfNeeded(string userId, int organizationId, ApplicationDbContext dbContext)
+    private async Task AddUnlistedUserOrgIfNeeded(string organizationId, ApplicationDbContext dbContext)
     {
-        var userOrganization = await dbContext.UserOrganizations
-            .Where(x => x.UserId == userId && x.OrganizationId == organizationId)
-            .Select(x => x.OrganizationId)
-            .FirstOrDefaultAsync();
-        if (userOrganization == 0)
+        var userOrganization = await dbContext.Organizations.FindAsync(organizationId);
+        if (userOrganization is null)
         {
             _logger.LogInformation("Adding missing userOrganization");
-            await dbContext.UserOrganizations.AddAsync(new UserOrganization
+            await dbContext.Organizations.AddAsync(new Organization
             {
-                UserId = userId,
-                OrganizationId = organizationId,
+                Id = organizationId,
             });
             await dbContext.SaveChangesAsync();
         }

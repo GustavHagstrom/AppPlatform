@@ -19,7 +19,8 @@ public class ApplicationDbContext : DbContext
     public DbSet<EstimationImportSettings> EstimationImportSettings { get; set; }
     public DbSet<Estimation> Estimations { get; set; }
     public DbSet<User> Users { get; set; }
-    public DbSet<UserOrganization> UserOrganizations { get; set; }
+    public DbSet<Organization> Organizations { get; set; }
+    //public DbSet<UserOrganization> UserOrganizations { get; set; }
     public DbSet<ReportTemplate> ReportTemplates { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -34,10 +35,10 @@ public class ApplicationDbContext : DbContext
     }
     private void MapUserAndOrganizations(ModelBuilder modelBuilder)
     {
-        modelBuilder.Entity<UserOrganization>()
-            .HasOne(u => u.User)
-            .WithMany(u => u.UserOrganizations)
-            .HasForeignKey(u => u.UserId);
+        modelBuilder.Entity<Organization>()
+            .HasMany(u => u.Users)
+            .WithOne(u => u.Organization)
+            .HasForeignKey(u => u.OrganizationId);
     }
     private void MapEstimation(ModelBuilder modelBuilder)
     {

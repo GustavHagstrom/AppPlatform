@@ -6,7 +6,7 @@ public class ReportTemplate
     public int Id { get; set; }
     [StringLength(50, MinimumLength = 1)]
     public string Name { get; set; } = string.Empty;
-    public int OrganizationId { get; set; }
+    public required string OrganizationId { get; set; }
     public int TopLeftHeaderId { get; set; }
     public required HeaderDefinition TopLeftHeader { get; set; }
     public int TopRightHeaderId { get; set; }

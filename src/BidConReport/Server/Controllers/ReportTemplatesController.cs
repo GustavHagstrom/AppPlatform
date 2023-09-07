@@ -4,6 +4,7 @@ using BidConReport.Shared.DTOs.ReportTemplate;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Identity.Web;
 using SharedPlatformLibrary.Constants;
+using System.Security.Claims;
 
 namespace BidConReport.Server.Controllers;
 [Route("api/[controller]")]
@@ -19,8 +20,9 @@ public class ReportTemplatesController : ControllerBase
     [HttpPost("Upsert")]
     public async Task<IActionResult> Upsert(ReportTemplateDto dto)
     {
-        var userId = User.Claims.Where(x => x.Type == ClaimConstants.ObjectId).FirstOrDefault()?.Value;
-        var currentOrgId = User.Claims.Where(x => x.Type == CustomClaimTypes.CurrentOrganization).FirstOrDefault()?.Value;
+        var userId = User.FindFirstValue(ClaimConstants.ObjectId);
+        var currentOrgId = User.FindFirstValue(ClaimConstants.TenantId);
+
         ArgumentException.ThrowIfNullOrEmpty(currentOrgId);
         ArgumentException.ThrowIfNullOrEmpty(userId);
         dto.OrganizationId = int.Parse(currentOrgId);
