@@ -34,7 +34,7 @@ public class BidconCredentialsController : ControllerBase
         {
             return Problem("No organization");
         }
-        await _bidconCredentialsService.UpsertAsync(organizationId);
+        await _bidconCredentialsService.UpsertAsync(credentialsDto, organizationId);
         return Ok();
     }
 }

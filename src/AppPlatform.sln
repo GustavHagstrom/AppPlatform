@@ -41,7 +41,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "License.Tests", "License\Te
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SharedLibrarieTests", "SharedLibrarieTests\SharedLibrarieTests.csproj", "{7D81C4EF-972E-4667-B72C-2B8DEFA442E5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BidconLink", "BidConReport\BidconLink\BidconLink.csproj", "{2C524F20-D73C-4232-8B80-89542E178C83}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BidconLink", "BidConReport\BidconLink\BidconLink.csproj", "{2C524F20-D73C-4232-8B80-89542E178C83}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
