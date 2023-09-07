@@ -1,4 +1,5 @@
-﻿using BidConReport.Server.Services.Authentication;
+﻿using BidConReport.Server.Services;
+using BidConReport.Server.Services.Authentication;
 using BidConReport.Server.Services.Import;
 using BidConReport.Server.Services.Report;
 using BidConReport.Server.Services.Settings;
@@ -12,6 +13,7 @@ internal static class ServiceExtensions
         services.AddTransient<IImportSettingsService, ImportSettingsService>();
         services.AddTransient<IReportTemplatesService, ReportTemplatesService>();
         services.AddTransient<IDarkModeService, DarkModeService>();
+        services.AddTransient<IBidconCredentialsService, BidconCredentialsService>();
 
 #if DEBUG
         services.AddTransient<IClaimsService, ClaimsService_debug>();

@@ -84,5 +84,16 @@ public static class BackendApiEndpoints
         /// </summary>
         public const string Create = "api/Organizations/Create";
     }
+    public static class BidconCredentialsController
+    {
+        /// <summary>
+        /// Get request. Returns credential for the organization. Null if none has benn configured
+        /// </summary>
+        public const string Get = "api/BidconCredentials";
+        /// <summary>
+        /// Post request. BC_DatabaseCredentialsDto as json body. Upserts the credentials
+        /// </summary>
+        public const string Upsert = "api/BidconCredentials";
+    }
 }
 

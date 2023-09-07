@@ -20,6 +20,7 @@ public class ApplicationDbContext : DbContext
     public DbSet<Estimation> Estimations { get; set; }
     public DbSet<User> Users { get; set; }
     public DbSet<Organization> Organizations { get; set; }
+    public DbSet<BidconCredentials> BidconCredentials { get; set; }
     //public DbSet<UserOrganization> UserOrganizations { get; set; }
     public DbSet<ReportTemplate> ReportTemplates { get; set; }
 
