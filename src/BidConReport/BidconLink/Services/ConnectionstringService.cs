@@ -10,12 +10,12 @@ public class ConnectionstringService : IConnectionstringService
     {
         if (credentials.ServerAuthentication)
         {
-            var password = Decrypt(credentials.PwHash);
-            return $"Data Source={credentials.Server};Initial Catalog={credentials.Databse}; Connect Timeout = 60;uid={credentials.User};pwd={password};TrustServerCertificate=True";
+            var password = Decrypt(credentials.PasswordHash);
+            return $"Data Source={credentials.Server};Initial Catalog={credentials.Database}; Connect Timeout = 60;uid={credentials.User};pwd={password};TrustServerCertificate=True";
         }
         else
         {
-            return $"Data Source={credentials.Server};Initial Catalog={credentials.Databse}; Connect Timeout = 60;Integrated security=true;TrustServerCertificate=True;Encrypt=False;Multi Subnet Failover=False";
+            return $"Data Source={credentials.Server};Initial Catalog={credentials.Database}; Connect Timeout = 60;Integrated security=true;TrustServerCertificate=True;Encrypt=False;Multi Subnet Failover=False";
         }
     }
 
