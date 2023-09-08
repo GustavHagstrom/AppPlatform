@@ -25,7 +25,8 @@ public class BidconLinkService : IBidconLinkService
         var client = _httpClientFactory.CreateClient(HttpClientNames.BidconLink);
         var response = await client.PostAsJsonAsync(BidconLinkEndpoints.GetEstimationBatches, request, cancellationToken);
         response.EnsureSuccessStatusCode();
-        return await response.Content.ReadFromJsonAsync<IEnumerable<BC_EstimationBatchDto>>();
+        var batches = await response.Content.ReadFromJsonAsync<IEnumerable<BC_EstimationBatchDto>>();
+        return batches;
     }
     public async Task<IEnumerable<BC_EstimationDto>?> GetListAsync(BC_DatabaseCredentialsDto databaseCredentials, CancellationToken cancellationToken = default)
     {

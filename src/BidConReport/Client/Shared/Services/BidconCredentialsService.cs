@@ -4,14 +4,14 @@ using SharedPlatformLibrary.Wrappers;
 using System.Net;
 using System.Net.Http.Json;
 
-namespace BidConReport.Client.Features.Settings.BidconSettings.BicdonCredentials;
+namespace BidConReport.Client.Shared.Services;
 
-public class CredentialsService : ICredentialsService
+public class BidconCredentialsService : IBidconCredentialsService
 {
     private readonly IHttpClientWrapper _httpClient;
-    private readonly ILogger<ICredentialsService> _logger;
+    private readonly ILogger<IBidconCredentialsService> _logger;
 
-    public CredentialsService(IHttpClientWrapper httpClient, ILogger<ICredentialsService> logger)
+    public BidconCredentialsService(IHttpClientWrapper httpClient, ILogger<IBidconCredentialsService> logger)
     {
         _httpClient = httpClient;
         _logger = logger;
@@ -26,7 +26,7 @@ public class CredentialsService : ICredentialsService
         response.EnsureSuccessStatusCode();
         var result = await response.Content.ReadFromJsonAsync<BC_DatabaseCredentialsDto>();
         return result;
-        
+
     }
     public async Task UpsertAsync(BC_DatabaseCredentialsDto credentials)
     {

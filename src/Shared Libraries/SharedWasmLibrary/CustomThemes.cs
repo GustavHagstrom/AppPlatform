@@ -20,6 +20,9 @@ public static class CustomThemes
             Primary = Colors.Blue.Darken2,
             PrimaryLighten = Colors.Blue.Darken1,
             PrimaryDarken = Colors.Blue.Darken3,
+            Tertiary = "#fed932",
+            TertiaryLighten = "#ffdc51",
+            TertiaryDarken = "#fbbd00",
         },
         LayoutProperties = new LayoutProperties
         {

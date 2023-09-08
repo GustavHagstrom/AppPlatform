@@ -2,69 +2,68 @@
 @using BidConReport.Client.Shared.EstimationProcessing.Services;
 @using BidConReport.Shared.DTOs.BidconAccess;
 
-<Toolbar Height="40px">
+<div style="height: 100%; position: relative">
 
-    <ImportSettingsPicker SelectedSettingChanged="OnSettingsSelectionChanged" />
+    <MudOverlay Absolute="true" DarkBackground="true" Visible="IsDownloading">
+        <MudProgressCircular Size="Size.Large" Indeterminate="true" Color="Color.Primary" />
+    </MudOverlay>
 
-    <div class="border-solid border-l mx-2 my-2" style="border-color: var(--mud-palette-lines-default)"/>
+
+    <Toolbar Height="40px">
+    
+        <MudIconButton Icon="@Icons.Material.Sharp.Refresh" OnClick="GetEstimationItemTreeAsync" Style="height: 40px; width: 40px;" />
+        <MudIconButton Icon="@Icons.Material.Sharp.Download" OnClick="DownloadAsync" Style="height: 40px; width: 40px;" />
+
+    </Toolbar>
         
-    <MudIconButton Icon="@Icons.Material.Sharp.Refresh" OnClick="GetEstimationItemTreeAsync" Style="height: 40px; width: 40px;" />
-    <MudIconButton Icon="@Icons.Material.Sharp.Start" OnClick="DownloadAsync" Style="height: 40px; width: 40px;" />
 
-</Toolbar>
-        
-
-<MudContainer MaxWidth="MaxWidth.Medium" Style="height: calc(100% - 40px)" Class="pa-4">
+    <MudContainer MaxWidth="MaxWidth.Medium" Style="height: calc(100% - 40px)" Class="pa-4">
             
-    <MudPaper Square="true" Elevation="4" Style="height: 100%">
-        <MudStack Spacing="0" Row="true" Class="d-flex justify-center">
-            <MudButton OnClick="() => ActiveTab = 1" Variant="Variant.Text" StartIcon="@Icons.Material.Sharp.Search" Class="px-4" Style="@GetTabButtonStyle(1)">@Localizer["Sök"]</MudButton>
-            <MudButton OnClick="() => ActiveTab = 2" Variant="Variant.Text" StartIcon="@Icons.Material.Sharp.Folder" Class="px-3" Style="@GetTabButtonStyle(2)">@Localizer["Utforska"]</MudButton>
-            <MudBadge Content="ItemTree?.SelectedEstimations()?.Count()" Color="Color.Primary" Overlap="true">
-                <MudButton OnClick="() => ActiveTab = 3" Variant="Variant.Text" StartIcon="@Icons.Material.Sharp.CheckBox" Class="px-3" Style="@GetTabButtonStyle(3)">@Localizer["Valda"]</MudButton>
-            </MudBadge>
-        </MudStack>
-        <MudDivider Light="true" />
-        @if(ActiveTab == 1)
-        {
-            <EstimationList ItemTree="ItemTree" IsRefreshing="IsRefreshing" Height="calc(100% - 38px)" />
-        }
-        @if (ActiveTab == 2)
-        {
-            <EstimationExplorer ItemTree="ItemTree" IsRefreshing="IsRefreshing" Height="calc(100% - 38px)" />
-        }
-        @if (ActiveTab == 3)
-        {
-            <EstimationSelectionList ItemTree="ItemTree" IsRefreshing="IsRefreshing" Height="calc(100% - 38px)" />
-        }
-    </MudPaper>
-</MudContainer>
+        <MudPaper Square="true" Elevation="4" Style="height: 100%">
+            <MudStack Spacing="0" Row="true" Class="d-flex justify-center">
+                <MudButton OnClick="() => ActiveTab = 1" Variant="Variant.Text" StartIcon="@Icons.Material.Sharp.Search" Class="px-4" Style="@GetTabButtonStyle(1)">@Localizer["Sök"]</MudButton>
+                <MudButton OnClick="() => ActiveTab = 2" Variant="Variant.Text" StartIcon="@Icons.Material.Sharp.Folder" Class="px-3" Style="@GetTabButtonStyle(2)">@Localizer["Utforska"]</MudButton>
+                <MudBadge Content="ItemTree?.SelectedEstimations()?.Count()" Color="Color.Primary" Overlap="true">
+                    <MudButton OnClick="() => ActiveTab = 3" Variant="Variant.Text" StartIcon="@Icons.Material.Sharp.CheckBox" Class="px-3" Style="@GetTabButtonStyle(3)">@Localizer["Valda"]</MudButton>
+                </MudBadge>
+            </MudStack>
+            <MudDivider Light="true" />
+            @if(ActiveTab == 1)
+            {
+                <EstimationList ItemTree="ItemTree" IsRefreshing="IsRefreshing" Height="calc(100% - 38px)" />
+            }
+            @if (ActiveTab == 2)
+            {
+                <EstimationExplorer ItemTree="ItemTree" IsRefreshing="IsRefreshing" Height="calc(100% - 38px)" />
+            }
+            @if (ActiveTab == 3)
+            {
+                <EstimationSelectionList ItemTree="ItemTree" IsRefreshing="IsRefreshing" Height="calc(100% - 38px)" />
+            }
+        </MudPaper>
+    </MudContainer>
 
+</div>
 
 @code{
-    public bool IsDownloading { get; set; } = true;
-    public int ActiveTab { get; set; } = 1;
+    bool IsDownloading = false;
+    int ActiveTab = 1;
 
 
     [CascadingParameter] public required MudTheme Theame { get; set; }
     [Inject] public required StyleService StyleService { get; set; }
-    [Inject] public required IDialogService DialogService { get; set; }
     [Inject] public required IStringLocalizer<Import> Localizer { get; set; }
-    [Inject] public required IBidConImporterService _importer { get; set; }
     [Inject] public required IBidconLinkService _linkService { get; set; }
     [Inject] public required IFolderService _folderService { get; set; }
-    [Inject] public required ImportedEstimationsContainer ImportedEstimationsContainer { get; set; }
+    [Inject] public required IEstimationContainerService EstimationContainer { get; set; }
     [Inject] public required ISnackbar Snackbar { get; set; }
+    [Inject] public required IBidconCredentialsService BidconCredentialsService { get; set; }
+    [Inject] public required NavigationManager Navigation { get; set; }
 
-    public EstimationImportSettingsDto? Settings { get; set; }
     public TreeItem? ItemTree { get; set; }
     public bool IsRefreshing { get; set; } = true;
-    public bool drawerOpen = false;
 
-    void ToggleDrawer()
-    {
-        drawerOpen = !drawerOpen;
-    }
+
     string GetTabButtonStyle(int tab)
     {
         if(tab == ActiveTab)
@@ -81,56 +80,37 @@
     {
         await GetEstimationItemTreeAsync();
     }
-    public void OnSettingsSelectionChanged(EstimationImportSettingsDto? settings)
-    {
-        Settings = settings;
-    }
+
     private async Task DownloadAsync()
     {
-        return;
-        //if (ItemTree is null || Settings is null)
-        //{
-        //    return;
-        //}
+        var credentials = await BidconCredentialsService.GetAsync();
+        if(ItemTree is null || credentials is null)
+        {
+            return;
+        }
 
-        //try
-        //{
-        //    var selectedEstimations = ItemTree.SelectedEstimations().Select(x => x.DbEstimation!).ToList();
-        //    if (selectedEstimations.Count == 0) return;
-        //    var cancelSource = new CancellationTokenSource();
-        //    var progress = new Progress<BidConImportResultDTO<EstimationDTO>>();
-        //    var options = new DialogOptions()
-        //    {
-        //        MaxWidth = MaxWidth.ExtraSmall,
-        //        CloseButton = false,
-        //        NoHeader = false,
-        //        DisableBackdropClick = true,
+        IsDownloading = true;
+        StateHasChanged();
 
-        //    };
-        //    var parameters = new DialogParameters();
-        //    parameters.Add(nameof(DownloadDialog.Progress), progress);
-        //    parameters.Add(nameof(DownloadDialog.TotalEstimationCount), selectedEstimations.Count);
-        //    parameters.Add(nameof(DownloadDialog.CancelTokenSource), cancelSource);
-        //    DialogService.Show<DownloadDialog>(Localizer["Hämtar"], parameters, options);
-        //    var result = await _importer.GetEstimationsAsync(selectedEstimations, Settings, cancelSource.Token, progress);
+        var ids = ItemTree.SelectedEstimations().Select(x => x.Id).ToList();
 
-        //    ImportedEstimationsContainer.ImportedEstimations = result
-        //        .Where(x => x.Value is not null)
-        //        .Select(x => x.Value)
-        //        .ToArray()!;
-        //}
-        //catch (Exception e)
-        //{
-        //    Snackbar.Add(Localizer[$"Misslyckades att importera kalkyler. Error: {e.Message}"], Severity.Error);
-        //}
+        var estimationBatches = await _linkService.GetManyBatchesAsync(new EstimationRequestBatchesModelDto(ids, credentials));
+        if (estimationBatches is not null)
+        {
+            EstimationContainer.ImportedEstimations = estimationBatches.ToList();
+            Navigation.NavigateTo(ClientRoutes.Report);
+        }
+
+
+        IsDownloading = false;
+        StateHasChanged();
     }
     private async Task GetEstimationItemTreeAsync()
     {
         IsRefreshing = true;
         ItemTree = null;
-        //var dbFolderResult = await _importer.GetFoldersAsync();
-        var credentials = new BC_DatabaseCredentialsDto("RHUSAPP02\\ELECOSOFT", "BidConEstimation", "sa", "VX3EEWKNQrrBQp+52Ct5Gw==", true);
-        var batch = await _linkService.GetFolderBatchAsync(credentials);
+        var credentials = await BidconCredentialsService.GetAsync();
+        var batch = await _linkService.GetFolderBatchAsync(credentials!);
         if (batch is not null)
         {
             var folder = _folderService.CreateFromBatch(batch);

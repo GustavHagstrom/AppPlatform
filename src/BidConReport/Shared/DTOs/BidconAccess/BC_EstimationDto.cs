@@ -15,4 +15,8 @@ public class BC_EstimationDto
     public double TenderTotal { get; set; }
     public required int TenderType { get; set; }
     public required int EstimationState { get; set; }
+    public override string ToString()
+    {
+        return Description is null ? Name : $"{Name} - {Description}";
+    }
 }

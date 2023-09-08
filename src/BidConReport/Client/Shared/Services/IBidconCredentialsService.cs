@@ -1,7 +1,7 @@
 ﻿using BidConReport.Shared.DTOs.BidconAccess;
 
-namespace BidConReport.Client.Features.Settings.BidconSettings.BicdonCredentials;
-public interface ICredentialsService
+namespace BidConReport.Client.Shared.Services;
+public interface IBidconCredentialsService
 {
     Task<BC_DatabaseCredentialsDto?> GetAsync();
     Task UpsertAsync(BC_DatabaseCredentialsDto credentials);

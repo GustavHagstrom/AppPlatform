@@ -33,6 +33,8 @@ public static class ServiceExtensions
 
         services.AddTransient<IBidconLinkService, BidconLinkService>();
         services.AddTransient<IConfigReaderService, ConfigReaderService>();
-        services.AddTransient<ICredentialsService, CredentialsService>();
+        services.AddTransient<IBidconCredentialsService, BidconCredentialsService>();
+
+        services.AddScoped<IEstimationContainerService, EstimationContainerService>();
     }
 }

@@ -2,9 +2,7 @@
 
 
 <Toolbar Height="40px">
-    <ReportTemplatePicker/>
-    <MudIconButton Icon="@Icons.Material.Sharp.Download" Style="height: 40px; width: 40px;" />
-    <MudIconButton Icon="@Icons.Material.Sharp.Share" Style="height: 40px; width: 40px;" />
+    
 </Toolbar>
 
 
@@ -14,58 +12,17 @@
 
     <MudPaper Square="true" Elevation="4" Class="my-2">
 
-        @if (SelectedEstimation is not null)
-        {
-            <MudPopover Open="ShowPreviewPopOver" RelativeWidth="true" Elevation="0">
-
-                <div class="d-flex">
-                    <MudIcon Icon="@Icons.Material.Sharp.Search" Class="mx-2 align-self-center" />
-                    <MudText Typo="Typo.h6" Class="align-self-center">@($"{Localizer["Förhandsgranska"]}")</MudText>
-                    <MudSpacer/>
-                    <MudButton OnClick="() => ShowPreviewPopOver = false" Style="min-width: 40px; width: 40px; height: 40px" Variant="Variant.Filled" Color="Color.Error">
-                        <MudIcon Icon="@Icons.Material.Sharp.Close" />
-                    </MudButton>
-                </div>
-                <MudDivider Light="true"/>
-                    <div class="pa-2" style="overflow-y: scroll; height: calc(100vh - 145px)">
-                        <EstimationPreview Estimation="SelectedEstimation" />
-                </div>
-            
-        </MudPopover>
-        }
-        <MudPopover Open="ShowComparePopOver" RelativeWidth="true" Style="height: calc(100vh - 105px)" Elevation="0">
-            <div class="d-flex">
-                <MudIcon Icon="@Icons.Material.Sharp.Compare" Class="mx-2 align-self-center" />
-                <MudText Typo="Typo.h6" Class="align-self-center">@($"{Localizer["Jämför"]}")</MudText>
-                    <MudSpacer />
-                    <MudButton OnClick="() => ShowComparePopOver = false" Style="min-width: 40px; width: 40px; height: 40px" Variant="Variant.Filled" Color="Color.Error">
-                        <MudIcon Icon="@Icons.Material.Sharp.Close" />
-                    </MudButton>
-                </div>
-                <MudDivider Light="true" />
-        </MudPopover>
-
-        <div>
-            <MudCheckBox Checked="true" Class="span-40" />
-            <MudDivider Light="true" Style="margin-right: -12px"/>
-        </div>
-        <div style="overflow-y: scroll; position: relative; height: calc(100vh - 145px)">
+        <div style="overflow-y: auto; position: relative; height: calc(100vh - 145px)">
             <table class="striped">
                 <tbody>
                     <Virtualize Items="EstimationsContainer.ImportedEstimations">
                         <tr class="d-flex">
-                            <td class="d-flex flex-grow-1">
-                                <MudCheckBox Checked="true" />
-                                <MudIcon Icon="@Icons.Material.Sharp.Article" Color="@Color.Tertiary" Class="align-self-center ml-3" />
-                                <MudText Class="align-self-center ml-2">@context</MudText>
+
+                            <td class="d-flex flex-grow-1 pa-2">
+                                <MudIcon Icon="@Icons.Material.Sharp.Article" Color="@Color.Tertiary" Class="align-self-center" />
+                                <MudText Class="align-self-center ml-2">@context.Estimation.ToString()</MudText>
                             </td>
-                            <td>
-                                <div class="d-flex">
-                                        <MudIconButton Icon="@Icons.Material.Sharp.Compare" OnClick="() => ShowEstimationComparer(context)" />
-                                    <MudIconButton Icon="@Icons.Material.Sharp.Search" OnClick="() => ShowEstimationPreview(context)" />
-                                </div>
-                                
-                            </td>
+
                         </tr>
                     </Virtualize>
                 </tbody>
@@ -81,26 +38,9 @@
 
 
 @code{
-    bool ShowPreviewPopOver { get; set; } = false;
-    bool ShowComparePopOver { get; set; } = false;
 
-    [CascadingParameter] public required MudTheme Theame { get; set; }
-    [Inject] public required ImportedEstimationsContainer EstimationsContainer { get; set; }
+    [Inject] public required IEstimationContainerService EstimationsContainer { get; set; }
     [Inject] public required IStringLocalizer<Report> Localizer { get; set; }
-    public EstimationDTO? SelectedEstimation { get; set; }
 
-    public void ShowEstimationPreview(EstimationDTO estimation)
-    {
-        SelectedEstimation = estimation;
-        ShowComparePopOver = false;
-        ShowPreviewPopOver = true;
-        StateHasChanged();
-    }
-    public void ShowEstimationComparer(EstimationDTO estimation)
-    {
-        SelectedEstimation = estimation;
-        ShowComparePopOver = true;
-        ShowPreviewPopOver = false;
-        StateHasChanged();
-    }
+
 }
