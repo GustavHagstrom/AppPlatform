@@ -24,6 +24,10 @@ public class BidconCredentialsController : ControllerBase
             return Problem("No organization");
         }
         var result = await _bidconCredentialsService.GetAsync(organizationId);
+        if (result is null)
+        {
+            return NoContent();
+        }
         return Ok(result);
     }
     [HttpPost]

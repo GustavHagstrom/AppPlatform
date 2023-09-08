@@ -2,6 +2,7 @@
 using BidConReport.Server.Enteties;
 using BidConReport.Shared.DTOs.BidconAccess;
 using Mapster;
+using Microsoft.EntityFrameworkCore;
 
 namespace BidConReport.Server.Services;
 
@@ -16,13 +17,14 @@ public class BidconCredentialsService : IBidconCredentialsService
 
     public async Task<BC_DatabaseCredentialsDto?> GetAsync(string organizationId)
     {
-        var result = await _context.BidconCredentials.FindAsync(organizationId);
+        var result = await _context.BidconCredentials.FirstOrDefaultAsync(x => x.OrganizationId == organizationId);
         return result?.Adapt<BC_DatabaseCredentialsDto>();
     }
 
     public async Task UpsertAsync(BC_DatabaseCredentialsDto credentialsDto, string organizationId)
     {
         var credentials = credentialsDto.Adapt<BidconCredentials>();
+        credentials.OrganizationId = organizationId;
         var existingCredentials = await _context.BidconCredentials.FindAsync(organizationId);
 
         if (existingCredentials is null)

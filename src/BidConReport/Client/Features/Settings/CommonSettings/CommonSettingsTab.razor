@@ -8,7 +8,7 @@
                 <MudItem xs="12">
                     <MudSwitch Checked="IsDarkMode" CheckedChanged="@(async (bool value) => await OnDarkModeChanged(value))" Color="Color.Primary" Label="@Localizer["Mörkts tema"]" />
                 </MudItem>
-                <MudItem xs="12">
+               @* <MudItem xs="12">
                     <DefaultImortSettingsSelector IsLoadingChanged="(x) => OnLoadingChanged(() => IsLoadingImportSettings = x)" />
                 </MudItem>
                 <MudItem xs="12">
@@ -16,7 +16,7 @@
                 </MudItem>
                 <MudItem xs="12">
                     <OrganizationControl IsLoadingChanged="(x) => OnLoadingChanged(() => IsLoadingOrganizations = x)" />
-                </MudItem>
+                </MudItem>*@
             </MudGrid>
         </MudPaper>
     </MudContainer>
@@ -26,7 +26,7 @@
     [Inject] public required IDarkModeService DarkModeService { get; set; }
     [CascadingParameter(Name = "DarkModeAction")] public required Action<bool> DarkModeAction { get; set; }
 
-    bool IsLoading => IsLoadingDarkMode || IsLoadingImportSettings || IsLoadingReportTemplates || IsLoadingOrganizations;
+    bool IsLoading => IsLoadingDarkMode;// || IsLoadingImportSettings || IsLoadingReportTemplates || IsLoadingOrganizations;
     bool IsDarkMode { get; set; } = false;
 
     public bool IsLoadingDarkMode { get; set; } = true;

@@ -1,4 +1,5 @@
 ﻿using BidConReport.Client.Features.Import.Services;
+using BidConReport.Client.Features.Settings.BidconSettings.BicdonCredentials;
 using BidConReport.Client.Shared.EstimationProcessing.Calculations;
 using BidConReport.Client.Shared.EstimationProcessing.Services;
 using BidConReport.Client.Shared.EstimationViewTemplate.Services;
@@ -31,5 +32,7 @@ public static class ServiceExtensions
         services.AddTransient<IEstimationViewTemplateServices, EstimationViewTemplateService>();
 
         services.AddTransient<IBidconLinkService, BidconLinkService>();
+        services.AddTransient<IConfigReaderService, ConfigReaderService>();
+        services.AddTransient<ICredentialsService, CredentialsService>();
     }
 }
