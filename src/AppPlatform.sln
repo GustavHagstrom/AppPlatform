@@ -21,8 +21,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BidConReport.Server", "BidC
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BidConReport.Shared", "BidConReport\Shared\BidConReport.Shared.csproj", "{671755AE-99ED-4397-9EDF-9D5DD70DD055}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HostingWebApp", "HostingWebApp\HostingWebApp.csproj", "{F51F6002-0B8B-4340-8FFA-C47B5B7A931D}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Shared Libraries", "Shared Libraries", "{1BC1C62C-17E7-44BF-A895-BF15472D62D8}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SharedWasmLibrary", "Shared Libraries\SharedWasmLibrary\SharedWasmLibrary.csproj", "{B54D7BC7-A5DB-4464-BD24-971B4E71710E}"
@@ -75,10 +73,6 @@ Global
 		{671755AE-99ED-4397-9EDF-9D5DD70DD055}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{671755AE-99ED-4397-9EDF-9D5DD70DD055}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{671755AE-99ED-4397-9EDF-9D5DD70DD055}.Release|Any CPU.Build.0 = Release|Any CPU
-		{F51F6002-0B8B-4340-8FFA-C47B5B7A931D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{F51F6002-0B8B-4340-8FFA-C47B5B7A931D}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{F51F6002-0B8B-4340-8FFA-C47B5B7A931D}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{F51F6002-0B8B-4340-8FFA-C47B5B7A931D}.Release|Any CPU.Build.0 = Release|Any CPU
 		{B54D7BC7-A5DB-4464-BD24-971B4E71710E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{B54D7BC7-A5DB-4464-BD24-971B4E71710E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B54D7BC7-A5DB-4464-BD24-971B4E71710E}.Release|Any CPU.ActiveCfg = Release|Any CPU

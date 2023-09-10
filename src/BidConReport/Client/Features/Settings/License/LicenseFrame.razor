@@ -1,0 +1,34 @@
+﻿@using Microsoft.Graph.Models;
+<ExpansionFrame TitleText="@Localizer["Licenser"]" Style="position: relative; background-color: var(--mud-palette-background)">
+
+    <MudOverlay DarkBackground="true" Visible="IsLoading" Absolute="true">
+        <MudProgressCircular Size="Size.Large" Color="Color.Primary" Indeterminate="true" />
+    </MudOverlay>
+
+    <div class="pa-4">
+        @if(Users is not null)
+        {
+            @foreach (var user in Users)
+            {
+                <MudText Typo="Typo.subtitle2">@($"{user.DisplayName} - {user.Id}")</MudText>
+            }
+        }
+    </div>
+
+
+</ExpansionFrame>
+@code {
+    [Inject] public required IStringLocalizer<LicenseFrame> Localizer { get; set; }
+    [Inject] public required GraphServiceClient GraphClient { get; set; }
+
+    bool IsLoading = true;
+    ICollection<User>? Users;
+
+    protected override async Task OnInitializedAsync()
+    {
+        var users = await GraphClient.Users.GetAsync();
+        Users = users?.Value;
+        IsLoading = false;
+        StateHasChanged();
+    }
+}

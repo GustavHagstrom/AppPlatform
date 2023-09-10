@@ -2,30 +2,21 @@
 @using BidConReport.Client.Features.Settings.Appearance
 @using BidConReport.Client.Features.Settings.BidconCredentials
 @using BidConReport.Client.Features.Settings.BidconSettings
+@using BidConReport.Client.Features.Settings.License
+@using BidConReport.Client.Features.Settings.Roles
 
+<div style="overflow: auto; max-height: 100%">
+    <MudContainer MaxWidth="MaxWidth.Medium">
 
-<MudContainer MaxWidth="MaxWidth.Medium">
+        <MudStack Spacing="4" Class="py-4">
+            <AppearanceFrame />
+            <CredentialsFrame />
+            <LicenseFrame/>
+            <RolesFrame/>
+        </MudStack>
 
-    <MudStack Spacing="4" Class="py-4">
-
-        <AppearanceFrame />
-
-        <CredentialsFrame />
-
-    </MudStack>
-
-</MudContainer>
-
-
-@*<div style="height: 100%; width: 100%; overflow: auto;">
-    
-</div>*@
-@*
-<PageTabLayout>
-    
-    <CommonSettingsTab />
-    <BidconSettingsTab />
-</PageTabLayout>*@
+    </MudContainer>
+</div>
 
 @code {
     [Inject] public required IStringLocalizer<SettingsPage> Localizer { get; set; }
