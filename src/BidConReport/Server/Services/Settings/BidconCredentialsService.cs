@@ -4,7 +4,7 @@ using BidConReport.Shared.DTOs.BidconAccess;
 using Mapster;
 using Microsoft.EntityFrameworkCore;
 
-namespace BidConReport.Server.Services;
+namespace BidConReport.Server.Services.Settings;
 
 public class BidconCredentialsService : IBidconCredentialsService
 {

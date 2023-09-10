@@ -1,4 +1,4 @@
-﻿using BidConReport.Server.Services;
+﻿using BidConReport.Server.Services.Settings;
 using BidConReport.Shared.DTOs.BidconAccess;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Identity.Web;
