@@ -32,9 +32,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Content Update="Features\Settings\BidconSettings\Report\EditTemplateDialog.razor">
-      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-    </Content>
     <Content Update="wwwroot\css\app.css">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </Content>

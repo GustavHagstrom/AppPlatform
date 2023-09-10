@@ -1,9 +1,0 @@
-﻿<MudStack Spacing="4" Class="pa-4">
-    <MudTextField  @bind-Value="Section.Title" For="() => Section.Title" Margin="Margin.Dense" Variant="Variant.Outlined" Label="@Localizer["Titeltext"]" />
-    <FontEditor Font="Section.Font" SampleText="@Localizer["Titeltext"]" />
-</MudStack>
-
-@code {
-    [Parameter, EditorRequired] public required TitleSectionDto Section { get; set; }
-    [Inject]public required IStringLocalizer<TitleSectionEditor> Localizer { get; set; }
-}
