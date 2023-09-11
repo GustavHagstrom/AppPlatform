@@ -8,4 +8,5 @@ public class Organization
     public required string Id { get; set; }
     public IEnumerable<User>? Users { get; set; }
     public BidconCredentials? BidconCredentials { get; set; }
+    public License? License { get; set; }
 }

@@ -16,20 +16,18 @@ public class ApplicationDbContext : DbContext
 
     public DbSet<User> Users { get; set; }
     public DbSet<Organization> Organizations { get; set; }
+    public DbSet<License> Licenses { get; set; }
     public DbSet<BidconCredentials> BidconCredentials { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
 
-        MapUserAndOrganizations(modelBuilder);
+        modelBuilder.Entity<License>()
+            .HasMany(l => l.Users)
+            .WithOne(u => u.License)
+            .HasForeignKey(u => u.LicenseId)
+            .OnDelete(DeleteBehavior.NoAction);
 
-    }
-    private void MapUserAndOrganizations(ModelBuilder modelBuilder)
-    {
-        modelBuilder.Entity<Organization>()
-            .HasMany(u => u.Users)
-            .WithOne(u => u.Organization)
-            .HasForeignKey(u => u.OrganizationId);
     }
 }
