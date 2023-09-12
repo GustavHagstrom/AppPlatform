@@ -5,5 +5,5 @@ public class ViewTemplate
 {
     public Guid Id { get; set; }
     public required string Name { get; set; }
-    public List<IReportSection> Sections { get; set; } = new();
+    public List<IViewSection> Sections { get; set; } = new();
 }

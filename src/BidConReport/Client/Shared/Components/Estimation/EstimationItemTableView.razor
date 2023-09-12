@@ -1,9 +1,0 @@
-﻿
-@foreach (var item in ParentComponent.Estimation.Items)
-{
-    <EstimationItemView Item="item" />
-}
-<MudDivider Light="true"/>
-@code {
-    [CascadingParameter] public required EstimationPreview ParentComponent { get; set; }
-}

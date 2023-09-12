@@ -1,7 +1,6 @@
 ﻿namespace BidConReport.Client.Shared.EstimationViewTemplate.Models.SectionModels;
-public interface IReportSection
+public interface IViewSection
 {
     Guid Id { get; set; }
-    string Name { get; set; }
     int Order { get; set; }
 }
