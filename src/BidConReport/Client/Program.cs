@@ -37,8 +37,6 @@ builder.Services.AddMudServices(config =>
 });
 
 builder.Services.AddLocalization();
-builder.Services.UseImportFeature();
-builder.Services.UseSharedStateContainers();
 builder.Services.UseSharedServices();
 builder.Services.UseSharedPlatformLibrary();
 builder.UseSharedWasmLibrary(BackendApiEndpoints.ClaimEnpoints.Get);

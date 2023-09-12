@@ -1,9 +1,10 @@
 ﻿using BidConReport.Shared.Enums.ViewTemplate;
 
-namespace BidConReport.Shared.DTOs.EstimationView;
+namespace BidConReport.Server.Enteties.EstimationView;
 
-public class CellFormatTemplateDto
+public class CellFormat
 {
+    public Guid Id { get; set; }
     public required string FontFamily { get; set; }
     public int FontSize { get; set; }
     public bool Bold { get; set; }
@@ -20,4 +21,11 @@ public class CellFormatTemplateDto
     public bool BorderRight { get; set; }
     public bool BorderBottom { get; set; }
     public BorderStyle Style { get; set; }
+
+
+
+    public Guid? SheetColumnId { get; set; }
+    public SheetColumn? SheetColumn { get; set; }
+    public Guid? CellTemplateId { get; set; }
+    public CellTemplate? CellTemplate { get; set; }
 }

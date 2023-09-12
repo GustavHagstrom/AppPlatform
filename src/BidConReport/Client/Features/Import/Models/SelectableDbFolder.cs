@@ -1,4 +1,4 @@
-﻿using BidConReport.Shared.DTOs;
+﻿using BidConReport.Client.Shared.EstimationProcessing.Models;
 
 namespace BidConReport.Client.Features.Import.Models;
 public class SelectableDbFolder
@@ -6,7 +6,7 @@ public class SelectableDbFolder
     private bool _isSelected;
 
 
-    public SelectableDbFolder(DbFolderDTO dbFolder, bool isSelected = false)
+    public SelectableDbFolder(Folder dbFolder, bool isSelected = false)
     {
         Name = dbFolder.Name;
         _isSelected = isSelected;
@@ -26,7 +26,7 @@ public class SelectableDbFolder
         }
     }
 
-    private void SetEstimations(DbFolderDTO dbFolder)
+    private void SetEstimations(Folder dbFolder)
     {
         foreach (var estimation in dbFolder.DbEstimations)
         {
@@ -35,7 +35,7 @@ public class SelectableDbFolder
             newItem.SelectionChanged += OnSubItemSelectionChanged;
         }
     }
-    private void SetSubFolders(DbFolderDTO dbFolder)
+    private void SetSubFolders(Folder dbFolder)
     {
         foreach (var folder in dbFolder.SubFolders)
         {

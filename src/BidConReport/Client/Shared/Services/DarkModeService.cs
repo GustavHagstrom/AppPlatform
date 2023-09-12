@@ -7,9 +7,9 @@ namespace BidConReport.Client.Shared.Services;
 public class DarkModeService : IDarkModeService
 {
     private readonly IHttpClientWrapper _httpClient;
-    private readonly ILogger<ReportTemplateService> _logger;
+    private readonly ILogger<IDarkModeService> _logger;
 
-    public DarkModeService(IHttpClientWrapper httpClient, ILogger<ReportTemplateService> logger)
+    public DarkModeService(IHttpClientWrapper httpClient, ILogger<IDarkModeService> logger)
     {
         _httpClient = httpClient;
         _logger = logger;

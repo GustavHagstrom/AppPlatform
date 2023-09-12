@@ -1,4 +1,5 @@
 ﻿using BidConReport.Server.Enteties;
+using BidConReport.Server.Enteties.EstimationView;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 
@@ -18,6 +19,7 @@ public class ApplicationDbContext : DbContext
     public DbSet<Organization> Organizations { get; set; }
     public DbSet<License> Licenses { get; set; }
     public DbSet<BidconCredentials> BidconCredentials { get; set; }
+    public DbSet<EstimationViewTemplate> EstimationViewTemplates { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
