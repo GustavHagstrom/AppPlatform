@@ -8,7 +8,7 @@ public class CellTemplate
     public bool IsFormula => Value.StartsWith("=");
 
 
-    public CellFormat? Format { get; set; }
+    public required CellFormat Format { get; set; }
     public Guid DataSectionTemplateId { get; set; }
     public DataSectionTemplate? DataSectionTemplate { get; set; }
 }

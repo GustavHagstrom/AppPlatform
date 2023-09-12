@@ -1,4 +1,6 @@
-﻿namespace BidConReport.Server.Enteties.EstimationView;
+﻿using BidConReport.Shared.Enums.ViewTemplate;
+
+namespace BidConReport.Server.Enteties.EstimationView;
 public class HeaderOrFooter
 {
     public Guid Id { get; set; }

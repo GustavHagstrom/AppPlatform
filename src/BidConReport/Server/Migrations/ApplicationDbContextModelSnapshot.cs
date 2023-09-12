@@ -466,7 +466,8 @@ namespace BidConReport.Server.Migrations
 
             modelBuilder.Entity("BidConReport.Server.Enteties.EstimationView.CellTemplate", b =>
                 {
-                    b.Navigation("Format");
+                    b.Navigation("Format")
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("BidConReport.Server.Enteties.EstimationView.DataSectionTemplate", b =>
