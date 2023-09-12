@@ -9,6 +9,8 @@ public class EstimationQueryServiceTests
 
     private readonly BC_DatabaseCredentialsDto _localCredential = new ("(localdb)\\MSSQLLocalDB", "BidconEstimation", "user", "someHash", false);
     private readonly BC_DatabaseCredentialsDto _rvhCredential = new("RHUSAPP02\\ELECOSOFT", "BidConEstimation", "sa", "VX3EEWKNQrrBQp+52Ct5Gw==", true);
+    private BC_DatabaseCredentialsDto _credentials => _localCredential;
+
 
     private readonly EstimationQueryService _service = new(new ConnectionstringService());
 
@@ -17,8 +19,8 @@ public class EstimationQueryServiceTests
     {
         var estimationId = "E2217CB2-3C68-4EC3-91CD-DAF28F55FE39";
 
-        var queryResult = await _service.GetEstimationBatchAsync(estimationId, _rvhCredential);
-        var json = JsonSerializer.Serialize(queryResult);
+        var queryResult = await _service.GetEstimationBatchAsync(estimationId, _credentials);
+        //var json = JsonSerializer.Serialize(queryResult);
         Assert.That(queryResult, Is.Not.Null);
     }
     [Test]
@@ -42,7 +44,7 @@ public class EstimationQueryServiceTests
             "E2225D16-F904-4388-81E5-431246A5ECFB",
         };
 
-        var results = await _service.GetEstimationBatchesAsync(ids, _rvhCredential);
+        var results = await _service.GetEstimationBatchesAsync(ids, _credentials);
         foreach (var result in results)
         {
             Assert.That(result, Is.Not.Null);
@@ -51,14 +53,14 @@ public class EstimationQueryServiceTests
     [Test]
     public async Task EstimationResultList()
     {
-        var result = await _service.GetEstimationListAsync(_rvhCredential);
+        var result = await _service.GetEstimationListAsync(_credentials);
 
         Assert.IsNotNull(result);
     }
     [Test]
     public async Task EstimationFolderBatch()
     {
-        var result = await _service.GetFolderBatchAsync(_rvhCredential);
+        var result = await _service.GetFolderBatchAsync(_credentials);
 
         Assert.IsNotNull(result);
     }

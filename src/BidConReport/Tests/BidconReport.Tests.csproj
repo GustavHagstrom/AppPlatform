@@ -32,17 +32,12 @@
 
   <ItemGroup>
     <Folder Include="Client\Features\Import\" />
+    <Folder Include="Server\Features\" />
     <Folder Include="Shared\" />
   </ItemGroup>
 
   <ItemGroup>
     <None Update="EstimationBatch.json">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Update="EstimationSample.json">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Update="ReportTemplateSample.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>
