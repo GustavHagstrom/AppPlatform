@@ -1,57 +1,26 @@
-﻿using BidConReport.Server.Data;
-using BidConReport.Server.Enteties.EstimationView;
-using BidConReport.Shared.DTOs.EstimationView;
-using Mapster;
+﻿using BidConReport.Server.Enteties.EstimationView;
 using Microsoft.EntityFrameworkCore;
 
-namespace BidConReport.Server.Services;
 
-public class EstimationViewTemplateService
+namespace BidConReport.Server.Services.EstimationView;
+
+public class EstimationViewTemplateUpdater : IEstimationViewTemplateUpdater
 {
-    private readonly ApplicationDbContext _dbContext;
     public delegate void UpdateAction<T>(T entityToUpdate, T updateSrcEntity) where T : IEstimationViewEntity;
 
-    public EstimationViewTemplateService(ApplicationDbContext dbContext)
-    {
-        _dbContext = dbContext;
-    }
-    public async Task UpsertAsync(EstimationViewTemplateDto dto)
-    {
-        var existing = await _dbContext.EstimationViewTemplates
-            .Include(x => x.NetSheetSectionTemplate).ThenInclude(x => x!.Columns).ThenInclude(x => x.CellFormat)
-            .Include(x => x.HeaderOrFooters)
-            .Include(x => x.DataSectionTemplates).ThenInclude(x => x.Columns)
-            .Include(x => x.DataSectionTemplates).ThenInclude(x => x.Cells).ThenInclude(x => x.Format)
-            .FirstOrDefaultAsync(x => x.Id == dto.Id);
-        if (existing is null)
-        {
-            var entity = dto.Adapt<EstimationViewTemplate>();
-            await _dbContext.EstimationViewTemplates.AddAsync(entity);
-        }
-        else
-        {
-            var updateSrc = dto.Adapt<EstimationViewTemplate>();
-            UpdateEstimationViewTemplate(existing, updateSrc);
-        }
-        await _dbContext.SaveChangesAsync();
-    }
-
-    private void UpdateEstimationViewTemplate(EstimationViewTemplate existing, EstimationViewTemplate updateSrc)
+    public void Update(EstimationViewTemplate existing, EstimationViewTemplate updateSrc)
     {
         existing.Name = updateSrc.Name;
 
         UpdateEstimationViewEntityList(existing.HeaderOrFooters, updateSrc.HeaderOrFooters, UpdateHeaderOrFooter);
         UpdateNetSheetSectionTemplate(existing.NetSheetSectionTemplate, updateSrc.NetSheetSectionTemplate);
         UpdateEstimationViewEntityList(existing.DataSectionTemplates, updateSrc.DataSectionTemplates, UpdateDataSectionTemplate);
-        
-        _dbContext.Update(existing);
     }
     private void UpdateHeaderOrFooter(HeaderOrFooter existing, HeaderOrFooter updateSrc)
     {
         existing.Value = updateSrc.Value;
         existing.Position = updateSrc.Position;
     }
-
     private void UpdateDataSectionTemplate(DataSectionTemplate existing, DataSectionTemplate updateSrc)
     {
         existing.Order = updateSrc.Order;
@@ -59,13 +28,11 @@ public class EstimationViewTemplateService
         UpdateEstimationViewEntityList(existing.Cells, updateSrc.Cells, UpdateDataSectionCells);
         UpdateEstimationViewEntityList(existing.Columns, updateSrc.Columns, UpdateDataColumn);
     }
-
     private void UpdateDataColumn(DataColumn existing, DataColumn updateSrc)
     {
         existing.Order = updateSrc.Order;
         existing.WidthPercent = updateSrc.WidthPercent;
     }
-
     private void UpdateDataSectionCells(CellTemplate existing, CellTemplate updateSrc)
     {
         existing.Value = updateSrc.Value;
@@ -73,7 +40,6 @@ public class EstimationViewTemplateService
         existing.Column = updateSrc.Column;
         UpdateCellFormat(existing.Format, updateSrc.Format);
     }
-
     private void UpdateCellFormat(CellFormat existing, CellFormat updateSrc)
     {
         existing.Align = updateSrc.Align;
@@ -93,7 +59,6 @@ public class EstimationViewTemplateService
         existing.ThoasandsSeparator = updateSrc.ThoasandsSeparator;
         existing.Underline = updateSrc.Underline;
     }
-
     private void UpdateNetSheetSectionTemplate(NetSheetSectionTemplate? existing, NetSheetSectionTemplate? updateSrc)
     {
         if (existing is null)
@@ -109,7 +74,6 @@ public class EstimationViewTemplateService
         existing.Order = updateSrc.Order;
         UpdateEstimationViewEntityList(existing.Columns, updateSrc.Columns, UpdateSheetColumn);
     }
-
     private void UpdateSheetColumn(SheetColumn existing, SheetColumn updateSrc)
     {
         existing.Order = updateSrc.Order;
@@ -131,7 +95,7 @@ public class EstimationViewTemplateService
             existing.Add(entityToAdd);
         }
         foreach (var entityToUpdate in toUpdate)
-        {   
+        {
             var updateSrcEntity = updateSrc.First(x => x.Id == entityToUpdate.Id);
             updateAction.Invoke(entityToUpdate, updateSrcEntity);
         }

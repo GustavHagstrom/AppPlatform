@@ -1,5 +1,5 @@
 ﻿using BidConReport.Server.Data;
-using BidConReport.Server.Services;
+using BidConReport.Server.Services.EstimationView;
 using BidConReport.Shared.DTOs.EstimationView;
 using BidConReport.Shared.Enums.ViewTemplate;
 using Mapster;

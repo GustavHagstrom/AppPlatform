@@ -1,10 +1,12 @@
 ﻿using BidConReport.Shared.Enums.ViewTemplate;
+using System.ComponentModel.DataAnnotations;
 
 namespace BidConReport.Server.Enteties.EstimationView;
 
 public class CellFormat : IEstimationViewEntity
 {
     public Guid Id { get; set; }
+    [StringLength(50)]
     public required string FontFamily { get; set; }
     public int FontSize { get; set; }
     public bool Bold { get; set; }

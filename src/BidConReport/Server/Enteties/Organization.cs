@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using BidConReport.Server.Enteties.EstimationView;
+using System.ComponentModel.DataAnnotations;
 
 namespace BidConReport.Server.Enteties;
 
@@ -9,4 +10,5 @@ public class Organization
     public IEnumerable<User>? Users { get; set; }
     public BidconCredentials? BidconCredentials { get; set; }
     public License? License { get; set; }
+    public IEnumerable<EstimationViewTemplate>? EstimationViewTemplates { get; set; }
 }
