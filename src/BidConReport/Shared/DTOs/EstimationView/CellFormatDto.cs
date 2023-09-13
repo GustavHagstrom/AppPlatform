@@ -2,8 +2,9 @@
 
 namespace BidConReport.Shared.DTOs.EstimationView;
 
-public class CellFormatTemplateDto
+public class CellFormatDto
 {
+    public Guid Id { get; set; }
     public required string FontFamily { get; set; }
     public int FontSize { get; set; }
     public bool Bold { get; set; }
@@ -20,4 +21,8 @@ public class CellFormatTemplateDto
     public bool BorderRight { get; set; }
     public bool BorderBottom { get; set; }
     public BorderStyle Style { get; set; }
+
+
+    public Guid? SheetColumnId { get; set; }
+    public Guid? CellTemplateId { get; set; }
 }

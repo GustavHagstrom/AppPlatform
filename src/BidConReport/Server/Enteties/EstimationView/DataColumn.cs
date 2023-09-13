@@ -1,5 +1,5 @@
 ﻿namespace BidConReport.Server.Enteties.EstimationView;
-public class DataColumn
+public class DataColumn : IEstimationViewEntity
 {
     public Guid Id { get; set; }
     public int Order { get; set; }

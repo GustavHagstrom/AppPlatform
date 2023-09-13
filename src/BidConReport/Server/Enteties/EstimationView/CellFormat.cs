@@ -2,7 +2,7 @@
 
 namespace BidConReport.Server.Enteties.EstimationView;
 
-public class CellFormat
+public class CellFormat : IEstimationViewEntity
 {
     public Guid Id { get; set; }
     public required string FontFamily { get; set; }

@@ -2,11 +2,13 @@
 
 namespace BidConReport.Shared.DTOs.EstimationView;
 
-public class SheetColumnTemplateDto
+public class SheetColumnDto
 {
     public Guid Id { get; set; }
     public int Order { get; set; }
     public int WidthPercent { get; set; }
-    public SheetColumnType? ColumnType { get; set; }
-    public CellFormatTemplateDto? CellFormat { get; set; }
+    public SheetColumnType ColumnType { get; set; }
+
+    public required CellFormatDto CellFormat { get; set; }
+    public Guid NetSheetSectionTemplateId { get; set; }
 }

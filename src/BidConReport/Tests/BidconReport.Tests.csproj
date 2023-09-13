@@ -32,7 +32,6 @@
 
   <ItemGroup>
     <Folder Include="Client\Features\Import\" />
-    <Folder Include="Server\Features\" />
     <Folder Include="Shared\" />
   </ItemGroup>
 

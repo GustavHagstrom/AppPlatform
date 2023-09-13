@@ -4,5 +4,8 @@ public class NetSheetSectionTemplateDto
 {
     public Guid Id { get; set; }
     public int Order { get; set; }
-    public List<SheetColumnTemplateDto> Columns { get; set; } = new();
+
+
+    public List<SheetColumnDto> Columns { get; set; } = new();
+    public Guid EstimationViewTemplateId { get; set; }
 }

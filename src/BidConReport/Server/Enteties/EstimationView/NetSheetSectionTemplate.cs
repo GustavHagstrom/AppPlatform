@@ -1,6 +1,6 @@
 ﻿namespace BidConReport.Server.Enteties.EstimationView;
 
-public class NetSheetSectionTemplate
+public class NetSheetSectionTemplate : IEstimationViewEntity
 {
     public Guid Id { get; set; }
     public int Order { get; set; }

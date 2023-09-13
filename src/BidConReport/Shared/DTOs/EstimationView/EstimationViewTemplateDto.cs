@@ -3,10 +3,8 @@ public class EstimationViewTemplateDto
 {
     public Guid Id { get; set; }
     public required string Name { get; set; }
-    public List<DataSectionTemplateDto> DataTemplateSections { get; set; } = new();
+
+    public List<DataSectionTemplateDto> DataSectionTemplates { get; set; } = new();
     public NetSheetSectionTemplateDto? NetSheetSectionTemplate { get; set; }
-    public HeaderOrFooter? TopLeftHeader { get; set; }
-    public HeaderOrFooter? TopRightHeader { get; set; }
-    public HeaderOrFooter? BottomLeftFooter { get; set; }
-    public HeaderOrFooter? BottomRightFooter { get; set; }
+    public List<HeaderOrFooterDto> HeaderOrFooters { get; set; } = new();
 }

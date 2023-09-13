@@ -1,6 +1,6 @@
 ﻿namespace BidConReport.Server.Enteties.EstimationView;
 
-public class DataSectionTemplate
+public class DataSectionTemplate : IEstimationViewEntity
 {
     public Guid Id { get; set; }
     public int Order { get; set; }

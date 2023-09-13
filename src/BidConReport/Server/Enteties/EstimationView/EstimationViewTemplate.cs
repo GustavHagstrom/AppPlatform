@@ -1,5 +1,5 @@
 ﻿namespace BidConReport.Server.Enteties.EstimationView;
-public class EstimationViewTemplate
+public class EstimationViewTemplate : IEstimationViewEntity
 {
     public Guid Id { get; set; }
     public required string Name { get; set; }

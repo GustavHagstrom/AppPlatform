@@ -1,4 +1,5 @@
 ﻿using BidConReport.Server.Data;
+using BidConReport.Server.Enteties.EstimationView;
 using Microsoft.EntityFrameworkCore;
 
 namespace BidconReport.Tests.Server;
