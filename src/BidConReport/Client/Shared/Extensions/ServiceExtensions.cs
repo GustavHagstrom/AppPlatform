@@ -12,7 +12,6 @@ public static class ServiceExtensions
     public static void UseSharedServices(this IServiceCollection services)
     {
         services.AddTransient<IDarkModeService, DarkModeService>();
-        services.AddTransient<IOrganizationService, OrganizationService>();
 
         services.AddTransient<IFolderService, FolderService>();
         services.AddTransient<ILayerdItemCalculator, LayerdItemCalculator>();
