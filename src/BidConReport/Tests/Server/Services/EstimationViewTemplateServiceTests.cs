@@ -1,16 +1,20 @@
-﻿using BidConReport.Server.Data;
+﻿using BidConReport.Server.Controllers;
+using BidConReport.Server.Data;
 using BidConReport.Server.Services.EstimationView;
 using BidConReport.Shared.DTOs.EstimationView;
 using BidConReport.Shared.Enums.ViewTemplate;
 using Mapster;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
+using Moq;
 
 namespace BidconReport.Tests.Server.Services;
 [TestFixture]
 public class EstimationViewTemplateServiceTests
 {
     private TestDbContext _dbContext;
-    private EstimationViewTemplateService _service;
+    private IEstimationViewTemplateService _service;
+    private readonly string _organizationId = "orgId";
 
     [SetUp]
     public void Setup()
@@ -19,74 +23,17 @@ public class EstimationViewTemplateServiceTests
             .UseInMemoryDatabase(databaseName: "TestDb" + TestContext.CurrentContext.Test.Name)
             .Options;
 
+        var loggerMock = new Mock<ILogger<IEstimationViewTemplateService>>();
+
         _dbContext = new TestDbContext(options);
-        _service = new EstimationViewTemplateService(_dbContext);
-    }
-    private EstimationViewTemplateDto Sample()
-    {
-        var entety = new EstimationViewTemplateDto
-        {
-            Name = "Test",
-            DataSectionTemplates =
-            {
-                new DataSectionTemplateDto
-                {
-                    Order = 1,
-                    Columns =
-                    {
-                        new DataColumnDto
-                        {
-                            WidthPercent = 100,
-                            Order = 1,
-                        }
-                    },
-                    Cells =
-                    {
-                        new CellTemplateDto
-                        {
-                            Column = 1,
-                            Format = new CellFormatDto
-                            {
-                                FontFamily = "Calibri"
-                            }
-                        }
-                    },
-                    RowCount = 1,
-                }
-            },
-            HeaderOrFooters =
-            {
-                new HeaderOrFooterDto
-                {
-                    Position = HeaderOrFooterPosition.TopLeft,
-                    Value = "TopLeft Header"
-                }
-            },
-            NetSheetSectionTemplate = new NetSheetSectionTemplateDto
-            {
-                Order = 2,
-                Columns =
-                {
-                    new SheetColumnDto
-                    {
-                        Order = 1,
-                        ColumnType = SheetColumnType.Description,
-                        CellFormat = new CellFormatDto
-                        {
-                            FontFamily = "Calibri"
-                        }
-                    }
-                },
-            }
-        };
-        return entety;
+        _service = new EstimationViewTemplateService(_dbContext, new EstimationViewTemplateUpdater(),  loggerMock.Object);
     }
     [Test]
     public async Task UpsertAsync_ShouldInsertNewRecordWithNestedValues()
     {
-        var entety = Sample();
+        var entety = EstimationViewTemplateDtoSamples.Sample();
 
-        await _service.UpsertAsync(entety);
+        await _service.UpsertAsync(entety, _organizationId);
         var actual = await _dbContext.EstimationViewTemplates
             .Include(x => x.HeaderOrFooters)
             .Include(x => x.NetSheetSectionTemplate).ThenInclude(x => x!.Columns).ThenInclude(x => x.CellFormat)
@@ -107,10 +54,8 @@ public class EstimationViewTemplateServiceTests
     [Test]
     public async Task UpsertAsync_ShouldUpdateIncludingNested()
     {
-        //TypeAdapterConfig.GlobalSettings.Default.PreserveReference(true);
-        TypeAdapterConfig.GlobalSettings.Default.PreserveReference(true);
-        var entity = Sample();
-        await _service.UpsertAsync(entity);
+        var entity = EstimationViewTemplateDtoSamples.Sample();
+        await _service.UpsertAsync(entity, _organizationId);
         var dbEntety = await _dbContext.EstimationViewTemplates
             .Include(x => x.HeaderOrFooters)
             .Include(x => x.NetSheetSectionTemplate).ThenInclude(x => x!.Columns).ThenInclude(x => x.CellFormat)
@@ -118,10 +63,9 @@ public class EstimationViewTemplateServiceTests
             .Include(x => x.DataSectionTemplates).ThenInclude(x => x.Cells).ThenInclude(x => x.Format)
             .FirstOrDefaultAsync();
         var dto = dbEntety!.Adapt<EstimationViewTemplateDto>();
-        //.Adapt(entity);
         dto.DataSectionTemplates.First().Cells.First().Format.FontFamily = "Arial";
 
-        await _service.UpsertAsync(dto);
+        await _service.UpsertAsync(dto, _organizationId);
         var actual = await _dbContext.EstimationViewTemplates
             .Include(x => x.HeaderOrFooters)
             .Include(x => x.NetSheetSectionTemplate).ThenInclude(x => x!.Columns).ThenInclude(x => x.CellFormat)

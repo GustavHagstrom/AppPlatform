@@ -1,7 +1,6 @@
 ﻿using BidConReport.Server.Services.EstimationView;
 using BidConReport.Shared.DTOs.EstimationView;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Graph.Models;
 using Microsoft.Identity.Web;
 
 namespace BidConReport.Server.Controllers;

@@ -10,11 +10,11 @@ public class EstimationViewTemplateService : IEstimationViewTemplateService
 {
     private readonly ApplicationDbContext _dbContext;
     private readonly IEstimationViewTemplateUpdater _estimationViewTemplateUpdater;
-    private readonly ILogger<EstimationViewTemplateService> _logger;
+    private readonly ILogger<IEstimationViewTemplateService> _logger;
 
     public delegate void UpdateAction<T>(T entityToUpdate, T updateSrcEntity) where T : IEstimationViewEntity;
 
-    public EstimationViewTemplateService(ApplicationDbContext dbContext, IEstimationViewTemplateUpdater estimationViewTemplateUpdater, ILogger<EstimationViewTemplateService> logger)
+    public EstimationViewTemplateService(ApplicationDbContext dbContext, IEstimationViewTemplateUpdater estimationViewTemplateUpdater, ILogger<IEstimationViewTemplateService> logger)
     {
         _dbContext = dbContext;
         _estimationViewTemplateUpdater = estimationViewTemplateUpdater;
