@@ -30,5 +30,28 @@ public static class BackendApiEndpoints
         /// </summary>
         public const string Upsert = "api/BidconCredentials";
     }
+    public static class EstimationViewTemplateController
+    {
+        /// <summary>
+        /// Get request. Guid as query parameter. May return NoContent.
+        /// </summary>
+        public const string Get = "api/EstimationViewTemplate";
+        /// <summary>
+        /// Post request. Dto as body parameter.
+        /// </summary>
+        public const string Upsert = "api/EstimationViewTemplate";
+        /// <summary>
+        /// Delete request. Guid as query parameter.
+        /// </summary>
+        public const string Delete = "api/EstimationViewTemplate";
+        /// <summary>
+        /// Get request. Gets list of templates without nested properties. May returns NoContent.
+        /// </summary>
+        public const string GetShallowList = "api/EstimationViewTemplate/Shallow";
+        /// <summary>
+        /// Get request. Gets list of templates with nested properties. May returns NoContent.
+        /// </summary>
+        public const string GetDeepList = "api/EstimationViewTemplate/Deep";
+    }
 }
 
