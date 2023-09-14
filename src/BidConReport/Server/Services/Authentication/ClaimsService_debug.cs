@@ -1,14 +1,11 @@
-using BidConReport.Server.Services.Settings;
+using BidConReport.Shared.Enums;
 using SharedPlatformLibrary.Constants;
 using SharedPlatformLibrary.DTOs;
-using System.Security.Claims;
 
 namespace BidConReport.Server.Services.Authentication;
 
 public class ClaimsService_debug : IClaimsService
 {
-
-    public string Role { get; set; } = "admin";
     public string License { get; set; } = "debug_license";
 
 
@@ -16,9 +13,12 @@ public class ClaimsService_debug : IClaimsService
     {
         var claims = new List<ClaimDTO>
         {
-            new ClaimDTO(ClaimTypes.Role, Role),
-            new ClaimDTO(CustomClaimTypes.License, License ),
+            new ClaimDTO(CustomClaimTypes.License, License)
         };
+        foreach (var right in Enum.GetValues(typeof(ApplicationRight)))
+        {
+            claims.Add(new ClaimDTO(CustomClaimTypes.ApplicationRight, ((int)right).ToString()));
+        }
 
         return await Task.FromResult(claims);
     }

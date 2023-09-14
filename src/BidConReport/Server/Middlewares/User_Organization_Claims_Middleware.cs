@@ -6,13 +6,13 @@ using System.Security.Claims;
 
 namespace BidConReport.Server.Middlewares;
 
-public class LazyUserMiddleware
+public class User_Organization_Claims_Middleware
 {
     private readonly RequestDelegate _next;
     private readonly IServiceProvider _serviceProvider;
     private readonly ILogger _logger;
 
-    public LazyUserMiddleware(RequestDelegate next, IServiceProvider serviceProvider, ILogger<LazyUserMiddleware> logger)
+    public User_Organization_Claims_Middleware(RequestDelegate next, IServiceProvider serviceProvider, ILogger<User_Organization_Claims_Middleware> logger)
     {
         _next = next;
         _serviceProvider = serviceProvider;

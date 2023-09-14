@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using BidConReport.Shared.Enums;
+using System.ComponentModel.DataAnnotations;
 
 namespace BidConReport.Server.Enteties;
 
@@ -12,4 +13,6 @@ public class User
     public bool IsDarkMode { get; set; } = false;
     public Guid? LicenseId { get; set; }
     public License? License { get; set; }
+    public ICollection<Role>? Roles { get; set; }
+    public ICollection<ApplicationRight>? Rights { get; set; }
 }

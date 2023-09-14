@@ -58,7 +58,7 @@ app.UseRouting();
 app.UseAuthorization();
 
 
-app.UseMiddleware<LazyUserMiddleware>();
+app.UseMiddleware<User_Organization_Claims_Middleware>();
 
 app.MapRazorPages();
 app.MapControllers();
