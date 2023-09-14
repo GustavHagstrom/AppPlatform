@@ -91,7 +91,8 @@ namespace BidConReport.Server.Migrations
 
                     b.Property<string>("FontFamily")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<int>("FontSize")
                         .HasColumnType("int");
@@ -150,7 +151,8 @@ namespace BidConReport.Server.Migrations
 
                     b.Property<string>("Value")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.HasKey("Id");
 
@@ -211,9 +213,17 @@ namespace BidConReport.Server.Migrations
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<string>("OrganizationId")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("OrganizationId");
 
                     b.ToTable("EstimationViewTemplates");
                 });
@@ -232,7 +242,8 @@ namespace BidConReport.Server.Migrations
 
                     b.Property<string>("Value")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.HasKey("Id");
 
@@ -319,6 +330,29 @@ namespace BidConReport.Server.Migrations
                     b.ToTable("Organizations");
                 });
 
+            modelBuilder.Entity("BidConReport.Server.Enteties.Role", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<string>("OrganizationId")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("OrganizationId");
+
+                    b.ToTable("Roles");
+                });
+
             modelBuilder.Entity("BidConReport.Server.Enteties.User", b =>
                 {
                     b.Property<string>("Id")
@@ -343,6 +377,36 @@ namespace BidConReport.Server.Migrations
                     b.HasIndex("OrganizationId");
 
                     b.ToTable("Users");
+                });
+
+            modelBuilder.Entity("BidConReport.Server.Enteties.UserRole", b =>
+                {
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<Guid>("RoleId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("UserId", "RoleId");
+
+                    b.HasIndex("RoleId");
+
+                    b.ToTable("UserRole");
+                });
+
+            modelBuilder.Entity("RoleUser", b =>
+                {
+                    b.Property<Guid>("RolesId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("UsersId")
+                        .HasColumnType("nvarchar(50)");
+
+                    b.HasKey("RolesId", "UsersId");
+
+                    b.HasIndex("UsersId");
+
+                    b.ToTable("RoleUser");
                 });
 
             modelBuilder.Entity("BidConReport.Server.Enteties.BidconCredentials", b =>
@@ -402,6 +466,17 @@ namespace BidConReport.Server.Migrations
                     b.Navigation("EstimationView");
                 });
 
+            modelBuilder.Entity("BidConReport.Server.Enteties.EstimationView.EstimationViewTemplate", b =>
+                {
+                    b.HasOne("BidConReport.Server.Enteties.Organization", "Organization")
+                        .WithMany("EstimationViewTemplates")
+                        .HasForeignKey("OrganizationId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Organization");
+                });
+
             modelBuilder.Entity("BidConReport.Server.Enteties.EstimationView.HeaderOrFooter", b =>
                 {
                     b.HasOne("BidConReport.Server.Enteties.EstimationView.EstimationViewTemplate", "EstimationViewTemplate")
@@ -446,12 +521,22 @@ namespace BidConReport.Server.Migrations
                     b.Navigation("Organization");
                 });
 
+            modelBuilder.Entity("BidConReport.Server.Enteties.Role", b =>
+                {
+                    b.HasOne("BidConReport.Server.Enteties.Organization", "Organization")
+                        .WithMany("Roles")
+                        .HasForeignKey("OrganizationId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Organization");
+                });
+
             modelBuilder.Entity("BidConReport.Server.Enteties.User", b =>
                 {
                     b.HasOne("BidConReport.Server.Enteties.License", "License")
                         .WithMany("Users")
-                        .HasForeignKey("LicenseId")
-                        .OnDelete(DeleteBehavior.NoAction);
+                        .HasForeignKey("LicenseId");
 
                     b.HasOne("BidConReport.Server.Enteties.Organization", "Organization")
                         .WithMany("Users")
@@ -462,6 +547,40 @@ namespace BidConReport.Server.Migrations
                     b.Navigation("License");
 
                     b.Navigation("Organization");
+                });
+
+            modelBuilder.Entity("BidConReport.Server.Enteties.UserRole", b =>
+                {
+                    b.HasOne("BidConReport.Server.Enteties.Role", "Role")
+                        .WithMany()
+                        .HasForeignKey("RoleId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.HasOne("BidConReport.Server.Enteties.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.Navigation("Role");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("RoleUser", b =>
+                {
+                    b.HasOne("BidConReport.Server.Enteties.Role", null)
+                        .WithMany()
+                        .HasForeignKey("RolesId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("BidConReport.Server.Enteties.User", null)
+                        .WithMany()
+                        .HasForeignKey("UsersId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("BidConReport.Server.Enteties.EstimationView.CellTemplate", b =>
@@ -493,7 +612,8 @@ namespace BidConReport.Server.Migrations
 
             modelBuilder.Entity("BidConReport.Server.Enteties.EstimationView.SheetColumn", b =>
                 {
-                    b.Navigation("CellFormat");
+                    b.Navigation("CellFormat")
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("BidConReport.Server.Enteties.License", b =>
@@ -505,7 +625,11 @@ namespace BidConReport.Server.Migrations
                 {
                     b.Navigation("BidconCredentials");
 
+                    b.Navigation("EstimationViewTemplates");
+
                     b.Navigation("License");
+
+                    b.Navigation("Roles");
 
                     b.Navigation("Users");
                 });

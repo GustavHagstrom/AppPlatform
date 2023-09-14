@@ -6,21 +6,100 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace BidConReport.Server.Migrations
 {
     /// <inheritdoc />
-    public partial class EstimationViewTemplates : Migration
+    public partial class Initial : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
+                name: "Organizations",
+                columns: table => new
+                {
+                    Id = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Organizations", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "BidconCredentials",
+                columns: table => new
+                {
+                    OrganizationId = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    Server = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    Database = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    User = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    PasswordHash = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    ServerAuthentication = table.Column<bool>(type: "bit", nullable: false),
+                    LastUpdated = table.Column<DateTime>(type: "datetime2", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_BidconCredentials", x => x.OrganizationId);
+                    table.ForeignKey(
+                        name: "FK_BidconCredentials_Organizations_OrganizationId",
+                        column: x => x.OrganizationId,
+                        principalTable: "Organizations",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "EstimationViewTemplates",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    OrganizationId = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_EstimationViewTemplates", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_EstimationViewTemplates_Organizations_OrganizationId",
+                        column: x => x.OrganizationId,
+                        principalTable: "Organizations",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Licenses",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    UserLimit = table.Column<int>(type: "int", nullable: false),
+                    OrganizationId = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Licenses", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Licenses_Organizations_OrganizationId",
+                        column: x => x.OrganizationId,
+                        principalTable: "Organizations",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Roles",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    OrganizationId = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Roles", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Roles_Organizations_OrganizationId",
+                        column: x => x.OrganizationId,
+                        principalTable: "Organizations",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -48,7 +127,7 @@ namespace BidConReport.Server.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Value = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Value = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     Position = table.Column<int>(type: "int", nullable: false),
                     EstimationViewTemplateId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
                 },
@@ -83,13 +162,38 @@ namespace BidConReport.Server.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Users",
+                columns: table => new
+                {
+                    Id = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    OrganizationId = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    IsDarkMode = table.Column<bool>(type: "bit", nullable: false),
+                    LicenseId = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Users", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Users_Licenses_LicenseId",
+                        column: x => x.LicenseId,
+                        principalTable: "Licenses",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_Users_Organizations_OrganizationId",
+                        column: x => x.OrganizationId,
+                        principalTable: "Organizations",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "CellTemplate",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Row = table.Column<int>(type: "int", nullable: false),
                     Column = table.Column<int>(type: "int", nullable: false),
-                    Value = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Value = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     DataSectionTemplateId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
                 },
                 constraints: table =>
@@ -145,11 +249,57 @@ namespace BidConReport.Server.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "RoleUser",
+                columns: table => new
+                {
+                    RolesId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    UsersId = table.Column<string>(type: "nvarchar(50)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_RoleUser", x => new { x.RolesId, x.UsersId });
+                    table.ForeignKey(
+                        name: "FK_RoleUser_Roles_RolesId",
+                        column: x => x.RolesId,
+                        principalTable: "Roles",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_RoleUser_Users_UsersId",
+                        column: x => x.UsersId,
+                        principalTable: "Users",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "UserRole",
+                columns: table => new
+                {
+                    UserId = table.Column<string>(type: "nvarchar(50)", nullable: false),
+                    RoleId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_UserRole", x => new { x.UserId, x.RoleId });
+                    table.ForeignKey(
+                        name: "FK_UserRole_Roles_RoleId",
+                        column: x => x.RoleId,
+                        principalTable: "Roles",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_UserRole_Users_UserId",
+                        column: x => x.UserId,
+                        principalTable: "Users",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
                 name: "CellFormat",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    FontFamily = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    FontFamily = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     FontSize = table.Column<int>(type: "int", nullable: false),
                     Bold = table.Column<bool>(type: "bit", nullable: false),
                     Italic = table.Column<bool>(type: "bit", nullable: false),
@@ -213,9 +363,20 @@ namespace BidConReport.Server.Migrations
                 column: "EstimationViewTemplateId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_EstimationViewTemplates_OrganizationId",
+                table: "EstimationViewTemplates",
+                column: "OrganizationId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_HeaderOrFooter_EstimationViewTemplateId",
                 table: "HeaderOrFooter",
                 column: "EstimationViewTemplateId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Licenses_OrganizationId",
+                table: "Licenses",
+                column: "OrganizationId",
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_NetSheetSectionTemplate_EstimationViewTemplateId",
@@ -224,14 +385,42 @@ namespace BidConReport.Server.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
+                name: "IX_Roles_OrganizationId",
+                table: "Roles",
+                column: "OrganizationId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_RoleUser_UsersId",
+                table: "RoleUser",
+                column: "UsersId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_SheetColumn_NetSheetSectionTemplateId",
                 table: "SheetColumn",
                 column: "NetSheetSectionTemplateId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_UserRole_RoleId",
+                table: "UserRole",
+                column: "RoleId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Users_LicenseId",
+                table: "Users",
+                column: "LicenseId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Users_OrganizationId",
+                table: "Users",
+                column: "OrganizationId");
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropTable(
+                name: "BidconCredentials");
+
             migrationBuilder.DropTable(
                 name: "CellFormat");
 
@@ -242,10 +431,22 @@ namespace BidConReport.Server.Migrations
                 name: "HeaderOrFooter");
 
             migrationBuilder.DropTable(
+                name: "RoleUser");
+
+            migrationBuilder.DropTable(
+                name: "UserRole");
+
+            migrationBuilder.DropTable(
                 name: "CellTemplate");
 
             migrationBuilder.DropTable(
                 name: "SheetColumn");
+
+            migrationBuilder.DropTable(
+                name: "Roles");
+
+            migrationBuilder.DropTable(
+                name: "Users");
 
             migrationBuilder.DropTable(
                 name: "DataSectionTemplate");
@@ -254,7 +455,13 @@ namespace BidConReport.Server.Migrations
                 name: "NetSheetSectionTemplate");
 
             migrationBuilder.DropTable(
+                name: "Licenses");
+
+            migrationBuilder.DropTable(
                 name: "EstimationViewTemplates");
+
+            migrationBuilder.DropTable(
+                name: "Organizations");
         }
     }
 }
