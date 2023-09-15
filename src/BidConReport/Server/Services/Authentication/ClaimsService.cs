@@ -15,7 +15,7 @@ public class ClaimsService : IClaimsService
     }
     public async Task<ICollection<ClaimDTO>> GetClaimsAsync(string userId)
     {
-
+        throw new NotImplementedException();
         var claims = new List<ClaimDTO>();
         var requestBody = new ClaimsRequestBody(userId, CommonAppConstants.ApplicationName);
         var result = await _httpClient.PostAsJsonAsync(LicenseApiEndpoints.Claims, requestBody);

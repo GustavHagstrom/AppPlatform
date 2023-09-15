@@ -11,13 +11,18 @@ public class ClaimsService_debug : IClaimsService
 
     public async Task<ICollection<ClaimDTO>> GetClaimsAsync(string userId)
     {
+        var rightValuesString = string.Join(",", Enum.GetValues<ApplicationRight>()
+            .Select(x => ((int)x).ToString()));
+        
+        
+
         var claims = new List<ClaimDTO>
         {
             new ClaimDTO(CustomClaimTypes.License, License)
         };
         foreach (var right in Enum.GetValues(typeof(ApplicationRight)))
         {
-            claims.Add(new ClaimDTO(CustomClaimTypes.ApplicationRight, ((int)right).ToString()));
+            claims.Add(new ClaimDTO(CustomClaimTypes.ApplicationRight, rightValuesString));
         }
 
         return await Task.FromResult(claims);

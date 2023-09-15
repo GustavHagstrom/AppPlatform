@@ -14,13 +14,17 @@ var builder = WebAssemblyHostBuilder.CreateDefault(args);
 builder.RootComponents.Add<App>("#app");
 builder.RootComponents.Add<HeadOutlet>("head::after");
 
+//http client for BidconAccess
 builder.Services.AddHttpClient(HttpClientNames.BidconLink, client =>
 {
     client.BaseAddress = new Uri(builder.Configuration.GetValue<string>("DesktopBridgeAddress")!);
 });
+
+//Default httpclient for the backend
 builder.Services.AddHttpClient(HttpClientNames.BackendHttpClientName, client => client.BaseAddress = new Uri(builder.HostEnvironment.BaseAddress))
     .AddHttpMessageHandler<BaseAddressAuthorizationMessageHandler>();
 
+//Scoped instance of backend http client. Injecting a http cliet directly will result in this instance
 builder.Services.AddScoped(sp => sp.GetRequiredService<IHttpClientFactory>().CreateClient(HttpClientNames.BackendHttpClientName));
 
 builder.Services.AddMudServices(config =>
@@ -37,9 +41,13 @@ builder.Services.AddMudServices(config =>
 });
 
 builder.Services.AddLocalization();
-builder.Services.UseSharedServices();
-builder.Services.UseSharedPlatformLibrary();
-builder.UseSharedWasmLibrary(BackendApiEndpoints.ClaimEnpoints.Get);
+builder.Services.UseSharedServices(); //Should probably be moved and integrated into this project
+builder.Services.UseSharedPlatformLibrary(); //Should probably be moved and integrated into this project
+builder.UseSharedWasmLibrary(BackendApiEndpoints.ClaimEnpoints.Get); //Should probably be moved and integrated into this project
 
+builder.Services.AddAuthorizationCore(options =>
+{
+    options.AddCustomPolicies(); //Extension that adds all requried policies.
+});
 
 await builder.Build().RunAsync();
