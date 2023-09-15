@@ -1,6 +1,6 @@
 ﻿using BidConReport.Shared.Constants;
 using BidConReport.Shared.Wrappers;
-using System.Net.Http.Json;
+using Microsoft.AspNetCore.Components.Authorization;
 
 namespace BidConReport.Client.Shared.Services;
 
@@ -8,20 +8,29 @@ public class DarkModeService : IDarkModeService
 {
     private readonly IHttpClientWrapper _httpClient;
     private readonly ILogger<IDarkModeService> _logger;
+    private readonly AuthenticationStateProvider _authenticationStateProvider;
 
-    public DarkModeService(IHttpClientWrapper httpClient, ILogger<IDarkModeService> logger)
+    public DarkModeService(IHttpClientWrapper httpClient, ILogger<IDarkModeService> logger, AuthenticationStateProvider authenticationStateProvider)
     {
         _httpClient = httpClient;
         _logger = logger;
+        _authenticationStateProvider = authenticationStateProvider;
     }
     public async Task<bool> GetUserDarkModeSettingAsync()
     {
         try
         {
-            var result = await _httpClient.GetAsync(BackendApiEndpoints.DarkModeController.Get);
-            result.EnsureSuccessStatusCode();
-            var boolString = await result.Content.ReadAsStringAsync();
-            return bool.Parse(boolString);
+            var authState = await _authenticationStateProvider.GetAuthenticationStateAsync();
+            if (authState.User.Identity is not null && authState.User.Identity.IsAuthenticated)
+            {
+                var result = await _httpClient.GetAsync(BackendApiEndpoints.DarkModeController.Get);
+                if (result.IsSuccessStatusCode)
+                {
+                    var boolString = await result.Content.ReadAsStringAsync();
+                    return bool.Parse(boolString);
+                }
+            }
+            return false;
         }
         catch (Exception ex)
         {

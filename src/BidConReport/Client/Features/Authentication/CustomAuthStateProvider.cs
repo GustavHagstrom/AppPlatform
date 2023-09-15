@@ -1,4 +1,5 @@
-﻿using BidConReport.Shared.Constants;
+﻿using BidConReport.Client.Shared.Constants;
+using BidConReport.Shared.Constants;
 using BidConReport.Shared.DTOs;
 using BidConReport.Shared.Wrappers;
 using Microsoft.AspNetCore.Components;
@@ -13,24 +14,27 @@ namespace BidConReport.Client.Features.Authentication;
 
 public class CustomAuthStateProvider : RemoteAuthenticationService<RemoteAuthenticationState, RemoteUserAccount, MsalProviderOptions>
 {
-    private readonly IHttpClientWrapper _httpClient;
+    //private readonly IHttpClientWrapper _httpClient;
+    private readonly IHttpClientFactory _httpClientFactory;
     private readonly ILogger<RemoteAuthenticationService<RemoteAuthenticationState, RemoteUserAccount, MsalProviderOptions>> _logger;
 
-    public CustomAuthStateProvider(IHttpClientWrapper httpClient, IJSRuntime jsRuntime, IOptionsSnapshot<RemoteAuthenticationOptions<MsalProviderOptions>> options, NavigationManager navigation, AccountClaimsPrincipalFactory<RemoteUserAccount> accountClaimsPrincipalFactory, ILogger<RemoteAuthenticationService<RemoteAuthenticationState, RemoteUserAccount, MsalProviderOptions>> logger) : base(jsRuntime, options, navigation, accountClaimsPrincipalFactory, logger)
+    public CustomAuthStateProvider(IHttpClientFactory httpClientFactory, IJSRuntime jsRuntime, IOptionsSnapshot<RemoteAuthenticationOptions<MsalProviderOptions>> options, NavigationManager navigation, AccountClaimsPrincipalFactory<RemoteUserAccount> accountClaimsPrincipalFactory, ILogger<RemoteAuthenticationService<RemoteAuthenticationState, RemoteUserAccount, MsalProviderOptions>> logger) : base(jsRuntime, options, navigation, accountClaimsPrincipalFactory, logger)
     {
-        _httpClient = httpClient;
+        //_httpClient = httpClient;
+        _httpClientFactory = httpClientFactory;
         _logger = logger;
     }
 
     protected override async ValueTask<ClaimsPrincipal> GetAuthenticatedUser()
     {
+        var httpClient = _httpClientFactory.CreateClient(HttpClientNames.BackendHttpClientName);
         var user = await base.GetAuthenticatedUser();
         var identity = user.Identity as ClaimsIdentity;
         if (identity is not null && identity.IsAuthenticated)
         {
             try
             {
-                var response = await _httpClient.GetAsync(BackendApiEndpoints.ClaimEnpoints.Get);
+                var response = await httpClient.GetAsync(BackendApiEndpoints.ClaimEnpoints.Get);
                 if (response.IsSuccessStatusCode)
                 {
                     var claimModels = await response.Content.ReadFromJsonAsync<ICollection<ClaimDto>>();
