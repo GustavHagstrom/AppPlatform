@@ -12,5 +12,5 @@ public class Role
     [StringLength(50)]
     public required string Name { get; set; }
     public IEnumerable<User>? Users { get; set; }
-    //public IEnumerable<Right>? Rights { get; set; }
+    public IEnumerable<Right>? Rights { get; set; }
 }
