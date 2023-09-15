@@ -1,7 +1,7 @@
-﻿using BidConReport.Shared.Enums;
+﻿using SharedLibrary.Enums;
 using System.ComponentModel.DataAnnotations;
 
-namespace BidConReport.Server.Enteties;
+namespace Server.Enteties;
 
 public class UserRight
 {

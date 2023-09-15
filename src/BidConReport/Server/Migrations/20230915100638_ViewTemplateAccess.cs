@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace BidConReport.Server.Migrations
+namespace Server.Migrations
 {
     /// <inheritdoc />
     public partial class ViewTemplateAccess : Migration

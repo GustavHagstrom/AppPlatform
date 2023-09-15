@@ -1,10 +1,10 @@
-﻿using BidConReport.Server.Services.Settings;
-using BidConReport.Shared.DTOs.BidconAccess;
+﻿using Server.Services.Settings;
+using SharedLibrary.DTOs.BidconAccess;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Identity.Web;
 using System.Security.Claims;
 
-namespace BidConReport.Server.Controllers;
+namespace Server.Controllers;
 [Route("api/[controller]")]
 [ApiController]
 public class BidconCredentialsController : ControllerBase

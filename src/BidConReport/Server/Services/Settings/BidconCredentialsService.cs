@@ -1,10 +1,10 @@
-﻿using BidConReport.Server.Data;
-using BidConReport.Server.Enteties;
-using BidConReport.Shared.DTOs.BidconAccess;
+﻿using Server.Data;
+using Server.Enteties;
+using SharedLibrary.DTOs.BidconAccess;
 using Mapster;
 using Microsoft.EntityFrameworkCore;
 
-namespace BidConReport.Server.Services.Settings;
+namespace Server.Services.Settings;
 
 public class BidconCredentialsService : IBidconCredentialsService
 {

@@ -1,6 +1,6 @@
-﻿using BidConReport.Shared.DTOs.EstimationView;
+﻿using SharedLibrary.DTOs.EstimationView;
 
-namespace BidConReport.Server.Services.EstimationView;
+namespace Server.Services.EstimationView;
 public interface IEstimationViewTemplateService
 {
     Task DeleteAsync(Guid id, string organizationId);

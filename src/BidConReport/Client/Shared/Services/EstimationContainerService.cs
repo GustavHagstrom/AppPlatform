@@ -1,7 +1,7 @@
-﻿using BidConReport.Shared.DTOs;
-using BidConReport.Shared.DTOs.BidconAccess;
+﻿using SharedLibrary.DTOs;
+using SharedLibrary.DTOs.BidconAccess;
 
-namespace BidConReport.Client.Shared.Services;
+namespace Client.Shared.Services;
 
 public class EstimationContainerService : IEstimationContainerService
 {

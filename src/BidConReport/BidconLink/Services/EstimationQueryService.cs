@@ -1,4 +1,4 @@
-﻿using BidConReport.Shared.DTOs.BidconAccess;
+﻿using SharedLibrary.DTOs.BidconAccess;
 using Dapper;
 using Microsoft.Data.SqlClient;
 using System.Data;

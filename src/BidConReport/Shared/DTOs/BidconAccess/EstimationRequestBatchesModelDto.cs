@@ -1,3 +1,3 @@
-﻿namespace BidConReport.Shared.DTOs.BidconAccess;
+﻿namespace SharedLibrary.DTOs.BidconAccess;
 
 public record EstimationRequestBatchesModelDto(IEnumerable<string> EstimationIds, BC_DatabaseCredentialsDto Credentials);

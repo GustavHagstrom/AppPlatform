@@ -1,8 +1,8 @@
-﻿using BidConReport.Server.Data;
-using BidConReport.Server.Enteties.EstimationView;
+﻿using Server.Data;
+using Server.Enteties.EstimationView;
 using Microsoft.EntityFrameworkCore;
 
-namespace BidconReport.Tests.Server;
+namespace Tests.Server;
 public class TestDbContext : ApplicationDbContext
 {
     public TestDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)

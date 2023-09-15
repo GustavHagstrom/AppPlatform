@@ -1,8 +1,8 @@
-﻿using BidConReport.Server.Services.Authentication;
-using BidConReport.Server.Services.EstimationView;
-using BidConReport.Server.Services.Settings;
+﻿using Server.Services.Authentication;
+using Server.Services.EstimationView;
+using Server.Services.Settings;
 
-namespace BidConReport.Server;
+namespace Server;
 
 internal static class ServiceExtensions
 {

@@ -1,4 +1,4 @@
-﻿namespace BidConReport.Shared.DTOs.BidconAccess;
+﻿namespace SharedLibrary.DTOs.BidconAccess;
 public class BC_EstimationFolderDto
 {
     public int FolderNum { get; set; }

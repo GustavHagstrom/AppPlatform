@@ -1,6 +1,6 @@
-﻿using BidConReport.Server.Enteties.EstimationView;
+﻿using Server.Enteties.EstimationView;
 
-namespace BidConReport.Server.Enteties;
+namespace Server.Enteties;
 
 public class RoleViewTemplate
 {

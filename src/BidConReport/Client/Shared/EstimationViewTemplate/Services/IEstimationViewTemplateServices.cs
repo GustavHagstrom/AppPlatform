@@ -1,6 +1,6 @@
-﻿using BidConReport.Client.Shared.EstimationViewTemplate.Models;
+﻿using Client.Shared.EstimationViewTemplate.Models;
 
-namespace BidConReport.Client.Shared.EstimationViewTemplate.Services;
+namespace Client.Shared.EstimationViewTemplate.Services;
 public interface IEstimationViewTemplateServices
 {
     Task DeleteAsync(Models.ViewTemplate estimationReport, CancellationToken cancellationToken);

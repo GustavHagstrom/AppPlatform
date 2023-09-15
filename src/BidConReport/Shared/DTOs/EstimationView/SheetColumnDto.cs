@@ -1,6 +1,6 @@
-﻿using BidConReport.Shared.Enums.ViewTemplate;
+﻿using SharedLibrary.Enums.ViewTemplate;
 
-namespace BidConReport.Shared.DTOs.EstimationView;
+namespace SharedLibrary.DTOs.EstimationView;
 
 public class SheetColumnDto
 {

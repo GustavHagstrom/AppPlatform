@@ -1,6 +1,6 @@
 ﻿using System.Reflection;
 
-namespace BidConReport.Shared.Utilities.Placeholder;
+namespace SharedLibrary.Utilities.Placeholder;
 public static class PlaceholderFunctions
 {
     public static IEnumerable<PlaceholderInfo> GetPlaceholderPreopertyInfos(Type type)

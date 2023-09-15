@@ -18,7 +18,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Shared\BidConReport.Shared.csproj" />
+    <ProjectReference Include="..\Shared\SharedLibrary.csproj" />
   </ItemGroup>
 	
 </Project>

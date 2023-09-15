@@ -1,6 +1,6 @@
-using BidConReport.Client;
-using BidConReport.Client.Shared.Constants;
-using BidConReport.Client.Shared.Extensions;
+using Client;
+using Client.Shared.Constants;
+using Client.Shared.Extensions;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Authentication;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;

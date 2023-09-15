@@ -1,6 +1,6 @@
-﻿using BidConReport.Shared.Enums.BidconAccess;
+﻿using SharedLibrary.Enums.BidconAccess;
 
-namespace BidConReport.Client.Shared.EstimationViewTemplate.Models.SectionModels;
+namespace Client.Shared.EstimationViewTemplate.Models.SectionModels;
 
 public class SheetSection : IViewSection
 {

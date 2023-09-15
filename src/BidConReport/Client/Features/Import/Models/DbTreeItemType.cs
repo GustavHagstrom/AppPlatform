@@ -1,4 +1,4 @@
-﻿namespace BidConReport.Client.Features.Import.Models;
+﻿namespace Client.Features.Import.Models;
 public enum DbTreeItemType
 {
     Folder,

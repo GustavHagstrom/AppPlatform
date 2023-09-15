@@ -1,6 +1,6 @@
 ﻿using Azure.Core;
 using BidconLink.Services;
-using BidConReport.Shared.DTOs.BidconAccess;
+using SharedLibrary.DTOs.BidconAccess;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BidconLink.Controllers;

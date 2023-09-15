@@ -1,6 +1,6 @@
-﻿using BidConReport.Shared.Enums.ViewTemplate;
+﻿using SharedLibrary.Enums.ViewTemplate;
 
-namespace BidConReport.Client.Shared.EstimationViewTemplate.Models.CellModels;
+namespace Client.Shared.EstimationViewTemplate.Models.CellModels;
 
 public class CellFormat
 {

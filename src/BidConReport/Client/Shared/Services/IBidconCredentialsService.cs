@@ -1,6 +1,6 @@
-﻿using BidConReport.Shared.DTOs.BidconAccess;
+﻿using SharedLibrary.DTOs.BidconAccess;
 
-namespace BidConReport.Client.Shared.Services;
+namespace Client.Shared.Services;
 public interface IBidconCredentialsService
 {
     Task<BC_DatabaseCredentialsDto?> GetAsync();

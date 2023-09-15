@@ -1,6 +1,6 @@
 ﻿using System.Net.Http.Json;
 
-namespace BidConReport.Shared.Wrappers;
+namespace SharedLibrary.Wrappers;
 public class HttpClientWrapper : IHttpClientWrapper
 {
     private readonly HttpClient _httpClient;

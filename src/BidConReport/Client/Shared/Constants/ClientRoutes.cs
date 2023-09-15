@@ -1,4 +1,4 @@
-﻿namespace BidConReport.Client.Shared.Constants;
+﻿namespace Client.Shared.Constants;
 
 public static class ClientRoutes
 {

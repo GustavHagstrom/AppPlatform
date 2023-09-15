@@ -1,4 +1,4 @@
-﻿namespace BidConReport.Shared.Utilities.Placeholder;
+﻿namespace SharedLibrary.Utilities.Placeholder;
 [AttributeUsage(AttributeTargets.Property, AllowMultiple = false)]
 public class PlaceholderAttribute : Attribute
 {

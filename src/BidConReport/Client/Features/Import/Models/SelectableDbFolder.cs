@@ -1,6 +1,6 @@
-﻿using BidConReport.Client.Shared.EstimationProcessing.Models;
+﻿using Client.Shared.EstimationProcessing.Models;
 
-namespace BidConReport.Client.Features.Import.Models;
+namespace Client.Features.Import.Models;
 public class SelectableDbFolder
 {
     private bool _isSelected;

@@ -1,10 +1,10 @@
-﻿using BidConReport.Shared.Constants;
-using BidConReport.Shared.DTOs.BidconAccess;
-using BidConReport.Shared.Wrappers;
+﻿using SharedLibrary.Constants;
+using SharedLibrary.DTOs.BidconAccess;
+using SharedLibrary.Wrappers;
 using System.Net;
 using System.Net.Http.Json;
 
-namespace BidConReport.Client.Shared.Services;
+namespace Client.Shared.Services;
 
 public class BidconCredentialsService : IBidconCredentialsService
 {

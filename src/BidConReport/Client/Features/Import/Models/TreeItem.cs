@@ -1,7 +1,7 @@
-﻿using BidConReport.Client.Shared.EstimationProcessing.Models;
-using BidConReport.Shared.DTOs;
+﻿using Client.Shared.EstimationProcessing.Models;
+using SharedLibrary.DTOs;
 
-namespace BidConReport.Client.Features.Import.Models;
+namespace Client.Features.Import.Models;
 public class TreeItem
 {
     private bool _isSelected;

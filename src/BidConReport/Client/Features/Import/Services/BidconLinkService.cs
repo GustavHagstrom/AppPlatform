@@ -1,9 +1,9 @@
-﻿using BidConReport.Client.Shared.Constants;
-using BidConReport.Shared.Constants;
-using BidConReport.Shared.DTOs.BidconAccess;
+﻿using Client.Shared.Constants;
+using SharedLibrary.Constants;
+using SharedLibrary.DTOs.BidconAccess;
 using System.Net.Http.Json;
 
-namespace BidConReport.Client.Features.Import.Services;
+namespace Client.Features.Import.Services;
 
 public class BidconLinkService : IBidconLinkService
 {

@@ -1,4 +1,4 @@
-﻿using BidConReport.Shared.DTOs.BidconAccess;
+﻿using SharedLibrary.DTOs.BidconAccess;
 using System.Security.Cryptography;
 
 namespace BidconLink.Services;

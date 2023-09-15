@@ -1,4 +1,4 @@
-﻿namespace BidConReport.Server;
+﻿namespace Server;
 
 public static class DatabaseSeed
 {

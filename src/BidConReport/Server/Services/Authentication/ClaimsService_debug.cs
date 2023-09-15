@@ -1,9 +1,8 @@
-using BidConReport.Shared.Constants;
-using BidConReport.Shared.DTOs;
-using BidConReport.Shared.Enums;
+using SharedLibrary.Constants;
+using SharedLibrary.DTOs;
+using SharedLibrary.Enums;
 
-
-namespace BidConReport.Server.Services.Authentication;
+namespace Server.Services.Authentication;
 
 public class ClaimsService_debug : IClaimsService
 {

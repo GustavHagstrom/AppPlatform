@@ -1,6 +1,6 @@
-﻿using BidConReport.Client.Shared.EstimationViewTemplate.Models.SectionModels;
+﻿using Client.Shared.EstimationViewTemplate.Models.SectionModels;
 
-namespace BidConReport.Client.Shared.EstimationViewTemplate.Models;
+namespace Client.Shared.EstimationViewTemplate.Models;
 public class ViewTemplate
 {
     public Guid Id { get; set; }

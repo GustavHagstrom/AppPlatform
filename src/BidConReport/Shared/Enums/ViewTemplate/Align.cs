@@ -1,4 +1,4 @@
-﻿namespace BidConReport.Shared.Enums.ViewTemplate;
+﻿namespace SharedLibrary.Enums.ViewTemplate;
 
 public enum Align
 {

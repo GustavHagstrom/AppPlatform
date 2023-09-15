@@ -1,9 +1,9 @@
-﻿using BidConReport.Server.Services.EstimationView;
-using BidConReport.Shared.DTOs.EstimationView;
+﻿using Server.Services.EstimationView;
+using SharedLibrary.DTOs.EstimationView;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Identity.Web;
 
-namespace BidConReport.Server.Controllers;
+namespace Server.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]

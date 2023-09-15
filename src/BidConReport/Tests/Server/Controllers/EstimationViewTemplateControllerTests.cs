@@ -1,6 +1,6 @@
-﻿using BidConReport.Server.Controllers;
-using BidConReport.Server.Services.EstimationView;
-using BidConReport.Shared.DTOs.EstimationView;
+﻿using Server.Controllers;
+using Server.Services.EstimationView;
+using SharedLibrary.DTOs.EstimationView;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -8,7 +8,7 @@ using Microsoft.Identity.Web;
 using Moq;
 using System.Security.Claims;
 
-namespace BidconReport.Tests.Server.Controllers;
+namespace Tests.Server.Controllers;
 [TestFixture]
 public class EstimationViewTemplateControllerTests
 {

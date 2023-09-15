@@ -1,6 +1,6 @@
-﻿using BidConReport.Client.Shared.EstimationViewTemplate.Models.CellModels;
+﻿using Client.Shared.EstimationViewTemplate.Models.CellModels;
 
-namespace BidConReport.Client.Shared.EstimationViewTemplate.Models.SectionModels;
+namespace Client.Shared.EstimationViewTemplate.Models.SectionModels;
 
 public class DataSection : IViewSection
 {

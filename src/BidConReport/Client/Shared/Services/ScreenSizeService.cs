@@ -1,6 +1,6 @@
 ﻿using Microsoft.JSInterop;
 
-namespace BidConReport.Client.Shared.Services;
+namespace Client.Shared.Services;
 public class ScreenSizeService
 {
     private readonly IJSRuntime _jSRuntime;

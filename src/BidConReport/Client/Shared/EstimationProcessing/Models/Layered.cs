@@ -1,6 +1,4 @@
-﻿using BidConReport.Shared.Enums.BidconAccess;
-
-namespace BidConReport.Client.Shared.EstimationProcessing.Models;
+﻿namespace Client.Shared.EstimationProcessing.Models;
 public class Layered : ISheetItem
 {
     private double? _quantity;
@@ -26,11 +24,11 @@ public class Layered : ISheetItem
         {
             return ManualAskingUnitPrice;
         }
-        if (AddedInPhase == (int)EstimationState.Production)
+        if (AddedInPhase == (int)SharedLibrary.Enums.BidconAccess.EstimationState.Production)
         {
             return ResourceUnitCosts.Sum(x => x.Value * GetATAAskingFactor(x.Key));
         }
-        if (TenderType == (int)BidConReport.Shared.Enums.BidconAccess.TenderType.None)
+        if (TenderType == (int)SharedLibrary.Enums.BidconAccess.TenderType.None)
         {
             return null;
         }

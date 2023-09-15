@@ -1,7 +1,7 @@
-﻿using BidConReport.Client.Shared.EstimationViewTemplate.Models.CellModels;
-using BidConReport.Shared.Enums.ViewTemplate;
+﻿using Client.Shared.EstimationViewTemplate.Models.CellModels;
+using SharedLibrary.Enums.ViewTemplate;
 
-namespace BidConReport.Client.Shared.EstimationViewTemplate.Models.SectionModels;
+namespace Client.Shared.EstimationViewTemplate.Models.SectionModels;
 
 public class SheetColumnDefinition : IColumnDefinition
 {

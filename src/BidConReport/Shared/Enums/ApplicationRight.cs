@@ -1,4 +1,4 @@
-﻿namespace BidConReport.Shared.Enums;
+﻿namespace SharedLibrary.Enums;
 public enum ApplicationRight
 {
     AdminSettings = 1,

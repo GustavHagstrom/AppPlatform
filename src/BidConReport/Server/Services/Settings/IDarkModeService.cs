@@ -1,4 +1,4 @@
-﻿namespace BidConReport.Server.Services.Settings;
+﻿namespace Server.Services.Settings;
 
 public interface IDarkModeService
 {

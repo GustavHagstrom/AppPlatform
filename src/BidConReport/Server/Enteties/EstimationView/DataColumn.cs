@@ -1,4 +1,4 @@
-﻿namespace BidConReport.Server.Enteties.EstimationView;
+﻿namespace Server.Enteties.EstimationView;
 public class DataColumn : IEstimationViewEntity
 {
     public Guid Id { get; set; }

@@ -1,6 +1,6 @@
 ﻿using MudBlazor;
 
-namespace BidConReport.Client;
+namespace Client;
 
 public static class CustomThemes
 {

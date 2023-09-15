@@ -1,7 +1,7 @@
-﻿//using BidConReport.Server.Enteties.EstimationView;
-//using BidConReport.Shared.DTOs.EstimationView;
+﻿//using Server.Enteties.EstimationView;
+//using SharedLibrary.DTOs.EstimationView;
 
-//namespace BidConReport.Server.Mappers;
+//namespace Server.Mappers;
 
 //public static class EstimationViewTemplateMapper
 //{

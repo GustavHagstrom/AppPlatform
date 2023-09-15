@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace BidConReport.Server.Enteties.EstimationView;
+namespace Server.Enteties.EstimationView;
 public class EstimationViewTemplate : IEstimationViewEntity
 {
     public Guid Id { get; set; }

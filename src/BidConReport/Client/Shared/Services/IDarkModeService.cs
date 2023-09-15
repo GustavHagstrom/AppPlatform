@@ -1,4 +1,4 @@
-﻿namespace BidConReport.Client.Shared.Services;
+﻿namespace Client.Shared.Services;
 
 public interface IDarkModeService
 {

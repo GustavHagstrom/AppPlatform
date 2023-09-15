@@ -1,4 +1,4 @@
-﻿namespace BidConReport.Shared.Constants;
+﻿namespace SharedLibrary.Constants;
 public static class CommonAppConstants
 {
     /// <summary>

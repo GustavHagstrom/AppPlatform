@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 
-namespace BidConReport.Client.Shared.Extensions;
+namespace Client.Shared.Extensions;
 
 public static class AuthorizationOptionsExtensions
 {

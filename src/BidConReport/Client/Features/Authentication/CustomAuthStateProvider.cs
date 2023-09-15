@@ -1,7 +1,7 @@
-﻿using BidConReport.Client.Shared.Constants;
-using BidConReport.Shared.Constants;
-using BidConReport.Shared.DTOs;
-using BidConReport.Shared.Wrappers;
+﻿using Client.Shared.Constants;
+using SharedLibrary.Constants;
+using SharedLibrary.DTOs;
+using SharedLibrary.Wrappers;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.WebAssembly.Authentication;
 using Microsoft.Authentication.WebAssembly.Msal.Models;
@@ -10,7 +10,7 @@ using Microsoft.JSInterop;
 using System.Net.Http.Json;
 using System.Security.Claims;
 
-namespace BidConReport.Client.Features.Authentication;
+namespace Client.Features.Authentication;
 
 public class CustomAuthStateProvider : RemoteAuthenticationService<RemoteAuthenticationState, RemoteUserAccount, MsalProviderOptions>
 {

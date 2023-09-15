@@ -1,4 +1,4 @@
-﻿namespace BidConReport.Shared.Wrappers;
+﻿namespace SharedLibrary.Wrappers;
 
 public interface IHttpClientWrapper : IDisposable
 {

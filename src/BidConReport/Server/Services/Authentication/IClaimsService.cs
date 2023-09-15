@@ -1,6 +1,6 @@
-﻿using BidConReport.Shared.DTOs;
+﻿using SharedLibrary.DTOs;
 
-namespace BidConReport.Server.Services.Authentication;
+namespace Server.Services.Authentication;
 public interface IClaimsService
 {
     /// <summary>

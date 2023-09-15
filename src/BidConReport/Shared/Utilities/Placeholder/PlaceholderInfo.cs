@@ -1,4 +1,4 @@
 ﻿using System.Reflection;
 
-namespace BidConReport.Shared.Utilities.Placeholder;
+namespace SharedLibrary.Utilities.Placeholder;
 public record PlaceholderInfo(string Placeholder, PropertyInfo PropertyInfo);

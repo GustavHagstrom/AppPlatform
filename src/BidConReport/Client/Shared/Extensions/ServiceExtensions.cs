@@ -1,14 +1,14 @@
-﻿using BidConReport.Client.Features.Authentication;
-using BidConReport.Client.Features.Import.Services;
-using BidConReport.Client.Features.Settings.BidconSettings.BicdonCredentials;
-using BidConReport.Client.Shared.EstimationProcessing.Calculations;
-using BidConReport.Client.Shared.EstimationProcessing.Services;
-using BidConReport.Client.Shared.EstimationViewTemplate.Services;
-using BidConReport.Client.Shared.Services;
-using BidConReport.Shared.Wrappers;
+﻿using Client.Features.Authentication;
+using Client.Features.Import.Services;
+using Client.Features.Settings.BidconSettings.BicdonCredentials;
+using Client.Shared.EstimationProcessing.Calculations;
+using Client.Shared.EstimationProcessing.Services;
+using Client.Shared.EstimationViewTemplate.Services;
+using Client.Shared.Services;
+using SharedLibrary.Wrappers;
 using Microsoft.AspNetCore.Components.Authorization;
 
-namespace BidConReport.Client.Shared.Extensions;
+namespace Client.Shared.Extensions;
 
 public static class ServiceExtensions
 {

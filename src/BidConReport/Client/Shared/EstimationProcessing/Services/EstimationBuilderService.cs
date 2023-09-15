@@ -1,9 +1,9 @@
-﻿using BidConReport.Client.Shared.EstimationProcessing.Calculations;
-using BidConReport.Client.Shared.EstimationProcessing.Models;
-using BidConReport.Shared.DTOs.BidconAccess;
-using BidConReport.Shared.Enums.BidconAccess;
+﻿using Client.Shared.EstimationProcessing.Calculations;
+using Client.Shared.EstimationProcessing.Models;
+using SharedLibrary.DTOs.BidconAccess;
+using SharedLibrary.Enums.BidconAccess;
 
-namespace BidConReport.Client.Shared.EstimationProcessing.Services;
+namespace Client.Shared.EstimationProcessing.Services;
 public class EstimationBuilderService : IEstimationBuilderService
 {
     private readonly Dictionary<int, Func<BC_EstimationSheetDto, BC_EstimationBatchDto, ISheetItem?, ICollection<Models.ATA>, ISheetItem>> _createSheetItemFunctionMap;

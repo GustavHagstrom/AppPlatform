@@ -1,6 +1,6 @@
-﻿using BidConReport.Shared.Enums.ViewTemplate;
+﻿using SharedLibrary.Enums.ViewTemplate;
 
-namespace BidConReport.Server.Enteties.EstimationView;
+namespace Server.Enteties.EstimationView;
 
 public class SheetColumn : IEstimationViewEntity
 {

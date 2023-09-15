@@ -1,4 +1,4 @@
-﻿namespace BidConReport.Client.Shared.EstimationProcessing.Models;
+﻿namespace Client.Shared.EstimationProcessing.Models;
 public class Group : ISheetItem
 {
     public required string Description { get; set; }

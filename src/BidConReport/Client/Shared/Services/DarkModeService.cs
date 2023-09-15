@@ -1,8 +1,8 @@
-﻿using BidConReport.Shared.Constants;
-using BidConReport.Shared.Wrappers;
+﻿using SharedLibrary.Constants;
+using SharedLibrary.Wrappers;
 using Microsoft.AspNetCore.Components.Authorization;
 
-namespace BidConReport.Client.Shared.Services;
+namespace Client.Shared.Services;
 
 public class DarkModeService : IDarkModeService
 {

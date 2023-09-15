@@ -1,4 +1,4 @@
-﻿namespace BidConReport.Shared.DTOs.BidconAccess;
+﻿namespace SharedLibrary.DTOs.BidconAccess;
 public record BC_EstimationBatchDto(
     BC_EstimationDto Estimation,
     ICollection<BC_EstimationSheetDto> SheetResults,

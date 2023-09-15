@@ -1,4 +1,4 @@
-﻿namespace BidConReport.Server.Middlewares;
+﻿namespace Server.Middlewares;
 
 public static class MiddlewareItemKeyConstants
 {

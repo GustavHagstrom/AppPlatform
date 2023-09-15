@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Components;
 
-namespace SharedWasmLibrary.Extensions;
+namespace SharedLibraryWasmLibrary.Extensions;
 
 public static class NavigationManagerExtensions
 {

@@ -3,13 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.5.33627.172
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BidConReport.Client", "BidConReport\Client\BidConReport.Client.csproj", "{3F3D2F98-13A7-429A-BD8F-1D6118A54538}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Client", "BidConReport\Client\Client.csproj", "{3F3D2F98-13A7-429A-BD8F-1D6118A54538}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BidConReport.Server", "BidConReport\Server\BidConReport.Server.csproj", "{AA3E4A75-69AD-4496-8B33-FA56FBFE052C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Server", "BidConReport\Server\Server.csproj", "{AA3E4A75-69AD-4496-8B33-FA56FBFE052C}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BidConReport.Shared", "BidConReport\Shared\BidConReport.Shared.csproj", "{671755AE-99ED-4397-9EDF-9D5DD70DD055}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SharedLibrary", "BidConReport\Shared\SharedLibrary.csproj", "{671755AE-99ED-4397-9EDF-9D5DD70DD055}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BidconReport.Tests", "BidConReport\Tests\BidconReport.Tests.csproj", "{459B3A5F-D14B-42E2-A8D6-D92828E80A35}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tests", "BidConReport\Tests\Tests.csproj", "{459B3A5F-D14B-42E2-A8D6-D92828E80A35}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BidconLink", "BidConReport\BidconLink\BidconLink.csproj", "{2C524F20-D73C-4232-8B80-89542E178C83}"
 EndProject

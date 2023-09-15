@@ -1,4 +1,5 @@
-﻿namespace BidConReport.Shared.Enums.BidconAccess;
+﻿namespace SharedLibrary.Enums.BidconAccess;
+
 public enum LayerType
 {
     None = 0,

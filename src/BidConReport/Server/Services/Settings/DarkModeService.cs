@@ -1,6 +1,6 @@
-﻿using BidConReport.Server.Data;
+﻿using Server.Data;
 
-namespace BidConReport.Server.Services.Settings;
+namespace Server.Services.Settings;
 
 public class DarkModeService : IDarkModeService
 {

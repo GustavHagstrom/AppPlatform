@@ -1,4 +1,4 @@
-﻿namespace BidConReport.Shared.DTOs.EstimationView;
+﻿namespace SharedLibrary.DTOs.EstimationView;
 public class DataColumnDto
 {
     public Guid Id { get; set; }

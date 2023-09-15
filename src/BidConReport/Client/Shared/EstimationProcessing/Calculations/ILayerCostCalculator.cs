@@ -1,6 +1,6 @@
-﻿using BidConReport.Shared.DTOs.BidconAccess;
+﻿using SharedLibrary.DTOs.BidconAccess;
 
-namespace BidConReport.Client.Shared.EstimationProcessing.Calculations;
+namespace Client.Shared.EstimationProcessing.Calculations;
 public interface ILayerCostCalculator
 {
     void Calculate(BC_EstimationBatchDto batch, string layerId, out double unitCost, out double unitAskingPrice);

@@ -1,14 +1,14 @@
-﻿using BidConReport.Server.Controllers;
-using BidConReport.Server.Data;
-using BidConReport.Server.Services.EstimationView;
-using BidConReport.Shared.DTOs.EstimationView;
-using BidConReport.Shared.Enums.ViewTemplate;
+﻿using Server.Controllers;
+using Server.Data;
+using Server.Services.EstimationView;
+using SharedLibrary.DTOs.EstimationView;
+using SharedLibrary.Enums.ViewTemplate;
 using Mapster;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Moq;
 
-namespace BidconReport.Tests.Server.Services;
+namespace Tests.Server.Services;
 [TestFixture]
 public class EstimationViewTemplateServiceTests
 {

@@ -1,7 +1,7 @@
-﻿using BidConReport.Shared.Enums.ViewTemplate;
+﻿using SharedLibrary.Enums.ViewTemplate;
 using System.ComponentModel.DataAnnotations;
 
-namespace BidConReport.Server.Enteties.EstimationView;
+namespace Server.Enteties.EstimationView;
 
 public class CellFormat : IEstimationViewEntity
 {

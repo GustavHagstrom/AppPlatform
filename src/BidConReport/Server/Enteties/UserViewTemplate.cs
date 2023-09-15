@@ -1,7 +1,7 @@
-﻿using BidConReport.Server.Enteties.EstimationView;
+﻿using Server.Enteties.EstimationView;
 using System.ComponentModel.DataAnnotations;
 
-namespace BidConReport.Server.Enteties;
+namespace Server.Enteties;
 
 public class UserViewTemplate
 {

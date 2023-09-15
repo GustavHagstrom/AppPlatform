@@ -1,7 +1,7 @@
-﻿using BidConReport.Shared.DTOs.EstimationView;
-using BidConReport.Shared.Enums.ViewTemplate;
+﻿using SharedLibrary.DTOs.EstimationView;
+using SharedLibrary.Enums.ViewTemplate;
 
-namespace BidconReport.Tests.Server;
+namespace Tests.Server;
 public static class EstimationViewTemplateDtoSamples
 {
     public static EstimationViewTemplateDto Sample()

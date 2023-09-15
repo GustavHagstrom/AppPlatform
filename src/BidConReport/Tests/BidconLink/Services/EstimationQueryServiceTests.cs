@@ -1,8 +1,8 @@
 ﻿using BidconLink.Services;
-using BidConReport.Shared.DTOs.BidconAccess;
+using SharedLibrary.DTOs.BidconAccess;
 using System.Text.Json;
 
-namespace BidconReport.Tests.BidconLink.Services;
+namespace Tests.BidconLink.Services;
 public class EstimationQueryServiceTests
 {
  

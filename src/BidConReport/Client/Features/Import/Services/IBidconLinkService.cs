@@ -1,6 +1,6 @@
-﻿using BidConReport.Shared.DTOs.BidconAccess;
+﻿using SharedLibrary.DTOs.BidconAccess;
 
-namespace BidConReport.Client.Features.Import.Services;
+namespace Client.Features.Import.Services;
 public interface IBidconLinkService
 {
     Task<BC_EstimationBatchDto?> GetBatchAsync(EstimationRequestBatchModelDto request, CancellationToken cancellationToken = default);

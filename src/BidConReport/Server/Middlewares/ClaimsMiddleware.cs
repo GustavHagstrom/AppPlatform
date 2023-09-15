@@ -1,8 +1,8 @@
-﻿using BidConReport.Server.Services.Authentication;
+﻿using Server.Services.Authentication;
 using Microsoft.Identity.Web;
 using System.Security.Claims;
 
-namespace BidConReport.Server.Middlewares;
+namespace Server.Middlewares;
 
 public class ClaimsMiddleware
 {

@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace BidConReport.Server.Enteties;
+namespace Server.Enteties;
 
 public class User
 {

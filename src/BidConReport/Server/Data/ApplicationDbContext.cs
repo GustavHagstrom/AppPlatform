@@ -1,9 +1,9 @@
-﻿using BidConReport.Server.Enteties;
-using BidConReport.Server.Enteties.EstimationView;
+﻿using Server.Enteties;
+using Server.Enteties.EstimationView;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 
-namespace BidConReport.Server.Data;
+namespace Server.Data;
 
 public class ApplicationDbContext : DbContext
 {

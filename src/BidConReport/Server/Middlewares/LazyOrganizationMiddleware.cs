@@ -1,9 +1,9 @@
-﻿using BidConReport.Server.Data;
-using BidConReport.Server.Enteties;
+﻿using Server.Data;
+using Server.Enteties;
 using Microsoft.Identity.Web;
 using System.Security.Claims;
 
-namespace BidConReport.Server.Middlewares;
+namespace Server.Middlewares;
 
 public class LazyOrganizationMiddleware
 {

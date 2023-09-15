@@ -1,8 +1,8 @@
-﻿using BidConReport.Shared.Constants;
-using BidConReport.Shared.DTOs;
+﻿using SharedLibrary.Constants;
+using SharedLibrary.DTOs;
 using Microsoft.AspNetCore.Mvc;
 
-namespace BidConReport.Server.Controllers;
+namespace Server.Controllers;
 [Route("api/[controller]")]
 [ApiController]
 public class ClaimsController : ControllerBase

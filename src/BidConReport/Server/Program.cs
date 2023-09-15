@@ -1,6 +1,6 @@
-using BidConReport.Server;
-using BidConReport.Server.Data;
-using BidConReport.Server.Middlewares;
+using Server;
+using Server.Data;
+using Server.Middlewares;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Identity.Web;

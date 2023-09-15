@@ -1,8 +1,8 @@
-﻿using BidConReport.Server.Enteties.EstimationView;
+﻿using Server.Enteties.EstimationView;
 using Microsoft.EntityFrameworkCore;
 
 
-namespace BidConReport.Server.Services.EstimationView;
+namespace Server.Services.EstimationView;
 
 public class EstimationViewTemplateUpdater : IEstimationViewTemplateUpdater
 {

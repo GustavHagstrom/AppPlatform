@@ -1,7 +1,7 @@
-﻿using BidConReport.Shared.DTOs;
-using BidConReport.Shared.Wrappers;
+﻿using SharedLibrary.DTOs;
+using SharedLibrary.Wrappers;
 
-namespace BidConReport.Server.Services.Authentication;
+namespace Server.Services.Authentication;
 
 public class ClaimsService : IClaimsService
 {

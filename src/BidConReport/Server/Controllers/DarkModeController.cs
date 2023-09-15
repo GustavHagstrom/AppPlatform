@@ -1,8 +1,8 @@
-﻿using BidConReport.Server.Services.Settings;
+﻿using Server.Services.Settings;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Identity.Web;
 
-namespace BidConReport.Server.Controllers;
+namespace Server.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]

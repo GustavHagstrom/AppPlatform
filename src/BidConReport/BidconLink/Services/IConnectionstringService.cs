@@ -1,4 +1,4 @@
-﻿using BidConReport.Shared.DTOs.BidconAccess;
+﻿using SharedLibrary.DTOs.BidconAccess;
 
 namespace BidconLink.Services;
 

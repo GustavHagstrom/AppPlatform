@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Components;
-using SharedWasmLibrary.Extensions;
+using SharedLibraryWasmLibrary.Extensions;
 
-namespace BidConReport.Client.Shared.Services;
+namespace Client.Shared.Services;
 
 public class StyleService
 {

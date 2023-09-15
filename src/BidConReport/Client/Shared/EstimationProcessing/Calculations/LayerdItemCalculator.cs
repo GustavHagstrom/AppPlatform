@@ -1,7 +1,7 @@
-﻿using BidConReport.Shared.DTOs.BidconAccess;
-using BidConReport.Shared.Enums.BidconAccess;
+﻿using SharedLibrary.DTOs.BidconAccess;
+using SharedLibrary.Enums.BidconAccess;
 
-namespace BidConReport.Client.Shared.EstimationProcessing.Calculations;
+namespace Client.Shared.EstimationProcessing.Calculations;
 public class LayerdItemCalculator : ILayerdItemCalculator
 {
     private readonly Dictionary<int, ILayerCostCalculator> _calculatorMap = new()

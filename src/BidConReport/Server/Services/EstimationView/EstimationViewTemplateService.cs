@@ -1,10 +1,10 @@
-﻿using BidConReport.Server.Data;
-using BidConReport.Server.Enteties.EstimationView;
-using BidConReport.Shared.DTOs.EstimationView;
+﻿using Server.Data;
+using Server.Enteties.EstimationView;
+using SharedLibrary.DTOs.EstimationView;
 using Mapster;
 using Microsoft.EntityFrameworkCore;
 
-namespace BidConReport.Server.Services.EstimationView;
+namespace Server.Services.EstimationView;
 
 public class EstimationViewTemplateService : IEstimationViewTemplateService
 {

@@ -1,6 +1,6 @@
-﻿using BidConReport.Shared.DTOs.BidconAccess;
+﻿using SharedLibrary.DTOs.BidconAccess;
 
-namespace BidConReport.Client.Shared.EstimationProcessing.Calculations;
+namespace Client.Shared.EstimationProcessing.Calculations;
 public class DELayerCalculator : ILayerCostCalculator
 {
     private readonly WRLayerCalculator _wRLayerCalculator = new();
