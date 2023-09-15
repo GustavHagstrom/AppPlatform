@@ -63,14 +63,14 @@ public class ApplicationDbContext : DbContext
 
         //Suppress the warning about cascade paths
 
-        modelBuilder.Entity<UserRole>()
-            .HasKey(ur => new { ur.UserId, ur.RoleId });
+        //modelBuilder.Entity<UserRole>()
+        //    .HasKey(ur => new { ur.UserId, ur.RoleId });
 
-        modelBuilder.Entity<UserRole>()
-            .HasOne(ur => ur.User)
-            .WithMany(u => u.UserRoles)
-            .HasForeignKey(ur => ur.UserId)
-            .OnDelete(DeleteBehavior.NoAction);
+        //modelBuilder.Entity<UserRole>()
+        //    .HasOne(ur => ur.User)
+        //    .WithMany(u => u.UserRoles)
+        //    .HasForeignKey(ur => ur.UserId)
+        //    .OnDelete(DeleteBehavior.NoAction);
 
         //modelBuilder.Entity<UserRole>()
         //    .HasOne(ur => ur.Role)
