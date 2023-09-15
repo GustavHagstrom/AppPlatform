@@ -14,4 +14,5 @@ public class User
     public Guid? RoleId { get; set; }
     public Role? Role { get; set; }
     public IEnumerable<UserRight>? UserRights { get; set; }
+    public IEnumerable<UserViewTemplate>? UserViewTemplates { get; set; }
 }

@@ -12,4 +12,5 @@ public class Role
     public required string Name { get; set; }
     public IEnumerable<User>? Users { get; set; }
     public IEnumerable<RoleRight>? RoleRights { get; set; }
+    public IEnumerable<RoleViewTemplate>? RoleViewTemplates { get; set; }
 }
