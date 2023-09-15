@@ -13,5 +13,5 @@ public class User
     public License? License { get; set; }
     public Guid? RoleId { get; set; }
     public Role? Role { get; set; }
-    public IEnumerable<Right>? Rights { get; set; }
+    public IEnumerable<UserRight>? UserRights { get; set; }
 }

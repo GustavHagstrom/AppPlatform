@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BidConReport.Server.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230915091028_Rights")]
-    partial class Rights
+    [Migration("20230915092354_Initial")]
+    partial class Initial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -333,24 +333,6 @@ namespace BidConReport.Server.Migrations
                     b.ToTable("Organizations");
                 });
 
-            modelBuilder.Entity("BidConReport.Server.Enteties.Right", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Right");
-                });
-
             modelBuilder.Entity("BidConReport.Server.Enteties.Role", b =>
                 {
                     b.Property<Guid>("Id")
@@ -372,6 +354,25 @@ namespace BidConReport.Server.Migrations
                     b.HasIndex("OrganizationId");
 
                     b.ToTable("Roles");
+                });
+
+            modelBuilder.Entity("BidConReport.Server.Enteties.RoleRight", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("Right")
+                        .HasColumnType("int");
+
+                    b.Property<Guid>("RoleId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("RoleId");
+
+                    b.ToTable("RoleRight");
                 });
 
             modelBuilder.Entity("BidConReport.Server.Enteties.User", b =>
@@ -405,34 +406,25 @@ namespace BidConReport.Server.Migrations
                     b.ToTable("Users");
                 });
 
-            modelBuilder.Entity("RightRole", b =>
+            modelBuilder.Entity("BidConReport.Server.Enteties.UserRight", b =>
                 {
-                    b.Property<int>("RightsId")
-                        .HasColumnType("int");
-
-                    b.Property<Guid>("RolesId")
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.HasKey("RightsId", "RolesId");
-
-                    b.HasIndex("RolesId");
-
-                    b.ToTable("RightRole");
-                });
-
-            modelBuilder.Entity("RightUser", b =>
-                {
-                    b.Property<int>("RightsId")
+                    b.Property<int>("Right")
                         .HasColumnType("int");
 
-                    b.Property<string>("UsersId")
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
-                    b.HasKey("RightsId", "UsersId");
+                    b.HasKey("Id");
 
-                    b.HasIndex("UsersId");
+                    b.HasIndex("UserId");
 
-                    b.ToTable("RightUser");
+                    b.ToTable("UserRight");
                 });
 
             modelBuilder.Entity("BidConReport.Server.Enteties.BidconCredentials", b =>
@@ -558,6 +550,17 @@ namespace BidConReport.Server.Migrations
                     b.Navigation("Organization");
                 });
 
+            modelBuilder.Entity("BidConReport.Server.Enteties.RoleRight", b =>
+                {
+                    b.HasOne("BidConReport.Server.Enteties.Role", "Role")
+                        .WithMany("RoleRights")
+                        .HasForeignKey("RoleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Role");
+                });
+
             modelBuilder.Entity("BidConReport.Server.Enteties.User", b =>
                 {
                     b.HasOne("BidConReport.Server.Enteties.License", "License")
@@ -581,34 +584,15 @@ namespace BidConReport.Server.Migrations
                     b.Navigation("Role");
                 });
 
-            modelBuilder.Entity("RightRole", b =>
+            modelBuilder.Entity("BidConReport.Server.Enteties.UserRight", b =>
                 {
-                    b.HasOne("BidConReport.Server.Enteties.Right", null)
-                        .WithMany()
-                        .HasForeignKey("RightsId")
+                    b.HasOne("BidConReport.Server.Enteties.User", "User")
+                        .WithMany("UserRights")
+                        .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("BidConReport.Server.Enteties.Role", null)
-                        .WithMany()
-                        .HasForeignKey("RolesId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("RightUser", b =>
-                {
-                    b.HasOne("BidConReport.Server.Enteties.Right", null)
-                        .WithMany()
-                        .HasForeignKey("RightsId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("BidConReport.Server.Enteties.User", null)
-                        .WithMany()
-                        .HasForeignKey("UsersId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("BidConReport.Server.Enteties.EstimationView.CellTemplate", b =>
@@ -664,7 +648,14 @@ namespace BidConReport.Server.Migrations
 
             modelBuilder.Entity("BidConReport.Server.Enteties.Role", b =>
                 {
+                    b.Navigation("RoleRights");
+
                     b.Navigation("Users");
+                });
+
+            modelBuilder.Entity("BidConReport.Server.Enteties.User", b =>
+                {
+                    b.Navigation("UserRights");
                 });
 #pragma warning restore 612, 618
         }
