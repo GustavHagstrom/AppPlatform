@@ -1,12 +1,9 @@
 using BidConReport.Server;
 using BidConReport.Server.Data;
 using BidConReport.Server.Middlewares;
-using Mapster;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Components.WebAssembly.Authentication;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Identity.Web;
-using System.Net.Http.Headers;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -28,8 +25,6 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 });
 
 builder.Services.UseAllServices();
-
-//TypeAdapterConfig.GlobalSettings.Default.PreserveReference(true);
 
 var app = builder.Build();
 
@@ -57,8 +52,10 @@ app.UseRouting();
 
 app.UseAuthorization();
 
-
-app.UseMiddleware<User_Organization_Claims_Middleware>();
+app.UseMiddleware<ScopeMiddleware>();
+app.UseMiddleware<ClaimsMiddleware>();
+app.UseMiddleware<LazyOrganizationMiddleware>();
+app.UseMiddleware<LazyUserMiddleware>();
 
 app.MapRazorPages();
 app.MapControllers();

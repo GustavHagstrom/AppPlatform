@@ -13,17 +13,12 @@ public class ClaimsService_debug : IClaimsService
     {
         var rightValuesString = string.Join(",", Enum.GetValues<ApplicationRight>()
             .Select(x => ((int)x).ToString()));
-        
-        
 
         var claims = new List<ClaimDTO>
         {
-            new ClaimDTO(CustomClaimTypes.License, License)
+            new ClaimDTO(CustomClaimTypes.License, License),
+            new ClaimDTO(CustomClaimTypes.ApplicationRight, rightValuesString),
         };
-        foreach (var right in Enum.GetValues(typeof(ApplicationRight)))
-        {
-            claims.Add(new ClaimDTO(CustomClaimTypes.ApplicationRight, rightValuesString));
-        }
 
         return await Task.FromResult(claims);
     }
