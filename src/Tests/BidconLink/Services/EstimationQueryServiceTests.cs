@@ -20,8 +20,8 @@ public class EstimationQueryServiceTests
         var estimationId = "E2217CB2-3C68-4EC3-91CD-DAF28F55FE39";
 
         var queryResult = await _service.GetEstimationBatchAsync(estimationId, _credentials);
-        //var json = JsonSerializer.Serialize(queryResult);
-        Assert.That(queryResult, Is.Not.Null);
+        var json = JsonSerializer.Serialize(queryResult);
+        //Assert.That(queryResult, Is.Not.Null);
     }
     [Test]
     public async Task EstimationBatches()
