@@ -11,6 +11,6 @@ public class User
     public Organization? Organization { get; set; }
     public bool IsDarkMode { get; set; } = false;
     public License? License { get; set; }
-    public IEnumerable<Role>? Roles { get; set; }
+    public IEnumerable<UserRole>? UserRoles { get; set; }
     //public IEnumerable<Right>? Rights { get; set; }
 }

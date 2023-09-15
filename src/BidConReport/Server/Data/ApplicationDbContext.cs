@@ -68,15 +68,15 @@ public class ApplicationDbContext : DbContext
 
         modelBuilder.Entity<UserRole>()
             .HasOne(ur => ur.User)
-            .WithMany()
+            .WithMany(u => u.UserRoles)
             .HasForeignKey(ur => ur.UserId)
             .OnDelete(DeleteBehavior.NoAction);
 
-        modelBuilder.Entity<UserRole>()
-            .HasOne(ur => ur.Role)
-            .WithMany()
-            .HasForeignKey(ur => ur.RoleId)
-            .OnDelete(DeleteBehavior.NoAction);
+        //modelBuilder.Entity<UserRole>()
+        //    .HasOne(ur => ur.Role)
+        //    .WithMany()
+        //    .HasForeignKey(ur => ur.RoleId)
+        //    .OnDelete(DeleteBehavior.NoAction);
 
     }
 }

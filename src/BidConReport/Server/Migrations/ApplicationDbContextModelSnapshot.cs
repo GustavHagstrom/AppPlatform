@@ -394,21 +394,6 @@ namespace BidConReport.Server.Migrations
                     b.ToTable("UserRole");
                 });
 
-            modelBuilder.Entity("RoleUser", b =>
-                {
-                    b.Property<Guid>("RolesId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("UsersId")
-                        .HasColumnType("nvarchar(50)");
-
-                    b.HasKey("RolesId", "UsersId");
-
-                    b.HasIndex("UsersId");
-
-                    b.ToTable("RoleUser");
-                });
-
             modelBuilder.Entity("BidConReport.Server.Enteties.BidconCredentials", b =>
                 {
                     b.HasOne("BidConReport.Server.Enteties.Organization", null)
@@ -552,13 +537,13 @@ namespace BidConReport.Server.Migrations
             modelBuilder.Entity("BidConReport.Server.Enteties.UserRole", b =>
                 {
                     b.HasOne("BidConReport.Server.Enteties.Role", "Role")
-                        .WithMany()
+                        .WithMany("UserRoles")
                         .HasForeignKey("RoleId")
-                        .OnDelete(DeleteBehavior.NoAction)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("BidConReport.Server.Enteties.User", "User")
-                        .WithMany()
+                        .WithMany("UserRoles")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
@@ -566,21 +551,6 @@ namespace BidConReport.Server.Migrations
                     b.Navigation("Role");
 
                     b.Navigation("User");
-                });
-
-            modelBuilder.Entity("RoleUser", b =>
-                {
-                    b.HasOne("BidConReport.Server.Enteties.Role", null)
-                        .WithMany()
-                        .HasForeignKey("RolesId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("BidConReport.Server.Enteties.User", null)
-                        .WithMany()
-                        .HasForeignKey("UsersId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
                 });
 
             modelBuilder.Entity("BidConReport.Server.Enteties.EstimationView.CellTemplate", b =>
@@ -632,6 +602,16 @@ namespace BidConReport.Server.Migrations
                     b.Navigation("Roles");
 
                     b.Navigation("Users");
+                });
+
+            modelBuilder.Entity("BidConReport.Server.Enteties.Role", b =>
+                {
+                    b.Navigation("UserRoles");
+                });
+
+            modelBuilder.Entity("BidConReport.Server.Enteties.User", b =>
+                {
+                    b.Navigation("UserRoles");
                 });
 #pragma warning restore 612, 618
         }

@@ -249,30 +249,6 @@ namespace BidConReport.Server.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "RoleUser",
-                columns: table => new
-                {
-                    RolesId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    UsersId = table.Column<string>(type: "nvarchar(50)", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_RoleUser", x => new { x.RolesId, x.UsersId });
-                    table.ForeignKey(
-                        name: "FK_RoleUser_Roles_RolesId",
-                        column: x => x.RolesId,
-                        principalTable: "Roles",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_RoleUser_Users_UsersId",
-                        column: x => x.UsersId,
-                        principalTable: "Users",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "UserRole",
                 columns: table => new
                 {
@@ -286,7 +262,8 @@ namespace BidConReport.Server.Migrations
                         name: "FK_UserRole_Roles_RoleId",
                         column: x => x.RoleId,
                         principalTable: "Roles",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_UserRole_Users_UserId",
                         column: x => x.UserId,
@@ -390,11 +367,6 @@ namespace BidConReport.Server.Migrations
                 column: "OrganizationId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_RoleUser_UsersId",
-                table: "RoleUser",
-                column: "UsersId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_SheetColumn_NetSheetSectionTemplateId",
                 table: "SheetColumn",
                 column: "NetSheetSectionTemplateId");
@@ -429,9 +401,6 @@ namespace BidConReport.Server.Migrations
 
             migrationBuilder.DropTable(
                 name: "HeaderOrFooter");
-
-            migrationBuilder.DropTable(
-                name: "RoleUser");
 
             migrationBuilder.DropTable(
                 name: "UserRole");
