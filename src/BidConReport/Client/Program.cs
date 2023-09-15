@@ -23,7 +23,7 @@ builder.Services.AddHttpClient(HttpClientNames.BackendHttpClientName, client => 
     .AddHttpMessageHandler<BaseAddressAuthorizationMessageHandler>();
 
 //Scoped instance of backend http client. Injecting a http cliet directly will result in this instance
-//builder.Services.AddScoped(sp => sp.GetRequiredService<IHttpClientFactory>().CreateClient(HttpClientNames.BackendHttpClientName));
+builder.Services.AddScoped(sp => sp.GetRequiredService<IHttpClientFactory>().CreateClient(HttpClientNames.BackendHttpClientName));
 
 builder.Services.AddMudServices(config =>
 {
