@@ -1,5 +1,5 @@
 ﻿using BidConReport.Shared.Constants;
-using SharedPlatformLibrary.Wrappers;
+using BidConReport.Shared.Wrappers;
 using System.Net.Http.Json;
 
 namespace BidConReport.Client.Shared.Services;

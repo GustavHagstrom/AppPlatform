@@ -1,6 +1,6 @@
 ﻿using BidConReport.Shared.Constants;
 using BidConReport.Shared.DTOs.BidconAccess;
-using SharedPlatformLibrary.Wrappers;
+using BidConReport.Shared.Wrappers;
 using System.Net;
 using System.Net.Http.Json;
 

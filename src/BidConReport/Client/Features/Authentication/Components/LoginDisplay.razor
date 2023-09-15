@@ -1,0 +1,104 @@
+﻿@using Microsoft.Graph;
+@implements IDisposable
+
+<AuthorizeView>
+    <Authorized>
+        
+        <MudButton Class="px-2" Variant="Variant.Text" Color="Color.Inherit" OnClick="() => PopOverIsVisible = !PopOverIsVisible">
+            @if (!string.IsNullOrEmpty(PhotoString))
+            {
+                <img src="@PhotoString" class="align-self-center mud-elevation-5" style="height:40px; width:40px; border-radius: 50%;" />
+                
+                
+            }
+            else
+            {
+                <div class="d-flex mud-elevation-5 justify-center" style="height:40px; width:40px; border-radius: 50%;">
+                    <MudText Typo="Typo.h6" Class="align-self-center mud-primary-text" Style="">@GetInitials(context.User.Identity?.Name)</MudText>
+                </div>
+            }
+        </MudButton>
+        <MudPopover Class="pa-4" Open="PopOverIsVisible" AnchorOrigin="Origin.BottomRight" TransformOrigin="Origin.TopRight">
+            <MudStack Spacing="1">
+                <h3 class="align-self-center">@context.User.Identity?.Name</h3>
+                <h5 class="align-self-center">@context.User.Claims.Where(x => x.Type == "preferred_username").Select(x => x.Value).FirstOrDefault() </h5>
+                <div class="d-flex">
+                    <MudButton OnClick="LogOut" Class="px-4 flex-grow-1" Variant="Variant.Outlined" Color="Color.Inherit" StartIcon="@Icons.Material.Sharp.Logout">@Localizer["Logga ut"]</MudButton>
+                </div>
+            </MudStack>            
+        </MudPopover>
+
+    </Authorized>
+    <NotAuthorized>
+        <MudButton OnClick="LogIn" Class="px-4" Variant="Variant.Text" Color="Color.Inherit" StartIcon="@Icons.Material.Sharp.Login">@Localizer["Logga in"]</MudButton>
+    </NotAuthorized>
+</AuthorizeView>
+
+@code{
+    [Inject] public required IStringLocalizer<LoginDisplay> Localizer { get; set; }
+    [Inject] public required GraphServiceClient GraphClient { get; set; }
+    [Inject] public required AuthenticationStateProvider AuthStateProvider { get; set; }
+    [Inject] public required NavigationManager NavManager { get; set; }
+
+    public bool PopOverIsVisible { get; set; } = false;
+    public string? PhotoString { get; set; }
+    public void Dispose()
+    {
+        AuthStateProvider.AuthenticationStateChanged -= async (x) => await OnAuthStateChangedAsync(x);
+    }
+    protected override void OnInitialized()
+    {
+        AuthStateProvider.AuthenticationStateChanged += async (x) => await OnAuthStateChangedAsync(x);
+
+    }
+    protected override async Task OnInitializedAsync()
+    {
+        await OnAuthStateChangedAsync(AuthStateProvider.GetAuthenticationStateAsync());
+    }
+    private async Task OnAuthStateChangedAsync(Task<AuthenticationState> task)
+    {
+        var identity = (await task).User.Identity;
+        if (identity is not null && identity.IsAuthenticated)
+        {
+            await GetPhotoStringAsync();
+        }
+    }
+    public void LogOut()
+    {
+        PopOverIsVisible = false;
+        NavManager.NavigateToLogout(ClientRoutes.Authentication.Logout);
+    }
+    public void LogIn()
+    {
+        NavManager.NavigateToLogout(ClientRoutes.Authentication.Login);
+    }
+    public async Task GetPhotoStringAsync()
+    {
+        var photo = await GraphClient.Me.Photo.GetAsync();
+        if (!photo!.AdditionalData.ContainsKey("error"))
+        {
+            var ms = new MemoryStream();
+            var photoStream = await GraphClient.Me.Photo.Content.GetAsync();
+            photoStream!.CopyTo(ms);
+            var photoBytes = ms.ToArray();
+            var photoBase64 = Convert.ToBase64String(photoBytes);
+            PhotoString = $"data:image/png;base64,{photoBase64}";
+        }
+        else
+        {
+            PhotoString = string.Empty;
+        }
+        StateHasChanged();
+    }
+    public static string GetInitials(string? name)
+    {
+        if (name is null) return string.Empty;
+        var names = name.Split(" ");
+        var initials = string.Empty;
+        foreach (var item in names)
+        {
+            initials += item.First();
+        }
+        return initials;
+    }
+}

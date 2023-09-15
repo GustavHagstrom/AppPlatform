@@ -1,0 +1,19 @@
+﻿<MudDialog>
+    <DialogContent>
+        @Info
+    </DialogContent>
+    <DialogActions>
+        <div Class="pr-4 pb-2">
+            <MudButton OnClick="Cancel" Variant="Variant.Filled" Color="Color.Inherit">@Localizer["Nej"]</MudButton>
+            <MudButton OnClick="Ok" Variant="Variant.Filled" Color="Color.Primary">@Localizer["Ja"]</MudButton>
+        </div>
+    </DialogActions>
+</MudDialog>
+@code {
+    [CascadingParameter] public required MudDialogInstance MudDialog { get; set; }
+    [Parameter] public required string Info { get; set; } = string.Empty;
+    [Inject] public required IStringLocalizer<YesNoDialog> Localizer { get; set; }
+
+    void Ok() => MudDialog.Close(DialogResult.Ok(true));
+    void Cancel() => MudDialog.Cancel();
+}

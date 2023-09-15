@@ -1,6 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using SharedPlatformLibrary.Constants;
-using SharedPlatformLibrary.DTOs;
+﻿using BidConReport.Shared.Constants;
+using BidConReport.Shared.DTOs;
+using Microsoft.AspNetCore.Mvc;
 
 namespace BidConReport.Server.Controllers;
 [Route("api/[controller]")]
@@ -18,10 +18,10 @@ public class ClaimsController : ControllerBase
     {
         try
         {
-            var customTypes = CustomClaimTypes.GetAllTypesAsCollection();
+            var customTypes = ApplicationClaimConstants.GetAllTypesAsCollection();
             var claims = User.Claims
                 .Where(x => customTypes.Contains(x.Type))
-                .Select(x => new ClaimDTO(x.Type, x.Value))
+                .Select(x => new ClaimDto(x.Type, x.Value))
                 .ToArray();
             _logger.LogInformation("returning claims from server");
             return Ok(claims);

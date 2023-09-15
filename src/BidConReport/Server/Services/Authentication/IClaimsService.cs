@@ -1,4 +1,4 @@
-﻿using SharedPlatformLibrary.DTOs;
+﻿using BidConReport.Shared.DTOs;
 
 namespace BidConReport.Server.Services.Authentication;
 public interface IClaimsService
@@ -9,5 +9,5 @@ public interface IClaimsService
     /// </summary>
     /// <param name="userId"></param>
     /// <returns></returns>
-    Task<ICollection<ClaimDTO>> GetClaimsAsync(string userId);
+    Task<ICollection<ClaimDto>> GetClaimsAsync(string userId);
 }

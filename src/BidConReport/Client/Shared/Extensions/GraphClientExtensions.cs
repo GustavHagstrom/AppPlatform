@@ -6,6 +6,10 @@ using Microsoft.Kiota.Abstractions;
 using Microsoft.Kiota.Abstractions.Authentication;
 using IAccessTokenProvider = Microsoft.AspNetCore.Components.WebAssembly.Authentication.IAccessTokenProvider;
 
+
+
+
+
 internal static class GraphClientExtensions
 {
     public static IServiceCollection AddGraphClient(
