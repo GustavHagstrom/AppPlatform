@@ -33,10 +33,12 @@ builder.Services.AddLogging(logging =>
 });
 
 builder.Services.AddControllers();
+builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 builder.Services.AddTransient<IEstimationQueryService, EstimationQueryService>();
 builder.Services.AddTransient<IConnectionstringService, ConnectionstringService>();
+builder.Services.AddTransient<IBidconConfigService, BidconConfigService>();
 
 var app = builder.Build();
 
@@ -54,7 +56,9 @@ app.UseCors(builder =>
     builder.AllowAnyMethod();
 });
 
-app.UseRouting();
+app.UseHttpsRedirection();
+
+app.UseAuthorization();
 
 app.MapControllers();
 
