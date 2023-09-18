@@ -12,7 +12,7 @@ public class EstimationQueryServiceTests
     private BC_DatabaseCredentialsDto _credentials => _localCredential;
 
 
-    private readonly EstimationQueryService _service = new(new ConnectionstringService());
+    private readonly EstimationQueryService _service = new(new ConnectionstringService(new BidconConfigService()));
 
     [Test]
     public async Task EstimationBatch()

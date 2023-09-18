@@ -24,6 +24,10 @@ var logger = loggerConfig
 
 logger.Information($"Version: {VERSION}");
 
+
+//TODO: Check for updates
+
+
 var builder = WebApplication.CreateBuilder();
 logger.Information($"Adding services");
 

@@ -16,5 +16,7 @@ public class BidconCredentials
     [StringLength(50)]
     public required string PasswordHash { get; set; }
     public bool ServerAuthentication { get; set; }
+    public bool UseDesktopBidconLink { get; set; }
+    public int DesktopPort { get; set; }
     public DateTime LastUpdated { get; set; }
 }
