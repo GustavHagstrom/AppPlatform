@@ -40,8 +40,6 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-//builder.Services.AddTransient<IEstimationQueryService, EstimationQueryService>();
-//builder.Services.AddTransient<IConnectionstringService, ConnectionstringService>();
 builder.Services.AddTransient<IBidconConfigService, BidconConfigService>();
 builder.Services.UseBidconDataAccess<ConnectionstringService>();
 

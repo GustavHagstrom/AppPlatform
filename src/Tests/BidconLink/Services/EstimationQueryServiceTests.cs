@@ -1,4 +1,5 @@
-﻿using BidconLink.Services;
+﻿using BidconDataAccess;
+using BidconLink.Services;
 using SharedLibrary.DTOs.BidconAccess;
 using System.Text.Json;
 
@@ -7,8 +8,8 @@ public class EstimationQueryServiceTests
 {
  
 
-    private readonly BC_DatabaseCredentialsDto _localCredential = new ("(localdb)\\MSSQLLocalDB", "BidconEstimation", "user", "someHash", false);
-    private readonly BC_DatabaseCredentialsDto _rvhCredential = new("RHUSAPP02\\ELECOSOFT", "BidConEstimation", "sa", "VX3EEWKNQrrBQp+52Ct5Gw==", true);
+    private readonly BC_DatabaseCredentialsDto _localCredential = new ("(localdb)\\MSSQLLocalDB", "BidconEstimation", "user", "someHash", false, false);
+    private readonly BC_DatabaseCredentialsDto _rvhCredential = new("RHUSAPP02\\ELECOSOFT", "BidConEstimation", "sa", "VX3EEWKNQrrBQp+52Ct5Gw==", true, false);
     private BC_DatabaseCredentialsDto _credentials => _localCredential;
 
 

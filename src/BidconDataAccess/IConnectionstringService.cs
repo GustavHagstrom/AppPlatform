@@ -2,5 +2,5 @@
 
 public interface IConnectionstringService
 {
-    string Build();
+    Task<string> BuildAsync(string? organization);
 }

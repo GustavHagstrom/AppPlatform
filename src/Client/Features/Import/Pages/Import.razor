@@ -59,6 +59,7 @@
     [Inject] public required IEstimationContainerService EstimationContainer { get; set; }
     [Inject] public required ISnackbar Snackbar { get; set; }
     [Inject] public required IBidconCredentialsService BidconCredentialsService { get; set; }
+    [Inject] public required IBidconBackendAccessService BidconBackendAccessService { get; set; }
     [Inject] public required NavigationManager Navigation { get; set; }
 
     public TreeItem? ItemTree { get; set; }
@@ -111,7 +112,7 @@
         IsRefreshing = true;
         ItemTree = null;
         var credentials = await BidconCredentialsService.GetAsync();
-        var batch = await _linkService.GetFolderBatchAsync();
+        var batch = await GetFolderBatchAsync(credentials);
         if (batch is not null)
         {
             var folder = _folderService.CreateFromBatch(batch);
@@ -124,5 +125,20 @@
         }
         IsRefreshing = false;
         StateHasChanged();
+    }
+    async Task<BC_EstimationFolderBatch?> GetFolderBatchAsync(BC_DatabaseCredentialsDto? credentials)
+    {
+        if (credentials is null)
+        {
+            return null;
+        }
+        if (credentials.UseDesktopBidconLink)
+        {
+            return await _linkService.GetFolderBatchAsync();
+        }
+        else
+        {
+            return await BidconBackendAccessService.GetFolderBatchAsync();
+        }
     }
 }

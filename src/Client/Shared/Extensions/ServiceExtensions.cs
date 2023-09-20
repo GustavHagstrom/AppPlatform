@@ -13,6 +13,7 @@ public static class ServiceExtensions
 {
     public static void UseSharedServices(this IServiceCollection services)
     {
+        services.AddTransient<IBidconBackendAccessService, BidconBackendAccessService>();
         services.AddTransient<IHttpClientWrapper, HttpClientWrapper>();
 
         services.AddTransient<IDarkModeService, DarkModeService>();

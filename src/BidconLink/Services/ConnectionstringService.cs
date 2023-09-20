@@ -13,7 +13,7 @@ public class ConnectionstringService : IConnectionstringService
     {
         _bidconConfigService = bidconConfigService;
     }
-    public string Build()
+    public async Task<string> BuildAsync(string? organization)
     {
         var map = _bidconConfigService.ConfigMap();
 
@@ -23,9 +23,9 @@ public class ConnectionstringService : IConnectionstringService
         var user = GetUser(map);
         var password = GetPassword(map);
 
-        return requiredAuthentication
+        return await Task.FromResult(requiredAuthentication
             ? $"Data Source={server};Initial Catalog={database}; Connect Timeout = 60;uid={user};pwd={password};TrustServerCertificate=True"
-            : $"Data Source={server};Initial Catalog={database}; Connect Timeout = 60;Integrated security=true;TrustServerCertificate=True;Encrypt=False;Multi Subnet Failover=False";
+            : $"Data Source={server};Initial Catalog={database}; Connect Timeout = 60;Integrated security=true;TrustServerCertificate=True;Encrypt=False;Multi Subnet Failover=False");
     }
 
     private string GetPassword(Dictionary<string, string> map)

@@ -4,6 +4,8 @@ using Server.Middlewares;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Identity.Web;
+using Server.Services;
+using BidconDataAccess;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -25,6 +27,7 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 });
 
 builder.Services.UseAllServices();
+builder.Services.UseBidconDataAccess<BidconConnectionstringService>();
 
 var app = builder.Build();
 
