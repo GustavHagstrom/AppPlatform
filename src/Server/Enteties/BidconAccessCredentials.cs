@@ -2,7 +2,7 @@
 
 namespace Server.Enteties;
 
-public class BidconCredentials
+public class BidconAccessCredentials
 {
     [Key]
     [StringLength(50)]
@@ -14,7 +14,7 @@ public class BidconCredentials
     [StringLength(50)]
     public required string User { get; set; }
     [StringLength(50)]
-    public required string PasswordHash { get; set; }
+    public required string Password { get; set; }
     public bool ServerAuthentication { get; set; }
     public bool UseDesktopBidconLink { get; set; }
     public int DesktopPort { get; set; }

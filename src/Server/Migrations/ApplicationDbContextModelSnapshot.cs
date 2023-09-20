@@ -22,7 +22,7 @@ namespace Server.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("Server.Enteties.BidconCredentials", b =>
+            modelBuilder.Entity("Server.Enteties.BidconAccessCredentials", b =>
                 {
                     b.Property<string>("OrganizationId")
                         .HasMaxLength(50)
@@ -39,7 +39,7 @@ namespace Server.Migrations
                     b.Property<DateTime>("LastUpdated")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("PasswordHash")
+                    b.Property<string>("Password")
                         .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
@@ -62,7 +62,7 @@ namespace Server.Migrations
 
                     b.HasKey("OrganizationId");
 
-                    b.ToTable("BidconCredentials");
+                    b.ToTable("BidconAccessCredentials");
                 });
 
             modelBuilder.Entity("Server.Enteties.EstimationView.CellFormat", b =>
@@ -474,11 +474,11 @@ namespace Server.Migrations
                     b.ToTable("UserViewTemplate");
                 });
 
-            modelBuilder.Entity("Server.Enteties.BidconCredentials", b =>
+            modelBuilder.Entity("Server.Enteties.BidconAccessCredentials", b =>
                 {
                     b.HasOne("Server.Enteties.Organization", null)
                         .WithOne("BidconCredentials")
-                        .HasForeignKey("Server.Enteties.BidconCredentials", "OrganizationId")
+                        .HasForeignKey("Server.Enteties.BidconAccessCredentials", "OrganizationId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });

@@ -41,6 +41,7 @@ public class ConfigReaderService : IConfigReaderService
                 map[CentralEstimationDatabaseName],
                 map[CentralEstimationDatabaseUserId],
                 map[CentralEstimationDatabasePassword],
+                true,
                 requirePassword);
         }
         else
@@ -50,6 +51,7 @@ public class ConfigReaderService : IConfigReaderService
                 map[LocalEstimationDatabaseName],
                 map[LocalEstimationDatabaseUserId],
                 map[LocalEstimationDatabasePassword],
+                true,
                 requirePassword);
         }
     }

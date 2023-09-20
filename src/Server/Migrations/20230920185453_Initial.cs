@@ -30,8 +30,10 @@ namespace Server.Migrations
                     Server = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     Database = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     User = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    PasswordHash = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    Password = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     ServerAuthentication = table.Column<bool>(type: "bit", nullable: false),
+                    UseDesktopBidconLink = table.Column<bool>(type: "bit", nullable: false),
+                    DesktopPort = table.Column<int>(type: "int", nullable: false),
                     LastUpdated = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
@@ -181,6 +183,30 @@ namespace Server.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "RoleViewTemplate",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    RoleId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    EstimationViewTemplateId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_RoleViewTemplate", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_RoleViewTemplate_EstimationViewTemplates_EstimationViewTemplateId",
+                        column: x => x.EstimationViewTemplateId,
+                        principalTable: "EstimationViewTemplates",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_RoleViewTemplate_Roles_RoleId",
+                        column: x => x.RoleId,
+                        principalTable: "Roles",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Users",
                 columns: table => new
                 {
@@ -293,6 +319,30 @@ namespace Server.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "UserViewTemplate",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    UserId = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    EstimationViewTemplateId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_UserViewTemplate", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_UserViewTemplate_EstimationViewTemplates_EstimationViewTemplateId",
+                        column: x => x.EstimationViewTemplateId,
+                        principalTable: "EstimationViewTemplates",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_UserViewTemplate_Users_UserId",
+                        column: x => x.UserId,
+                        principalTable: "Users",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
                 name: "CellFormat",
                 columns: table => new
                 {
@@ -393,6 +443,16 @@ namespace Server.Migrations
                 column: "OrganizationId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_RoleViewTemplate_EstimationViewTemplateId",
+                table: "RoleViewTemplate",
+                column: "EstimationViewTemplateId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_RoleViewTemplate_RoleId",
+                table: "RoleViewTemplate",
+                column: "RoleId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_SheetColumn_NetSheetSectionTemplateId",
                 table: "SheetColumn",
                 column: "NetSheetSectionTemplateId");
@@ -416,6 +476,16 @@ namespace Server.Migrations
                 name: "IX_Users_RoleId",
                 table: "Users",
                 column: "RoleId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_UserViewTemplate_EstimationViewTemplateId",
+                table: "UserViewTemplate",
+                column: "EstimationViewTemplateId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_UserViewTemplate_UserId",
+                table: "UserViewTemplate",
+                column: "UserId");
         }
 
         /// <inheritdoc />
@@ -437,7 +507,13 @@ namespace Server.Migrations
                 name: "RoleRight");
 
             migrationBuilder.DropTable(
+                name: "RoleViewTemplate");
+
+            migrationBuilder.DropTable(
                 name: "UserRight");
+
+            migrationBuilder.DropTable(
+                name: "UserViewTemplate");
 
             migrationBuilder.DropTable(
                 name: "CellTemplate");

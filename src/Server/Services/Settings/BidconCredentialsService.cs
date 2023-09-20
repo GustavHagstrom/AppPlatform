@@ -17,22 +17,22 @@ public class BidconCredentialsService : IBidconCredentialsService
 
     public async Task<BC_DatabaseCredentialsDto?> GetAsync(string organizationId)
     {
-        var result = await _context.BidconCredentials.FirstOrDefaultAsync(x => x.OrganizationId == organizationId);
+        var result = await _context.BidconAccessCredentials.FirstOrDefaultAsync(x => x.OrganizationId == organizationId);
         return result?.Adapt<BC_DatabaseCredentialsDto>();
     }
 
     public async Task UpsertAsync(BC_DatabaseCredentialsDto credentialsDto, string organizationId)
     {
-        var credentials = credentialsDto.Adapt<BidconCredentials>();
+        var credentials = credentialsDto.Adapt<BidconAccessCredentials>();
         credentials.OrganizationId = organizationId;
-        var existingCredentials = await _context.BidconCredentials.FindAsync(organizationId);
+        var existingCredentials = await _context.BidconAccessCredentials.FindAsync(organizationId);
 
         if (existingCredentials is null)
         {
             // Insert a new record if it doesn't exist
 
             credentials.LastUpdated = DateTime.UtcNow;
-            _context.BidconCredentials.Add(credentials);
+            _context.BidconAccessCredentials.Add(credentials);
         }
         else
         {
@@ -40,7 +40,7 @@ public class BidconCredentialsService : IBidconCredentialsService
             existingCredentials.Server = credentials.Server;
             existingCredentials.Database = credentials.Database;
             existingCredentials.User = credentials.User;
-            existingCredentials.PasswordHash = credentials.PasswordHash;
+            existingCredentials.Password = credentials.Password;
             existingCredentials.ServerAuthentication = credentials.ServerAuthentication;
             existingCredentials.LastUpdated = DateTime.Now;
         }
