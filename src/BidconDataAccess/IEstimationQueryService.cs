@@ -1,6 +1,6 @@
 ﻿using SharedLibrary.DTOs.BidconAccess;
 
-namespace BidconLink.Services;
+namespace BidconDataAccess;
 public interface IEstimationQueryService
 {
     Task<BC_EstimationBatchDto> GetEstimationBatchAsync(string estimationId);

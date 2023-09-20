@@ -1,9 +1,9 @@
-﻿using SharedLibrary.DTOs.BidconAccess;
-using Dapper;
+﻿using Dapper;
 using Microsoft.Data.SqlClient;
+using SharedLibrary.DTOs.BidconAccess;
 using System.Data;
 
-namespace BidconLink.Services;
+namespace BidconDataAccess;
 public class EstimationQueryService : IEstimationQueryService
 {
     private readonly IConnectionstringService _connectionStringBuilder;
@@ -11,7 +11,7 @@ public class EstimationQueryService : IEstimationQueryService
     {
         _connectionStringBuilder = connectionStringBuilder;
     }
-   
+
     public async Task<BC_EstimationBatchDto> GetEstimationBatchAsync(string estimationId)
     {
         var sql = @"

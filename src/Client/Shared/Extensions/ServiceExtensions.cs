@@ -1,6 +1,5 @@
 ﻿using Client.Features.Authentication;
 using Client.Features.Import.Services;
-using Client.Features.Settings.BidconSettings.BicdonCredentials;
 using Client.Shared.EstimationProcessing.Calculations;
 using Client.Shared.EstimationProcessing.Services;
 using Client.Shared.EstimationViewTemplate.Services;
@@ -24,7 +23,6 @@ public static class ServiceExtensions
         services.AddTransient<IEstimationViewTemplateServices, EstimationViewTemplateService>();
 
         services.AddTransient<IBidconLinkService, BidconLinkService>();
-        services.AddTransient<IConfigReaderService, ConfigReaderService>();
         services.AddTransient<IBidconCredentialsService, BidconCredentialsService>();
 
         services.AddScoped<IEstimationContainerService, EstimationContainerService>();

@@ -1,5 +1,5 @@
-﻿using BidconLink.Constants;
-using SharedLibrary.DTOs.BidconAccess;
+﻿using BidconDataAccess;
+using BidconLink.Constants;
 using System.Security.Cryptography;
 
 namespace BidconLink.Services;
