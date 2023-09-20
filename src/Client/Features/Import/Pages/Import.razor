@@ -95,7 +95,7 @@
 
         var ids = ItemTree.SelectedEstimations().Select(x => x.Id).ToList();
 
-        var estimationBatches = await _linkService.GetManyBatchesAsync(new EstimationRequestBatchesModelDto(ids, credentials));
+        var estimationBatches = await _linkService.GetManyBatchesAsync(new EstimationRequestBatchesModelDto(ids));//, credentials));
         if (estimationBatches is not null)
         {
             EstimationContainer.ImportedEstimations = estimationBatches.ToList();
@@ -111,7 +111,7 @@
         IsRefreshing = true;
         ItemTree = null;
         var credentials = await BidconCredentialsService.GetAsync();
-        var batch = await _linkService.GetFolderBatchAsync(credentials!);
+        var batch = await _linkService.GetFolderBatchAsync();
         if (batch is not null)
         {
             var folder = _folderService.CreateFromBatch(batch);

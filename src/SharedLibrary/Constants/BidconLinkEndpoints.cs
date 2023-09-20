@@ -10,11 +10,11 @@ public static class BidconLinkEndpoints
     /// </summary>
     public const string GetEstimationBatches = "api/BidconAccess/GetEstimationBatches";
     /// <summary>
-    /// Post request. BC_DatabaseCredentialsDto as body. Returns all estimations
+    /// Get request. Returns all estimations
     /// </summary>
     public const string GetEstimationList = "api/BidconAccess/GetEstimationList";
     /// <summary>
-    /// Post request. BC_DatabaseCredentialsDto as body. Returns a FolderBatch
+    /// Get request. Returns a FolderBatch
     /// </summary>
     public const string GetFolderBatch = "api/BidconAccess/GetFolderBatch";
 }

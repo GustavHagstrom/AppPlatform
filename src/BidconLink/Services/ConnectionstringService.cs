@@ -13,7 +13,7 @@ public class ConnectionstringService : IConnectionstringService
     {
         _bidconConfigService = bidconConfigService;
     }
-    public string Build(BC_DatabaseCredentialsDto credentials)
+    public string Build()
     {
         var map = _bidconConfigService.ConfigMap();
 

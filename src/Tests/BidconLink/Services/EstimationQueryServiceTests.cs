@@ -19,7 +19,7 @@ public class EstimationQueryServiceTests
     {
         var estimationId = "E2217CB2-3C68-4EC3-91CD-DAF28F55FE39";
 
-        var queryResult = await _service.GetEstimationBatchAsync(estimationId, _credentials);
+        var queryResult = await _service.GetEstimationBatchAsync(estimationId);
         var json = JsonSerializer.Serialize(queryResult);
         //Assert.That(queryResult, Is.Not.Null);
     }
@@ -44,7 +44,7 @@ public class EstimationQueryServiceTests
             "E2225D16-F904-4388-81E5-431246A5ECFB",
         };
 
-        var results = await _service.GetEstimationBatchesAsync(ids, _credentials);
+        var results = await _service.GetEstimationBatchesAsync(ids);
         foreach (var result in results)
         {
             Assert.That(result, Is.Not.Null);
@@ -53,14 +53,14 @@ public class EstimationQueryServiceTests
     [Test]
     public async Task EstimationResultList()
     {
-        var result = await _service.GetEstimationListAsync(_credentials);
+        var result = await _service.GetEstimationListAsync();
 
         Assert.IsNotNull(result);
     }
     [Test]
     public async Task EstimationFolderBatch()
     {
-        var result = await _service.GetFolderBatchAsync(_credentials);
+        var result = await _service.GetFolderBatchAsync();
 
         Assert.IsNotNull(result);
     }
