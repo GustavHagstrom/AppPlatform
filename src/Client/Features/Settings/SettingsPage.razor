@@ -1,6 +1,7 @@
 ﻿@page "/settings"
 @using Client.Features.Settings.Appearance
 @using Client.Features.Settings.BidconCredentials
+@using Client.Features.Settings.EstimationView
 @using Client.Features.Settings.License
 @using Client.Features.Settings.Roles
 
@@ -9,6 +10,7 @@
 
         <MudStack Spacing="4" Class="py-4">
             <AppearanceFrame />
+            <EstimationViewFrame/>
             <CredentialsFrame />
             <LicenseFrame/>
             <RolesFrame/>
