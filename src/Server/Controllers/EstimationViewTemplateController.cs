@@ -20,52 +20,79 @@ public class EstimationViewTemplateController : ControllerBase
     [HttpGet("Shallow")]
     public async Task<IActionResult> GetAllAsShallowList()
     {
-        var organizationId = User.FindFirst(ClaimConstants.TenantId)?.Value;
-        ArgumentException.ThrowIfNullOrEmpty(organizationId);
-
-        var dto = await _estimationViewTemplateService.GetAllAsShallowListAsync(organizationId);
-        if (dto is null)
+        try
         {
-            _logger.LogInformation("No EstimationViewTemplates found, returning NoContent");
-            return NoContent();
+            var organizationId = User.FindFirst(ClaimConstants.TenantId)?.Value;
+            ArgumentException.ThrowIfNullOrEmpty(organizationId);
+
+            var dto = await _estimationViewTemplateService.GetAllAsShallowListAsync(organizationId);
+            if (dto is null)
+            {
+                _logger.LogInformation("No EstimationViewTemplates found, returning NoContent");
+                return NoContent();
+            }
+            return Ok(dto);
         }
-        return Ok(dto);
+        catch (Exception e)
+        {
+            _logger.LogError(e, "Failed to GetAllAsShallowList");
+            return Problem();
+        }
     }
     [HttpGet("Deep")]
     public async Task<IActionResult> GetAllAsDeepList()
     {
-        var organizationId = User.FindFirst(ClaimConstants.TenantId)?.Value;
-        ArgumentException.ThrowIfNullOrEmpty(organizationId);
-
-        var dto = await _estimationViewTemplateService.GetAllAsDeepListAsync(organizationId);
-        if (dto is null)
+        try
         {
-            _logger.LogInformation("No EstimationViewTemplates found, returning NoContent");
-            return NoContent();
+            var organizationId = User.FindFirst(ClaimConstants.TenantId)?.Value;
+            ArgumentException.ThrowIfNullOrEmpty(organizationId);
+
+            var dto = await _estimationViewTemplateService.GetAllAsDeepListAsync(organizationId);
+            if (dto is null)
+            {
+                _logger.LogInformation("No EstimationViewTemplates found, returning NoContent");
+                return NoContent();
+            }
+            return Ok(dto);
         }
-        return Ok(dto);
+        catch (Exception e)
+        {
+            _logger.LogError(e, "Failed to GetAllAsDeepList");
+            return Problem();
+        }
+        
     }
     [HttpGet]
     public async Task<IActionResult> Get([FromQuery] Guid id)
     {
-        var organizationId = User.FindFirst(ClaimConstants.TenantId)?.Value;
-        ArgumentException.ThrowIfNullOrEmpty(organizationId);
-
-        var dto = await _estimationViewTemplateService.GetSingleDeepAsync(id, organizationId);
-        if (dto is null)
+        try
         {
-            _logger.LogInformation("No EstimationViewTemplate found, returning NoContent");
-            return NoContent();
+            var organizationId = User.FindFirst(ClaimConstants.TenantId)?.Value;
+            ArgumentException.ThrowIfNullOrEmpty(organizationId);
+
+            var dto = await _estimationViewTemplateService.GetSingleDeepAsync(id, organizationId);
+            if (dto is null)
+            {
+                _logger.LogInformation("No EstimationViewTemplate found, returning NoContent");
+                return NoContent();
+            }
+            return Ok(dto);
         }
-        return Ok(dto);
+        catch (Exception e)
+        {
+            _logger.LogError(e, "Failed to get");
+            return Problem();
+        }
+        
     }
     [HttpPost]
     public async Task<IActionResult> Upsert([FromBody] EstimationViewTemplateDto dto)
     {
-        var organizationId = User.FindFirst(ClaimConstants.TenantId)?.Value;
-        ArgumentException.ThrowIfNullOrEmpty(organizationId);
         try
         {
+            var organizationId = User.FindFirst(ClaimConstants.TenantId)?.Value;
+            ArgumentException.ThrowIfNullOrEmpty(organizationId);
+
             await _estimationViewTemplateService.UpsertAsync(dto, organizationId);
             return Ok();
         }
@@ -78,11 +105,11 @@ public class EstimationViewTemplateController : ControllerBase
     [HttpDelete]
     public async Task<IActionResult> Delete([FromQuery] Guid id)
     {
-        var organizationId = User.FindFirst(ClaimConstants.TenantId)?.Value;
-        ArgumentException.ThrowIfNullOrEmpty(organizationId);
-
         try
         {
+            var organizationId = User.FindFirst(ClaimConstants.TenantId)?.Value;
+            ArgumentException.ThrowIfNullOrEmpty(organizationId);
+
             await _estimationViewTemplateService.DeleteAsync(id, organizationId);
             return Ok();
         }

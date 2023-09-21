@@ -2,6 +2,8 @@
 using Client.Shared.EstimationViewTemplate.Services;
 using Microsoft.Extensions.Logging;
 using Moq;
+using SharedLibrary.Constants;
+using SharedLibrary.DTOs.EstimationView;
 using SharedLibrary.Wrappers;
 using System.Net;
 
@@ -23,69 +25,85 @@ public class EstimationViewTemplateServiceTests
     [Test]
     public async Task UpsertAsync_Should_Succeed()
     {
-        var viewTemplate = new ViewTemplate { Name = "test"};
-        var cancellationToken = CancellationToken.None;
+        var viewTemplate = new ViewTemplate { Name = "test" };
 
-        // Arrange
-        _httpClientWrapperMock.Setup(mock => mock.PostAsJsonAsync(It.IsAny<string>(), viewTemplate, cancellationToken))
+        _httpClientWrapperMock.Setup(mock => mock.PostAsJsonAsync(BackendApiEndpoints.EstimationViewTemplateController.Upsert, It.IsAny<EstimationViewTemplateDto>(), It.IsAny<CancellationToken>()))
             .ReturnsAsync(new HttpResponseMessage(HttpStatusCode.OK));
 
         // Act
-        await _estimationViewTemplateService.UpsertAsync(viewTemplate, cancellationToken);
+        await _estimationViewTemplateService.UpsertAsync(viewTemplate);
 
         // Assert
-        _httpClientWrapperMock.Verify(mock => mock.PostAsJsonAsync(It.IsAny<string>(), viewTemplate, cancellationToken), Times.Once);
+        _httpClientWrapperMock.Verify(mock => mock.PostAsJsonAsync(BackendApiEndpoints.EstimationViewTemplateController.Upsert, It.IsAny<EstimationViewTemplateDto>(), It.IsAny<CancellationToken>()), Times.Once);
     }
-
     [Test]
-    public async Task DeleteAsync_Should_Succeed()
+    public void UpsertAsync_ShouldThrowException()
     {
         var viewTemplate = new ViewTemplate { Name = "test" };
-        var cancellationToken = CancellationToken.None;
 
         // Arrange
-        _httpClientWrapperMock.Setup(mock => mock.DeleteAsync(It.IsAny<string>(), viewTemplate, cancellationToken))
-            .ReturnsAsync(new HttpResponseMessage(HttpStatusCode.OK));
+        _httpClientWrapperMock.Setup(mock => mock.PostAsJsonAsync(BackendApiEndpoints.EstimationViewTemplateController.Upsert, It.IsAny<EstimationViewTemplateDto>(), It.IsAny<CancellationToken>()))
+            .ReturnsAsync(new HttpResponseMessage(HttpStatusCode.InternalServerError));
 
         // Act
-        await _estimationViewTemplateService.DeleteAsync(viewTemplate, cancellationToken);
-
-        // Assert
-        _httpClientWrapperMock.Verify(mock => mock.DeleteAsync(It.IsAny<string>(), viewTemplate, cancellationToken), Times.Once);
+        Assert.ThrowsAsync<HttpRequestException>(() => _estimationViewTemplateService.UpsertAsync(viewTemplate));
     }
-
     [Test]
-    public async Task GetAsync_Should_Succeed()
+    public async Task GetAllShallowAsync_ShouldReturnEmptyCollection()
     {
-        var id = Guid.NewGuid();
-        var cancellationToken = CancellationToken.None;
-        var expectedResult = new ViewTemplate();
-
-        // Arrange
-        _httpClientWrapperMock.Setup(mock => mock.GetAsync<ViewTemplate>(It.IsAny<string>(), id, cancellationToken))
-            .ReturnsAsync(expectedResult);
-
-        // Act
-        var result = await _estimationViewTemplateService.GetAsync(id, cancellationToken);
-
-        // Assert
-        Assert.AreEqual(expectedResult, result);
-    }
-
-    [Test]
-    public async Task GetAllShallowAsync_Should_Succeed()
-    {
-        var cancellationToken = CancellationToken.None;
         var expectedResult = new List<ViewTemplate>();
 
-        // Arrange
-        _httpClientWrapperMock.Setup(mock => mock.GetAsync<List<ViewTemplate>>(It.IsAny<string>(), cancellationToken))
-            .ReturnsAsync(expectedResult);
+        // _httpClientWrapperMock
+        _httpClientWrapperMock.Setup(mock => mock.GetAsync(BackendApiEndpoints.EstimationViewTemplateController.GetShallowList, It.IsAny<CancellationToken>()))
+            .ReturnsAsync(new HttpResponseMessage(HttpStatusCode.NoContent));
 
         // Act
-        var result = await _estimationViewTemplateService.GetAllShallowAsync(cancellationToken);
+        var result = await _estimationViewTemplateService.GetAllShallowAsync();
 
         // Assert
-        Assert.AreEqual(expectedResult, result);
+        _httpClientWrapperMock.Verify(mock => mock.GetAsync(BackendApiEndpoints.EstimationViewTemplateController.GetShallowList, It.IsAny<CancellationToken>()), Times.Once);
+        Assert.That(result.Count(), Is.EqualTo(0));
     }
+    [Test]
+    public async Task GetAllShallowAsync_ShouldThrowException()
+    {
+        var expectedResult = new List<ViewTemplate>();
+
+        // _httpClientWrapperMock
+        _httpClientWrapperMock.Setup(mock => mock.GetAsync(BackendApiEndpoints.EstimationViewTemplateController.GetShallowList, It.IsAny<CancellationToken>()))
+            .ReturnsAsync(new HttpResponseMessage(HttpStatusCode.InternalServerError));
+
+        // Assert
+        Assert.ThrowsAsync<HttpRequestException>(() => _estimationViewTemplateService.GetAllShallowAsync());
+    }
+    [Test]
+    public void Delete_ShouldThrowException()
+    {
+        var viewTemplate = new ViewTemplate { Name = "test" };
+
+        // _httpClientWrapperMock
+        _httpClientWrapperMock.Setup(mock => mock.DeleteAsync(BackendApiEndpoints.EstimationViewTemplateController.Delete + $"?id={viewTemplate.Id}", It.IsAny<CancellationToken>()))
+            .ReturnsAsync(new HttpResponseMessage(HttpStatusCode.InternalServerError));
+
+        // Assert
+        Assert.ThrowsAsync<HttpRequestException>(() => _estimationViewTemplateService.DeleteAsync(viewTemplate));
+        _httpClientWrapperMock.Verify(mock => mock.DeleteAsync(BackendApiEndpoints.EstimationViewTemplateController.Delete + $"?id={viewTemplate.Id}", It.IsAny<CancellationToken>()), Times.Once);
+        
+    }
+    [Test]
+    public void Get_ShouldThrowException()
+    {
+        var guid = Guid.NewGuid();
+        var requestUri = BackendApiEndpoints.EstimationViewTemplateController.Get + $"?id={guid}";
+
+        // _httpClientWrapperMock
+        _httpClientWrapperMock.Setup(mock => mock.GetAsync(requestUri, It.IsAny<CancellationToken>()))
+            .ReturnsAsync(new HttpResponseMessage(HttpStatusCode.InternalServerError));
+
+        // Assert
+        Assert.ThrowsAsync<HttpRequestException>(() => _estimationViewTemplateService.GetAsync(guid));
+        _httpClientWrapperMock.Verify(mock => mock.GetAsync(requestUri, It.IsAny<CancellationToken>()), Times.Once);
+
+    }
+
 }
