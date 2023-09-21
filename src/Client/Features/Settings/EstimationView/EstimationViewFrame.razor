@@ -1,0 +1,24 @@
+﻿<ExpansionFrame TitleText="@Localizer["Licenser"]" Style="position: relative; background-color: var(--mud-palette-background)">
+
+    <MudOverlay DarkBackground="true" Visible="IsLoading" Absolute="true">
+        <MudProgressCircular Size="Size.Large" Color="Color.Primary" Indeterminate="true" />
+    </MudOverlay>
+
+    <div class="pa-4">
+        
+    </div>
+
+
+</ExpansionFrame>
+@code {
+    [Inject] public required IStringLocalizer<EstimationViewFrame> Localizer { get; set; }
+
+    bool IsLoading = true;
+
+
+    protected override void OnInitialized()
+    {
+        IsLoading = false;
+        StateHasChanged();
+    }
+}
