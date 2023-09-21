@@ -33,6 +33,7 @@ public class EstimationViewTemplateService : IEstimationViewTemplateService
         {
             _logger.LogInformation("No existing entity found. Inserting a new");
             var entity = dto.Adapt<EstimationViewTemplate>();
+            entity.OrganizationId = organizationId;
             await _dbContext.EstimationViewTemplates.AddAsync(entity);
         }
         else
