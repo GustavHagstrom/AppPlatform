@@ -3,13 +3,17 @@
 
 <MudDialog>
 
-    <DialogContent>
+    <DialogContent >
         
         <MudForm @ref="Form" Model="Template" Class="relative">
 
-            <MudGrid Spacing="1" Justify="Justify.FlexStart" Class="pa-4">
+            <MudOverlay DarkBackground="true" Visible="IsLoading" Absolute="true">
+                <MudProgressCircular Size="Size.Large" Color="Color.Primary" Indeterminate="true" />
+            </MudOverlay>
 
-                <MudItem xs="12" sm="12" md="6">
+            <MudGrid Spacing="1" Justify="Justify.FlexStart">
+
+                <MudItem xs="12" sm="12">
                     <MudText Typo="Typo.subtitle2" Style="color: var(--mud-palette-text-primary)">@Localizer["Namn"]</MudText>
                     <MudTextField T="string" Margin="Margin.Dense" Variant="Variant.Outlined" @bind-Value="Template.Name" />
                 </MudItem>
@@ -20,7 +24,8 @@
         
     </DialogContent>
     <DialogActions>
-        <MudButton Color="Color.Success" OnClick="Submit">Ok</MudButton>
+        <MudButton Variant="Variant.Filled" Color="Color.Error" Class="mb-2" OnClick="MudDialog.Cancel">@Localizer["Avbryt"]</MudButton>
+        <MudButton Variant="Variant.Filled" Color="Color.Success" Class="mb-2 mr-4" OnClick="Submit">@Localizer["Spara och stäng"]</MudButton>
     </DialogActions>
 </MudDialog>
 
@@ -28,12 +33,9 @@
     [Inject] public required IStringLocalizer<EditTemplateDialog> Localizer { get; set; }
     [Inject] public required IEstimationViewTemplateServices TemplateService { get; set; }
     [CascadingParameter] public required MudDialogInstance MudDialog { get; set; }
-    [Parameter] public ViewTemplate Template { get; set; } = new() { Name = string.Empty };
     [Parameter] public Guid? IdToLoadFrom { get; set; } = null;
 
-    public string TemplateParameterName => nameof(Template);
-    public string IdToLoadFromParameterName => nameof(IdToLoadFrom);
-
+    ViewTemplate Template { get; set; } = new() { Name = string.Empty };
     MudForm? Form;
     bool IsLoading = false;
 
@@ -57,20 +59,28 @@
                 //Handle exception
                 throw;
             }
-            finally
-            {
-                SetIsLoading(false);
-            }            
+            SetIsLoading(false);
         }
 
     }
 
-    void Submit()
+    async Task Submit()
     {
         Form?.Validate();
         if(Form?.IsValid == true)
         {
-            MudDialog.Close(DialogResult.Ok(true));
+            try
+            {
+                SetIsLoading(true);
+                await TemplateService.UpsertAsync(Template);
+                MudDialog.Close(DialogResult.Ok(true));
+            }
+            catch (Exception)
+            {
+                SetIsLoading(false);
+                //handle exception
+                throw;
+            }
         }
         
     }

@@ -10,7 +10,7 @@
     <div class="d-flex pa-2">
         <MudSpacer/>
         <MudTooltip Text="@Localizer["Skapa ny"]">
-            <MudIconButton Icon="@Icons.Material.Sharp.Add" Color="Color.Primary" Size="Size.Small" Variant="Variant.Outlined" />
+            <MudIconButton Icon="@Icons.Material.Sharp.Add" Color="Color.Primary" Size="Size.Small" Variant="Variant.Outlined" OnClick="() => ShowEditTemplateDialog(null)"/>
         </MudTooltip>
     </div>
 
@@ -23,8 +23,8 @@
                     <tr class="d-flex pa-1">
                         <MudText Class="d-flex flex-grow-1 my-auto" Typo="Typo.subtitle1">@template.Name</MudText>
                         <MudStack Row="true" Spacing="1">
-                            <MudIconButton Class="d-flex my-auto" Icon="@Icons.Material.Sharp.Edit" Color="Color.Primary" Size="Size.Small" Variant="Variant.Outlined" />
-                            <MudIconButton Class="d-flex my-auto" Icon="@Icons.Material.Sharp.Delete" Color="Color.Error" Size="Size.Small" Variant="Variant.Outlined" />
+                            <MudIconButton Class="d-flex my-auto" Icon="@Icons.Material.Sharp.Edit" Color="Color.Primary" Size="Size.Small" Variant="Variant.Outlined" OnClick="() => ShowEditTemplateDialog(template.Id)"/>
+                            <MudIconButton Class="d-flex my-auto" Icon="@Icons.Material.Sharp.Delete" Color="Color.Error" Size="Size.Small" Variant="Variant.Outlined" OnClick="() => DeleteTemplate(template)" />
                         </MudStack>
                     </tr>
                 }
@@ -32,58 +32,79 @@
         </div>
     }
     
-        
-        @*@foreach (var template in Templates)
-        {
-            <div class="d-flex">
-                <MudText Class="d-flex flex-grow-1" Typo="Typo.subtitle1">@template.Name</MudText>
-                <MudIconButton Class="d-flex" Icon="@Icons.Material.Sharp.Edit" Color="Color.Primary" Size="Size.Medium" Variant="Variant.Outlined" />
-                <MudIconButton Class="d-flex" Icon="@Icons.Material.Sharp.Delete" Color="Color.Error" Size="Size.Medium" Variant="Variant.Outlined" />
-            </div>
-        }*@
-    
 </div>
 
 
 @code {
     [Inject] public required IStringLocalizer<EstimationViewFrameContent> Localizer { get; set; }
     [Inject] public required IEstimationViewTemplateServices TemplateService { get; set; }
+    [Inject] public required IDialogService DialogService { get; set; }
 
     bool IsLoading = true;
-    //List<ViewTemplate> Templates { get; set; } = new();
-    List<ViewTemplate> Templates { get; set; } = new()
-    {
-        new ViewTemplate{ Name = "Test 1" },
-        new ViewTemplate{ Name = "Test 2" },
-    };
+    List<ViewTemplate> Templates { get; set; } = new();
 
     protected override async Task OnInitializedAsync()
     {
-        await TryRefreshList();
+        await TryRefreshListAsync();
     }
-    async Task TryRefreshList()
+    async Task TryRefreshListAsync()
     {
         try
         {
             UpdateIsLoading(true);
 
-            //Templates.Clear();
-            //var templates = await TemplateService.GetAllShallowAsync();
-            //Templates.AddRange(templates);
+            Templates.Clear();
+            var templates = await TemplateService.GetAllShallowAsync();
+            Templates.AddRange(templates);
         }
         catch (Exception)
         {
             //Handle exception
             throw;
         }
-        finally
+        UpdateIsLoading(false);
+    }
+    async Task ShowEditTemplateDialog(Guid? id = null)
+    {
+        var parameters = new DialogParameters<EditTemplateDialog>();
+        parameters.Add(x => x.IdToLoadFrom, id);
+
+        var options = new DialogOptions()
         {
+            MaxWidth = MaxWidth.Small,
+            CloseButton = true,
+        };
+
+        var dialog = await DialogService.ShowAsync<EditTemplateDialog>(Localizer["Redigera"], parameters, options);
+        var result = await dialog.Result;
+        if(!result.Canceled)
+        {
+            await TryRefreshListAsync();
+        }
+    }
+    async Task DeleteTemplate(ViewTemplate template)
+    {
+        var parameters = new DialogParameters<YesNoDialog>();
+        parameters.Add(x => x.Info, Localizer["Vill du ta bort mallen \""] + template.Name + "\"?");
+
+        var dialog = await DialogService.ShowAsync<YesNoDialog>(Localizer["Ta bort"], parameters);
+        var result = await dialog.Result;
+        if (!result.Canceled)
+        {
+            try
+            {
+                UpdateIsLoading(true);
+                await TemplateService.DeleteAsync(template);
+                await TryRefreshListAsync();
+            }
+            catch (Exception)
+            {
+                //Handle exception
+                throw;
+            }
             UpdateIsLoading(false);
         }
     }
-
-
-
     void UpdateIsLoading(bool isLoading)
     {
         IsLoading = isLoading;
