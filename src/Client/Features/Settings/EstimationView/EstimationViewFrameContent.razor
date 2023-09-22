@@ -10,11 +10,11 @@
     <div class="d-flex pa-2">
         <MudSpacer/>
         <MudTooltip Text="@Localizer["Skapa ny"]">
-            <MudIconButton Icon="@Icons.Material.Sharp.Add" Color="Color.Primary" Size="Size.Small" Variant="Variant.Outlined" OnClick="() => ShowEditTemplateDialog(null)"/>
+            <MudIconButton Icon="@Icons.Material.Sharp.Add" Color="Color.Success" Size="Size.Small" Variant="Variant.Filled" OnClick="() => ShowEditTemplateDialog(null)"/>
         </MudTooltip>
     </div>
 
-     @if(Templates.Count > 0)
+    @if(Templates.Count > 0)
     {
         <div class="d-flex">
             <table class="striped border border-solid mx-2 mb-2 flex-grow-1">

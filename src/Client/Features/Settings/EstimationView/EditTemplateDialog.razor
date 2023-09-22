@@ -11,14 +11,21 @@
                 <MudProgressCircular Size="Size.Large" Color="Color.Primary" Indeterminate="true" />
             </MudOverlay>
 
-            <MudGrid Spacing="1" Justify="Justify.FlexStart">
+            @if(!IsLoading)
+            {
+                <MudGrid Spacing="1" Justify="Justify.FlexStart">
 
-                <MudItem xs="12" sm="12">
-                    <MudText Typo="Typo.subtitle2" Style="color: var(--mud-palette-text-primary)">@Localizer["Namn"]</MudText>
-                    <MudTextField T="string" Margin="Margin.Dense" Variant="Variant.Outlined" @bind-Value="Template.Name" />
-                </MudItem>
+                    <MudItem xs="12" sm="12">
+                        <MudText Typo="Typo.subtitle2" Style="color: var(--mud-palette-text-primary)">@Localizer["Namn"]</MudText>
+                        <MudTextField T="string" Margin="Margin.Dense" Variant="Variant.Outlined" @bind-Value="Template.Name" />
+                    </MudItem>
 
-            </MudGrid>
+                    <MudItem xs="12" sm="12">
+                        <SectionsList Sections="Template.Sections"/>
+                    </MudItem>
+
+                </MudGrid>
+            }
 
         </MudForm>
         

@@ -1,0 +1,117 @@
+﻿@using Client.Shared.EstimationViewTemplate.Models.SectionModels;
+
+<div class="d-flex">
+    <MudText Class="flex-grow-1" Typo="Typo.h5">@Localizer["Sektioner"]</MudText>
+    <MudIconButton Class="my-auto" Icon="@Icons.Material.Sharp.ArrowUpward" Color="Color.Primary" Variant="Variant.Outlined" Size="Size.Small"/>
+    <MudIconButton Class="my-auto" Icon="@Icons.Material.Sharp.ArrowDownward" Color="Color.Primary" Variant="Variant.Text" Size="Size.Small" />
+    <MudMenu Class="my-auto" Icon="@Icons.Material.Sharp.Add" Color="Color.Success" Size="Size.Small" Variant="Variant.Filled"
+                Dense="true" AnchorOrigin="Origin.TopRight" TransformOrigin="Origin.TopRight">
+        <MudMenuItem OnClick="CreateNewDataSection">@Localizer["Data sektion"]</MudMenuItem>
+        <MudMenuItem OnClick="CreateNewSheetSection">@Localizer["Tabell sektion"]</MudMenuItem>
+    </MudMenu>
+
+    @* <MudIconButton Class="my-auto" Icon="@Icons.Material.Sharp.Add" Color="Color.Success" Variant="Variant.Filled" Size="Size.Small" /> *@
+    @* <MudIconButton Icon="@Icons.Material.Sharp.Delete" Color="Color.Error" Variant="Variant.Text" /> *@
+</div>
+
+
+<div class="d-flex">
+    <table class="striped border border-solid flex-grow-1" style="min-height: 40px">
+        @foreach (var item in Sections)
+        {
+            <tr class="d-flex pa-1">
+                <MudText Class="d-flex flex-grow-1 my-auto" Typo="Typo.subtitle1">@item.Name</MudText>
+                <MudStack Row="true" Spacing="1">
+                    <MudIconButton Class="d-flex my-auto" Icon="@Icons.Material.Sharp.Edit" Color="Color.Primary" Size="Size.Small" Variant="Variant.Outlined" />
+                    <MudIconButton Class="d-flex my-auto" Icon="@Icons.Material.Sharp.Delete" Color="Color.Error" Size="Size.Small" Variant="Variant.Outlined" />
+                </MudStack>
+            </tr>
+        }
+    </table>
+</div>
+
+    
+
+
+
+@code {
+    [Inject] public required IStringLocalizer<SectionsList> Localizer { get; set; }
+    [Inject] public required IDialogService DialogService { get; set; }
+
+    [Parameter, EditorRequired] public required List<IViewSection> Sections { get; set; }
+
+    async Task EditSection(IViewSection section)
+    {
+        if(section is DataSection dataSection)
+        {
+            var clone = dataSection.Clone();
+            var result = await ShowEditDataSectionDialog(clone);
+            if(!result.Canceled)
+            {
+                dataSection = clone;
+                StateHasChanged();
+            }
+        }
+        else if(section is SheetSection sheetSection)
+        {
+            var clone = sheetSection.Clone();
+            var result = await ShowEditSheetSectionDialog(clone);
+            if (!result.Canceled)
+            {
+                sheetSection = clone;
+                StateHasChanged();
+            }
+        }
+    }
+    async Task CreateNewDataSection()
+    {
+        var newSection = new DataSection { Name = string.Empty };
+
+        var result = await ShowEditDataSectionDialog(newSection);
+        if(!result.Canceled)
+        {
+            Sections.Add(newSection);
+            StateHasChanged();
+        }
+
+    }
+    async Task CreateNewSheetSection()
+    {
+        var newSection = new SheetSection { Name = string.Empty };
+
+        var result = await ShowEditSheetSectionDialog(newSection);
+        if (!result.Canceled)
+        {
+            Sections.Add(newSection);
+            StateHasChanged();
+        }
+    }
+    async Task<DialogResult> ShowEditDataSectionDialog(DataSection dataSection)
+    {
+        var parameters = new DialogParameters<EditDataSectionDialog>();
+        parameters.Add(x => x.Section, dataSection);
+
+        var options = new DialogOptions
+            {
+                MaxWidth = MaxWidth.Small,
+                CloseButton = true,
+            };
+
+        var dialog = await DialogService.ShowAsync<EditDataSectionDialog>(Localizer["Ny datasektion"], parameters, options);
+        return await dialog.Result;
+    }
+    async Task<DialogResult> ShowEditSheetSectionDialog(SheetSection sheetSection)
+    {
+        var parameters = new DialogParameters<EditSheetSectionDialog>();
+        parameters.Add(x => x.Section, sheetSection);
+
+        var options = new DialogOptions
+            {
+                MaxWidth = MaxWidth.Small,
+                CloseButton = true,
+            };
+
+        var dialog = await DialogService.ShowAsync<EditSheetSectionDialog>(Localizer["Ny tabellsektion"], parameters, options);
+        return await dialog.Result;
+    }
+}
