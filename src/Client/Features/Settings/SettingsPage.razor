@@ -9,11 +9,29 @@
     <MudContainer MaxWidth="MaxWidth.Medium">
 
         <MudStack Spacing="4" Class="py-4">
-            <AppearanceFrame />
-            <EstimationViewFrame/>
-            <CredentialsFrame />
-            <LicenseFrame/>
-            <RolesFrame/>
+            
+            @*Only one of these expansionframes should be expanded at a time to ensure synchronization of data*@
+
+            <ExpansionFrame TitleText="@Localizer["Utseende"]" Style="background-color: var(--mud-palette-background)">
+                <AppearanceFrameContent />
+            </ExpansionFrame>
+
+            <ExpansionFrame TitleText="@Localizer["Vy mallar"]" Style="background-color: var(--mud-palette-background)">
+                <EstimationViewFrameContent />
+            </ExpansionFrame>
+
+            <ExpansionFrame TitleText="@Localizer["Databas"]" Style="background-color: var(--mud-palette-background)">
+                <CredentialsFrameContent />
+            </ExpansionFrame>
+
+            <ExpansionFrame TitleText="@Localizer["Licenser"]" Style="background-color: var(--mud-palette-background)">
+                <LicenseFrameContent />
+            </ExpansionFrame>
+
+            <ExpansionFrame TitleText="@Localizer["Roller"]" Style="background-color: var(--mud-palette-background)">
+                <RolesFrameContent />
+            </ExpansionFrame>
+            
         </MudStack>
 
     </MudContainer>

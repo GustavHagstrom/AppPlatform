@@ -1,5 +1,6 @@
-﻿<ExpansionFrame TitleText="@Localizer["Utseende"]" Style="position: relative; background-color: var(--mud-palette-background)">
+﻿
 
+<div class="relative">
     <MudOverlay DarkBackground="true" Visible="IsLoading" Absolute="true">
         <MudProgressCircular Size="Size.Large" Color="Color.Primary" Indeterminate="true" />
     </MudOverlay>
@@ -7,12 +8,13 @@
     <div class="pa-4">
         <MudSwitch Checked="IsDarkMode" CheckedChanged="@(async (bool value) => await OnDarkModeChanged(value))" Color="Color.Primary" Label="@Localizer["Mörkts tema"]" />
     </div>
+</div>
+    
     
 
-</ExpansionFrame>
 
 @code {
-    [Inject] public required IStringLocalizer<AppearanceFrame> Localizer { get; set; }
+    [Inject] public required IStringLocalizer<AppearanceFrameContent> Localizer { get; set; }
     [Inject] public required IDarkModeService DarkModeService { get; set; }
     [CascadingParameter(Name = "DarkModeAction")] public required Action<bool> DarkModeAction { get; set; }
 

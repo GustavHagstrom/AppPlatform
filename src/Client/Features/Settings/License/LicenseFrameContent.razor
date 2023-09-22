@@ -1,12 +1,12 @@
 ﻿@using Microsoft.Graph.Models;
-<ExpansionFrame TitleText="@Localizer["Licenser"]" Style="position: relative; background-color: var(--mud-palette-background)">
 
+<div class="relative">
     <MudOverlay DarkBackground="true" Visible="IsLoading" Absolute="true">
         <MudProgressCircular Size="Size.Large" Color="Color.Primary" Indeterminate="true" />
     </MudOverlay>
 
     <div class="pa-4">
-        @if(Users is not null)
+        @if (Users is not null)
         {
             @foreach (var user in Users)
             {
@@ -14,11 +14,10 @@
             }
         }
     </div>
+</div>
 
-
-</ExpansionFrame>
 @code {
-    [Inject] public required IStringLocalizer<LicenseFrame> Localizer { get; set; }
+    [Inject] public required IStringLocalizer<LicenseFrameContent> Localizer { get; set; }
     [Inject] public required GraphServiceClient GraphClient { get; set; }
 
     bool IsLoading = true;

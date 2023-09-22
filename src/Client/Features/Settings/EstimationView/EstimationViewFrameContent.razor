@@ -1,0 +1,92 @@
+﻿@using Client.Shared.EstimationViewTemplate.Models;
+@using Client.Shared.EstimationViewTemplate.Services;
+
+<div class="relative">
+    <MudOverlay DarkBackground="true" Visible="IsLoading" Absolute="true">
+        <MudProgressCircular Size="Size.Large" Color="Color.Primary" Indeterminate="true" />
+    </MudOverlay>
+
+    
+    <div class="d-flex pa-2">
+        <MudSpacer/>
+        <MudTooltip Text="@Localizer["Skapa ny"]">
+            <MudIconButton Icon="@Icons.Material.Sharp.Add" Color="Color.Primary" Size="Size.Small" Variant="Variant.Outlined" />
+        </MudTooltip>
+    </div>
+
+     @if(Templates.Count > 0)
+    {
+        <div class="d-flex">
+            <table class="striped border border-solid mx-2 mb-2 flex-grow-1">
+                @foreach (var template in Templates)
+                {
+                    <tr class="d-flex pa-1">
+                        <MudText Class="d-flex flex-grow-1 my-auto" Typo="Typo.subtitle1">@template.Name</MudText>
+                        <MudStack Row="true" Spacing="1">
+                            <MudIconButton Class="d-flex my-auto" Icon="@Icons.Material.Sharp.Edit" Color="Color.Primary" Size="Size.Small" Variant="Variant.Outlined" />
+                            <MudIconButton Class="d-flex my-auto" Icon="@Icons.Material.Sharp.Delete" Color="Color.Error" Size="Size.Small" Variant="Variant.Outlined" />
+                        </MudStack>
+                    </tr>
+                }
+            </table>
+        </div>
+    }
+    
+        
+        @*@foreach (var template in Templates)
+        {
+            <div class="d-flex">
+                <MudText Class="d-flex flex-grow-1" Typo="Typo.subtitle1">@template.Name</MudText>
+                <MudIconButton Class="d-flex" Icon="@Icons.Material.Sharp.Edit" Color="Color.Primary" Size="Size.Medium" Variant="Variant.Outlined" />
+                <MudIconButton Class="d-flex" Icon="@Icons.Material.Sharp.Delete" Color="Color.Error" Size="Size.Medium" Variant="Variant.Outlined" />
+            </div>
+        }*@
+    
+</div>
+
+
+@code {
+    [Inject] public required IStringLocalizer<EstimationViewFrameContent> Localizer { get; set; }
+    [Inject] public required IEstimationViewTemplateServices TemplateService { get; set; }
+
+    bool IsLoading = true;
+    //List<ViewTemplate> Templates { get; set; } = new();
+    List<ViewTemplate> Templates { get; set; } = new()
+    {
+        new ViewTemplate{ Name = "Test 1" },
+        new ViewTemplate{ Name = "Test 2" },
+    };
+
+    protected override async Task OnInitializedAsync()
+    {
+        await TryRefreshList();
+    }
+    async Task TryRefreshList()
+    {
+        try
+        {
+            UpdateIsLoading(true);
+
+            //Templates.Clear();
+            //var templates = await TemplateService.GetAllShallowAsync();
+            //Templates.AddRange(templates);
+        }
+        catch (Exception)
+        {
+            //Handle exception
+            throw;
+        }
+        finally
+        {
+            UpdateIsLoading(false);
+        }
+    }
+
+
+
+    void UpdateIsLoading(bool isLoading)
+    {
+        IsLoading = isLoading;
+        StateHasChanged();
+    }
+}

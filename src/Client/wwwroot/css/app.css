@@ -15,7 +15,7 @@ table.table-row-border tr:nth-child(n+2) {
 }
 
 table.striped {
-    width: 100%;
+
 }
 table.striped th {
     position: sticky;
@@ -28,10 +28,10 @@ table.striped tr:nth-child(even) {
 table.striped tr:nth-child(odd) {
     background-color: var(--mud-palette-background);
 }
-table.striped .mud-icon-button {
+/*table.striped .mud-icon-button {
     padding: 8px;
     margin: 0;
-}
+}*/
 .span-40 span{
     padding: 8px;
 }

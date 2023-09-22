@@ -65,7 +65,7 @@ public class EstimationViewTemplateServiceTests
         Assert.That(result.Count(), Is.EqualTo(0));
     }
     [Test]
-    public async Task GetAllShallowAsync_ShouldThrowException()
+    public void GetAllShallowAsync_ShouldThrowException()
     {
         var expectedResult = new List<ViewTemplate>();
 
