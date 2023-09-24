@@ -44,22 +44,25 @@ public static class EstimationViewTemplateDtoSamples
                     Value = "TopLeft Header"
                 }
             },
-            NetSheetSectionTemplate = new NetSheetSectionTemplateDto
+            SheetSectionTemplates = new List<SheetSectionTemplateDto>
             {
-                Order = 2,
-                Columns =
+                new SheetSectionTemplateDto
                 {
-                    new SheetColumnDto
+                    Order = 2,
+                    Columns =
                     {
-                        Order = 1,
-                        ColumnType = SheetColumnType.Description,
-                        CellFormat = new CellFormatDto
+                        new SheetColumnDto
                         {
-                            FontFamily = "Calibri"
+                            Order = 1,
+                            ColumnType = SheetColumnType.Description,
+                            CellFormat = new CellFormatDto
+                            {
+                                FontFamily = "Calibri"
+                            }
                         }
-                    }
-                },
-            }
+                    },
+                }
+            }            
         };
         return entety;
     }

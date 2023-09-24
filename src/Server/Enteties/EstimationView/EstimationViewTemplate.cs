@@ -14,6 +14,6 @@ public class EstimationViewTemplate : IEstimationViewEntity
 
 
     public List<DataSectionTemplate> DataSectionTemplates { get; set; } = new();
-    public NetSheetSectionTemplate? NetSheetSectionTemplate { get; set; }
+    public List<SheetSectionTemplate> SheetSectionTemplates { get; set; } = new();
     public List<HeaderOrFooter> HeaderOrFooters { get; set; } = new();
 }

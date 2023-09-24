@@ -23,7 +23,8 @@ public class EstimationViewTemplateService : IEstimationViewTemplateService
     public async Task UpsertAsync(EstimationViewTemplateDto dto, string organizationId)
     {
         var existing = await _dbContext.EstimationViewTemplates
-            .Include(x => x.NetSheetSectionTemplate).ThenInclude(x => x!.Columns).ThenInclude(x => x.CellFormat)
+            .Include(x => x.SheetSectionTemplates).ThenInclude(x => x.Columns)
+            .Include(x => x.SheetSectionTemplates).ThenInclude(x => x.Columns).ThenInclude(x => x.CellFormat)
             .Include(x => x.HeaderOrFooters)
             .Include(x => x.DataSectionTemplates).ThenInclude(x => x.Columns)
             .Include(x => x.DataSectionTemplates).ThenInclude(x => x.Cells).ThenInclude(x => x.Format)
@@ -58,7 +59,8 @@ public class EstimationViewTemplateService : IEstimationViewTemplateService
     public async Task<IEnumerable<EstimationViewTemplateDto>?> GetAllAsDeepListAsync(string organizationId)
     {
         var entities = await _dbContext.EstimationViewTemplates
-            .Include(x => x.NetSheetSectionTemplate).ThenInclude(x => x!.Columns).ThenInclude(x => x.CellFormat)
+            .Include(x => x.SheetSectionTemplates).ThenInclude(x => x.Columns)
+            .Include(x => x.SheetSectionTemplates).ThenInclude(x => x.Columns).ThenInclude(x => x.CellFormat)
             .Include(x => x.HeaderOrFooters)
             .Include(x => x.DataSectionTemplates).ThenInclude(x => x.Columns)
             .Include(x => x.DataSectionTemplates).ThenInclude(x => x.Cells).ThenInclude(x => x.Format)
@@ -70,7 +72,8 @@ public class EstimationViewTemplateService : IEstimationViewTemplateService
     public async Task<EstimationViewTemplateDto?> GetSingleDeepAsync(Guid id, string organizationId)
     {
         var entity = await _dbContext.EstimationViewTemplates
-            .Include(x => x.NetSheetSectionTemplate).ThenInclude(x => x!.Columns).ThenInclude(x => x.CellFormat)
+            .Include(x => x.SheetSectionTemplates).ThenInclude(x => x.Columns)
+            .Include(x => x.SheetSectionTemplates).ThenInclude(x => x.Columns).ThenInclude(x => x.CellFormat)
             .Include(x => x.HeaderOrFooters)
             .Include(x => x.DataSectionTemplates).ThenInclude(x => x.Columns)
             .Include(x => x.DataSectionTemplates).ThenInclude(x => x.Cells).ThenInclude(x => x.Format)

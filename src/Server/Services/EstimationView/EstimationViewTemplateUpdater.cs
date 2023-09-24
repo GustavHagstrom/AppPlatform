@@ -13,7 +13,7 @@ public class EstimationViewTemplateUpdater : IEstimationViewTemplateUpdater
         existing.Name = updateSrc.Name;
 
         UpdateEstimationViewEntityList(existing.HeaderOrFooters, updateSrc.HeaderOrFooters, UpdateHeaderOrFooter);
-        UpdateNetSheetSectionTemplate(existing.NetSheetSectionTemplate, updateSrc.NetSheetSectionTemplate);
+        UpdateEstimationViewEntityList(existing.SheetSectionTemplates, updateSrc.SheetSectionTemplates, UpdateNetSheetSectionTemplate);
         UpdateEstimationViewEntityList(existing.DataSectionTemplates, updateSrc.DataSectionTemplates, UpdateDataSectionTemplate);
     }
     private void UpdateHeaderOrFooter(HeaderOrFooter existing, HeaderOrFooter updateSrc)
@@ -59,18 +59,9 @@ public class EstimationViewTemplateUpdater : IEstimationViewTemplateUpdater
         existing.ThoasandsSeparator = updateSrc.ThoasandsSeparator;
         existing.Underline = updateSrc.Underline;
     }
-    private void UpdateNetSheetSectionTemplate(NetSheetSectionTemplate? existing, NetSheetSectionTemplate? updateSrc)
+    private void UpdateNetSheetSectionTemplate(SheetSectionTemplate existing, SheetSectionTemplate updateSrc)
     {
-        if (existing is null)
-        {
-            existing = updateSrc;
-            return;
-        }
-        if (updateSrc is null)
-        {
-            existing = updateSrc;
-            return;
-        }
+        existing.SheetType = updateSrc.SheetType;
         existing.Order = updateSrc.Order;
         UpdateEstimationViewEntityList(existing.Columns, updateSrc.Columns, UpdateSheetColumn);
     }

@@ -1,10 +1,12 @@
-﻿namespace Server.Enteties.EstimationView;
+﻿using SharedLibrary.Enums.BidconAccess;
 
-public class NetSheetSectionTemplate : IEstimationViewEntity
+namespace Server.Enteties.EstimationView;
+
+public class SheetSectionTemplate : IEstimationViewEntity
 {
     public Guid Id { get; set; }
     public int Order { get; set; }
-
+    public SheetType SheetType { get; set; }
 
 
 

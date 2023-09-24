@@ -5,6 +5,6 @@ public class EstimationViewTemplateDto
     public required string Name { get; set; }
 
     public List<DataSectionTemplateDto> DataSectionTemplates { get; set; } = new();
-    public NetSheetSectionTemplateDto? NetSheetSectionTemplate { get; set; }
+    public List<SheetSectionTemplateDto> SheetSectionTemplates { get; set; } = new();
     public List<HeaderOrFooterDto> HeaderOrFooters { get; set; } = new();
 }

@@ -11,5 +11,5 @@ public class SheetColumn : IEstimationViewEntity
 
     public required CellFormat CellFormat { get; set; }
     public Guid NetSheetSectionTemplateId { get; set; }
-    public NetSheetSectionTemplate? NetSheetSectionTemplate { get; set; }
+    public SheetSectionTemplate? NetSheetSectionTemplate { get; set; }
 }
