@@ -70,12 +70,13 @@
         parameters.Add(x => x.IdToLoadFrom, id);
 
         var options = new DialogOptions()
-        {
-            MaxWidth = MaxWidth.Small,
-            CloseButton = true,
-        };
+            {
+                FullScreen = true,
+                CloseButton = true,
+                NoHeader = true,
+    };
 
-        var dialog = await DialogService.ShowAsync<EditTemplateDialog>(Localizer["Redigera"], parameters, options);
+        var dialog = await DialogService.ShowAsync<EditTemplateDialog>(Localizer["Redigera mall"], parameters, options);
         var result = await dialog.Result;
         if(!result.Canceled)
         {

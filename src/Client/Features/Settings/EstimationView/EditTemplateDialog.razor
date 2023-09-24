@@ -1,39 +1,52 @@
 ﻿@using Client.Shared.EstimationViewTemplate.Models;
 @using Client.Shared.EstimationViewTemplate.Services;
 
-<MudDialog>
+<MudDialog Class="pa-0" Style="background-color: var(--mud-palette-background-grey)">
 
-    <DialogContent >
+    <DialogContent>
         
-        <MudForm @ref="Form" Model="Template" Class="relative">
+        <MudForm @ref="Form" Model="Template" >
+            <div class="relative" style="height: 100vh">
+                <MudOverlay DarkBackground="true" Visible="IsLoading" Absolute="true">
+                    <MudProgressCircular Size="Size.Large" Color="Color.Primary" Indeterminate="true" />
+                </MudOverlay>
+                <div class="d-flex" style="height: calc(100% - 50px)">
+                    <div class="d-flex" style="height: 100%">
+                        @if (!IsLoading)
+                        {
+                            <MudStack Spacing="1" Justify="Justify.FlexStart">
 
-            <MudOverlay DarkBackground="true" Visible="IsLoading" Absolute="true">
-                <MudProgressCircular Size="Size.Large" Color="Color.Primary" Indeterminate="true" />
-            </MudOverlay>
+                                <MudText Typo="Typo.subtitle2" Style="color: var(--mud-palette-text-primary)">@Localizer["Namn"]</MudText>
+                                <MudTextField T="string" Margin="Margin.Dense" Variant="Variant.Outlined" @bind-Value="Template.Name" />
 
-            @if(!IsLoading)
-            {
-                <MudGrid Spacing="1" Justify="Justify.FlexStart">
+                                <div class="d-block">
+                                    <SectionsList DataSections="Template.DataSections" SheetSections="Template.SheetSections" />
+                                </div>
+                                
 
-                    <MudItem xs="12" sm="12">
-                        <MudText Typo="Typo.subtitle2" Style="color: var(--mud-palette-text-primary)">@Localizer["Namn"]</MudText>
-                        <MudTextField T="string" Margin="Margin.Dense" Variant="Variant.Outlined" @bind-Value="Template.Name" />
-                    </MudItem>
+                            </MudStack>
+                        }
+                    </div>
+                    <div class="d-flex flex-grow-1" style="height: 100%;">
 
-                    <MudItem xs="12" sm="12">
-                        <SectionsList  DataSections="Template.DataSections" SheetSections="Template.SheetSections"/>
-                    </MudItem>
+                    </div>
+                </div>
+                
 
-                </MudGrid>
-            }
-
+                <div class="d-flex" style="height: 50px;">
+                    <MudSpacer />
+                    <MudButton Variant="Variant.Filled" Color="Color.Error" Class="mb-2" OnClick="MudDialog.Cancel">@Localizer["Avbryt"]</MudButton>
+                    <MudButton Variant="Variant.Filled" Color="Color.Success" Class="mb-2 mr-4" OnClick="Submit">@Localizer["Spara och stäng"]</MudButton>
+                </div>
+            </div>
+            
         </MudForm>
         
     </DialogContent>
-    <DialogActions>
+@*     <DialogActions>
         <MudButton Variant="Variant.Filled" Color="Color.Error" Class="mb-2" OnClick="MudDialog.Cancel">@Localizer["Avbryt"]</MudButton>
         <MudButton Variant="Variant.Filled" Color="Color.Success" Class="mb-2 mr-4" OnClick="Submit">@Localizer["Spara och stäng"]</MudButton>
-    </DialogActions>
+    </DialogActions> *@
 </MudDialog>
 
 @code {

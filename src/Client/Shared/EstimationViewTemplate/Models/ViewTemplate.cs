@@ -8,6 +8,5 @@ public class ViewTemplate
     public required string Name { get; set; }
     public List<DataSection> DataSections { get; set; } = new();
     public List<SheetSection> SheetSections { get; set; } = new();
-    public List<HeaderOrFooter> HeaderOrFooters { get; set; } = new();  
-    //Make this be like the dto and use mapseter to map instead of custojm mapper
+    public List<HeaderOrFooter> HeaderOrFooters { get; set; } = new();
 }
