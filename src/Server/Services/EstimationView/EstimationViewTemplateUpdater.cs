@@ -13,8 +13,8 @@ public class EstimationViewTemplateUpdater : IEstimationViewTemplateUpdater
         existing.Name = updateSrc.Name;
 
         UpdateEstimationViewEntityList(existing.HeaderOrFooters, updateSrc.HeaderOrFooters, UpdateHeaderOrFooter);
-        UpdateEstimationViewEntityList(existing.SheetSectionTemplates, updateSrc.SheetSectionTemplates, UpdateNetSheetSectionTemplate);
-        UpdateEstimationViewEntityList(existing.DataSectionTemplates, updateSrc.DataSectionTemplates, UpdateDataSectionTemplate);
+        UpdateEstimationViewEntityList(existing.SheetSections, updateSrc.SheetSections, UpdateNetSheetSectionTemplate);
+        UpdateEstimationViewEntityList(existing.DataSections, updateSrc.DataSections, UpdateDataSectionTemplate);
     }
     private void UpdateHeaderOrFooter(HeaderOrFooter existing, HeaderOrFooter updateSrc)
     {
@@ -55,7 +55,7 @@ public class EstimationViewTemplateUpdater : IEstimationViewTemplateUpdater
         existing.IncludeTimeOfDay = updateSrc.IncludeTimeOfDay;
         existing.Italic = updateSrc.Italic;
         existing.Justify = updateSrc.Justify;
-        existing.Style = updateSrc.Style;
+        existing.BorderStyle = updateSrc.BorderStyle;
         existing.ThoasandsSeparator = updateSrc.ThoasandsSeparator;
         existing.Underline = updateSrc.Underline;
     }

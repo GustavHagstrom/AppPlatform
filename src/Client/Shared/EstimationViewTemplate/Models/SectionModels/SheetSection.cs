@@ -9,7 +9,7 @@ public class SheetSection : IViewSection
     public required string Name { get; set; }
     public int Order { get; set; }
     public SheetType SheetType { get; set; }
-    public List<SheetColumnDefinition> Columns { get; set; } = new();
+    public List<SheetColumn> Columns { get; set; } = new();
 
     public SheetSection Clone()
     {

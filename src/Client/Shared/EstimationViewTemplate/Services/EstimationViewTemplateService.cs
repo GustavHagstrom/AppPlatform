@@ -33,8 +33,8 @@ public class EstimationViewTemplateService : IEstimationViewTemplateServices
         var requestUri = (BackendApiEndpoints.EstimationViewTemplateController.Get + $"?id={id}");
         var response = await _httpClient.GetAsync(requestUri, cancellationToken);
         response.EnsureSuccessStatusCode();
-        var result = await response.Content.ReadFromJsonAsync<ViewTemplate>();
-        return result!;
+        var result = await response.Content.ReadFromJsonAsync<EstimationViewTemplateDto>();
+        return result!.Adapt<ViewTemplate>();
     }
     public async Task<IEnumerable<ViewTemplate>> GetAllShallowAsync(CancellationToken cancellationToken = default)
     {
@@ -44,7 +44,7 @@ public class EstimationViewTemplateService : IEstimationViewTemplateServices
             return Array.Empty<ViewTemplate>();
         }
         response.EnsureSuccessStatusCode();
-        var result = await response.Content.ReadFromJsonAsync<IEnumerable<ViewTemplate>>();
-        return result!;
+        var result = await response.Content.ReadFromJsonAsync<IEnumerable<EstimationViewTemplateDto>>();
+        return result!.Adapt<IEnumerable<ViewTemplate>>();
     }
 }

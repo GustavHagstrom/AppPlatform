@@ -1,6 +1,5 @@
 ﻿namespace Client.Shared.EstimationViewTemplate.Models.SectionModels;
-
-public class ColumnDefinition : IColumnDefinition
+public class DataColumn
 {
     public Guid Id { get; set; }
     public int Order { get; set; }

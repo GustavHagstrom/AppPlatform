@@ -22,7 +22,7 @@ public class CellFormat : IEstimationViewEntity
     public bool BorderTop { get; set; }
     public bool BorderRight { get; set; }
     public bool BorderBottom { get; set; }
-    public BorderStyle Style { get; set; }
+    public BorderStyle BorderStyle { get; set; }
 
 
 

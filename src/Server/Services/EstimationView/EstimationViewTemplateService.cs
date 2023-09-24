@@ -23,11 +23,11 @@ public class EstimationViewTemplateService : IEstimationViewTemplateService
     public async Task UpsertAsync(EstimationViewTemplateDto dto, string organizationId)
     {
         var existing = await _dbContext.EstimationViewTemplates
-            .Include(x => x.SheetSectionTemplates).ThenInclude(x => x.Columns)
-            .Include(x => x.SheetSectionTemplates).ThenInclude(x => x.Columns).ThenInclude(x => x.CellFormat)
+            .Include(x => x.SheetSections).ThenInclude(x => x.Columns)
+            .Include(x => x.SheetSections).ThenInclude(x => x.Columns).ThenInclude(x => x.CellFormat)
             .Include(x => x.HeaderOrFooters)
-            .Include(x => x.DataSectionTemplates).ThenInclude(x => x.Columns)
-            .Include(x => x.DataSectionTemplates).ThenInclude(x => x.Cells).ThenInclude(x => x.Format)
+            .Include(x => x.DataSections).ThenInclude(x => x.Columns)
+            .Include(x => x.DataSections).ThenInclude(x => x.Cells).ThenInclude(x => x.Format)
             .FirstOrDefaultAsync(x => x.Id == dto.Id && x.OrganizationId == organizationId);
 
         if (existing is null)
@@ -59,11 +59,11 @@ public class EstimationViewTemplateService : IEstimationViewTemplateService
     public async Task<IEnumerable<EstimationViewTemplateDto>?> GetAllAsDeepListAsync(string organizationId)
     {
         var entities = await _dbContext.EstimationViewTemplates
-            .Include(x => x.SheetSectionTemplates).ThenInclude(x => x.Columns)
-            .Include(x => x.SheetSectionTemplates).ThenInclude(x => x.Columns).ThenInclude(x => x.CellFormat)
+            .Include(x => x.SheetSections).ThenInclude(x => x.Columns)
+            .Include(x => x.SheetSections).ThenInclude(x => x.Columns).ThenInclude(x => x.CellFormat)
             .Include(x => x.HeaderOrFooters)
-            .Include(x => x.DataSectionTemplates).ThenInclude(x => x.Columns)
-            .Include(x => x.DataSectionTemplates).ThenInclude(x => x.Cells).ThenInclude(x => x.Format)
+            .Include(x => x.DataSections).ThenInclude(x => x.Columns)
+            .Include(x => x.DataSections).ThenInclude(x => x.Cells).ThenInclude(x => x.Format)
             .Where(x => x.OrganizationId == organizationId)
             .ToListAsync();
         var dtos = entities.Adapt<List<EstimationViewTemplateDto>>();
@@ -72,11 +72,11 @@ public class EstimationViewTemplateService : IEstimationViewTemplateService
     public async Task<EstimationViewTemplateDto?> GetSingleDeepAsync(Guid id, string organizationId)
     {
         var entity = await _dbContext.EstimationViewTemplates
-            .Include(x => x.SheetSectionTemplates).ThenInclude(x => x.Columns)
-            .Include(x => x.SheetSectionTemplates).ThenInclude(x => x.Columns).ThenInclude(x => x.CellFormat)
+            .Include(x => x.SheetSections).ThenInclude(x => x.Columns)
+            .Include(x => x.SheetSections).ThenInclude(x => x.Columns).ThenInclude(x => x.CellFormat)
             .Include(x => x.HeaderOrFooters)
-            .Include(x => x.DataSectionTemplates).ThenInclude(x => x.Columns)
-            .Include(x => x.DataSectionTemplates).ThenInclude(x => x.Cells).ThenInclude(x => x.Format)
+            .Include(x => x.DataSections).ThenInclude(x => x.Columns)
+            .Include(x => x.DataSections).ThenInclude(x => x.Cells).ThenInclude(x => x.Format)
             .FirstOrDefaultAsync(x => x.Id == id && x.OrganizationId == organizationId);
 
         var dto = entity?.Adapt<EstimationViewTemplateDto>();

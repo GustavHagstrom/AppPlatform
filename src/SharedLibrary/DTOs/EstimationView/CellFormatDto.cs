@@ -20,7 +20,7 @@ public class CellFormatDto
     public bool BorderTop { get; set; }
     public bool BorderRight { get; set; }
     public bool BorderBottom { get; set; }
-    public BorderStyle Style { get; set; }
+    public BorderStyle BorderStyle { get; set; }
 
 
     public Guid? SheetColumnId { get; set; }

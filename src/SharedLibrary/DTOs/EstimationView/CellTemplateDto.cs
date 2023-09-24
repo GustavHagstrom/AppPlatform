@@ -5,9 +5,6 @@ public class CellTemplateDto
     public int Row { get; set; }
     public int Column { get; set; }
     public string Value { get; set; } = string.Empty;
-    public bool IsFormula => Value.StartsWith("=");
-
-
     public required CellFormatDto Format { get; set; }
     public Guid DataSectionTemplateId { get; set; }
 }

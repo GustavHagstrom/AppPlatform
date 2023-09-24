@@ -4,6 +4,7 @@ namespace Client.Shared.EstimationViewTemplate.Models.CellModels;
 
 public class CellFormat
 {
+    public Guid Id { get; set; }
     public string FontFamily { get; set; } = "Calibri";
     public int FontSize { get; set; } = 11;
     public bool Bold { get; set; } = false;

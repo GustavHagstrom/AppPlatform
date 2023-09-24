@@ -8,7 +8,7 @@ public class DataSection : IViewSection
     public Guid Id { get; set; }
     public required string Name { get; set; }
     public int Order { get; set; }
-    public List<ColumnDefinition> Columns { get; } = new();
+    public List<DataColumn> Columns { get; } = new();
     public int RowCount { get; set; }
     public List<Cell> Cells { get; set; } = new();
 

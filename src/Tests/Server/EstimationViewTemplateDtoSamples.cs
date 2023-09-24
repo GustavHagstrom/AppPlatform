@@ -9,7 +9,7 @@ public static class EstimationViewTemplateDtoSamples
         var entety = new EstimationViewTemplateDto
         {
             Name = "Test",
-            DataSectionTemplates =
+            DataSections =
             {
                 new DataSectionTemplateDto
                 {
@@ -44,7 +44,7 @@ public static class EstimationViewTemplateDtoSamples
                     Value = "TopLeft Header"
                 }
             },
-            SheetSectionTemplates = new List<SheetSectionTemplateDto>
+            SheetSections = new List<SheetSectionTemplateDto>
             {
                 new SheetSectionTemplateDto
                 {

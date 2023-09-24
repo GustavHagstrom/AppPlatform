@@ -34,22 +34,22 @@ public class EstimationViewTemplateServiceTests
         await _service.UpsertAsync(entety, _organizationId);
         var actual = await _dbContext.EstimationViewTemplates
             .Include(x => x.HeaderOrFooters)
-            .Include(x => x.SheetSectionTemplates).ThenInclude(x => x.Columns)
-            .Include(x => x.SheetSectionTemplates).ThenInclude(x => x.Columns).ThenInclude(x => x.CellFormat)
-            .Include(x => x.DataSectionTemplates).ThenInclude(x => x.Columns)
-            .Include(x => x.DataSectionTemplates).ThenInclude(x => x.Cells).ThenInclude(x => x.Format)
+            .Include(x => x.SheetSections).ThenInclude(x => x.Columns)
+            .Include(x => x.SheetSections).ThenInclude(x => x.Columns).ThenInclude(x => x.CellFormat)
+            .Include(x => x.DataSections).ThenInclude(x => x.Columns)
+            .Include(x => x.DataSections).ThenInclude(x => x.Cells).ThenInclude(x => x.Format)
             .FirstOrDefaultAsync();
 
         Assert.That(actual, Is.Not.Null);
         Assert.That(actual.HeaderOrFooters.Count, Is.EqualTo(1));
-        Assert.That(actual.SheetSectionTemplates.Count, Is.EqualTo(1));
-        Assert.That(actual.SheetSectionTemplates.First().Columns.Count, Is.EqualTo(1));
-        Assert.That(actual.SheetSectionTemplates.First().Columns.First().CellFormat, Is.Not.Null);
-        Assert.That(actual.DataSectionTemplates.Count, Is.EqualTo(1));
-        Assert.That(actual.DataSectionTemplates.First().Cells.Count, Is.EqualTo(1));
-        Assert.That(actual.DataSectionTemplates.First().Columns.Count, Is.EqualTo(1));
-        Assert.That(actual.DataSectionTemplates.First().Cells.First().Format, Is.Not.Null);
-        Assert.That(actual.DataSectionTemplates.First().Columns.FirstOrDefault(), Is.Not.Null);
+        Assert.That(actual.SheetSections.Count, Is.EqualTo(1));
+        Assert.That(actual.SheetSections.First().Columns.Count, Is.EqualTo(1));
+        Assert.That(actual.SheetSections.First().Columns.First().CellFormat, Is.Not.Null);
+        Assert.That(actual.DataSections.Count, Is.EqualTo(1));
+        Assert.That(actual.DataSections.First().Cells.Count, Is.EqualTo(1));
+        Assert.That(actual.DataSections.First().Columns.Count, Is.EqualTo(1));
+        Assert.That(actual.DataSections.First().Cells.First().Format, Is.Not.Null);
+        Assert.That(actual.DataSections.First().Columns.FirstOrDefault(), Is.Not.Null);
     }
     [Test]
     public async Task UpsertAsync_ShouldUpdateIncludingNested()
@@ -58,22 +58,22 @@ public class EstimationViewTemplateServiceTests
         await _service.UpsertAsync(entity, _organizationId);
         var dbEntety = await _dbContext.EstimationViewTemplates
             .Include(x => x.HeaderOrFooters)
-            .Include(x => x.SheetSectionTemplates).ThenInclude(x => x!.Columns).ThenInclude(x => x.CellFormat)
-            .Include(x => x.DataSectionTemplates).ThenInclude(x => x.Columns)
-            .Include(x => x.DataSectionTemplates).ThenInclude(x => x.Cells).ThenInclude(x => x.Format)
+            .Include(x => x.SheetSections).ThenInclude(x => x!.Columns).ThenInclude(x => x.CellFormat)
+            .Include(x => x.DataSections).ThenInclude(x => x.Columns)
+            .Include(x => x.DataSections).ThenInclude(x => x.Cells).ThenInclude(x => x.Format)
             .FirstOrDefaultAsync();
         var dto = dbEntety!.Adapt<EstimationViewTemplateDto>();
-        dto.DataSectionTemplates.First().Cells.First().Format.FontFamily = "Arial";
+        dto.DataSections.First().Cells.First().Format.FontFamily = "Arial";
 
         await _service.UpsertAsync(dto, _organizationId);
         var actual = await _dbContext.EstimationViewTemplates
             .Include(x => x.HeaderOrFooters)
-            .Include(x => x.SheetSectionTemplates).ThenInclude(x => x!.Columns).ThenInclude(x => x.CellFormat)
-            .Include(x => x.DataSectionTemplates).ThenInclude(x => x.Columns)
-            .Include(x => x.DataSectionTemplates).ThenInclude(x => x.Cells).ThenInclude(x => x.Format)
+            .Include(x => x.SheetSections).ThenInclude(x => x!.Columns).ThenInclude(x => x.CellFormat)
+            .Include(x => x.DataSections).ThenInclude(x => x.Columns)
+            .Include(x => x.DataSections).ThenInclude(x => x.Cells).ThenInclude(x => x.Format)
             .FirstOrDefaultAsync();
 
         
-        Assert.That(actual?.DataSectionTemplates.First().Cells.First().Format.FontFamily, Is.EqualTo("Arial"));
+        Assert.That(actual?.DataSections.First().Cells.First().Format.FontFamily, Is.EqualTo("Arial"));
     }
 }

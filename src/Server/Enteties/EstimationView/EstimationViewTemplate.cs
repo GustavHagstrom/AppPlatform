@@ -13,7 +13,7 @@ public class EstimationViewTemplate : IEstimationViewEntity
 
 
 
-    public List<DataSectionTemplate> DataSectionTemplates { get; set; } = new();
-    public List<SheetSectionTemplate> SheetSectionTemplates { get; set; } = new();
+    public List<DataSectionTemplate> DataSections { get; set; } = new();
+    public List<SheetSectionTemplate> SheetSections { get; set; } = new();
     public List<HeaderOrFooter> HeaderOrFooters { get; set; } = new();
 }

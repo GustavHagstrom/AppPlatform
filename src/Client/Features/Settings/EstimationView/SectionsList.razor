@@ -17,7 +17,7 @@
 
 <div class="d-flex">
     <table class="striped border border-solid flex-grow-1" style="min-height: 40px">
-        @foreach (var item in Sections)
+        @foreach (var item in SectionsInOrder())
         {
             <tr class="d-flex pa-1">
                 <MudText Class="d-flex flex-grow-1 my-auto" Typo="Typo.subtitle1">@item.Name</MudText>
@@ -38,8 +38,16 @@
     [Inject] public required IStringLocalizer<SectionsList> Localizer { get; set; }
     [Inject] public required IDialogService DialogService { get; set; }
 
-    [Parameter, EditorRequired] public required List<IViewSection> Sections { get; set; }
+    [Parameter, EditorRequired] public required List<SheetSection> SheetSections { get; set; }
+    [Parameter, EditorRequired] public required List<DataSection> DataSections { get; set; }
 
+    IEnumerable<IViewSection> SectionsInOrder()
+    {
+        var sections = ((IEnumerable<IViewSection>)SheetSections)
+            .Concat(DataSections)
+            .OrderBy(x => x.Order);
+        return sections;
+    }
     async Task EditSection(IViewSection section)
     {
         if(section is DataSection dataSection)
@@ -70,7 +78,7 @@
         var result = await ShowEditDataSectionDialog(newSection);
         if(!result.Canceled)
         {
-            Sections.Add(newSection);
+            DataSections.Add(newSection);
             StateHasChanged();
         }
 
@@ -82,7 +90,7 @@
         var result = await ShowEditSheetSectionDialog(newSection);
         if (!result.Canceled)
         {
-            Sections.Add(newSection);
+            SheetSections.Add(newSection);
             StateHasChanged();
         }
     }
