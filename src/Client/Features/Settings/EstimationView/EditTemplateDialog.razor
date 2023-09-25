@@ -2,7 +2,7 @@
 @using Client.Shared.EstimationViewTemplate.Services;
 
 
-<MudDialog Class="pa-0 mud-dialog-no-content-padding">
+<MudDialog Class="pa-0 mud-dialog-no-content-padding" Style="background-color: var(--mud-palette-background-grey)">
 
     <DialogContent>
         
@@ -11,47 +11,72 @@
                 <MudOverlay DarkBackground="true" Visible="IsLoading" Absolute="true">
                     <MudProgressCircular Size="Size.Large" Color="Color.Primary" Indeterminate="true" />
                 </MudOverlay>
-                <div class="d-flex" style="height: calc(100% - 50px)">
-                    <div class="d-flex" style="height: 100%">
+
+                <MudPaper Style="height: 40px" Elevation="0" Class="border-b border-solid d-flex">
+
+                    <MudButton Variant="Variant.Text" Style="min-width: 0;" OnClick="() => IsDrawerOpen = !IsDrawerOpen">
+                        <MudIcon Icon="@Icons.Material.Sharp.Menu" />
+                    </MudButton>
+
+                    <MudText Typo="Typo.h6" Class="my-auto pl-2">@Localizer["Titel"]</MudText>
+
+                    <MudSpacer/>
+
+                    <MudButton Variant="Variant.Text" Style="min-width: 0;" Color="Color.Success" OnClick="Submit">
+                        <MudIcon Icon="@Icons.Material.Sharp.Save" />
+                        <MudText Class="pl-2">
+                            @Localizer["Spara och stäng"]
+                        </MudText>
+                        
+                    </MudButton>
+
+                    <MudButton Variant="Variant.Text" Style="min-width: 0;" Color="Color.Error" Class="pa-2" OnClick="MudDialog.Cancel">
+                        <MudIcon Icon="@Icons.Material.Sharp.Close"/>
+                    </MudButton>
+
+                </MudPaper>
+
+                <MudDrawerContainer Class="d-flex" Style="height: calc(100% - 40px);">
+                    <MudDrawer Open="IsDrawerOpen" Fixed="false" Anchor="Anchor.Start" Elevation="0" Variant="@DrawerVariant.Persistent">
                         @if (!IsLoading)
                         {
                             <MudStack Spacing="2" Justify="Justify.FlexStart">
 
-                                
+
                                 <div>
-                                    <MudText Typo="Typo.subtitle2" Style="color: var(--mud-palette-text-primary)">@Localizer["Namn"]</MudText>
+                                    <MudText Typo="Typo.subtitle1" Style="color: var(--mud-palette-text-primary)">@Localizer["Namn"]</MudText>
                                     <MudTextField T="string" Margin="Margin.Dense" Variant="Variant.Outlined" @bind-Value="Template.Name" />
                                 </div>
-                                
+
 
                                 <div class="d-block">
                                     <SectionsList DataSections="Template.DataSections" SheetSections="Template.SheetSections" />
                                 </div>
-                                
+
 
                             </MudStack>
                         }
-                    </div>
-                    <div class="d-flex flex-grow-1" style="height: 100%; background-color: var(--mud-palette-background-grey)">
+                    </MudDrawer>
+
+                    <div class="flex-grow-1" style="height: 100%">
+
+                        <MudContainer MaxWidth="MaxWidth.Medium" Class="pa-3" Style="height: 100%; overflow: auto;">
+                            <MudPaper Elevation="3" Style="height: 100%">
+
+                            </MudPaper>
+                        </MudContainer>
 
                     </div>
-                </div>
+                </MudDrawerContainer>
                 
 
-                <div class="d-flex" style="height: 50px;">
-                    <MudSpacer />
-                    <MudButton Variant="Variant.Filled" Color="Color.Error" Class="mb-2" OnClick="MudDialog.Cancel">@Localizer["Avbryt"]</MudButton>
-                    <MudButton Variant="Variant.Filled" Color="Color.Success" Class="mb-2 mr-4" OnClick="Submit">@Localizer["Spara och stäng"]</MudButton>
-                </div>
+                
             </div>
             
         </MudForm>
         
     </DialogContent>
-@*     <DialogActions>
-        <MudButton Variant="Variant.Filled" Color="Color.Error" Class="mb-2" OnClick="MudDialog.Cancel">@Localizer["Avbryt"]</MudButton>
-        <MudButton Variant="Variant.Filled" Color="Color.Success" Class="mb-2 mr-4" OnClick="Submit">@Localizer["Spara och stäng"]</MudButton>
-    </DialogActions> *@
+
 </MudDialog>
 
 @code {
@@ -63,6 +88,7 @@
     ViewTemplate Template { get; set; } = new() { Name = string.Empty };
     MudForm? Form;
     bool IsLoading = false;
+    bool IsDrawerOpen = true;
 
     void SetIsLoading(bool isLoading)
     {
