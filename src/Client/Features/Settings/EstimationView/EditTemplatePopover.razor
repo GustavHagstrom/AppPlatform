@@ -1,4 +1,5 @@
 ﻿@using Client.Shared.EstimationViewTemplate.Models;
+@using Client.Shared.EstimationViewTemplate.Models.SectionModels;
 @using Client.Shared.EstimationViewTemplate.Services;
 
 
@@ -16,7 +17,7 @@
                 <MudIcon Icon="@Icons.Material.Sharp.Menu" />
             </MudButton>
 
-            <MudText Typo="Typo.h6" Class="my-auto pl-2">@Localizer["Titel"]</MudText>
+            <MudText Typo="Typo.h6" Class="my-auto pl-2">@Localizer["Redigera vymall"]</MudText>
 
             <MudSpacer />
 
@@ -59,22 +60,23 @@
 
 
 
-            <div class="flex-grow-1" style="height: 100%;">
-
-                <MudContainer Class="pa-3" Style="height: 100%; overflow: auto;">
-                    <MudSlider @bind-Value="Scale" Min="0.0" Max="2.0" Step="0.1">@Localizer["Skala: "]@((Scale * 100).ToString("N0"))%</MudSlider>
-                    <MudPaper Elevation="3" Style="@($"min-height: 200px; transform: scale({Scale}); transform-origin: left top;")">
-                        some sample text yays
-                         a
-                         df
-                         asd
-                         fas
-                         df
-                         a sdf
+            <MudContainer Class="flex-grow-1 pa-3" Style="height: 100%; overflow: auto">
+                    <MudPaper Elevation="3" Style="min-height: 200px; width: 794px;)" Class="mx-auto">
+                        @foreach (var section in SectionsInOrder())
+                        {
+                            if(section is DataSection dataSection)
+                            {
+                                <DataSectionIllustrator/>
+                            }
+                            if(section is SheetSection sheetSection)
+                            {
+                            <SheetSectionIllustator Section="sheetSection" />
+                            }
+                        }
                     </MudPaper>
-                </MudContainer>
+                    
+            </MudContainer>
 
-            </div>
         </MudDrawerContainer>
 
 
@@ -110,7 +112,13 @@
         StateHasChanged();
     }
 
-
+    IEnumerable<IViewSection> SectionsInOrder()
+    {
+        var sections = ((IEnumerable<IViewSection>)Template.SheetSections)
+            .Concat(Template.DataSections)
+            .OrderBy(x => x.Order);
+        return sections;
+    }
     protected override void OnInitialized()
     {
         ParentComponent.ShowPopoverFunction = ShowPopOver;

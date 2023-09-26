@@ -11,9 +11,7 @@
     
     <div class="d-flex pa-2">
         <MudSpacer/>
-        <MudTooltip Text="@Localizer["Skapa ny"]">
-            <MudIconButton Icon="@Icons.Material.Sharp.Add" Color="Color.Success" Size="Size.Small" Variant="Variant.Filled" OnClick="() => ShowEditTemplatePopOver(null)"/>
-        </MudTooltip>
+        <MudIconButton Icon="@Icons.Material.Sharp.Add" Color="Color.Success" Size="Size.Small" Variant="Variant.Text" OnClick="() => ShowEditTemplatePopOver(null)"/>
     </div>
 
     @if(Templates.Count > 0)
@@ -25,8 +23,8 @@
                     <tr class="d-flex pa-1">
                         <MudText Class="d-flex flex-grow-1 my-auto" Typo="Typo.subtitle1">@template.Name</MudText>
                         <MudStack Row="true" Spacing="1">
-                            <MudIconButton Class="d-flex my-auto" Icon="@Icons.Material.Sharp.Edit" Color="Color.Primary" Size="Size.Small" Variant="Variant.Outlined" OnClick="() => ShowEditTemplatePopOver(template.Id)"/>
-                            <MudIconButton Class="d-flex my-auto" Icon="@Icons.Material.Sharp.Delete" Color="Color.Error" Size="Size.Small" Variant="Variant.Outlined" OnClick="() => DeleteTemplate(template)" />
+                            <MudIconButton Class="d-flex my-auto" Icon="@Icons.Material.Sharp.Edit" Color="Color.Primary" Size="Size.Small" Variant="Variant.Text" OnClick="() => ShowEditTemplatePopOver(template.Id)"/>
+                            <MudIconButton Class="d-flex my-auto" Icon="@Icons.Material.Sharp.Delete" Color="Color.Error" Size="Size.Small" Variant="Variant.Text" OnClick="() => DeleteTemplate(template)" />
                         </MudStack>
                     </tr>
                 }
