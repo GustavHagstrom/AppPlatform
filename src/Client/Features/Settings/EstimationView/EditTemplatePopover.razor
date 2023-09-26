@@ -1,0 +1,166 @@
+﻿@using Client.Shared.EstimationViewTemplate.Models;
+@using Client.Shared.EstimationViewTemplate.Services;
+
+
+<MudForm @ref="Form" Model="Template" Class="@(IsVisible ? VisibleFormClass : HiddenFormClass)" Style="background-color: var(--mud-palette-background-grey);">
+    <div class="relative" style="height: 100%">
+        <MudOverlay DarkBackground="true" Visible="IsLoading" Absolute="true">
+            <MudProgressCircular Size="Size.Large" Color="Color.Primary" Indeterminate="true" />
+        </MudOverlay>
+
+
+        @*Toolbar*@
+        <MudPaper Style="height: 40px" Elevation="0" Class="border-b border-solid d-flex">
+
+            <MudButton Variant="Variant.Text" Style="min-width: 0;" OnClick="() => IsDrawerOpen = !IsDrawerOpen">
+                <MudIcon Icon="@Icons.Material.Sharp.Menu" />
+            </MudButton>
+
+            <MudText Typo="Typo.h6" Class="my-auto pl-2">@Localizer["Titel"]</MudText>
+
+            <MudSpacer />
+
+            <MudButton Variant="Variant.Text" Style="min-width: 0;" Color="Color.Success" OnClick="Submit">
+                <MudIcon Icon="@Icons.Material.Sharp.Save" />
+                <MudText Class="pl-2">
+                    @Localizer["Spara och stäng"]
+                </MudText>
+
+            </MudButton>
+
+            <MudButton Variant="Variant.Text" Style="min-width: 0;" Color="Color.Error" Class="pa-2" OnClick="Close">
+                <MudIcon Icon="@Icons.Material.Sharp.Close" />
+            </MudButton>
+
+        </MudPaper>
+
+
+        <MudDrawerContainer Class="d-flex" Style="height: calc(100% - 40px);">
+            <MudDrawer Class="pa-2 border-r border-solid" Open="IsDrawerOpen" Fixed="false" Anchor="Anchor.Start" Elevation="0" Variant="@DrawerVariant.Persistent">
+                @if (!IsLoading)
+                {
+                    <MudStack Spacing="2" Justify="Justify.FlexStart">
+
+
+                        <div>
+                            <MudText Typo="Typo.subtitle1" Style="color: var(--mud-palette-text-primary)">@Localizer["Namn"]</MudText>
+                            <MudTextField T="string" Margin="Margin.Dense" Variant="Variant.Outlined" @bind-Value="Template.Name" />
+                        </div>
+
+
+                        <div class="d-block">
+                            <SectionsList DataSections="Template.DataSections" SheetSections="Template.SheetSections" />
+                        </div>
+
+
+                    </MudStack>
+                }
+            </MudDrawer>
+
+
+
+            <div class="flex-grow-1" style="height: 100%">
+
+                <MudContainer MaxWidth="MaxWidth.Medium" Class="pa-3" Style="height: 100%; overflow: auto;">
+                    <MudPaper Elevation="3" Style="height: 100%">
+
+                    </MudPaper>
+                </MudContainer>
+
+            </div>
+        </MudDrawerContainer>
+
+
+
+    </div>
+
+</MudForm>
+
+
+        
+
+
+@code {
+    [Inject] public required IStringLocalizer<EditTemplateDialog> Localizer { get; set; }
+    [Inject] public required IEstimationViewTemplateServices TemplateService { get; set; }
+    [Parameter, EditorRequired] public required EstimationViewFrameContent ParentComponent { get; set; }
+
+    [Parameter] public EventCallback UpsertSuccefulCallback { get; set; }
+
+
+
+    ViewTemplate Template { get; set; } = new() { Name = string.Empty };
+    MudForm? Form;
+    bool IsLoading = false;
+    bool IsDrawerOpen = true;
+    bool IsVisible { get; set; } = false;
+    string HiddenFormClass = "fullscreen d-none";
+    string VisibleFormClass = "fullscreen zoom-in";
+
+    void SetIsLoading(bool isLoading)
+    {
+        IsLoading = isLoading;
+        StateHasChanged();
+    }
+
+
+    protected override void OnInitialized()
+    {
+        ParentComponent.ShowPopoverFunction = ShowPopOver;
+    }
+
+    async Task ShowPopOver(Guid? id)
+    {
+        IsVisible = true;
+        StateHasChanged();
+        await LoadTemplate(id);
+    }
+    async Task LoadTemplate(Guid? id)
+    {
+        if (id is not null)
+        {
+            try
+            {
+                SetIsLoading(true);
+                Template = await TemplateService.GetAsync(id.Value);
+            }
+            catch (Exception)
+            {
+                //Handle exception
+                throw;
+            }
+            SetIsLoading(false);
+        }
+        else
+        {
+            Template = new() { Name = string.Empty };
+        }
+    }
+
+    async Task Submit()
+    {
+        Form?.Validate();
+        if(Form?.IsValid == true)
+        {
+            try
+            {
+                SetIsLoading(true);
+                await TemplateService.UpsertAsync(Template);
+                await UpsertSuccefulCallback.InvokeAsync();
+                Close();
+            }
+            catch (Exception)
+            {
+                SetIsLoading(false);
+                //handle exception
+                throw;
+            }
+        }
+
+    }
+    void Close()
+    {
+        IsVisible = false;
+        SetIsLoading(false);
+    }
+}

@@ -13,7 +13,7 @@
 
 <CascadingValue Name="DarkModeAction" Value="SetDarkMode">
 
-    <AppBar Height="50px">
+    <div class="d-flex align-stretch mud-elevation-3 border-b border-solid" style="height: 50px; position: fixed; width: 100%; background-color: var(--mud-palette-background);">
         <MudIcon Icon="@CustomIcons.BidconHub" Color="Color.Primary" Style="height: 50px; width: 50px;" Class="pa-1"/>
         <AuthorizeView>
             <Authorized>
@@ -35,12 +35,46 @@
                 </MudTooltip>
             </Authorized>
         </AuthorizeView>
-    </AppBar>
+        <MudSpacer />
+        <LoginDisplay />
+    </div>
+    <div style="position: fixed; height: calc(100% - 50px); width: 100%; top: 50px; background-color: var(--mud-palette-background-grey);">
+        @Body
+    </div>
+  @*  <div class="d-flex align-stretch mud-elevation-3" style="height: @Height; position: fixed; width: 100%; z-index: 1000; background-color: var(--mud-palette-background);">
+        @ChildContent
+        
+    </div>*@
+    @*<div class="d-flex align-stretch mud-elevation-3" style="height: 50px; position: fixed; width: 100%; z-index: 1000; background-color: var(--mud-palette-background);">
+        <MudIcon Icon="@CustomIcons.BidconHub" Color="Color.Primary" Style="height: 50px; width: 50px;" Class="pa-1"/>
+        <AuthorizeView>
+            <Authorized>
+                <MudDivider Light="false" Vertical="true" FlexItem="true" Class="my-2 mr-2" />
+                <MudTooltip Text="@Localizer["Startsida"]" RootClass="align-self-center">
+                    <MudButton Href="@ClientRoutes.Dashboard" Class="py-1 px-3" Variant="Variant.Text" Color="Color.Inherit" Style="@StyleService.CreateNavigationButtonStyle("dashboard")">
+                        <MudIcon Icon="@Icons.Material.Sharp.Dashboard" />
+                    </MudButton>
+                </MudTooltip>
+                <MudTooltip Text="@Localizer["Importera från BidCon"]" RootClass="align-self-center">
+                    <MudButton Href="@ClientRoutes.Import" Class="py-1 px-3" Variant="Variant.Text" Color="Color.Inherit" Style="@StyleService.CreateNavigationButtonStyle("bidcon")">
+                        <MudIcon Icon="@CustomIcons.BidconIcon" />
+                    </MudButton>
+                </MudTooltip>
+                <MudTooltip Text="@Localizer["Inställningar"]" RootClass="align-self-center">
+                    <MudButton Href="@ClientRoutes.Settings" Class="py-1 px-3" Variant="Variant.Text" Color="Color.Inherit" Style="@StyleService.CreateNavigationButtonStyle("settings")">
+                        <MudIcon Icon="@Icons.Material.Sharp.Settings" />
+                    </MudButton>
+                </MudTooltip>
+            </Authorized>
+        </AuthorizeView>
+        <MudSpacer />
+        <LoginDisplay />
+    </div>
+    <div style="position: fixed; height: calc(100% - 50px); width: 100%; top: 50px; background-color: var(--mud-palette-background-grey); z-index: 500;">
+        @Body
+    </div>*@
 
 
-<div style="position: fixed; height: calc(100% - 50px); width: 100%; top: 50px; background-color: var(--mud-palette-background-grey); z-index: 500;">
-    @Body
-</div>
     
 </CascadingValue>
 

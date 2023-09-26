@@ -2,6 +2,8 @@
 @using Client.Shared.EstimationViewTemplate.Services;
 
 <div class="relative">
+    <EditTemplatePopover UpsertSuccefulCallback="TryRefreshListAsync" ParentComponent="this" />
+
     <MudOverlay DarkBackground="true" Visible="IsLoading" Absolute="true">
         <MudProgressCircular Size="Size.Large" Color="Color.Primary" Indeterminate="true" />
     </MudOverlay>
@@ -10,7 +12,7 @@
     <div class="d-flex pa-2">
         <MudSpacer/>
         <MudTooltip Text="@Localizer["Skapa ny"]">
-            <MudIconButton Icon="@Icons.Material.Sharp.Add" Color="Color.Success" Size="Size.Small" Variant="Variant.Filled" OnClick="() => ShowEditTemplateDialog(null)"/>
+            <MudIconButton Icon="@Icons.Material.Sharp.Add" Color="Color.Success" Size="Size.Small" Variant="Variant.Filled" OnClick="() => ShowEditTemplatePopOver(null)"/>
         </MudTooltip>
     </div>
 
@@ -23,7 +25,7 @@
                     <tr class="d-flex pa-1">
                         <MudText Class="d-flex flex-grow-1 my-auto" Typo="Typo.subtitle1">@template.Name</MudText>
                         <MudStack Row="true" Spacing="1">
-                            <MudIconButton Class="d-flex my-auto" Icon="@Icons.Material.Sharp.Edit" Color="Color.Primary" Size="Size.Small" Variant="Variant.Outlined" OnClick="() => ShowEditTemplateDialog(template.Id)"/>
+                            <MudIconButton Class="d-flex my-auto" Icon="@Icons.Material.Sharp.Edit" Color="Color.Primary" Size="Size.Small" Variant="Variant.Outlined" OnClick="() => ShowEditTemplatePopOver(template.Id)"/>
                             <MudIconButton Class="d-flex my-auto" Icon="@Icons.Material.Sharp.Delete" Color="Color.Error" Size="Size.Small" Variant="Variant.Outlined" OnClick="() => DeleteTemplate(template)" />
                         </MudStack>
                     </tr>
@@ -40,8 +42,12 @@
     [Inject] public required IEstimationViewTemplateServices TemplateService { get; set; }
     [Inject] public required IDialogService DialogService { get; set; }
 
+    //Set by the popover, invoked by this component to show popover
+    public Func<Guid?, Task>? ShowPopoverFunction { get; set; } 
+
     bool IsLoading = true;
     List<ViewTemplate> Templates { get; set; } = new();
+
 
     protected override async Task OnInitializedAsync()
     {
@@ -64,24 +70,30 @@
         }
         UpdateIsLoading(false);
     }
-    async Task ShowEditTemplateDialog(Guid? id = null)
+    async Task ShowEditTemplatePopOver(Guid? id = null)
     {
-        var parameters = new DialogParameters<EditTemplateDialog>();
-        parameters.Add(x => x.IdToLoadFrom, id);
-
-        var options = new DialogOptions()
-            {
-                FullScreen = true,
-                CloseButton = true,
-                NoHeader = true,
-    };
-
-        var dialog = await DialogService.ShowAsync<EditTemplateDialog>(Localizer["Redigera mall"], parameters, options);
-        var result = await dialog.Result;
-        if(!result.Canceled)
+        var task = ShowPopoverFunction?.Invoke(id);
+        if(task is not null)
         {
-            await TryRefreshListAsync();
+            await task;
         }
+
+        //var parameters = new DialogParameters<EditTemplateDialog>();
+        //parameters.Add(x => x.IdToLoadFrom, id);
+
+        //var options = new DialogOptions()
+        //    {
+        //        FullScreen = true,
+        //        CloseButton = true,
+        //        NoHeader = true,
+        //    };
+
+        //var dialog = await DialogService.ShowAsync<EditTemplateDialog>(Localizer["Redigera mall"], parameters, options);
+        //var result = await dialog.Result;
+        //if(!result.Canceled)
+        //{
+        //    await TryRefreshListAsync();
+        //}
     }
     async Task DeleteTemplate(ViewTemplate template)
     {

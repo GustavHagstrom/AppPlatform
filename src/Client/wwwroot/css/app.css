@@ -4,6 +4,31 @@
  * {
     border-color: var(--mud-palette-lines-inputs);
 }
+.fullscreen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 2000;
+}
+
+.zoom-in {
+    animation: zoomIn 200ms ease-out; /* Adjust the duration (1s) as needed */
+    transform-origin: center center;
+    transform: scale(1); /* Start with 0% scale */
+}
+
+@keyframes zoomIn {
+    from {
+        transform: scale(0); /* Start with 0% scale */
+    }
+
+    to {
+        transform: scale(1); /* End with 100% scale */
+    }
+}
+
 .mud-dialog-no-content-padding .mud-dialog-content {
     padding: 0;
 }

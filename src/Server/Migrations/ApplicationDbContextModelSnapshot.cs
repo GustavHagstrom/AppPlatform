@@ -58,7 +58,7 @@ namespace Server.Migrations
 
                     b.HasKey("OrganizationId");
 
-                    b.ToTable("BidconAccessCredentials");
+                    b.ToTable("BidconAccessCredentials", (string)null);
                 });
 
             modelBuilder.Entity("Server.Enteties.EstimationView.CellFormat", b =>
@@ -133,7 +133,7 @@ namespace Server.Migrations
                         .IsUnique()
                         .HasFilter("[SheetColumnId] IS NOT NULL");
 
-                    b.ToTable("CellFormat");
+                    b.ToTable("CellFormat", (string)null);
                 });
 
             modelBuilder.Entity("Server.Enteties.EstimationView.CellTemplate", b =>
@@ -160,7 +160,7 @@ namespace Server.Migrations
 
                     b.HasIndex("DataSectionTemplateId");
 
-                    b.ToTable("CellTemplate");
+                    b.ToTable("CellTemplate", (string)null);
                 });
 
             modelBuilder.Entity("Server.Enteties.EstimationView.DataColumn", b =>
@@ -182,7 +182,7 @@ namespace Server.Migrations
 
                     b.HasIndex("DataSectionTemplateId");
 
-                    b.ToTable("DataColumn");
+                    b.ToTable("DataColumn", (string)null);
                 });
 
             modelBuilder.Entity("Server.Enteties.EstimationView.DataSectionTemplate", b =>
@@ -208,7 +208,7 @@ namespace Server.Migrations
 
                     b.HasIndex("EstimationViewTemplateId");
 
-                    b.ToTable("DataSectionTemplate");
+                    b.ToTable("DataSectionTemplate", (string)null);
                 });
 
             modelBuilder.Entity("Server.Enteties.EstimationView.EstimationViewTemplate", b =>
@@ -231,7 +231,7 @@ namespace Server.Migrations
 
                     b.HasIndex("OrganizationId");
 
-                    b.ToTable("EstimationViewTemplates");
+                    b.ToTable("EstimationViewTemplates", (string)null);
                 });
 
             modelBuilder.Entity("Server.Enteties.EstimationView.HeaderOrFooter", b =>
@@ -255,7 +255,7 @@ namespace Server.Migrations
 
                     b.HasIndex("EstimationViewTemplateId");
 
-                    b.ToTable("HeaderOrFooter");
+                    b.ToTable("HeaderOrFooter", (string)null);
                 });
 
             modelBuilder.Entity("Server.Enteties.EstimationView.SheetColumn", b =>
@@ -280,7 +280,7 @@ namespace Server.Migrations
 
                     b.HasIndex("NetSheetSectionTemplateId");
 
-                    b.ToTable("SheetColumn");
+                    b.ToTable("SheetColumn", (string)null);
                 });
 
             modelBuilder.Entity("Server.Enteties.EstimationView.SheetSectionTemplate", b =>
@@ -306,7 +306,7 @@ namespace Server.Migrations
 
                     b.HasIndex("EstimationViewTemplateId");
 
-                    b.ToTable("SheetSectionTemplate");
+                    b.ToTable("SheetSectionTemplate", (string)null);
                 });
 
             modelBuilder.Entity("Server.Enteties.License", b =>
@@ -328,7 +328,7 @@ namespace Server.Migrations
                     b.HasIndex("OrganizationId")
                         .IsUnique();
 
-                    b.ToTable("Licenses");
+                    b.ToTable("Licenses", (string)null);
                 });
 
             modelBuilder.Entity("Server.Enteties.Organization", b =>
@@ -339,7 +339,7 @@ namespace Server.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Organizations");
+                    b.ToTable("Organizations", (string)null);
                 });
 
             modelBuilder.Entity("Server.Enteties.Role", b =>
@@ -362,7 +362,7 @@ namespace Server.Migrations
 
                     b.HasIndex("OrganizationId");
 
-                    b.ToTable("Roles");
+                    b.ToTable("Roles", (string)null);
                 });
 
             modelBuilder.Entity("Server.Enteties.RoleRight", b =>
@@ -381,7 +381,7 @@ namespace Server.Migrations
 
                     b.HasIndex("RoleId");
 
-                    b.ToTable("RoleRight");
+                    b.ToTable("RoleRight", (string)null);
                 });
 
             modelBuilder.Entity("Server.Enteties.RoleViewTemplate", b =>
@@ -402,7 +402,7 @@ namespace Server.Migrations
 
                     b.HasIndex("RoleId");
 
-                    b.ToTable("RoleViewTemplate");
+                    b.ToTable("RoleViewTemplate", (string)null);
                 });
 
             modelBuilder.Entity("Server.Enteties.User", b =>
@@ -433,7 +433,7 @@ namespace Server.Migrations
 
                     b.HasIndex("RoleId");
 
-                    b.ToTable("Users");
+                    b.ToTable("Users", (string)null);
                 });
 
             modelBuilder.Entity("Server.Enteties.UserRight", b =>
@@ -454,7 +454,7 @@ namespace Server.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("UserRight");
+                    b.ToTable("UserRight", (string)null);
                 });
 
             modelBuilder.Entity("Server.Enteties.UserViewTemplate", b =>
@@ -477,7 +477,7 @@ namespace Server.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("UserViewTemplate");
+                    b.ToTable("UserViewTemplate", (string)null);
                 });
 
             modelBuilder.Entity("Server.Enteties.BidconAccessCredentials", b =>
