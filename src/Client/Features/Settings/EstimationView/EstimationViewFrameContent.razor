@@ -77,23 +77,6 @@
         {
             await task;
         }
-
-        //var parameters = new DialogParameters<EditTemplateDialog>();
-        //parameters.Add(x => x.IdToLoadFrom, id);
-
-        //var options = new DialogOptions()
-        //    {
-        //        FullScreen = true,
-        //        CloseButton = true,
-        //        NoHeader = true,
-        //    };
-
-        //var dialog = await DialogService.ShowAsync<EditTemplateDialog>(Localizer["Redigera mall"], parameters, options);
-        //var result = await dialog.Result;
-        //if(!result.Canceled)
-        //{
-        //    await TryRefreshListAsync();
-        //}
     }
     async Task DeleteTemplate(ViewTemplate template)
     {

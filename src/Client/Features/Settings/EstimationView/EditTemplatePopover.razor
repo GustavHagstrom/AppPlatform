@@ -59,11 +59,18 @@
 
 
 
-            <div class="flex-grow-1" style="height: 100%">
+            <div class="flex-grow-1" style="height: 100%;">
 
-                <MudContainer MaxWidth="MaxWidth.Medium" Class="pa-3" Style="height: 100%; overflow: auto;">
-                    <MudPaper Elevation="3" Style="height: 100%">
-
+                <MudContainer Class="pa-3" Style="height: 100%; overflow: auto;">
+                    <MudSlider @bind-Value="Scale" Min="0.0" Max="2.0" Step="0.1">@Localizer["Skala: "]@((Scale * 100).ToString("N0"))%</MudSlider>
+                    <MudPaper Elevation="3" Style="@($"min-height: 200px; transform: scale({Scale}); transform-origin: left top;")">
+                        some sample text yays
+                         a
+                         df
+                         asd
+                         fas
+                         df
+                         a sdf
                     </MudPaper>
                 </MudContainer>
 
@@ -81,14 +88,14 @@
 
 
 @code {
-    [Inject] public required IStringLocalizer<EditTemplateDialog> Localizer { get; set; }
+    [Inject] public required IStringLocalizer<EditTemplatePopover> Localizer { get; set; }
     [Inject] public required IEstimationViewTemplateServices TemplateService { get; set; }
     [Parameter, EditorRequired] public required EstimationViewFrameContent ParentComponent { get; set; }
 
     [Parameter] public EventCallback UpsertSuccefulCallback { get; set; }
 
 
-
+    double Scale = 1;
     ViewTemplate Template { get; set; } = new() { Name = string.Empty };
     MudForm? Form;
     bool IsLoading = false;
