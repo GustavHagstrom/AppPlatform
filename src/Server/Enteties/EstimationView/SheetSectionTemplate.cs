@@ -5,7 +5,6 @@ namespace Server.Enteties.EstimationView;
 public class SheetSectionTemplate : IEstimationViewEntity
 {
     public Guid Id { get; set; }
-    public string Name { get; set; } = string.Empty;
     public int Order { get; set; }
     public SheetType SheetType { get; set; }
 
