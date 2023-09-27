@@ -11,73 +11,69 @@
 
 
         @*Toolbar*@
-        <MudPaper Style="height: 40px" Elevation="0" Class="border-b border-solid d-flex">
+        <MudPaper Style="height: 40px" Elevation="0" Class="border-b border-solid d-flex justify-space-between">
 
-            <MudButton Variant="Variant.Text" Style="min-width: 0;" OnClick="() => IsDrawerOpen = !IsDrawerOpen">
-                <MudIcon Icon="@Icons.Material.Sharp.Menu" />
-            </MudButton>
+            <div class="d-flex justify-start align-self-stretch" style="width: 33%">
+                <MudText Class="my-auto pl-2" Typo="Typo.h6">@Localizer["Redigera"]</MudText>
+            </div>
 
-            <MudText Typo="Typo.h6" Class="my-auto pl-2">@Localizer["Redigera vymall"]</MudText>
+            <div class="d-flex justify-center align-self-stretch" style="width: 33%">
+                <MudButton Variant="Variant.Text" Style="min-width: 40px;" Color="Color.Primary">
+                    <MudIcon Icon="@Icons.Material.Sharp.ArrowUpward" />
+                </MudButton>
+                <MudButton Class="px-2" Variant="Variant.Text" Style="min-width: 40px;" Color="Color.Primary">
+                    <MudIcon Icon="@Icons.Material.Sharp.ArrowDownward" />
+                </MudButton>
+                <MudMenu Dense="true">
+                    <ActivatorContent>
+                        <MudButton Variant="Variant.Text" Style="min-width: 40px;" Color="Color.Success">
+                            <MudIcon Icon="@Icons.Material.Sharp.Add" />
+                        </MudButton>
+                    </ActivatorContent>
+                    <ChildContent>
+                        <MudMenuItem>@Localizer["Data sektion"]</MudMenuItem>
+                        <MudMenuItem>@Localizer["Tabell sektion"]</MudMenuItem>
+                    </ChildContent>
+                    
+                </MudMenu>
+            </div>
 
-            <MudSpacer />
+            <div class="d-flex justify-end align-self-start" style="width: 33%">
+                <MudButton Variant="Variant.Text" Style="min-width: 0;" Color="Color.Success" OnClick="Submit">
+                    <MudIcon Icon="@Icons.Material.Sharp.Save" />
+                    <MudHidden Breakpoint="Breakpoint.SmAndDown">
+                        <MudText Class="pl-2">
+                            @Localizer["Spara och stäng"]
+                        </MudText>
+                    </MudHidden>
+                </MudButton>
 
-            <MudButton Variant="Variant.Text" Style="min-width: 0;" Color="Color.Success" OnClick="Submit">
-                <MudIcon Icon="@Icons.Material.Sharp.Save" />
-                <MudText Class="pl-2">
-                    @Localizer["Spara och stäng"]
-                </MudText>
-
-            </MudButton>
-
-            <MudButton Variant="Variant.Text" Style="min-width: 0;" Color="Color.Error" Class="pa-2" OnClick="Close">
-                <MudIcon Icon="@Icons.Material.Sharp.Close" />
-            </MudButton>
-
+                <MudButton Variant="Variant.Text" Style="min-width: 0;" Color="Color.Error" Class="pa-2" OnClick="Close">
+                    <MudIcon Icon="@Icons.Material.Sharp.Close" />
+                </MudButton>
+            </div>
+            
         </MudPaper>
 
 
-        <MudDrawerContainer Class="d-flex" Style="height: calc(100% - 40px);">
-            <MudDrawer Class="pa-2 border-r border-solid" Open="IsDrawerOpen" Fixed="false" Anchor="Anchor.Start" Elevation="0" Variant="@DrawerVariant.Persistent">
-                @if (!IsLoading)
+
+        <div class="pa-4" style="height: calc(100% - 40px); overflow: auto;">
+            <MudPaper Elevation="3" Style="min-height: 200px; width: 794px;" Class="mx-auto">
+                @foreach (var section in SectionsInOrder())
                 {
-                    <MudStack Spacing="2" Justify="Justify.FlexStart">
-
-
-                        <div>
-                            <MudText Typo="Typo.subtitle1" Style="color: var(--mud-palette-text-primary)">@Localizer["Namn"]</MudText>
-                            <MudTextField T="string" Margin="Margin.Dense" Variant="Variant.Outlined" @bind-Value="Template.Name" />
-                        </div>
-
-
-                        <div class="d-block">
-                            <SectionsList DataSections="Template.DataSections" SheetSections="Template.SheetSections" />
-                        </div>
-
-
-                    </MudStack>
+                    @if (section is DataSection dataSection)
+                    {
+                        <DataSectionIllustrator />
+                    }
+                    @if (section is SheetSection sheetSection)
+                    {
+                        <SheetSectionIllustator Section="sheetSection" />
+                    }
+                    <div class="border-b border-solid" />
                 }
-            </MudDrawer>
+            </MudPaper>
+        </div>
 
-
-
-            <MudContainer Class="flex-grow-1 pa-3" Style="height: 100%; overflow: auto">
-                    <MudPaper Elevation="3" Style="min-height: 200px; width: 794px;)" Class="mx-auto">
-                        @foreach (var section in SectionsInOrder())
-                        {
-                            if(section is DataSection dataSection)
-                            {
-                                <DataSectionIllustrator/>
-                            }
-                            if(section is SheetSection sheetSection)
-                            {
-                            <SheetSectionIllustator Section="sheetSection" />
-                            }
-                        }
-                    </MudPaper>
-                    
-            </MudContainer>
-
-        </MudDrawerContainer>
 
 
 
@@ -101,7 +97,7 @@
     ViewTemplate Template { get; set; } = new() { Name = string.Empty };
     MudForm? Form;
     bool IsLoading = false;
-    bool IsDrawerOpen = true;
+
     bool IsVisible { get; set; } = false;
     string HiddenFormClass = "fullscreen d-none";
     string VisibleFormClass = "fullscreen zoom-in";
