@@ -1,0 +1,132 @@
+﻿@using Client.Shared.EstimationViewTemplate.Models;
+@using Client.Shared.EstimationViewTemplate.Models.SectionModels;
+@using Client.Shared.EstimationViewTemplate.Services;
+@using System.Globalization;
+
+
+<MudForm @ref="Form" Model="Template" Class="@(IsVisible ? VisibleFormClass : HiddenFormClass)" Style="height: 100%; background-color: var(--mud-palette-background-grey);">
+
+    <MudOverlay DarkBackground="true" Visible="IsLoading" Absolute="true">
+        <MudProgressCircular Size="Size.Large" Color="Color.Primary" Indeterminate="true" />
+    </MudOverlay>
+        
+    <HeaderToolbar OnClose="Close" OnSaveAndClose="Submit"/>
+    <SectionSpecificToolbar/>
+        
+
+    <div class="pa-4" style="height: calc(100% - 110px); overflow: auto;">
+        <MudPaper Elevation="3" Style="@($"min-height: 200px; width: 794px; transform: scale({(Scale/100).ToString(CultureInfo.InvariantCulture)}); transform-origin: top")" Class="mx-auto">
+            @foreach (var section in SectionsInOrder())
+            {
+                @if (section is DataSection dataSection)
+                {
+                    <DataSectionIllustrator />
+                }
+                @if (section is SheetSection sheetSection)
+                {
+                    <SheetSectionIllustator Section="sheetSection" />
+                }
+                <div class="border-b border-solid" />
+            }
+        </MudPaper>
+    </div>
+
+    <FooterBar @bind-Scale="Scale"/>
+
+
+
+</MudForm>
+
+
+        
+
+
+@code {
+    [Inject] public required IStringLocalizer<EditTemplatePopover> Localizer { get; set; }
+    [Inject] public required IEstimationViewTemplateServices TemplateService { get; set; }
+    [Parameter, EditorRequired] public required EstimationViewFrameContent ParentComponent { get; set; }
+
+    [Parameter] public EventCallback UpsertSuccefulCallback { get; set; }
+
+
+    double Scale = 100;
+    ViewTemplate Template { get; set; } = new() { Name = string.Empty };
+    MudForm? Form;
+    bool IsLoading = false;
+
+    bool IsVisible { get; set; } = false;
+    string HiddenFormClass = "fullscreen d-none relative";
+    string VisibleFormClass = "fullscreen zoom-in relative";
+
+
+    void SetIsLoading(bool isLoading)
+    {
+        IsLoading = isLoading;
+        StateHasChanged();
+    }
+    IEnumerable<IViewSection> SectionsInOrder()
+    {
+        var sections = ((IEnumerable<IViewSection>)Template.SheetSections)
+            .Concat(Template.DataSections)
+            .OrderBy(x => x.Order);
+        return sections;
+    }
+    protected override void OnInitialized()
+    {
+        //Parentcomponent activates the ShowPopOver method
+        ParentComponent.ShowPopoverFunction = ShowPopOver;
+    }
+    async Task ShowPopOver(Guid? id)
+    {
+        IsVisible = true;
+        StateHasChanged();
+        await LoadTemplate(id);
+    }
+    async Task LoadTemplate(Guid? id)
+    {
+        if (id is not null)
+        {
+            try
+            {
+                SetIsLoading(true);
+                Template = await TemplateService.GetAsync(id.Value);
+            }
+            catch (Exception)
+            {
+                //Handle exception
+                throw;
+            }
+            SetIsLoading(false);
+        }
+        else
+        {
+            Template = new() { Name = string.Empty };
+        }
+    }
+    async Task Submit()
+    {
+        Form?.Validate();
+        if(Form?.IsValid == true)
+        {
+            try
+            {
+                SetIsLoading(true);
+                await TemplateService.UpsertAsync(Template);
+                await UpsertSuccefulCallback.InvokeAsync();
+                Close();
+            }
+            catch (Exception)
+            {
+                SetIsLoading(false);
+                //handle exception
+                throw;
+            }
+        }
+
+    }
+    void Close()
+    {
+        IsVisible = false;
+        SetIsLoading(false);
+    }
+}

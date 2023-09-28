@@ -1,0 +1,13 @@
+﻿@using Client.Shared.EstimationViewTemplate.Models.SectionModels;
+<MudPaper Style="height: 40px; background-color: var(--mud-palette-table-lines);" Elevation="0" Class="border-b border-solid d-flex justify-space-around">
+    <div>
+        asdas
+
+    </div>
+
+</MudPaper>
+
+@code {
+    [Inject] public required IStringLocalizer<SectionSpecificToolbar> Localizer { get; set; }
+    [Parameter] public IViewSection? SelectedSection { get; set; }
+}
