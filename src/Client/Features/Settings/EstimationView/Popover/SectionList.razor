@@ -1,0 +1,38 @@
+﻿@using Client.Shared.EstimationViewTemplate.Models.SectionModels;
+
+<style>
+    .section:hover{
+        background-color: var(--mud-palette-table-hover);
+    }
+</style>
+
+
+<div>
+    @foreach (var section in Sections)
+    {
+        <div class="@RowClass(section)" @onclick="(args) => Select(args, section)">
+                @if (section is DataSection dataSection)
+                {
+                    <DataSectionIllustrator />
+                }
+                @if (section is SheetSection sheetSection)
+                {
+                    <SheetSectionIllustator Section="sheetSection" />
+                }
+            </div>
+    }
+</div>
+
+@code {
+    [Parameter, EditorRequired] public required IEnumerable<IViewSection> Sections { get; set; }
+    [Parameter] public IViewSection? SelectedSection { get; set; }
+    [Parameter] public EventCallback<IViewSection> SelectedSectionChanged { get; set; }
+
+    string RowClass(IViewSection section) => SelectedSection == section ? "section-selected blue lighten-5" : "section";
+
+    void Select(MouseEventArgs args, IViewSection section)
+    {
+        SelectedSection = section;
+        SelectedSectionChanged.InvokeAsync(section);
+    }
+}

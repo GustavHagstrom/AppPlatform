@@ -10,16 +10,19 @@
         <MudProgressCircular Size="Size.Large" Color="Color.Primary" Indeterminate="true" />
     </MudOverlay>
         
-    <HeaderToolbar OnClose="Close" OnSaveAndClose="Submit"/>
-    <SectionSpecificToolbar/>
+    <HeaderToolbar CloseRequest="Close" 
+                   SaveAndCloseRequest="Submit" 
+                   CreateNewSectionRequest="CreateNewSection"
+                   DeleteSectionRequest="DeleteSection"
+                   SelectedSection="SelectedSection" 
+                   SectionsInOrder="Template.SectionsInOrder.ToList()" 
+                   OrderChanged="StateHasChanged" /> 
+    <SectionSpecificToolbar SelectedSection="SelectedSection" />
         
 
     <div class="pa-4" style="height: calc(100% - 110px); overflow: auto;">
         <MudPaper Elevation="3" Style="@($"min-height: 200px; width: 794px; transform: scale({(Scale/100).ToString(CultureInfo.InvariantCulture)}); transform-origin: top")" Class="mx-auto">
-            @foreach (var section in SectionsInOrder())
-            {
-                <SectionItem Section="section"/>
-            }
+            <SectionList Sections="Template.SectionsInOrder" SelectedSection="SelectedSection" SelectedSectionChanged="OnSelectedSectionChanged" />
         </MudPaper>
     </div>
 
@@ -29,11 +32,8 @@
 
 </MudForm>
 
-
-        
-
-
 @code {
+
     [Inject] public required IStringLocalizer<EditTemplatePopover> Localizer { get; set; }
     [Inject] public required IEstimationViewTemplateServices TemplateService { get; set; }
     [Parameter, EditorRequired] public required EstimationViewFrameContent ParentComponent { get; set; }
@@ -43,6 +43,7 @@
 
     double Scale = 100;
     ViewTemplate Template { get; set; } = new() { Name = string.Empty };
+    IViewSection? SelectedSection { get; set; }
     MudForm? Form;
     bool IsLoading = false;
 
@@ -50,18 +51,41 @@
     string HiddenFormClass = "fullscreen d-none relative";
     string VisibleFormClass = "fullscreen zoom-in relative";
 
-
+    void CreateNewSection(IViewSection section)
+    {
+        section.Order = Template.DataSections.Count + Template.SheetSections.Count;
+        if(section is DataSection dataSection)
+        {
+            Template.DataSections.Add(dataSection);
+        }
+        else if(section is SheetSection sheetSection)
+        {
+            Template.SheetSections.Add(sheetSection);
+        }
+        SelectedSection = section;
+        StateHasChanged();
+    }
+    void DeleteSection(IViewSection section)
+    {
+        if (section is DataSection dataSection)
+        {
+            Template.DataSections.Remove(dataSection);
+        }
+        else if (section is SheetSection sheetSection)
+        {
+            Template.SheetSections.Remove(sheetSection);
+        }
+        SelectedSection = null;
+        StateHasChanged();
+    }
+    void OnSelectedSectionChanged(IViewSection selectedSection)
+    {
+        SelectedSection = selectedSection;
+    }
     void SetIsLoading(bool isLoading)
     {
         IsLoading = isLoading;
         StateHasChanged();
-    }
-    IEnumerable<IViewSection> SectionsInOrder()
-    {
-        var sections = ((IEnumerable<IViewSection>)Template.SheetSections)
-            .Concat(Template.DataSections)
-            .OrderBy(x => x.Order);
-        return sections;
     }
     protected override void OnInitialized()
     {

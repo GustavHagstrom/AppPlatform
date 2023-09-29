@@ -1,13 +1,25 @@
 ﻿@using Client.Shared.EstimationViewTemplate.Models.SectionModels;
 <MudPaper Style="height: 40px; background-color: var(--mud-palette-table-lines);" Elevation="0" Class="border-b border-solid d-flex justify-space-around">
     <div>
-        asdas
-
+        @if (SelectedSection is DataSection dataSection)
+        {
+            <p>I am a data section</p>
+        }
+        else if (SelectedSection is SheetSection sheetSection)
+        {
+            <p>I am a sheet section</p>
+        }
+        else
+        {
+            <p>I am nothing</p>
+        }
     </div>
 
 </MudPaper>
 
 @code {
     [Inject] public required IStringLocalizer<SectionSpecificToolbar> Localizer { get; set; }
-    [Parameter] public IViewSection? SelectedSection { get; set; }
+    [Parameter, EditorRequired] public IViewSection? SelectedSection { get; set; }
+
+    
 }
