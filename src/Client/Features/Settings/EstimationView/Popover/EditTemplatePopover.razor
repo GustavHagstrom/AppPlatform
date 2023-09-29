@@ -18,15 +18,7 @@
         <MudPaper Elevation="3" Style="@($"min-height: 200px; width: 794px; transform: scale({(Scale/100).ToString(CultureInfo.InvariantCulture)}); transform-origin: top")" Class="mx-auto">
             @foreach (var section in SectionsInOrder())
             {
-                @if (section is DataSection dataSection)
-                {
-                    <DataSectionIllustrator />
-                }
-                @if (section is SheetSection sheetSection)
-                {
-                    <SheetSectionIllustator Section="sheetSection" />
-                }
-                <div class="border-b border-solid" />
+                <SectionItem Section="section"/>
             }
         </MudPaper>
     </div>
