@@ -1,4 +1,5 @@
-﻿@using Client.Shared.EstimationViewTemplate.Models.SectionModels;
+﻿@using Client.Features.Settings.EstimationView.Popover.Models;
+@using Client.Shared.EstimationViewTemplate.Models.SectionModels;
 @using Client.Shared.EstimationViewTemplate.Models;
 <MudPaper Style="height: 40px" Elevation="0" Class="border-b border-solid d-flex justify-space-between">
 
@@ -8,12 +9,12 @@
 
     <div class="d-flex justify-center align-self-stretch" style="width: 33%">
         <MudButton Variant="Variant.Text" Style="min-width: 40px;" Color="Color.Primary" 
-                   Disabled="SelectedSection is null || SectionsInOrder.Count < 2 || SectionsInOrder.FirstOrDefault() == SelectedSection"
+                   Disabled="Selection is null || SectionsInOrder.Count < 2 || SectionsInOrder.FirstOrDefault() == Selection.Section"
                    OnClick="PushSelectedSectionUp">
             <MudIcon Icon="@Icons.Material.Sharp.ArrowUpward" />
         </MudButton>
         <MudButton Class="px-2" Variant="Variant.Text" Style="min-width: 40px;" Color="Color.Primary" 
-                   Disabled="SelectedSection is null || SectionsInOrder.Count < 2  || SectionsInOrder.LastOrDefault() == SelectedSection"
+                   Disabled="Selection is null || SectionsInOrder.Count < 2  || SectionsInOrder.LastOrDefault() == Selection.Section"
                    OnClick="PushSelectedSectionDown">
             <MudIcon Icon="@Icons.Material.Sharp.ArrowDownward" />
         </MudButton>
@@ -29,7 +30,7 @@
             </ChildContent>
         </MudMenu>
         <MudButton Class="px-2" Variant="Variant.Text" Style="min-width: 40px;" Color="Color.Error"
-                   Disabled="SelectedSection is null" OnClick="DeleteRequestIfConfirmed">
+                   Disabled="Selection is null" OnClick="DeleteRequestIfConfirmed">
             <MudIcon Icon="@Icons.Material.Sharp.Delete" />
         </MudButton>
     </div>
@@ -59,7 +60,7 @@
     [Parameter, EditorRequired] public EventCallback OrderChanged { get; set; }
     [Parameter, EditorRequired] public EventCallback<IViewSection> CreateNewSectionRequest { get; set; }
     [Parameter, EditorRequired] public EventCallback<IViewSection> DeleteSectionRequest { get; set; }
-    [Parameter, EditorRequired] public IViewSection? SelectedSection { get; set; }
+    [Parameter, EditorRequired] public SectionSelection? Selection { get; set; }
     [Parameter, EditorRequired] public required List<IViewSection> SectionsInOrder { get; set; }
 
 
@@ -72,7 +73,7 @@
         var result = await dialog.Result;
         if (!result.Canceled)
         {
-            await DeleteSectionRequest.InvokeAsync(SelectedSection);
+            await DeleteSectionRequest.InvokeAsync(Selection?.Section);
         }
     }
     void CreateNewSection(IViewSection section)
@@ -81,20 +82,20 @@
     }
     void PushSelectedSectionDown()
     {
-        if(SelectedSection is not null)
+        if(Selection is not null)
         {
-            var selectedSectionIndex = SectionsInOrder.IndexOf(SelectedSection);
+            var selectedSectionIndex = SectionsInOrder.IndexOf(Selection.Section);
             var section2 = SectionsInOrder[selectedSectionIndex + 1];
-            SwitchOrder(SelectedSection, section2);
+            SwitchOrder(Selection.Section, section2);
         }
     }
     void PushSelectedSectionUp()
     {
-        if (SelectedSection is not null)
+        if (Selection is not null)
         {
-            var selectedSectionIndex = SectionsInOrder.IndexOf(SelectedSection);
+            var selectedSectionIndex = SectionsInOrder.IndexOf(Selection.Section);
             var section2 = SectionsInOrder[selectedSectionIndex - 1];
-            SwitchOrder(SelectedSection, section2);
+            SwitchOrder(Selection.Section, section2);
         }
     }
     void SwitchOrder(IViewSection section1, IViewSection section2)

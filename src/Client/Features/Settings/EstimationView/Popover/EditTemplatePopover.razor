@@ -1,4 +1,5 @@
-﻿@using Client.Shared.EstimationViewTemplate.Models;
+﻿@using Client.Features.Settings.EstimationView.Popover.Models;
+@using Client.Shared.EstimationViewTemplate.Models;
 @using Client.Shared.EstimationViewTemplate.Models.SectionModels;
 @using Client.Shared.EstimationViewTemplate.Services;
 @using System.Globalization;
@@ -14,15 +15,15 @@
                    SaveAndCloseRequest="Submit" 
                    CreateNewSectionRequest="CreateNewSection"
                    DeleteSectionRequest="DeleteSection"
-                   SelectedSection="SelectedSection" 
+                   Selection="Selection"
                    SectionsInOrder="Template.SectionsInOrder.ToList()" 
                    OrderChanged="StateHasChanged" /> 
-    <SectionSpecificToolbar SelectedSection="SelectedSection" />
+    <SectionSpecificToolbar Selection="Selection" />
         
 
     <div class="pa-4" style="height: calc(100% - 110px); overflow: auto;">
         <MudPaper Elevation="3" Style="@($"min-height: 200px; width: 794px; transform: scale({(Scale/100).ToString(CultureInfo.InvariantCulture)}); transform-origin: top")" Class="mx-auto">
-            <SectionList Sections="Template.SectionsInOrder" SelectedSection="SelectedSection" SelectedSectionChanged="OnSelectedSectionChanged" />
+            <SectionList Sections="Template.SectionsInOrder" Selection="Selection" SelectionChanged="OnSelectedSectionChanged" />
         </MudPaper>
     </div>
 
@@ -43,7 +44,7 @@
 
     double Scale = 100;
     ViewTemplate Template { get; set; } = new() { Name = string.Empty };
-    IViewSection? SelectedSection { get; set; }
+    SectionSelection? Selection { get; set; }
     MudForm? Form;
     bool IsLoading = false;
 
@@ -62,7 +63,7 @@
         {
             Template.SheetSections.Add(sheetSection);
         }
-        SelectedSection = section;
+        Selection = new SectionSelection(section, null);
         StateHasChanged();
     }
     void DeleteSection(IViewSection section)
@@ -75,12 +76,12 @@
         {
             Template.SheetSections.Remove(sheetSection);
         }
-        SelectedSection = null;
+        Selection = null;
         StateHasChanged();
     }
-    void OnSelectedSectionChanged(IViewSection selectedSection)
+    void OnSelectedSectionChanged(SectionSelection selectionModel)
     {
-        SelectedSection = selectedSection;
+        Selection = selectionModel;
     }
     void SetIsLoading(bool isLoading)
     {

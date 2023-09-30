@@ -2,4 +2,4 @@
 
 namespace Client.Features.Settings.EstimationView.Popover.Models;
 
-public record SectionSelectionModel(IViewSection SelectedSection, ISectionTool? ActiveTool);
+public record SectionSelection(IViewSection Section, ISectionTool? ActiveTool);

@@ -1,11 +1,12 @@
-﻿@using Client.Shared.EstimationViewTemplate.Models.SectionModels;
+﻿@using Client.Features.Settings.EstimationView.Popover.Models;
+@using Client.Shared.EstimationViewTemplate.Models.SectionModels;
 <MudPaper Style="height: 40px; background-color: var(--mud-palette-table-lines);" Elevation="0" Class="border-b border-solid d-flex justify-space-around">
     <div>
-        @if (SelectedSection is DataSection dataSection)
+        @if (Selection?.Section is DataSection dataSection)
         {
             <p>I am a data section</p>
         }
-        else if (SelectedSection is SheetSection sheetSection)
+        else if (Selection?.Section is SheetSection sheetSection)
         {
             <p>I am a sheet section</p>
         }
@@ -19,7 +20,7 @@
 
 @code {
     [Inject] public required IStringLocalizer<SectionSpecificToolbar> Localizer { get; set; }
-    [Parameter, EditorRequired] public IViewSection? SelectedSection { get; set; }
+    [Parameter, EditorRequired] public SectionSelection? Selection { get; set; }
 
     
 }

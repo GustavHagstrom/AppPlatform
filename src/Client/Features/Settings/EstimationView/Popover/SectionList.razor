@@ -1,4 +1,5 @@
-﻿@using Client.Shared.EstimationViewTemplate.Models.SectionModels;
+﻿@using Client.Features.Settings.EstimationView.Popover.Models;
+@using Client.Shared.EstimationViewTemplate.Models.SectionModels;
 
 <style>
     .section:hover{
@@ -25,14 +26,14 @@
 
 @code {
     [Parameter, EditorRequired] public required IEnumerable<IViewSection> Sections { get; set; }
-    [Parameter] public IViewSection? SelectedSection { get; set; }
-    [Parameter] public EventCallback<IViewSection> SelectedSectionChanged { get; set; }
+    [Parameter] public SectionSelection? Selection { get; set; }
+    [Parameter] public EventCallback<SectionSelection> SelectionChanged { get; set; }
 
-    string RowClass(IViewSection section) => SelectedSection == section ? "section-selected blue lighten-5" : "section";
+    string RowClass(IViewSection section) => Selection?.Section == section ? "section-selected blue lighten-5" : "section";
 
-    void Select(MouseEventArgs args, IViewSection section)
+    void Select(MouseEventArgs args, IViewSection section, ISectionTool? tool = null)
     {
-        SelectedSection = section;
-        SelectedSectionChanged.InvokeAsync(section);
+        Selection = new SectionSelection(section, tool);
+        SelectionChanged.InvokeAsync(Selection);
     }
 }
