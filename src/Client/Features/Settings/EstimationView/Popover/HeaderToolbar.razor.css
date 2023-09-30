@@ -1,0 +1,6 @@
+input {
+    outline: none;
+}
+input:focus {
+    border-color: var(--mud-palette-primary);
+}

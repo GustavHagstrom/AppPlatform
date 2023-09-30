@@ -12,7 +12,7 @@
     </MudOverlay>
         
     <HeaderToolbar CloseRequest="Close" 
-                   SaveAndCloseRequest="Submit" 
+                   SaveAndCloseRequest="SaveAndClose" 
                    CreateNewSectionRequest="CreateNewSection"
                    DeleteSectionRequest="DeleteSection"
                    Selection="Selection"
@@ -120,7 +120,7 @@
             Template = new() { Name = string.Empty };
         }
     }
-    async Task Submit()
+    async Task SaveAndClose()
     {
         Form?.Validate();
         if(Form?.IsValid == true)
