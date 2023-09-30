@@ -29,23 +29,23 @@ public class EstimationViewTemplateServiceTests
     [Test]
     public async Task UpsertAsync_ShouldInsertNewRecordWithNestedValues()
     {
-        var entety = EstimationViewTemplateDtoSamples.Sample();
+        var entity = EstimationViewTemplateDtoSamples.Sample();
 
-        await _service.UpsertAsync(entety, _organizationId);
+        await _service.UpsertAsync(entity, _organizationId);
         var actual = await _dbContext.EstimationViewTemplates
-            .Include(x => x.HeaderOrFooters)
             .Include(x => x.SheetSections).ThenInclude(x => x.Columns)
             .Include(x => x.SheetSections).ThenInclude(x => x.Columns).ThenInclude(x => x.CellFormat)
+            .Include(x => x.HeaderOrFooters)
             .Include(x => x.DataSections).ThenInclude(x => x.Columns)
             .Include(x => x.DataSections).ThenInclude(x => x.Cells).ThenInclude(x => x.Format)
             .FirstOrDefaultAsync();
 
         Assert.That(actual, Is.Not.Null);
         Assert.That(actual.HeaderOrFooters.Count, Is.EqualTo(1));
-        Assert.That(actual.SheetSections.Count, Is.EqualTo(1));
+        Assert.That(actual.SheetSections.Count, Is.EqualTo(2));
         Assert.That(actual.SheetSections.First().Columns.Count, Is.EqualTo(1));
         Assert.That(actual.SheetSections.First().Columns.First().CellFormat, Is.Not.Null);
-        Assert.That(actual.DataSections.Count, Is.EqualTo(1));
+        Assert.That(actual.DataSections.Count, Is.EqualTo(2));
         Assert.That(actual.DataSections.First().Cells.Count, Is.EqualTo(1));
         Assert.That(actual.DataSections.First().Columns.Count, Is.EqualTo(1));
         Assert.That(actual.DataSections.First().Cells.First().Format, Is.Not.Null);
@@ -57,8 +57,9 @@ public class EstimationViewTemplateServiceTests
         var entity = EstimationViewTemplateDtoSamples.Sample();
         await _service.UpsertAsync(entity, _organizationId);
         var dbEntety = await _dbContext.EstimationViewTemplates
+            .Include(x => x.SheetSections).ThenInclude(x => x.Columns)
+            .Include(x => x.SheetSections).ThenInclude(x => x.Columns).ThenInclude(x => x.CellFormat)
             .Include(x => x.HeaderOrFooters)
-            .Include(x => x.SheetSections).ThenInclude(x => x!.Columns).ThenInclude(x => x.CellFormat)
             .Include(x => x.DataSections).ThenInclude(x => x.Columns)
             .Include(x => x.DataSections).ThenInclude(x => x.Cells).ThenInclude(x => x.Format)
             .FirstOrDefaultAsync();
@@ -67,13 +68,44 @@ public class EstimationViewTemplateServiceTests
 
         await _service.UpsertAsync(dto, _organizationId);
         var actual = await _dbContext.EstimationViewTemplates
+            .Include(x => x.SheetSections).ThenInclude(x => x.Columns)
+            .Include(x => x.SheetSections).ThenInclude(x => x.Columns).ThenInclude(x => x.CellFormat)
             .Include(x => x.HeaderOrFooters)
-            .Include(x => x.SheetSections).ThenInclude(x => x!.Columns).ThenInclude(x => x.CellFormat)
             .Include(x => x.DataSections).ThenInclude(x => x.Columns)
             .Include(x => x.DataSections).ThenInclude(x => x.Cells).ThenInclude(x => x.Format)
             .FirstOrDefaultAsync();
 
         
         Assert.That(actual?.DataSections.First().Cells.First().Format.FontFamily, Is.EqualTo("Arial"));
+    }
+    [Test]
+    public async Task UpsertAsync_ShouldUpdateDeletedNested()
+    {
+        var entity = EstimationViewTemplateDtoSamples.Sample();
+        await _service.UpsertAsync(entity, _organizationId);
+        var dbEntety = await _dbContext.EstimationViewTemplates
+            .Include(x => x.SheetSections).ThenInclude(x => x.Columns)
+            .Include(x => x.SheetSections).ThenInclude(x => x.Columns).ThenInclude(x => x.CellFormat)
+            .Include(x => x.HeaderOrFooters)
+            .Include(x => x.DataSections).ThenInclude(x => x.Columns)
+            .Include(x => x.DataSections).ThenInclude(x => x.Cells).ThenInclude(x => x.Format)
+            .FirstOrDefaultAsync();
+
+        var dto = dbEntety!.Adapt<EstimationViewTemplateDto>();
+        dto.DataSections.Remove(dto.DataSections.First());
+        dto.SheetSections.Remove(dto.SheetSections.First());
+        await _service.UpsertAsync(dto, _organizationId);
+
+        var actual = await _dbContext.EstimationViewTemplates
+            .Include(x => x.SheetSections).ThenInclude(x => x.Columns)
+            .Include(x => x.SheetSections).ThenInclude(x => x.Columns).ThenInclude(x => x.CellFormat)
+            .Include(x => x.HeaderOrFooters)
+            .Include(x => x.DataSections).ThenInclude(x => x.Columns)
+            .Include(x => x.DataSections).ThenInclude(x => x.Cells).ThenInclude(x => x.Format)
+            .FirstOrDefaultAsync();
+
+
+        Assert.That(actual?.DataSections.Count(), Is.EqualTo(1));
+        Assert.That(actual?.SheetSections.Count(), Is.EqualTo(1));
     }
 }

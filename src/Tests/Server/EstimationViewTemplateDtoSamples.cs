@@ -34,6 +34,30 @@ public static class EstimationViewTemplateDtoSamples
                         }
                     },
                     RowCount = 1,
+                },
+                new DataSectionTemplateDto
+                {
+                    Order = 3,
+                    Columns =
+                    {
+                        new DataColumnDto
+                        {
+                            WidthPercent = 100,
+                            Order = 1,
+                        }
+                    },
+                    Cells =
+                    {
+                        new CellTemplateDto
+                        {
+                            Column = 1,
+                            Format = new CellFormatDto
+                            {
+                                FontFamily = "Calibri"
+                            }
+                        }
+                    },
+                    RowCount = 1,
                 }
             },
             HeaderOrFooters =
@@ -49,6 +73,22 @@ public static class EstimationViewTemplateDtoSamples
                 new SheetSectionTemplateDto
                 {
                     Order = 2,
+                    Columns =
+                    {
+                        new SheetColumnDto
+                        {
+                            Order = 1,
+                            ColumnType = SheetColumnType.Description,
+                            CellFormat = new CellFormatDto
+                            {
+                                FontFamily = "Calibri"
+                            }
+                        }
+                    },
+                },
+                new SheetSectionTemplateDto
+                {
+                    Order = 4,
                     Columns =
                     {
                         new SheetColumnDto

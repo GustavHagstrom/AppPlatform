@@ -74,9 +74,9 @@ public class EstimationViewTemplateUpdater : IEstimationViewTemplateUpdater
     }
     private void UpdateEstimationViewEntityList<T>(ICollection<T> existing, ICollection<T> updateSrc, UpdateAction<T> updateAction) where T : IEstimationViewEntity
     {
-        var toRemove = existing.Where(e => updateSrc.Select(u => u.Id).Contains(e.Id) == false);
-        var toUpdate = existing.Where(e => updateSrc.Select(u => u.Id).Contains(e.Id));
-        var toAdd = updateSrc.Where(u => existing.Select(e => e.Id).Contains(u.Id) == false);
+        var toRemove = existing.Where(e => updateSrc.Select(u => u.Id).Contains(e.Id) == false).ToList();
+        var toUpdate = existing.Where(e => updateSrc.Select(u => u.Id).Contains(e.Id)).ToList();
+        var toAdd = updateSrc.Where(u => existing.Select(e => e.Id).Contains(u.Id) == false).ToList();
         foreach (var entityToRemove in toRemove)
         {
             existing.Remove(entityToRemove);
