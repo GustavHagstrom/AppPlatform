@@ -1,0 +1,37 @@
+﻿@using Client.Shared.EstimationViewTemplate.Models;
+@using System.ComponentModel.DataAnnotations;
+<MudDialog>
+    <DialogContent>
+        <MudForm @bind-IsValid="@Success">
+
+        </MudForm>
+        <MudText Typo="Typo.subtitle1"></MudText>
+        <MudTextField @bind-Value="Template.Name" Variant="Variant.Outlined" Margin="Margin.Dense" InputType="InputType.Text"
+                      Validation="new Func<string, IEnumerable<string>>(NameValidation)" />
+    </DialogContent>
+    <DialogActions>
+        <MudButton>@Localizer["Nej"]</MudButton>
+        <MudButton Disabled="!Success">@Localizer["Ja"]</MudButton>
+    </DialogActions>
+</MudDialog>
+
+@code {
+    [CascadingParameter] public required MudDialogInstance MudDialog { get; set; }
+    [Parameter] public required ViewTemplate Template { get; set; }
+    [Inject] public required IStringLocalizer<ConfirmSaveAndQuitDialog> Localizer { get; set; }
+
+    bool Success;
+
+    IEnumerable<string> NameValidation(string? value)
+    {
+        if(string.IsNullOrEmpty(value))
+        {
+            yield return Localizer["Namn är obligatoriskt"];
+            yield break;
+        }
+        if (value?.Length > 50)
+        {
+            yield return Localizer["Namn får inte vara över 50 tecken långt"];
+        }
+    }
+}
