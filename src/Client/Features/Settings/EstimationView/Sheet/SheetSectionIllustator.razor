@@ -1,0 +1,31 @@
+﻿@using Client.Features.Settings.EstimationView.Models;
+@using Client.Shared.EstimationViewTemplate.Models.SectionModels;
+@using System.Globalization;
+
+<div class="d-flex" style="min-height: 30px">
+    @foreach (var column in Section.Columns)
+    {
+        <div @onclick="() => ToolSelected.InvokeAsync(new SheetColumnTool { Column = column })"
+             style="@($"width: {WidthPercent(column)}%")"
+             class="border border-solid">
+            Format
+        </div>
+    }
+</div>
+
+
+@code {
+    [Parameter, EditorRequired] public required SheetSection Section { get; set; }
+    [Parameter, EditorRequired] public EventCallback<ISectionTool> ToolSelected { get; set; }
+    
+
+    int ColumnWidthSum => Section.Columns.Sum(x => x.WidthPercent);
+
+    string WidthPercent(SheetColumn column)
+    {
+        var widthSum = Section.Columns.Sum(x => x.WidthPercent);
+        double percent = (double)column.WidthPercent / (double)widthSum * 100;
+        return percent.ToString(CultureInfo.InvariantCulture);
+    }
+
+}

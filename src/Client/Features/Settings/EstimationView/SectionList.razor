@@ -1,24 +1,49 @@
-﻿@using Client.Features.Settings.EstimationView.Models;
+﻿@using Client.Features.Settings.EstimationView.Data
+@using Client.Features.Settings.EstimationView.Models;
+@using Client.Features.Settings.EstimationView.Sheet
 @using Client.Shared.EstimationViewTemplate.Models.SectionModels;
 
 <style>
-    .section:hover{
-        background-color: var(--mud-palette-table-hover);
+    .unselected{
+        padding: 3px;
+        border: 1px;
+        border-style: solid;
+        border-color: transparent;
     }
+
+    .unselected:hover {
+        padding: 3px;
+        border: 1px;
+        border-style: solid;
+        border-color: var(--mud-palette-text-primary);
+    }
+    .selected {
+        padding: 2px;
+        border: 2px;
+        border-style: solid;
+        border-color: var(--mud-palette-primary);
+    }
+    .section{
+        
+        transition-property: border-color, background-color;
+        transition-duration: 200ms;
+    }
+
+    
 </style>
 
 
 <div>
     @foreach (var section in Sections)
     {
-        <div class="@RowClass(section)" @onclick="(args) => Select(args, section)">
+        <div class="@RowClass(section)" @onclick="() => Select(section)">
                 @if (section is DataSection dataSection)
                 {
                     <DataSectionIllustrator />
                 }
                 @if (section is SheetSection sheetSection)
                 {
-                    <SheetSectionIllustator Section="sheetSection" />
+                    <SheetSectionIllustator Section="sheetSection" ToolSelected="(t) => Select(Selection?.Section, t)"/>
                 }
             </div>
     }
@@ -29,11 +54,18 @@
     [Parameter] public SectionSelection? Selection { get; set; }
     [Parameter] public EventCallback<SectionSelection> SelectionChanged { get; set; }
 
-    string RowClass(IViewSection section) => Selection?.Section == section ? "section-selected blue lighten-5" : "section";
+    string RowClass(IViewSection section) => Selection?.Section == section ? "section selected" : "section unselected";
 
-    void Select(MouseEventArgs args, IViewSection section, ISectionTool? tool = null)
+    void Select(IViewSection? section, ISectionTool? tool = null)
     {
-        Selection = new SectionSelection(section, tool);
+        if(section is null)
+        {
+            Selection = null;
+        }
+        else
+        {
+            Selection = new SectionSelection(section, tool);
+        }
         SelectionChanged.InvokeAsync(Selection);
     }
 }

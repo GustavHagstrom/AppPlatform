@@ -5,7 +5,7 @@
         <MudForm @bind-IsValid="@Success">
             <MudText Typo="Typo.body1">@Localizer["Vill du spara?"]</MudText>
             <MudText Typo="Typo.subtitle1">@Localizer["Namn"]</MudText>
-            <MudTextField @bind-Value="Template.Name" Variant="Variant.Outlined" Margin="Margin.Dense" InputType="InputType.Text"
+            <MudTextField @bind-Value="Template.Name" Immediate="true" Variant="Variant.Outlined" Margin="Margin.Dense" InputType="InputType.Text"
                           Validation="new Func<string, IEnumerable<string>>(NameValidation)" />
         </MudForm>
     </DialogContent>

@@ -1,4 +1,5 @@
 ﻿@using Client.Features.Settings.EstimationView.Models;
+@using Client.Features.Settings.EstimationView.SpecificToolbar
 @using Client.Shared.EstimationViewTemplate.Models;
 @using Client.Shared.EstimationViewTemplate.Models.SectionModels;
 @using Client.Shared.EstimationViewTemplate.Services;
@@ -18,16 +19,16 @@
                    Selection="Selection"
                    SectionsInOrder="Template.SectionsInOrder.ToList()" 
                    OrderChanged="StateHasChanged" /> 
-    <SectionSpecificToolbar Selection="Selection" />
+    <SectionSpecificToolbar Selection="Selection" StateChangedRequest="StateHasChanged" />
         
 
-    <div class="pa-4" style="height: calc(100% - 110px); overflow: auto;">
-        <MudPaper Elevation="3" Style="@($"min-height: 200px; width: 794px; transform: scale({(Scale/100).ToString(CultureInfo.InvariantCulture)}); transform-origin: top")" Class="mx-auto">
+    <div class="pa-4" style="height: calc(100% - 80px); overflow: auto;">
+        <MudPaper Elevation="3" Style="@($"width: 794px; transform: scale({(Scale/100).ToString(CultureInfo.InvariantCulture)}); transform-origin: top")" Class="mx-auto">
             <SectionList Sections="Template.SectionsInOrder" Selection="Selection" SelectionChanged="OnSelectedSectionChanged" />
         </MudPaper>
     </div>
 
-    <FooterBar @bind-Scale="Scale"/>
+@*     <FooterBar @bind-Scale="Scale"/> *@
 
 
 

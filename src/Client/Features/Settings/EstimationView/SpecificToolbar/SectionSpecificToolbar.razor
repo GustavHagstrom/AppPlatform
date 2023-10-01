@@ -1,5 +1,7 @@
 ﻿@using Client.Features.Settings.EstimationView.Models;
 @using Client.Shared.EstimationViewTemplate.Models.SectionModels;
+@using Client.Features.Settings.EstimationView;
+
 <MudPaper Style="height: 40px; background-color: var(--mud-palette-table-lines);" Elevation="0" Class="border-b border-solid d-flex justify-space-around">
     <div>
         @if (Selection?.Section is DataSection dataSection)
@@ -8,7 +10,13 @@
         }
         else if (Selection?.Section is SheetSection sheetSection)
         {
-            <p>I am a sheet section</p>
+            @if(Selection.ActiveTool is SheetColumnTool columnTool)
+            {
+                <p>ColumnTool</p>
+            }
+            <MudButton Style="min-width: 40px" OnClick="() => AddColumnToSheetSection(sheetSection)">
+                <MudIcon Icon="@Icons.Material.Sharp.Add" Color="Color.Success"/>
+            </MudButton>
         }
         else
         {
@@ -21,6 +29,11 @@
 @code {
     [Inject] public required IStringLocalizer<SectionSpecificToolbar> Localizer { get; set; }
     [Parameter, EditorRequired] public SectionSelection? Selection { get; set; }
+    [Parameter, EditorRequired] public EventCallback StateChangedRequest { get; set; }
 
-    
+    void AddColumnToSheetSection(SheetSection section)
+    {
+        section.Columns.Add(new SheetColumn { WidthPercent = 10 });
+        StateChangedRequest.InvokeAsync(section);
+    }
 }
