@@ -37,6 +37,7 @@
 
     [Inject] public required IStringLocalizer<EditTemplatePopover> Localizer { get; set; }
     [Inject] public required IEstimationViewTemplateServices TemplateService { get; set; }
+    [Inject] public required IDialogService DialogService { get; set; }
     [Parameter, EditorRequired] public required EstimationViewFrameContent ParentComponent { get; set; }
 
     [Parameter] public EventCallback UpsertSuccefulCallback { get; set; }
@@ -122,15 +123,24 @@
     }
     async Task SaveAndClose()
     {
+
         Form?.Validate();
         if(Form?.IsValid == true)
         {
             try
             {
-                SetIsLoading(true);
-                await TemplateService.UpsertAsync(Template);
-                await UpsertSuccefulCallback.InvokeAsync();
-                Close();
+                var parameters = new DialogParameters<ConfirmSaveAndQuitDialog>();
+                parameters.Add(x => x.Template, Template);
+
+                var dialog = await DialogService.ShowAsync<ConfirmSaveAndQuitDialog>(Localizer["Spara"], parameters);
+                var result = await dialog.Result;
+                if(!result.Canceled)
+                {
+                    SetIsLoading(true);
+                    await TemplateService.UpsertAsync(Template);
+                    await UpsertSuccefulCallback.InvokeAsync();
+                    Close();
+                }
             }
             catch (Exception)
             {
