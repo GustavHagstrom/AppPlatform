@@ -4,27 +4,27 @@
 @using Client.Shared.EstimationViewTemplate.Models.SectionModels;
 
 <style>
-    .unselected{
+    .section-unselected {
         padding: 3px;
         border: 1px;
         border-style: solid;
         border-color: transparent;
     }
 
-    .unselected:hover {
+    .section-unselected:hover {
         padding: 3px;
         border: 1px;
         border-style: solid;
         border-color: var(--mud-palette-text-primary);
     }
-    .selected {
+
+    .section-selected {
         padding: 2px;
         border: 2px;
         border-style: solid;
         border-color: var(--mud-palette-primary);
     }
     .section{
-        
         transition-property: border-color, background-color;
         transition-duration: 200ms;
     }
@@ -43,7 +43,7 @@
                 }
                 @if (section is SheetSection sheetSection)
                 {
-                    <SheetSectionIllustator Section="sheetSection" ToolSelected="(t) => Select(Selection?.Section, t)"/>
+                    <SheetSectionIllustator Section="sheetSection" Selection="Selection" SelectionChanged="Select" />
                 }
             </div>
     }
@@ -54,10 +54,14 @@
     [Parameter] public SectionSelection? Selection { get; set; }
     [Parameter] public EventCallback<SectionSelection> SelectionChanged { get; set; }
 
-    string RowClass(IViewSection section) => Selection?.Section == section ? "section selected" : "section unselected";
+    string RowClass(IViewSection section) => Selection?.Section == section ? "section section-selected" : "section section-unselected";
 
     void Select(IViewSection? section, ISectionTool? tool = null)
     {
+        if(Selection?.Section == section)
+        {
+            return;
+        }
         if(section is null)
         {
             Selection = null;
@@ -67,5 +71,10 @@
             Selection = new SectionSelection(section, tool);
         }
         SelectionChanged.InvokeAsync(Selection);
+    }
+    void Select(SectionSelection selection)
+    {
+        Selection = selection;
+        SelectionChanged.InvokeAsync(selection);
     }
 }

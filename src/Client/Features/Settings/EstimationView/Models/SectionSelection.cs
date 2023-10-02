@@ -2,4 +2,14 @@
 
 namespace Client.Features.Settings.EstimationView.Models;
 
-public record SectionSelection(IViewSection Section, ISectionTool? ActiveTool);
+public class SectionSelection
+{
+    public SectionSelection(IViewSection section, ISectionTool? activeTool)
+    {
+        Section = section;
+        ActiveTool = activeTool;
+    }
+
+    public IViewSection Section { get; set; }
+    public ISectionTool? ActiveTool { get; set; }
+}
