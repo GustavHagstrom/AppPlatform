@@ -1,5 +1,4 @@
-﻿@using Client.Features.Settings.EstimationView.Models;
-@using Client.Features.Settings.EstimationView.SpecificToolbar
+﻿@using Client.Features.Settings.EstimationView.SpecificToolbar
 @using Client.Shared.EstimationViewTemplate.Models;
 @using Client.Shared.EstimationViewTemplate.Models.SectionModels;
 @using Client.Shared.EstimationViewTemplate.Services;
@@ -16,17 +15,17 @@
                    SaveAndCloseRequest="SaveAndClose" 
                    CreateNewSectionRequest="CreateNewSection"
                    DeleteSectionRequest="DeleteSection"
-                   Selection="Selection"
+                   SelectedSection="SelectedSection"
                    SectionsInOrder="Template.SectionsInOrder.ToList()" 
                    OrderChanged="StateHasChanged" /> 
-    <SectionSpecificToolbar Selection="Selection" StateChangedRequest="StateHasChanged" />
+    @* <SectionSpecificToolbar Selection="Selection" StateChangedRequest="StateHasChanged" /> *@
         
 
-    <div class="pa-4" style="height: calc(100% - 80px); overflow: auto;">
-        <MudPaper Elevation="3" Style="@($"width: 794px; transform: scale({(Scale/100).ToString(CultureInfo.InvariantCulture)}); transform-origin: top")" Class="mx-auto">
-            <SectionList Sections="Template.SectionsInOrder" Selection="Selection" SelectionChanged="OnSelectedSectionChanged" />
+    <MudContainer Class="pa-4" Style="height: calc(100% - 40px); overflow: auto;">
+        <MudPaper Elevation="3" Style="max-width: 794px;" Class="mx-auto">
+            <SectionList Sections="Template.SectionsInOrder" SelectedSection="SelectedSection" SelectedSectionChanged="OnSelectedSectionChanged" />
         </MudPaper>
-    </div>
+    </MudContainer>
 
 @*     <FooterBar @bind-Scale="Scale"/> *@
 
@@ -44,12 +43,10 @@
     [Parameter] public EventCallback UpsertSuccefulCallback { get; set; }
 
 
-    double Scale = 100;
     ViewTemplate Template { get; set; } = new() { Name = string.Empty };
-    SectionSelection? Selection { get; set; }
+    IViewSection? SelectedSection { get; set; }
     MudForm? Form;
     bool IsLoading = false;
-
     bool IsVisible { get; set; } = false;
     string HiddenFormClass = "fullscreen d-none relative";
     string VisibleFormClass = "fullscreen zoom-in relative";
@@ -65,7 +62,7 @@
         {
             Template.SheetSections.Add(sheetSection);
         }
-        Selection = new SectionSelection(section, null);
+        SelectedSection = section;
         StateHasChanged();
     }
     void DeleteSection(IViewSection section)
@@ -78,12 +75,12 @@
         {
             Template.SheetSections.Remove(sheetSection);
         }
-        Selection = null;
+        SelectedSection = null;
         StateHasChanged();
     }
-    void OnSelectedSectionChanged(SectionSelection selectionModel)
+    void OnSelectedSectionChanged(IViewSection section)
     {
-        Selection = selectionModel;
+        SelectedSection = section;
     }
     void SetIsLoading(bool isLoading)
     {

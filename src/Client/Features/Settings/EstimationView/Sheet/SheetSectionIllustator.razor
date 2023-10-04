@@ -1,5 +1,4 @@
-﻿@using Client.Features.Settings.EstimationView.Models;
-@using Client.Shared.EstimationViewTemplate.Models.SectionModels;
+﻿@using Client.Shared.EstimationViewTemplate.Models.SectionModels;
 @using System.Globalization;
 
 <style>
@@ -29,11 +28,12 @@
         transition-duration: 200ms;
     }
 </style>
-
+<SectionToolbar Active="IsSelected" />
 <div class="d-flex" style="min-height: 30px">
+    
     @foreach (var column in Section.Columns)
     {
-        <div @onclick="() => Select(column)"
+        <div @onclick="() => SelectedColumn = column"
              style="@($"width: {WidthPercent(column)}%")"
              class="@ColumnClass(column)">
             Format
@@ -44,38 +44,18 @@
 
 @code {
     [Parameter, EditorRequired] public required SheetSection Section { get; set; }
-    [Parameter, EditorRequired] public SectionSelection? Selection { get; set; }
-    [Parameter, EditorRequired] public EventCallback<SectionSelection> SelectionChanged { get; set; }
+    [Parameter, EditorRequired] public bool IsSelected { get; set; }
 
-
+    SheetColumn? SelectedColumn;
 
     int ColumnWidthSum => Section.Columns.Sum(x => x.WidthPercent);
 
-    string ColumnClass(SheetColumn column) => Selection?.ActiveTool is SheetColumnTool cTool && cTool.Column == column ? "tool tool-selected" : "tool tool-unselected";
-
-    // string ColumnClass(SheetColumn column)
-    // {
-    //     if (Selection?.ActiveTool is not null &&
-    //         Selection.ActiveTool is SheetColumnTool cTool &&
-    //         cTool is not null &&
-    //         cTool.Column == column)
-    //     {
-    //         return "tool tool-selected";
-    //     }
-    //     return "tool tool-unselected";
-    // }
+    string ColumnClass(SheetColumn column) => SelectedColumn == column ? "tool tool-selected" : "tool tool-unselected";
 
     string WidthPercent(SheetColumn column)
     {
         var widthSum = Section.Columns.Sum(x => x.WidthPercent);
         double percent = (double)column.WidthPercent / (double)widthSum * 100;
         return percent.ToString(CultureInfo.InvariantCulture);
-    }
-    void Select(SheetColumn column)
-    {
-        var tool = new SheetColumnTool { Column = column };
-        var selection = new SectionSelection(Section, tool);
-        SelectionChanged.InvokeAsync(selection);
-        StateHasChanged();
     }
 }

@@ -1,0 +1,27 @@
+﻿<style>
+    .section-toolbar{
+        transition: height 100ms ease-out;
+    }
+
+    .section-toolbar-active{
+        height: 40px;
+    }
+
+    .section-toolbar-inactive{
+        height: 0;
+    }
+</style>
+
+<div style="background-color: var(--mud-palette-background);" class="@Class">
+    @ChildContent
+</div>
+
+@code {
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+    [Parameter] public bool Active { get; set; }
+    [Parameter] public EventCallback<bool> ActiveChanged { get; set; }
+
+    string Class => Active ? 
+        "border-b border-solid d-flex justify-center section-toolbar section-toolbar-active" :
+        "border-solid d-flex justify-center section-toolbar section-toolbar-inactive";
+}

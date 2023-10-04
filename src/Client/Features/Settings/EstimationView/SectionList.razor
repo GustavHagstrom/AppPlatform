@@ -1,5 +1,4 @@
 ﻿@using Client.Features.Settings.EstimationView.Data
-@using Client.Features.Settings.EstimationView.Models;
 @using Client.Features.Settings.EstimationView.Sheet
 @using Client.Shared.EstimationViewTemplate.Models.SectionModels;
 
@@ -37,44 +36,28 @@
     @foreach (var section in Sections)
     {
         <div class="@RowClass(section)" @onclick="() => Select(section)">
-                @if (section is DataSection dataSection)
-                {
-                    <DataSectionIllustrator />
-                }
-                @if (section is SheetSection sheetSection)
-                {
-                    <SheetSectionIllustator Section="sheetSection" Selection="Selection" SelectionChanged="Select" />
-                }
-            </div>
+            @if (section is DataSection dataSection)
+            {
+                <DataSectionIllustrator />
+            }
+            @if (section is SheetSection sheetSection)
+            {
+                <SheetSectionIllustator Section="sheetSection" IsSelected="sheetSection == SelectedSection" />
+            }
+        </div>
     }
 </div>
 
 @code {
     [Parameter, EditorRequired] public required IEnumerable<IViewSection> Sections { get; set; }
-    [Parameter] public SectionSelection? Selection { get; set; }
-    [Parameter] public EventCallback<SectionSelection> SelectionChanged { get; set; }
+    [Parameter] public IViewSection? SelectedSection { get; set; }
+    [Parameter] public EventCallback<IViewSection> SelectedSectionChanged { get; set; }
 
-    string RowClass(IViewSection section) => Selection?.Section == section ? "section section-selected" : "section section-unselected";
+    string RowClass(IViewSection section) => SelectedSection == section ? "section section-selected" : "section section-unselected";
 
-    void Select(IViewSection? section, ISectionTool? tool = null)
+    void Select(IViewSection? section)
     {
-        if(Selection?.Section == section)
-        {
-            return;
-        }
-        if(section is null)
-        {
-            Selection = null;
-        }
-        else
-        {
-            Selection = new SectionSelection(section, tool);
-        }
-        SelectionChanged.InvokeAsync(Selection);
-    }
-    void Select(SectionSelection selection)
-    {
-        Selection = selection;
-        SelectionChanged.InvokeAsync(selection);
+        SelectedSection = section;
+        SelectedSectionChanged.InvokeAsync(section);
     }
 }
