@@ -1,0 +1,76 @@
+﻿@using Client.Shared.EstimationViewTemplate.Models.SectionModels;
+<SectionToolbar IsActive="IsActive">
+    <div class="d-flex mx-auto">
+        <MudTextField T="string" Variant="Variant.Outlined" Margin="Margin.Dense"></MudTextField>
+        <MudTextField T="string" Variant="Variant.Outlined" Margin="Margin.Dense"></MudTextField>
+
+        <MudButton Variant="Variant.Filled" Style="min-width: 40px;" Disabled="SelectedColumn is null">
+            <MudIcon Icon="@Icons.Material.Sharp.FormatBold" />
+        </MudButton>
+        <MudButton Variant="Variant.Text" Style="min-width: 40px;" Disabled="SelectedColumn is null">
+            <MudIcon Icon="@Icons.Material.Sharp.FormatItalic" />
+        </MudButton>
+        <MudButton Variant="Variant.Text" Style="min-width: 40px;" Disabled="SelectedColumn is null">
+            <MudIcon Icon="@Icons.Material.Sharp.FormatUnderlined" />
+        </MudButton>
+
+        <MudButton Variant="Variant.Filled" Style="min-width: 40px;" Disabled="SelectedColumn is null">
+            <MudIcon Icon="@Icons.Material.Sharp.FormatAlignLeft" />
+        </MudButton>
+        <MudButton Variant="Variant.Text" Style="min-width: 40px;" Disabled="SelectedColumn is null">
+            <MudIcon Icon="@Icons.Material.Sharp.FormatAlignCenter" />
+        </MudButton>
+        <MudButton Variant="Variant.Text" Style="min-width: 40px;" Disabled="SelectedColumn is null">
+            <MudIcon Icon="@Icons.Material.Sharp.FormatAlignRight" />
+        </MudButton>
+
+        <MudButton Variant="Variant.Filled" Style="min-width: 40px;" Disabled="SelectedColumn is null">
+            <MudIcon Icon="@Icons.Material.Sharp.VerticalAlignBottom" />
+        </MudButton>
+        <MudButton Variant="Variant.Text" Style="min-width: 40px;" Disabled="SelectedColumn is null">
+            <MudIcon Icon="@Icons.Material.Sharp.VerticalAlignCenter" />
+        </MudButton>
+        <MudButton Variant="Variant.Text" Style="min-width: 40px;" Disabled="SelectedColumn is null">
+            <MudIcon Icon="@Icons.Material.Sharp.VerticalAlignTop" />
+        </MudButton>
+
+        <MudButton Variant="Variant.Text" Style="min-width: 40px;" Color="Color.Success" OnClick="AddColumn">
+            <MudIcon Icon="@Icons.Material.Sharp.Add" />
+        </MudButton>
+        <MudButton Variant="Variant.Text" Style="min-width: 40px;" Color="Color.Error" Disabled="SelectedColumn is null" OnClick="DeleteColumn">
+            <MudIcon Icon="@Icons.Material.Sharp.Delete" />
+        </MudButton>
+    </div>
+    
+</SectionToolbar>
+@code {
+    [Inject] public required IStringLocalizer<SheetToolbar> Localizer { get; set; }
+    [Inject] public required IDialogService DialogService { get; set; }
+
+    [Parameter, EditorRequired] public bool IsActive { get; set; }
+    [Parameter, EditorRequired] public SheetColumn? SelectedColumn { get; set; }
+    [Parameter, EditorRequired] public required SheetSection Section { get; set; }
+    [Parameter, EditorRequired] public EventCallback StateChangeRequest { get; set; }
+
+    void AddColumn()
+    {
+        Section.Columns.Add(new SheetColumn { WidthPercent = 10 });
+        StateChangeRequest.InvokeAsync();
+    }
+    async Task DeleteColumn()
+    {
+        if(SelectedColumn is not null)
+        {
+            var parameters = new DialogParameters<YesNoDialog>();
+            parameters.Add(x => x.Info, Localizer["Vill du ta bort kolumnen?"]);
+
+            var dialog = await DialogService.ShowAsync<YesNoDialog>(Localizer["Ta bort"], parameters);
+            var result = await dialog.Result;
+            if (!result.Canceled)
+            {
+                Section.Columns.Remove(SelectedColumn);
+                await StateChangeRequest.InvokeAsync();
+            }
+        }
+    }
+}

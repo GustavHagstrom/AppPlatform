@@ -12,16 +12,19 @@
     }
 </style>
 
-<div style="background-color: var(--mud-palette-background);" class="@Class">
-    @ChildContent
+<div style="background-color: var(--mud-palette-background-grey);" class="@Class">
+    @if(IsActive)
+    {
+        @ChildContent
+    }
 </div>
 
 @code {
     [Parameter] public RenderFragment? ChildContent { get; set; }
-    [Parameter] public bool Active { get; set; }
-    [Parameter] public EventCallback<bool> ActiveChanged { get; set; }
+    [Parameter] public bool IsActive { get; set; }
+    [Parameter] public EventCallback<bool> IsActiveChanged { get; set; }
 
-    string Class => Active ? 
-        "border-b border-solid d-flex justify-center section-toolbar section-toolbar-active" :
-        "border-solid d-flex justify-center section-toolbar section-toolbar-inactive";
+    string Class => IsActive ? 
+        "d-flex align-stretch border-b border-solid section-toolbar section-toolbar-active" :
+        "d-flex border-solid section-toolbar section-toolbar-inactive";
 }

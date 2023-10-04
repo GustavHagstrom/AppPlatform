@@ -28,7 +28,7 @@
         transition-duration: 200ms;
     }
 </style>
-<SectionToolbar Active="IsSelected" />
+<SheetToolbar IsActive="IsSelected" SelectedColumn="SelectedColumn" Section="Section" StateChangeRequest="StateHasChanged" />
 <div class="d-flex" style="min-height: 30px">
     
     @foreach (var column in Section.Columns)
@@ -50,7 +50,7 @@
 
     int ColumnWidthSum => Section.Columns.Sum(x => x.WidthPercent);
 
-    string ColumnClass(SheetColumn column) => SelectedColumn == column ? "tool tool-selected" : "tool tool-unselected";
+    string ColumnClass(SheetColumn column) => SelectedColumn == column && IsSelected ? "tool tool-selected" : "tool tool-unselected";
 
     string WidthPercent(SheetColumn column)
     {
