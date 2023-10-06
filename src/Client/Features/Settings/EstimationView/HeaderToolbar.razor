@@ -1,5 +1,8 @@
 ﻿@using Client.Shared.EstimationViewTemplate.Models.SectionModels;
 @using Client.Shared.EstimationViewTemplate.Models;
+@using MudBlazor.Services;
+@implements IBrowserViewportObserver
+@implements IAsyncDisposable
 
 <style>
     .custom-input-padding input{
@@ -7,21 +10,28 @@
     }
 </style>
 
+
+
 <MudPaper Style="height: 40px" Elevation="0" Class="border-b border-solid d-flex justify-space-between">
 
-    <div class="d-flex justify-start align-self-stretch" style="width: 33%">
-        
-    </div>
+    <MudHidden Breakpoint="Breakpoint.SmAndDown">
+            <div class="d-flex justify-start align-self-stretch" style="width: 33%">
 
-    <div class="d-flex justify-center align-self-stretch" style="width: 33%">
+            </div>
+    </MudHidden>
+      
+    
+
+    
+    <div class="@SectionActionsClass" style="width: 33%">
         <MudButton Variant="Variant.Text" Style="min-width: 40px;" Color="Color.Primary" 
-                   Disabled="SelectedSection is null || SectionsInOrder.Count < 2 || SectionsInOrder.FirstOrDefault() == SelectedSection"
-                   OnClick="PushSelectedSectionUp">
+                    Disabled="SelectedSection is null || SectionsInOrder.Count < 2 || SectionsInOrder.FirstOrDefault() == SelectedSection"
+                    OnClick="PushSelectedSectionUp">
             <MudIcon Icon="@Icons.Material.Sharp.ArrowUpward" />
         </MudButton>
         <MudButton Class="px-2" Variant="Variant.Text" Style="min-width: 40px;" Color="Color.Primary" 
-                   Disabled="SelectedSection is null || SectionsInOrder.Count < 2  || SectionsInOrder.LastOrDefault() == SelectedSection"
-                   OnClick="PushSelectedSectionDown">
+                    Disabled="SelectedSection is null || SectionsInOrder.Count < 2  || SectionsInOrder.LastOrDefault() == SelectedSection"
+                    OnClick="PushSelectedSectionDown">
             <MudIcon Icon="@Icons.Material.Sharp.ArrowDownward" />
         </MudButton>
         <MudMenu Dense="true" AnchorOrigin="Origin.BottomCenter" TransformOrigin="Origin.TopCenter">
@@ -36,7 +46,7 @@
             </ChildContent>
         </MudMenu>
         <MudButton Class="px-2" Variant="Variant.Text" Style="min-width: 40px;" Color="Color.Error"
-                   Disabled="SelectedSection is null" OnClick="DeleteRequestIfConfirmed">
+                    Disabled="SelectedSection is null" OnClick="DeleteRequestIfConfirmed">
             <MudIcon Icon="@Icons.Material.Sharp.Delete" />
         </MudButton>
     </div>
@@ -57,9 +67,11 @@
     </div>
 
 </MudPaper>
+
 @code {
     [Inject] public required IStringLocalizer<HeaderToolbar> Localizer { get; set; }
     [Inject] public required IDialogService DialogService { get; set; }
+    [Inject] public required IBrowserViewportService BrowserViewportService { get; set; }
 
     [Parameter, EditorRequired] public EventCallback CloseRequest { get; set; }
     [Parameter, EditorRequired] public EventCallback SaveAndCloseRequest { get; set; }
@@ -68,6 +80,47 @@
     [Parameter, EditorRequired] public EventCallback<IViewSection> DeleteSectionRequest { get; set; }
     [Parameter, EditorRequired] public IViewSection? SelectedSection { get; set; }
     [Parameter, EditorRequired] public required List<IViewSection> SectionsInOrder { get; set; }
+
+    Breakpoint CurrentBreakpoint;
+    string SectionActionsClass => BreakpointIsSmAndDown(CurrentBreakpoint) ? "d-flex justify-start align-self-stretch" : "d-flex justify-center align-self-stretch";
+    public Guid Id { get; } = Guid.NewGuid();
+
+    bool BreakpointIsSmAndDown(Breakpoint breakpoint)
+    {
+        if (breakpoint == Breakpoint.Sm || breakpoint == Breakpoint.Xs)
+        {
+            return true;
+        }
+        return false;
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            await BrowserViewportService.SubscribeAsync(this, fireImmediately: true);
+        }
+
+        await base.OnAfterRenderAsync(firstRender);
+    }
+
+    public async ValueTask DisposeAsync() => await BrowserViewportService.UnsubscribeAsync(this);
+
+
+
+    public ResizeOptions ResizeOptions { get; } = new()
+        {
+            ReportRate = 250,
+            NotifyOnBreakpointOnly = true
+        };
+
+    public async Task NotifyBrowserViewportChangeAsync(BrowserViewportEventArgs browserViewportEventArgs)
+    {
+        CurrentBreakpoint = browserViewportEventArgs.Breakpoint;
+        await InvokeAsync(StateHasChanged);
+    }
+
+
 
 
     async Task DeleteRequestIfConfirmed()
