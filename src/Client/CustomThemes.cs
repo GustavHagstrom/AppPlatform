@@ -46,11 +46,13 @@ public static class CustomThemes
             H5 = new H5 { FontWeight = 600 },
             H6 = new H6 { FontWeight = 600 },
             Subtitle1 = new Subtitle1 { FontWeight = 500 },
+            Default = new Default { LineHeight = 1 },
         },
         ZIndex = new ZIndex
         {
 
         },
+        
     };
 
 }

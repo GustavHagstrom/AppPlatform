@@ -1,45 +1,47 @@
 ﻿@using Client.Shared.EstimationViewTemplate.Models.SectionModels;
 <SectionToolbar IsActive="IsActive">
-    <div class="d-flex mx-auto">
-        <MudTextField T="string" Variant="Variant.Outlined" Margin="Margin.Dense"></MudTextField>
-        <MudTextField T="string" Variant="Variant.Outlined" Margin="Margin.Dense"></MudTextField>
+    <div class="d-flex mx-auto" style="gap: 4px">
 
-        <MudButton Variant="Variant.Filled" Style="min-width: 40px;" Disabled="SelectedColumn is null">
-            <MudIcon Icon="@Icons.Material.Sharp.FormatBold" />
-        </MudButton>
-        <MudButton Variant="Variant.Text" Style="min-width: 40px;" Disabled="SelectedColumn is null">
-            <MudIcon Icon="@Icons.Material.Sharp.FormatItalic" />
-        </MudButton>
-        <MudButton Variant="Variant.Text" Style="min-width: 40px;" Disabled="SelectedColumn is null">
-            <MudIcon Icon="@Icons.Material.Sharp.FormatUnderlined" />
-        </MudButton>
+        
+        <div class="d-flex justify-end" style="flex-direction: column;">
+            <MudText Typo="Typo.subtitle2">@Localizer["Font"]</MudText>
+            <input class="pa-1" style="border: 1px; border-style: solid; width: 100px;" value="@SelectedColumn?.CellFormat.FontFamily" @onchange="FontFamilyInputChanged" disabled="@(SelectedColumn is null)" />
+        </div>
+        <div class="d-flex justify-end" style="flex-direction: column;">
+            <MudText Typo="Typo.subtitle2">@Localizer["Storlek"]</MudText>
+            <input class="pa-1" style="border: 1px; border-style: solid; width: 50px;" value="@SelectedColumn?.CellFormat.FontSize" @onchange="FontSizeInputChanged" disabled="@(SelectedColumn is null)" />
+        </div>
+        <div class="d-flex justify-end" style="flex-direction: column;">
+            <MudText Typo="Typo.subtitle2">@Localizer["Bredd"]</MudText>
+            <input class="pa-1" style="border: 1px; border-style: solid; width: 50px;" value="@SelectedColumn?.WidthPercent" @onchange="WidthInputChanged" disabled="@(SelectedColumn is null)" />
+        </div>
 
-        <MudButton Variant="Variant.Filled" Style="min-width: 40px;" Disabled="SelectedColumn is null">
-            <MudIcon Icon="@Icons.Material.Sharp.FormatAlignLeft" />
-        </MudButton>
-        <MudButton Variant="Variant.Text" Style="min-width: 40px;" Disabled="SelectedColumn is null">
-            <MudIcon Icon="@Icons.Material.Sharp.FormatAlignCenter" />
-        </MudButton>
-        <MudButton Variant="Variant.Text" Style="min-width: 40px;" Disabled="SelectedColumn is null">
-            <MudIcon Icon="@Icons.Material.Sharp.FormatAlignRight" />
-        </MudButton>
+        <div class="d-flex" style="gap: 4px; flex-direction: column;">
+            <div class="d-flex flex-grow-1" style="gap: 4px;">
+                <SectionToolbarButton Icon="@Icons.Material.Sharp.FormatAlignLeft" Selected="SelectedColumn?.CellFormat.Align == SharedLibrary.Enums.ViewTemplate.Align.Left" Disabled="SelectedColumn is null"
+                                      OnClick="() => SetAlignment(SharedLibrary.Enums.ViewTemplate.Align.Left)" />
+                <SectionToolbarButton Icon="@Icons.Material.Sharp.FormatAlignCenter" Selected="SelectedColumn?.CellFormat.Align == SharedLibrary.Enums.ViewTemplate.Align.Center" Disabled="SelectedColumn is null"
+                                      OnClick="() => SetAlignment(SharedLibrary.Enums.ViewTemplate.Align.Center)" />
+                <SectionToolbarButton Icon="@Icons.Material.Sharp.FormatAlignRight" Selected="SelectedColumn?.CellFormat.Align == SharedLibrary.Enums.ViewTemplate.Align.Right" Disabled="SelectedColumn is null"
+                                      OnClick="() => SetAlignment(SharedLibrary.Enums.ViewTemplate.Align.Right)" />
+            </div>
+            <div class="d-flex flex-grow-1" style="gap: 4px;">
+                <SectionToolbarButton Icon="@Icons.Material.Sharp.FormatBold" Selected="SelectedColumn?.CellFormat.Bold == true" Disabled="SelectedColumn is null" OnClick="ToggleBold" />
+                <SectionToolbarButton Icon="@Icons.Material.Sharp.FormatItalic" Selected="SelectedColumn?.CellFormat.Italic == true" Disabled="SelectedColumn is null" OnClick="ToggleItalic" />
+                <SectionToolbarButton Icon="@Icons.Material.Sharp.FormatUnderlined" Selected="SelectedColumn?.CellFormat.Underline == true" Disabled="SelectedColumn is null" OnClick="ToggleUnderline" />
+            </div>
+        </div>
 
-        <MudButton Variant="Variant.Filled" Style="min-width: 40px;" Disabled="SelectedColumn is null">
-            <MudIcon Icon="@Icons.Material.Sharp.VerticalAlignBottom" />
-        </MudButton>
-        <MudButton Variant="Variant.Text" Style="min-width: 40px;" Disabled="SelectedColumn is null">
-            <MudIcon Icon="@Icons.Material.Sharp.VerticalAlignCenter" />
-        </MudButton>
-        <MudButton Variant="Variant.Text" Style="min-width: 40px;" Disabled="SelectedColumn is null">
-            <MudIcon Icon="@Icons.Material.Sharp.VerticalAlignTop" />
-        </MudButton>
+        <div class="d-flex" style="gap: 4px; flex-direction: column;">
+            <MudButton Variant="Variant.Text" Style="min-width: 0px;" Color="Color.Error" Disabled="SelectedColumn is null" OnClick="DeleteColumn" Class="pa-1">
+                <MudIcon Icon="@Icons.Material.Sharp.Delete" Size="Size.Small" />
+            </MudButton>
+            <MudButton Variant="Variant.Text" Style="min-width: 0px;" Color="Color.Success" OnClick="AddColumn" Class="pa-1">
+                <MudIcon Icon="@Icons.Material.Sharp.Add" Size="Size.Small" />
+            </MudButton>
+        </div>
 
-        <MudButton Variant="Variant.Text" Style="min-width: 40px;" Color="Color.Success" OnClick="AddColumn">
-            <MudIcon Icon="@Icons.Material.Sharp.Add" />
-        </MudButton>
-        <MudButton Variant="Variant.Text" Style="min-width: 40px;" Color="Color.Error" Disabled="SelectedColumn is null" OnClick="DeleteColumn">
-            <MudIcon Icon="@Icons.Material.Sharp.Delete" />
-        </MudButton>
+        
     </div>
     
 </SectionToolbar>
@@ -52,6 +54,60 @@
     [Parameter, EditorRequired] public required SheetSection Section { get; set; }
     [Parameter, EditorRequired] public EventCallback StateChangeRequest { get; set; }
 
+    void WidthInputChanged(ChangeEventArgs args)
+    {
+        if (SelectedColumn is not null && args.Value is not null)
+        {
+            int.TryParse(args.Value as string, out int result);
+            SelectedColumn.WidthPercent = result;
+            StateChangeRequest.InvokeAsync();
+        }
+    }
+    void FontSizeInputChanged(ChangeEventArgs args)
+    {
+        if (SelectedColumn is not null && args.Value is not null)
+        {
+            int.TryParse(args.Value as string, out int result);
+            SelectedColumn.CellFormat.FontSize = result;
+            StateChangeRequest.InvokeAsync();
+        }
+    }
+    void FontFamilyInputChanged(ChangeEventArgs args)
+    {
+        if (SelectedColumn is not null && args.Value is not null)
+        {
+            SelectedColumn.CellFormat.FontFamily = args.Value.ToString()!;
+            StateChangeRequest.InvokeAsync();
+        }
+    }
+    void ToggleBold()
+    {
+        if(SelectedColumn is not null)
+        {
+            SelectedColumn.CellFormat.Bold = !SelectedColumn.CellFormat.Bold;
+        }
+    }
+    void ToggleItalic()
+    {
+        if (SelectedColumn is not null)
+        {
+            SelectedColumn.CellFormat.Italic = !SelectedColumn.CellFormat.Italic;
+        }
+    }
+    void ToggleUnderline()
+    {
+        if (SelectedColumn is not null)
+        {
+            SelectedColumn.CellFormat.Underline = !SelectedColumn.CellFormat.Underline;
+        }
+    }
+    void SetAlignment(SharedLibrary.Enums.ViewTemplate.Align cellAlignment)
+    {
+        if (SelectedColumn is not null)
+        {
+            SelectedColumn.CellFormat.Align = cellAlignment;
+        }
+    }
     void AddColumn()
     {
         Section.Columns.Add(new SheetColumn { WidthPercent = 10 });

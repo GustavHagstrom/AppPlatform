@@ -12,7 +12,9 @@
     height: 100%;
     z-index: 100;
 }
-
+input:focus-visible {
+    outline: none; /* Remove the default outline */
+}
 .zoom-in {
     animation: zoomIn 200ms ease-out; /* Adjust the duration (1s) as needed */
     transform-origin: center center;

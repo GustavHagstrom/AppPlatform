@@ -26,6 +26,10 @@
     .tool {
         transition-property: border-color, background-color;
         transition-duration: 200ms;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-end; 
+        cursor: cell;
     }
 </style>
 <SheetToolbar IsActive="IsSelected" SelectedColumn="SelectedColumn" Section="Section" StateChangeRequest="StateHasChanged" />
@@ -34,7 +38,7 @@
     @foreach (var column in Section.Columns)
     {
         <div @onclick="() => SelectedColumn = column"
-             style="@($"width: {WidthPercent(column)}%")"
+             style="@FormatStyle(column)"
              class="@ColumnClass(column)">
             Format
         </div>
@@ -57,5 +61,24 @@
         var widthSum = Section.Columns.Sum(x => x.WidthPercent);
         double percent = (double)column.WidthPercent / (double)widthSum * 100;
         return percent.ToString(CultureInfo.InvariantCulture);
+    }
+    string FormatStyle(SheetColumn column)
+    {
+        var verticalAlignment = "vertical-align: bottom;";
+        var width = $"width: {WidthPercent(column)}%;";
+        var font = $"font-family: {column.CellFormat.FontFamily};";
+        var bold = "font-weight: " + (column.CellFormat.Bold ? "bold" : "normal") + ";";
+        var italic = column.CellFormat.Italic ? "font-style: italic;" : string.Empty;
+        var underline = column.CellFormat.Underline ? "text-decoration: underline;" : string.Empty;
+        var alignment = column.CellFormat.Align switch
+        {
+            SharedLibrary.Enums.ViewTemplate.Align.Left => "text-align: left;",
+            SharedLibrary.Enums.ViewTemplate.Align.Center => "text-align: center;",
+            SharedLibrary.Enums.ViewTemplate.Align.Right => "text-align: right;",
+            _ => string.Empty,
+        };
+        var fontSize = $"font-size: {(int)(column.CellFormat.FontSize * 1.33)}px;";
+
+        return font + italic + bold + underline + alignment + fontSize + verticalAlignment + width;
     }
 }
