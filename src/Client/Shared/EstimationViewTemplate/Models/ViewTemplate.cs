@@ -1,5 +1,4 @@
-﻿using Client.Shared.EstimationViewTemplate.Models.SectionModels;
-using SharedLibrary.DTOs.EstimationView;
+﻿using SharedLibrary.DTOs.EstimationView;
 
 namespace Client.Shared.EstimationViewTemplate.Models;
 public class ViewTemplate

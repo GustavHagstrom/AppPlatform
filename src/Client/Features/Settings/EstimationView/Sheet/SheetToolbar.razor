@@ -1,24 +1,40 @@
-﻿@using Client.Shared.EstimationViewTemplate.Models.SectionModels;
+﻿@using Client.Shared.EstimationViewTemplate.Models;
 
 
 <SectionToolbar IsActive="IsActive">
     <div class="d-flex gap-1 mx-auto" style="padding-bottom: 2px;">
 
-        <CellFormatEditor Format="SelectedColumn?.CellFormat" StateChangeRequest="StateChangeRequest"/>
+        <MudDivider Light="false" Vertical="true"/>
 
-        <div class="d-flex flex-column justify-end">
-
-            <input placeholder="@Localizer["Bredd"]" class="pa-1" style="border: 1px; border-style: solid; width: 50px; height: calc(50% - 2px);" value="@SelectedColumn?.WidthPercent" @onchange="WidthInputChanged" disabled="@(SelectedColumn is null)" />
+        <div>
+            <CellFormatEditor Format="SelectedCell?.CellFormat" StateChangeRequest="StateChangeRequest" />
+            <MudText Typo="Typo.caption" Class="d-flex justify-center pt-2">@Localizer["Cell"]</MudText>
         </div>
+        
+        <MudDivider Light="false" Vertical="true"/>
 
-        <div class="d-flex gap-1 flex-column justify-end">
-            <MudButton Class="pa-1" Variant="Variant.Filled" Style="min-width: 0px; height: 50%;" Color="Color.Error" Disabled="SelectedColumn is null" OnClick="DeleteColumn">
-                <MudIcon Icon="@Icons.Material.Sharp.Delete" Size="Size.Small" />
-            </MudButton>
-            <MudButton Class="pa-1" Variant="Variant.Filled" Style="min-width: 0px;  height: 50%;" Color="Color.Success" OnClick="AddColumn">
-                <MudIcon Icon="@Icons.Material.Sharp.Add" Size="Size.Small" />
-            </MudButton>
+        <div>
+            <div class="d-flex gap-1">
+
+                <div class="d-flex flex-column justify-end">
+
+                    <input placeholder="@Localizer["Bredd"]" class="pa-1" style="border: 1px; border-style: solid; width: 50px; height: calc(50% - 2px);" value="@SelectedColumn?.Width" @onchange="WidthInputChanged" disabled="@(SelectedColumn is null)" />
+                </div>
+
+                <div class="d-flex gap-1 flex-column justify-end">
+                    <MudButton Class="pa-1" Variant="Variant.Filled" Style="min-width: 0px; height: 50%;" Color="Color.Error" Disabled="SelectedColumn is null" OnClick="DeleteColumn">
+                        <MudIcon Icon="@Icons.Material.Sharp.Delete" Size="Size.Small" />
+                    </MudButton>
+                    <MudButton Class="pa-1" Variant="Variant.Filled" Style="min-width: 0px;  height: 50%;" Color="Color.Success" OnClick="AddColumn">
+                        <MudIcon Icon="@Icons.Material.Sharp.Add" Size="Size.Small" />
+                    </MudButton>
+                </div>
+
+            </div>
+            <MudText Typo="Typo.caption" Class="d-flex justify-center pt-1">@Localizer["Kolumn"]</MudText>
         </div>
+        
+        <MudDivider Light="false" Vertical="true" />
         
     </div>
     
@@ -30,22 +46,23 @@
 
     [Parameter, EditorRequired] public bool IsActive { get; set; }
     [Parameter, EditorRequired] public SheetColumn? SelectedColumn { get; set; }
+    [Parameter, EditorRequired] public SheetCell? SelectedCell { get; set; }
     [Parameter, EditorRequired] public required SheetSection Section { get; set; }
     [Parameter, EditorRequired] public EventCallback StateChangeRequest { get; set; }
-    [Parameter, EditorRequired] public EventCallback SectionDeleted { get; set; }
+    [Parameter, EditorRequired] public EventCallback ColumnDeleted { get; set; }
 
     void WidthInputChanged(ChangeEventArgs args)
     {
         if (SelectedColumn is not null && args.Value is not null)
         {
             int.TryParse(args.Value as string, out int result);
-            SelectedColumn.WidthPercent = result;
+            SelectedColumn.Width = result;
             StateChangeRequest.InvokeAsync();
         }
     }
     void AddColumn()
     {
-        var newColumn = new SheetColumn { WidthPercent = 10 };
+        var newColumn = new SheetColumn { Width = 10 };
         Section.Columns.Add(newColumn);
         StateChangeRequest.InvokeAsync();
     }
@@ -61,7 +78,7 @@
             if (!result.Canceled)
             {
                 Section.Columns.Remove(SelectedColumn);
-                await SectionDeleted.InvokeAsync();
+                await ColumnDeleted.InvokeAsync();
             }
         }
     }

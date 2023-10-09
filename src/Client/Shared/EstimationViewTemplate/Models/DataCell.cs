@@ -1,5 +1,5 @@
-﻿namespace Client.Shared.EstimationViewTemplate.Models.CellModels;
-public class Cell
+﻿namespace Client.Shared.EstimationViewTemplate.Models;
+public class DataCell
 {
     public Guid Id { get; set; }
     public int Row { get; set; }

@@ -1,4 +1,4 @@
-﻿namespace Client.Shared.EstimationViewTemplate.Models.SectionModels;
+﻿namespace Client.Shared.EstimationViewTemplate.Models;
 public class DataColumn
 {
     public Guid Id { get; set; }

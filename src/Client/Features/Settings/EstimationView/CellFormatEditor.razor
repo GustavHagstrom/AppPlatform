@@ -1,4 +1,4 @@
-﻿@using Client.Shared.EstimationViewTemplate.Models.CellModels;
+﻿@using Client.Shared.EstimationViewTemplate.Models;
 
 <div class="d-flex" style="gap: 4px">
 
@@ -12,11 +12,11 @@
     <div class="d-flex" style="gap: 4px; flex-direction: column;">
         <div class="d-flex flex-grow-1" style="gap: 4px;">
             <SectionToolbarButton Icon="@Icons.Material.Sharp.FormatAlignLeft" Selected="Format?.Align == SharedLibrary.Enums.ViewTemplate.Align.Left" Disabled="Format is null"
-                                  OnClick="() => SetAlignment(SharedLibrary.Enums.ViewTemplate.Align.Left)" />
+                                    OnClick="() => SetAlignment(SharedLibrary.Enums.ViewTemplate.Align.Left)" />
             <SectionToolbarButton Icon="@Icons.Material.Sharp.FormatAlignCenter" Selected="Format?.Align == SharedLibrary.Enums.ViewTemplate.Align.Center" Disabled="Format is null"
-                                  OnClick="() => SetAlignment(SharedLibrary.Enums.ViewTemplate.Align.Center)" />
+                                    OnClick="() => SetAlignment(SharedLibrary.Enums.ViewTemplate.Align.Center)" />
             <SectionToolbarButton Icon="@Icons.Material.Sharp.FormatAlignRight" Selected="Format?.Align == SharedLibrary.Enums.ViewTemplate.Align.Right" Disabled="Format is null"
-                                  OnClick="() => SetAlignment(SharedLibrary.Enums.ViewTemplate.Align.Right)" />
+                                    OnClick="() => SetAlignment(SharedLibrary.Enums.ViewTemplate.Align.Right)" />
         </div>
         <div class="d-flex flex-grow-1" style="gap: 4px;">
             <SectionToolbarButton Icon="@Icons.Material.Sharp.FormatBold" Selected="Format?.Bold == true" Disabled="Format is null" OnClick="ToggleBold" />
@@ -27,7 +27,6 @@
 
 
 </div>
-
 @code {
     [Inject] public required IStringLocalizer<CellFormatEditor> Localizer { get; set; }
 

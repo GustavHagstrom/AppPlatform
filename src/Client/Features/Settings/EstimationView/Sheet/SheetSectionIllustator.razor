@@ -1,84 +1,134 @@
-﻿@using Client.Shared.EstimationViewTemplate.Models.SectionModels;
-@using System.Globalization;
+﻿@using System.Globalization;
+@using Client.Shared.EstimationViewTemplate.Models;
+@using SharedLibrary.Enums.ViewTemplate;
 
 <style>
-    .tool-unselected {
+    .cell-unselected {
         padding: 3px;
         border: 1px;
         border-style: solid;
         border-color: transparent;
     }
 
-    .tool-unselected:hover {
-        padding: 3px;
-        border: 1px;
-        border-style: solid;
-        border-color: var(--mud-palette-text-primary);
+    .cell-unselected:hover {
+    padding: 3px;
+    border: 1px;
+    border-style: solid;
+    border-color: var(--mud-palette-text-primary);
     }
 
-    .tool-selected {
+    .cell-selected {
         padding: 2px;
         border: 2px;
         border-style: solid;
         border-color: var(--mud-palette-primary);
     }
 
-    .tool {
-        transition: width 100ms ease-in-out;
-
+    .cell {
+        transition-property: width;
+        transition-duration: 100ms;
+        transition-timing-function: ease-in-out;
         display: flex;
         flex-direction: column;
+        align-self: stretch;
         justify-content: flex-end; 
+        flex-wrap: wrap;
         cursor: cell;
+        width: 100%;
+    }
+    .column{
+        display: flex;
+       /*  transition: width 100ms ease-in-out; */
+    }
+
+    .row {
+        display: flex;
+        min-height: 15px;
     }
 </style>
-<SheetToolbar IsActive="IsSelected" SelectedColumn="SelectedColumn" Section="Section" StateChangeRequest="StateHasChanged" SectionDeleted="() => SelectedColumn = null" />
-<div class="d-flex" style="min-height: 30px">
+<SheetToolbar IsActive="IsSelected" SelectedColumn="SelectedColumn" SelectedCell="SelectedCell" Section="Section" 
+              StateChangeRequest="StateHasChanged" ColumnDeleted="() => {SelectedColumn = null; SelectedCell = null;}" />
+<div class="row">
     
     @foreach (var column in Section.Columns)
     {
-        <div @onclick="() => SelectedColumn = column"
-             style="@FormatStyle(column)"
-             class="@ColumnClass(column)">
-            Format
+        var groupCell = column.Cells.First(x => x.RowType == SheetRowType.Group);
+        <div @onclick="() => SetSelection(column, groupCell)"
+             style="@(CellStyle(groupCell) + ColumnStyle(column))"
+                class="@CellClass(groupCell)">
+            @Localizer["Grupp"]
+        </div>
+    }
+</div>
+<div class="row">
+    
+    @foreach (var column in Section.Columns)
+    {
+        var partCell = column.Cells.First(x => x.RowType == SheetRowType.Part);
+        <div @onclick="() => SetSelection(column, partCell)"
+             style="@(CellStyle(partCell) + ColumnStyle(column))"
+                class="@CellClass(partCell)">
+            @Localizer["Kalkyldel"]
+        </div>
+    }
+</div>
+<div class="row">
+    
+    @foreach (var column in Section.Columns)
+    {
+        var postCell = column.Cells.First(x => x.RowType == SheetRowType.Post);
+        <div @onclick="() => SetSelection(column, postCell)"
+                style="@(CellStyle(postCell) + ColumnStyle(column))"
+                class="@CellClass(postCell)">
+            @Localizer["Kalkylpost"]
         </div>
     }
 </div>
 
-
 @code {
+    [Inject] public required IStringLocalizer<SheetSectionIllustator> Localizer { get; set; }
     [Parameter, EditorRequired] public required SheetSection Section { get; set; }
     [Parameter, EditorRequired] public bool IsSelected { get; set; }
 
     SheetColumn? SelectedColumn;
+    SheetCell? SelectedCell;
 
-    int ColumnWidthSum => Section.Columns.Sum(x => x.WidthPercent);
+    int ColumnWidthSum => Section.Columns.Sum(x => x.Width);
 
-    string ColumnClass(SheetColumn column) => SelectedColumn == column && IsSelected ? "tool tool-selected" : "tool tool-unselected";
+    string CellClass(SheetCell column) => SelectedCell == column && IsSelected ? "cell column cell-selected" : "cell column cell-unselected";
 
+    void SetSelection(SheetColumn column, SheetCell cell)
+    {
+        SelectedColumn = column;
+        SelectedCell = cell;
+    }
     string WidthPercent(SheetColumn column)
     {
-        var widthSum = Section.Columns.Sum(x => x.WidthPercent);
-        double percent = (double)column.WidthPercent / (double)widthSum * 100;
+        var widthSum = Section.Columns.Sum(x => x.Width);
+        double percent = (double)column.Width / (double)widthSum * 100;
         return percent.ToString(CultureInfo.InvariantCulture);
     }
-    string FormatStyle(SheetColumn column)
+    string ColumnStyle(SheetColumn column)
+    {
+        var width = $"width: {WidthPercent(column)}%;";
+        return width;
+    }
+    string CellStyle(SheetCell cell)
     {
         var verticalAlignment = "vertical-align: bottom;";
-        var width = $"width: {WidthPercent(column)}%;";
-        var font = $"font-family: {column.CellFormat.FontFamily};";
-        var bold = "font-weight: " + (column.CellFormat.Bold ? "bold" : "normal") + ";";
-        var italic = column.CellFormat.Italic ? "font-style: italic;" : string.Empty;
-        var underline = column.CellFormat.Underline ? "text-decoration: underline;" : string.Empty;
-        var alignment = column.CellFormat.Align switch
+        var font = $"font-family: {cell.CellFormat.FontFamily};";
+        var bold = "font-weight: " + (cell.CellFormat.Bold ? "bold" : "normal") + ";";
+        var italic = cell.CellFormat.Italic ? "font-style: italic;" : string.Empty;
+        var underline = cell.CellFormat.Underline ? "text-decoration: underline;" : string.Empty;
+        var alignment = cell.CellFormat.Align switch
         {
             SharedLibrary.Enums.ViewTemplate.Align.Left => "text-align: left;",
             SharedLibrary.Enums.ViewTemplate.Align.Center => "text-align: center;",
             SharedLibrary.Enums.ViewTemplate.Align.Right => "text-align: right;",
             _ => string.Empty,
         };
-        var fontSize = $"font-size: {(int)(column.CellFormat.FontSize * 1.33)}px;";
+        var fontSize = $"font-size: {(int)(cell.CellFormat.FontSize * 1.33)}px;";
 
-        return font + italic + bold + underline + alignment + fontSize + verticalAlignment + width;
+        return font + italic + bold + underline + alignment + fontSize + verticalAlignment;
     }
 }
