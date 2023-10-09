@@ -4,9 +4,9 @@ using SharedLibrary.Enums.ViewTemplate;
 namespace Client.Shared.EstimationViewTemplate.Models.SectionModels;
 public class SheetColumn
 {
-    public Guid Id { get; set; }
+    public Guid Id { get; set; } = Guid.NewGuid();
     public int Order { get; set; }
     public int WidthPercent { get; set; }
     public SheetColumnType ColumnType { get; set; }
-    public CellFormat CellFormat { get; set; } = new();
+    public CellFormat CellFormat { get; set; } = new(); //Move to SheetCell.cs
 }

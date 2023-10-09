@@ -32,6 +32,7 @@
     [Parameter, EditorRequired] public SheetColumn? SelectedColumn { get; set; }
     [Parameter, EditorRequired] public required SheetSection Section { get; set; }
     [Parameter, EditorRequired] public EventCallback StateChangeRequest { get; set; }
+    [Parameter, EditorRequired] public EventCallback SectionDeleted { get; set; }
 
     void WidthInputChanged(ChangeEventArgs args)
     {
@@ -44,7 +45,8 @@
     }
     void AddColumn()
     {
-        Section.Columns.Add(new SheetColumn { WidthPercent = 10 });
+        var newColumn = new SheetColumn { WidthPercent = 10 };
+        Section.Columns.Add(newColumn);
         StateChangeRequest.InvokeAsync();
     }
     async Task DeleteColumn()
@@ -59,7 +61,7 @@
             if (!result.Canceled)
             {
                 Section.Columns.Remove(SelectedColumn);
-                await StateChangeRequest.InvokeAsync();
+                await SectionDeleted.InvokeAsync();
             }
         }
     }
