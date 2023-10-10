@@ -2,16 +2,17 @@
 
 
 <SectionToolbar IsActive="IsActive">
-    <div class="d-flex gap-1 mx-auto" style="padding-bottom: 2px;">
+    <div class="d-flex gap-1 mx-auto" style="padding-bottom: 2px; height: 100%;">
 
-        <MudDivider Light="false" Vertical="true"/>
+        <MudDivider Light="false" Vertical="true" Class="mx-1"/>
 
-        <div>
-            <CellFormatEditor Format="SelectedCell?.CellFormat" StateChangeRequest="StateChangeRequest" />
+        @*<div>
+            
             <MudText Typo="Typo.caption" Class="d-flex justify-center pt-2">@Localizer["Cell"]</MudText>
-        </div>
+        </div>*@
+        <CellFormatEditor Format="SelectedCell?.CellFormat" StateChangeRequest="StateChangeRequest" />
         
-        <MudDivider Light="false" Vertical="true"/>
+        <MudDivider Light="false" Vertical="true" Class="mx-1" />
 
         <div>
             <div class="d-flex gap-1">
@@ -34,7 +35,7 @@
             <MudText Typo="Typo.caption" Class="d-flex justify-center pt-1">@Localizer["Kolumn"]</MudText>
         </div>
         
-        <MudDivider Light="false" Vertical="true" />
+        <MudDivider Light="false" Vertical="true" Class="mx-1" />
         
     </div>
     

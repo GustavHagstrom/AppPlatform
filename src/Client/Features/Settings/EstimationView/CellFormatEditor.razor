@@ -1,32 +1,36 @@
 ﻿@using Client.Shared.EstimationViewTemplate.Models;
 
-<div class="d-flex" style="gap: 4px">
+<div class="d-flex" style="flex-direction: column; height: 100%">
+    <div class="d-flex" style="gap: 4px; height: calc(100% - 25px);">
 
 
 
-    <div class="d-flex gap-1 justify-end flex-column">
-        <input placeholder="@Localizer["Teckensnitt"]" class="pa-1" style="border: 1px; border-style: solid; width: 100px; height: calc(50% - 2px);" value="@Format?.FontFamily" @onchange="FontFamilyInputChanged" disabled="@(Format is null)" />
-        <input placeholder="@Localizer["Storlek"]" class="pa-1" style="border: 1px; border-style: solid; width: 100px; height: calc(50% - 2px);" value="@Format?.FontSize" @onchange="FontSizeInputChanged" disabled="@(Format is null)" />
-    </div>
-
-    <div class="d-flex" style="gap: 4px; flex-direction: column;">
-        <div class="d-flex flex-grow-1" style="gap: 4px;">
-            <SectionToolbarButton Icon="@Icons.Material.Sharp.FormatAlignLeft" Selected="Format?.Align == SharedLibrary.Enums.ViewTemplate.Align.Left" Disabled="Format is null"
-                                    OnClick="() => SetAlignment(SharedLibrary.Enums.ViewTemplate.Align.Left)" />
-            <SectionToolbarButton Icon="@Icons.Material.Sharp.FormatAlignCenter" Selected="Format?.Align == SharedLibrary.Enums.ViewTemplate.Align.Center" Disabled="Format is null"
-                                    OnClick="() => SetAlignment(SharedLibrary.Enums.ViewTemplate.Align.Center)" />
-            <SectionToolbarButton Icon="@Icons.Material.Sharp.FormatAlignRight" Selected="Format?.Align == SharedLibrary.Enums.ViewTemplate.Align.Right" Disabled="Format is null"
-                                    OnClick="() => SetAlignment(SharedLibrary.Enums.ViewTemplate.Align.Right)" />
+        <div class="d-flex gap-1 justify-end flex-column" style="height: 100%;">
+            <input placeholder="@Localizer["Teckensnitt"]" class="pa-1" style="border: 1px; border-style: solid; width: 100px; height: calc(50% - 2px);" value="@Format?.FontFamily" @onchange="FontFamilyInputChanged" disabled="@(Format is null)" />
+            <input placeholder="@Localizer["Storlek"]" class="pa-1" style="border: 1px; border-style: solid; width: 100px; height: calc(50% - 2px);" value="@Format?.FontSize" @onchange="FontSizeInputChanged" disabled="@(Format is null)" />
         </div>
-        <div class="d-flex flex-grow-1" style="gap: 4px;">
-            <SectionToolbarButton Icon="@Icons.Material.Sharp.FormatBold" Selected="Format?.Bold == true" Disabled="Format is null" OnClick="ToggleBold" />
-            <SectionToolbarButton Icon="@Icons.Material.Sharp.FormatItalic" Selected="Format?.Italic == true" Disabled="Format is null" OnClick="ToggleItalic" />
-            <SectionToolbarButton Icon="@Icons.Material.Sharp.FormatUnderlined" Selected="Format?.Underline == true" Disabled="Format is null" OnClick="ToggleUnderline" />
+
+        <div class="d-flex gap-1" style="flex-direction: column; height: 100%;">
+            <div class="d-flex flex-grow-1 gap-1" style="height: calc(50% - 2px);">
+                <SectionToolbarButton Icon="@Icons.Material.Sharp.FormatAlignLeft" Selected="Format?.Align == SharedLibrary.Enums.ViewTemplate.Align.Left" Disabled="Format is null"
+                                      OnClick="() => SetAlignment(SharedLibrary.Enums.ViewTemplate.Align.Left)" />
+                <SectionToolbarButton Icon="@Icons.Material.Sharp.FormatAlignCenter" Selected="Format?.Align == SharedLibrary.Enums.ViewTemplate.Align.Center" Disabled="Format is null"
+                                      OnClick="() => SetAlignment(SharedLibrary.Enums.ViewTemplate.Align.Center)" />
+                <SectionToolbarButton Icon="@Icons.Material.Sharp.FormatAlignRight" Selected="Format?.Align == SharedLibrary.Enums.ViewTemplate.Align.Right" Disabled="Format is null"
+                                      OnClick="() => SetAlignment(SharedLibrary.Enums.ViewTemplate.Align.Right)" />
+            </div>
+            <div class="d-flex flex-grow-1 gap-1" style="height: calc(50% - 2px);">
+                <SectionToolbarButton Icon="@Icons.Material.Sharp.FormatBold" Selected="Format?.Bold == true" Disabled="Format is null" OnClick="ToggleBold" />
+                <SectionToolbarButton Icon="@Icons.Material.Sharp.FormatItalic" Selected="Format?.Italic == true" Disabled="Format is null" OnClick="ToggleItalic" />
+                <SectionToolbarButton Icon="@Icons.Material.Sharp.FormatUnderlined" Selected="Format?.Underline == true" Disabled="Format is null" OnClick="ToggleUnderline" />
+            </div>
         </div>
+
+
     </div>
-
-
+    <MudText Typo="Typo.caption" Class="" Style="display: flex; align-items: flex-end; height: 25px; vertical-align: bottom;">@Localizer["Cell"]</MudText>
 </div>
+
 @code {
     [Inject] public required IStringLocalizer<CellFormatEditor> Localizer { get; set; }
 
