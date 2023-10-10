@@ -55,8 +55,8 @@
         var groupCell = column.Cells.First(x => x.RowType == SheetRowType.Group);
         <div @onclick="() => SetSelection(column, groupCell)"
              style="@(CellStyle(groupCell) + ColumnStyle(column))"
-                class="@CellClass(groupCell)">
-            @Localizer["Grupp"]
+             class="@CellClass(groupCell)">
+            @($"{Localizer["Grupp"]} - {ColumnTypeNamesMap[column.ColumnType]}")
         </div>
     }
 </div>
@@ -67,8 +67,8 @@
         var partCell = column.Cells.First(x => x.RowType == SheetRowType.Part);
         <div @onclick="() => SetSelection(column, partCell)"
              style="@(CellStyle(partCell) + ColumnStyle(column))"
-                class="@CellClass(partCell)">
-            @Localizer["Kalkyldel"]
+             class="@CellClass(partCell)">
+            @($"{Localizer["Del"]} - {ColumnTypeNamesMap[column.ColumnType]}")
         </div>
     }
 </div>
@@ -78,9 +78,9 @@
     {
         var postCell = column.Cells.First(x => x.RowType == SheetRowType.Post);
         <div @onclick="() => SetSelection(column, postCell)"
-                style="@(CellStyle(postCell) + ColumnStyle(column))"
-                class="@CellClass(postCell)">
-            @Localizer["Kalkylpost"]
+             style="@(CellStyle(postCell) + ColumnStyle(column))"
+             class="@CellClass(postCell)">
+            @($"{Localizer["Post"]} - {ColumnTypeNamesMap[column.ColumnType]}")
         </div>
     }
 </div>
@@ -97,6 +97,19 @@
 
     string CellClass(SheetCell column) => SelectedCell == column && IsSelected ? "cell column cell-selected" : "cell column cell-unselected";
 
+
+    Dictionary<SheetColumnType, string> ColumnTypeNamesMap = new();
+
+    protected override void OnInitialized()
+    {
+        ColumnTypeNamesMap.Add(SheetColumnType.Description, Localizer["Benämning"]);
+        ColumnTypeNamesMap.Add(SheetColumnType.Quantity, Localizer["Mängd"]);
+        ColumnTypeNamesMap.Add(SheetColumnType.Unit, Localizer["Enhet"]);
+        ColumnTypeNamesMap.Add(SheetColumnType.UnitCost, Localizer["Netto/enhet"]);
+        ColumnTypeNamesMap.Add(SheetColumnType.TotalCost, Localizer["Netto totalt"]);
+        ColumnTypeNamesMap.Add(SheetColumnType.UnitAskingPrice, Localizer["Apris/enhet"]);
+        ColumnTypeNamesMap.Add(SheetColumnType.TotalAskingPrice, Localizer["Apris totalt"]);
+    }
     void SetSelection(SheetColumn column, SheetCell cell)
     {
         SelectedColumn = column;

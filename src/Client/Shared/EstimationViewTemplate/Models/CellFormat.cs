@@ -22,4 +22,5 @@ public class CellFormat
     public bool BorderBottom { get; set; }
     public int BorderThickness => 1;
     public BorderStyle BorderStyle { get; set; }
+    public int TopPadding { get; set; }
 }

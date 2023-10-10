@@ -1,10 +1,8 @@
 ﻿@using Client.Shared.EstimationViewTemplate.Models;
 
 <div class="d-flex" style="flex-direction: column; height: 100%">
-    <div class="d-flex" style="gap: 4px; height: calc(100% - 25px);">
 
-
-
+    <div class="d-flex" style="gap: 4px; height: calc(100% - 20px);">
         <div class="d-flex gap-1 justify-end flex-column" style="height: 100%;">
             <input placeholder="@Localizer["Teckensnitt"]" class="pa-1" style="border: 1px; border-style: solid; width: 100px; height: calc(50% - 2px);" value="@Format?.FontFamily" @onchange="FontFamilyInputChanged" disabled="@(Format is null)" />
             <input placeholder="@Localizer["Storlek"]" class="pa-1" style="border: 1px; border-style: solid; width: 100px; height: calc(50% - 2px);" value="@Format?.FontSize" @onchange="FontSizeInputChanged" disabled="@(Format is null)" />
@@ -25,10 +23,8 @@
                 <SectionToolbarButton Icon="@Icons.Material.Sharp.FormatUnderlined" Selected="Format?.Underline == true" Disabled="Format is null" OnClick="ToggleUnderline" />
             </div>
         </div>
-
-
     </div>
-    <MudText Typo="Typo.caption" Class="" Style="display: flex; align-items: flex-end; height: 25px; vertical-align: bottom;">@Localizer["Cell"]</MudText>
+    <div class="mx-auto" style="display: flex; align-items: flex-end; font-size: 11px; height: 20px;">@Localizer["Cell"]</div>
 </div>
 
 @code {

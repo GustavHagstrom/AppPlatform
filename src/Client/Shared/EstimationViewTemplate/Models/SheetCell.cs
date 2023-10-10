@@ -10,7 +10,6 @@ public class SheetCell
     }
     public Guid Id { get; set; }
     public CellFormat CellFormat { get; set; } = new();
-    public int TopPadding { get; set; }
     public SheetRowType RowType { get; private set; }
 
     
