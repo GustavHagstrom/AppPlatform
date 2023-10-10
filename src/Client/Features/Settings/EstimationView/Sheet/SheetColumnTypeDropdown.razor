@@ -7,7 +7,7 @@
         padding: 0px;
         border: 1px;
         border-style: solid;
-        width: 100px;
+        width: 115px;
     }
 
     .dropdown-enabled {
@@ -31,6 +31,7 @@
         display: block;
         position: absolute;
         margin-top: 1px;
+        width: 110px;
         z-index: 1;
         background-color: var(--mud-palette-background);
         box-shadow: var(--mud-elevation-2);
@@ -48,7 +49,10 @@
 <div class="@DropDownClass" style="height: @Height" @onmouseleave="() => IsActive = false">
     @if(Column is not null)
     {
-        <div class="pa-1" style="display: flex; align-items: center; height: 100%;" @onclick="() => IsActive = !IsActive">@ColumnTypeNamesMap[Column.ColumnType]</div>
+        <div class="pa-1" style="display: flex; align-items: center; height: 100%;" @onclick="() => IsActive = !IsActive">
+            <span class="d-flex flex-grow-1">@ColumnTypeNamesMap[Column.ColumnType]</span>
+            <MudIcon Icon="@Icons.Material.Sharp.KeyboardArrowDown"/>
+        </div>
         <div class="@DropDownContentClass" @onclick="() => IsActive = false">
             <div class="dropdown-item" @onclick="() => ColumnTypeSelected(SheetColumnType.Description)">@ColumnTypeNamesMap[SheetColumnType.Description]</div>
             <div class="dropdown-item" @onclick="() => ColumnTypeSelected(SheetColumnType.Quantity)">@ColumnTypeNamesMap[SheetColumnType.Quantity]</div>

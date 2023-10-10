@@ -1,0 +1,23 @@
+﻿@typeparam T
+
+<div style="@DivStyle" @onclick="() => InputField.FocusAsync()">
+    <input @ref="InputField" value="@Value" placeholder="@Placeholder" @onchange="OnChange" disabled="@Disabled" />
+    <MudIcon Class="d-flex my-auto mr-1" Icon="@Icon" Style="@IconStyle" />
+</div>
+
+@code {
+    [Parameter] public string Height { get; set; } = "30px";
+    [Parameter] public string Width { get; set; } = "100px";
+    [Parameter] public string? Placeholder { get; set; }
+    [Parameter] public string? Icon { get; set; }
+    [Parameter] public string? IconStyle { get; set; }
+    [Parameter] public bool Disabled { get; set; }
+    [Parameter] public T? Value { get; set; }
+    [Parameter] public EventCallback<T> ValueChanged { get; set; }
+    [Parameter] public EventCallback<ChangeEventArgs> OnChange { get; set; }
+
+    ElementReference InputField;
+
+    string DisabledDivStyle => Disabled ? $"cursor: default;" : string.Empty;
+    string DivStyle => $"display: flex; height: {Height}; width: {Width}; border: 1px; border-style: solid; cursor: text; {DisabledDivStyle}";
+}

@@ -1,11 +1,11 @@
 ﻿@using Client.Shared.EstimationViewTemplate.Models;
 
-<div class="d-flex" style="flex-direction: column; height: 100%">
+<div class="d-flex" style="flex-direction: column; height: 100%;">
 
     <div class="d-flex" style="gap: 4px; height: calc(100% - 20px);">
         <div class="d-flex gap-1 justify-end flex-column" style="height: 100%;">
-            <input placeholder="@Localizer["Teckensnitt"]" class="pa-1" style="border: 1px; border-style: solid; width: 100px; height: calc(50% - 2px);" value="@Format?.FontFamily" @onchange="FontFamilyInputChanged" disabled="@(Format is null)" />
-            <input placeholder="@Localizer["Storlek"]" class="pa-1" style="border: 1px; border-style: solid; width: 100px; height: calc(50% - 2px);" value="@Format?.FontSize" @onchange="FontSizeInputChanged" disabled="@(Format is null)" />
+            <SectionToolbarInput Placeholder="@Localizer["Teckensnitt"]" Height="calc(50% - 2px)" Width="100px" Value="Format?.FontFamily" OnChange="FontFamilyInputChanged" Disabled="@(Format is null)"/>
+            <SectionToolbarInput Placeholder="@Localizer["Storlek"]" Height="calc(50% - 2px)" Width="100px" Value="Format?.FontSize" OnChange="FontSizeInputChanged" Disabled="@(Format is null)" Icon="@Icons.Material.Sharp.FormatSize"/>
         </div>
 
         <div class="d-flex gap-1" style="flex-direction: column; height: 100%;">
