@@ -2,7 +2,7 @@
 
 <div style="@DivStyle" @onclick="() => InputField.FocusAsync()">
     <input @ref="InputField" value="@Value" placeholder="@Placeholder" @onchange="OnChange" disabled="@Disabled" />
-    <MudIcon Class="d-flex my-auto mr-1" Icon="@Icon" Style="@IconStyle" />
+    <MudIcon Class="d-flex my-auto mr-1" Icon="@Icon" Style="@IconActualStyle" />
 </div>
 
 @code {
@@ -17,6 +17,9 @@
     [Parameter] public EventCallback<ChangeEventArgs> OnChange { get; set; }
 
     ElementReference InputField;
+
+    string IconActualStyle => $"{DisabledIconStyle} {IconStyle}";
+    string DisabledIconStyle => Disabled ? "color: var(--mud-palette-action-disabled);" : string.Empty;
 
     string DisabledDivStyle => Disabled ? $"cursor: default;" : string.Empty;
     string DivStyle => $"display: flex; height: {Height}; width: {Width}; border: 1px; border-style: solid; cursor: text; {DisabledDivStyle}";
