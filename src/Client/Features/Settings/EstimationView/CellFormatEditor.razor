@@ -3,10 +3,16 @@
 <div class="d-flex" style="flex-direction: column; height: 100%;">
 
     <div class="d-flex" style="gap: 4px; height: calc(100% - 20px);">
-        <div class="d-flex gap-1 justify-end flex-column" style="height: 100%;">
-            <SectionToolbarInput Placeholder="@Localizer["Teckensnitt"]" Height="calc(50% - 2px)" Width="100px" Value="Format?.FontFamily" OnChange="FontFamilyInputChanged" Disabled="@(Format is null)"/>
-            <SectionToolbarInput Placeholder="@Localizer["Storlek"]" Height="calc(50% - 2px)" Width="100px" Value="Format?.FontSize" OnChange="FontSizeInputChanged" Disabled="@(Format is null)" Icon="@Icons.Material.Sharp.FormatSize"/>
+        <div class="d-flex gap-1 flex-column" style="height: 100%; width: 127px;">
+            <SectionToolbarInput Class="d-flex flex-grow-1" Style="height: 100%;" Value="Format?.FontFamily" OnChange="FontFamilyInputChanged" Disabled="@(Format is null)" />
+            <div class="d-flex gap-1" style="height: calc(50% - 2px); width: 100%">
+
+                <SectionToolbarInput Style="height: 100%; width: 65px;" Value="Format?.FontSize" OnChange="FontSizeInputChanged" Disabled="@(Format is null)" Icon="@Icons.Material.Sharp.FormatSize" />
+                <BorderSplitButton CellFormat="Format"/>
+            </div>
         </div>
+
+
 
         <div class="d-flex gap-1" style="flex-direction: column; height: 100%;">
             <div class="d-flex flex-grow-1 gap-1" style="height: calc(50% - 2px);">

@@ -1,13 +1,17 @@
 ﻿@typeparam T
 
-<div style="@DivStyle" @onclick="() => InputField.FocusAsync()">
+<div class="@Class" style="@DivStyle" @onclick="() => InputField.FocusAsync()">
     <input @ref="InputField" value="@Value" placeholder="@Placeholder" @onchange="OnChange" disabled="@Disabled" />
-    <MudIcon Class="d-flex my-auto mr-1" Icon="@Icon" Style="@IconActualStyle" />
+    @if(Icon is not null)
+    {
+        <MudIcon Class="d-flex my-auto mr-1" Icon="@Icon" Style="@IconActualStyle" />
+    }
 </div>
 
 @code {
-    [Parameter] public string Height { get; set; } = "30px";
-    [Parameter] public string Width { get; set; } = "100px";
+    [Parameter] public string? Class { get; set; }
+    [Parameter] public string? Style { get; set; }
+
     [Parameter] public string? Placeholder { get; set; }
     [Parameter] public string? Icon { get; set; }
     [Parameter] public string? IconStyle { get; set; }
@@ -22,5 +26,5 @@
     string DisabledIconStyle => Disabled ? "color: var(--mud-palette-action-disabled);" : string.Empty;
 
     string DisabledDivStyle => Disabled ? $"cursor: default;" : string.Empty;
-    string DivStyle => $"display: flex; height: {Height}; width: {Width}; border: 1px; border-style: solid; cursor: text; {DisabledDivStyle}";
+    string DivStyle => $"display: flex; border: 1px; border-style: solid; cursor: text; {DisabledDivStyle} {Style}";
 }

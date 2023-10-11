@@ -29,7 +29,7 @@
 
         <div class="d-flex gap-1 flex-column justify-end" style="height: 100%;">
             <SheetColumnTypeDropdown Column="Column" Height="calc(50% - 2px)" />
-            <SectionToolbarInput Height="calc(50% - 2px)" Width="115px" Value="@Column?.Width" OnChange="WidthInputChanged" Disabled="@(Column is null)" 
+            <SectionToolbarInput Style="height: valv(50% - 2px); width: 115px;" Value="@Column?.Width" OnChange="WidthInputChanged" Disabled="@(Column is null)" 
                                  Icon="@Icons.Material.Sharp.Height" IconStyle="transform: rotate(90deg)"/>
         </div>
 
@@ -59,9 +59,12 @@
     {
         if (Column is not null && args.Value is not null)
         {
-            int.TryParse(args.Value as string, out int result);
-            Column.Width = result;
-            StateChangeRequest.InvokeAsync();
+            if(int.TryParse(args.Value as string, out int result))
+            {
+                Column.Width = result;
+                StateChangeRequest.InvokeAsync();
+            }
+            
         }
     }
     void AddColumn()

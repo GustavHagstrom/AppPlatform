@@ -1,0 +1,36 @@
+﻿@using Client.Shared.EstimationViewTemplate.Models;
+
+<div class="@DropDownClass"  @onmouseleave="() => IsActive = false">
+
+    <div class="pa-1" style="display: flex; align-items: center; height: 100%;" @onclick="ToggleActive">
+        <MudIcon Icon="@Icons.Material.Sharp.BorderStyle" />
+        <MudIcon Icon="@Icons.Material.Sharp.KeyboardArrowDown" />
+    </div>
+    <div class="@DropDownContentClass">
+        <div class="dropdown-item"><MudIcon Icon="@Icons.Material.Sharp.BorderBottom"/></div>
+        <div class="dropdown-item"><MudIcon Icon="@Icons.Material.Sharp.BorderTop" /></div>
+        <div class="dropdown-item"><MudIcon Icon="@Icons.Material.Sharp.BorderLeft"/></div>
+        <div class="dropdown-item"><MudIcon Icon="@Icons.Material.Sharp.BorderRight"/></div>
+        <div class="dropdown-item"><MudIcon Icon="@Icons.Material.Sharp.BorderClear"/></div>
+        <div class="dropdown-item"><MudIcon Icon="@Icons.Material.Sharp.BorderOuter"/></div>
+    </div>
+    
+</div>
+
+@code {
+    [Parameter] public CellFormat? CellFormat { get; set; }
+    bool IsActive = false;
+
+    string DropDownClass => $"dropdown {DropDownDisabledClass}";
+    string DropDownDisabledClass => CellFormat is null ? "dropdown-disabled" : "dropdown-enabled";
+
+    string DropDownContentClass => IsActive ? $"dropdown-content-active" : $"dropdown-content-inactive";
+
+    void ToggleActive()
+    {
+        if(CellFormat is not null)
+        {
+            IsActive = !IsActive;
+        }
+    }
+}
