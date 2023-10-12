@@ -4,24 +4,26 @@
 
 <style>
     .cell-unselected {
-        padding: 4px;
-        border: 0px;
-        border-style: solid;
+        /* padding: 4px; */
+ /*        border: 0px;
+        border-style: solid; */
         /* border-color: transparent; */
     }
 
     .cell-unselected:hover {
-    padding: 3px;
-    border: 1px;
-    border-style: solid;
-    border-color: var(--mud-palette-text-primary);
+        background-color: var(--mud-palette-action-default-hover);
+       /*  padding: 3px;
+        border: 1px;
+        border-style: solid;
+        border-color: var(--mud-palette-text-primary); */
     }
 
     .cell-selected {
-        padding: 2px;
+       /*  padding: 2px;
         border: 2px;
         border-style: solid;
-        border-color: var(--mud-palette-primary);
+        border-color: var(--mud-palette-primary); */
+        background-color: var(--mud-palette-primary-hover);
     }
 
     .cell {
@@ -35,6 +37,7 @@
         flex-wrap: wrap;
         cursor: cell;
         width: 100%;
+        padding: 4px;
     }
     .column{
         display: flex;
