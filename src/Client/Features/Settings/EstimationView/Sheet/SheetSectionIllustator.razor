@@ -4,10 +4,10 @@
 
 <style>
     .cell-unselected {
-        padding: 3px;
-        border: 1px;
+        padding: 4px;
+        border: 0px;
         border-style: solid;
-        border-color: transparent;
+        /* border-color: transparent; */
     }
 
     .cell-unselected:hover {
@@ -141,7 +141,10 @@
             _ => string.Empty,
         };
         var fontSize = $"font-size: {(int)(cell.CellFormat.FontSize * 1.33)}px;";
+        var borderStyle = "border-style: solid;";
+        // var borderColor = "border-color: var(--mud-palette-lines-inputs)";
+        var border = $"border-width: {Convert.ToInt32(cell.CellFormat.BorderTop)}px {Convert.ToInt32(cell.CellFormat.BorderRight)}px {Convert.ToInt32(cell.CellFormat.BorderBottom)}px {Convert.ToInt32(cell.CellFormat.BorderLeft)}px;";
 
-        return font + italic + bold + underline + alignment + fontSize + verticalAlignment;
+        return font + italic + bold + underline + alignment + fontSize + verticalAlignment + borderStyle + border;
     }
 }

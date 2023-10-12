@@ -2,23 +2,25 @@
 
 <div class="@DropDownClass"  @onmouseleave="() => IsActive = false">
 
-    <div class="pa-1" style="display: flex; align-items: center; height: 100%;" @onclick="ToggleActive">
+    <div class="pa-1 mud-ripple" style="display: flex; align-items: center; height: 100%;" @onclick="ToggleActive">
         <MudIcon Icon="@Icons.Material.Sharp.BorderStyle" />
         <MudIcon Icon="@Icons.Material.Sharp.KeyboardArrowDown" />
     </div>
     <div class="@DropDownContentClass">
-        <div class="dropdown-item"><MudIcon Icon="@Icons.Material.Sharp.BorderBottom"/></div>
-        <div class="dropdown-item"><MudIcon Icon="@Icons.Material.Sharp.BorderTop" /></div>
-        <div class="dropdown-item"><MudIcon Icon="@Icons.Material.Sharp.BorderLeft"/></div>
-        <div class="dropdown-item"><MudIcon Icon="@Icons.Material.Sharp.BorderRight"/></div>
-        <div class="dropdown-item"><MudIcon Icon="@Icons.Material.Sharp.BorderClear"/></div>
-        <div class="dropdown-item"><MudIcon Icon="@Icons.Material.Sharp.BorderOuter"/></div>
+        <div class="dropdown-item mud-ripple" @onclick="ToggleBorderBottom"><MudIcon Icon="@Icons.Material.Sharp.BorderBottom"/></div>
+        <div class="dropdown-item mud-ripple" @onclick="ToggleBorderTop"><MudIcon Icon="@Icons.Material.Sharp.BorderTop" /></div>
+        <div class="dropdown-item mud-ripple" @onclick="ToggleBorderLeft"><MudIcon Icon="@Icons.Material.Sharp.BorderLeft" /></div>
+        <div class="dropdown-item mud-ripple" @onclick="ToggleBorderRight"><MudIcon Icon="@Icons.Material.Sharp.BorderRight" /></div>
+        <div class="dropdown-item mud-ripple" @onclick="ClearBorders"><MudIcon Icon="@Icons.Material.Sharp.BorderClear" /></div>
+        <div class="dropdown-item mud-ripple" @onclick="OuterBorders"><MudIcon Icon="@Icons.Material.Sharp.BorderOuter" /></div>
     </div>
     
 </div>
 
 @code {
     [Parameter] public CellFormat? CellFormat { get; set; }
+    // [Parameter, EditorRequired] public EventCallback StateChangeRequest { get; set; }
+
     bool IsActive = false;
 
     string DropDownClass => $"dropdown {DropDownDisabledClass}";
@@ -31,6 +33,60 @@
         if(CellFormat is not null)
         {
             IsActive = !IsActive;
+        }
+    }
+    void ToggleBorderBottom()
+    {
+        if(CellFormat is not null)
+        {
+            CellFormat.BorderBottom = !CellFormat.BorderBottom;
+            // StateChangeRequest.InvokeAsync();
+        }
+    }
+    void ToggleBorderTop()
+    {
+        if (CellFormat is not null)
+        {
+            CellFormat.BorderTop = !CellFormat.BorderTop;
+            // StateChangeRequest.InvokeAsync();
+        }
+    }
+    void ToggleBorderLeft()
+    {
+        if (CellFormat is not null)
+        {
+            CellFormat.BorderLeft = !CellFormat.BorderLeft;
+            // StateChangeRequest.InvokeAsync();
+        }
+    }
+    void ToggleBorderRight()
+    {
+        if (CellFormat is not null)
+        {
+            CellFormat.BorderRight = !CellFormat.BorderRight;
+            // StateChangeRequest.InvokeAsync();
+        }
+    }
+    void ClearBorders()
+    {
+        if (CellFormat is not null)
+        {
+            CellFormat.BorderBottom = false;
+            CellFormat.BorderTop = false;
+            CellFormat.BorderLeft = false;
+            CellFormat.BorderRight = false;
+            // StateChangeRequest.InvokeAsync();
+        }
+    }
+    void OuterBorders()
+    {
+        if (CellFormat is not null)
+        {
+            CellFormat.BorderBottom = true;
+            CellFormat.BorderTop = true;
+            CellFormat.BorderLeft = true;
+            CellFormat.BorderRight = true;
+            // StateChangeRequest.InvokeAsync();
         }
     }
 }

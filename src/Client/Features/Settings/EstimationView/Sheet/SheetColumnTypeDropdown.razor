@@ -4,18 +4,18 @@
 <div class="@DropDownClass" style="height: @Height" @onmouseleave="() => IsActive = false">
     @if(Column is not null)
     {
-        <div class="pa-1" style="display: flex; align-items: center; height: 100%;" @onclick="() => IsActive = !IsActive">
+        <div class="pa-1 mud-ripple" style="display: flex; align-items: center; height: 100%;" @onclick="() => IsActive = !IsActive">
             <span class="d-flex flex-grow-1">@ColumnTypeNamesMap[Column.ColumnType]</span>
             <MudIcon Icon="@Icons.Material.Sharp.KeyboardArrowDown"/>
         </div>
         <div class="@DropDownContentClass" @onclick="() => IsActive = false">
-            <div class="dropdown-item" @onclick="() => ColumnTypeSelected(SheetColumnType.Description)">@ColumnTypeNamesMap[SheetColumnType.Description]</div>
-            <div class="dropdown-item" @onclick="() => ColumnTypeSelected(SheetColumnType.Quantity)">@ColumnTypeNamesMap[SheetColumnType.Quantity]</div>
-            <div class="dropdown-item" @onclick="() => ColumnTypeSelected(SheetColumnType.Unit)">@ColumnTypeNamesMap[SheetColumnType.Unit]</div>
-            <div class="dropdown-item" @onclick="() => ColumnTypeSelected(SheetColumnType.UnitCost)">@ColumnTypeNamesMap[SheetColumnType.UnitCost]</div>
-            <div class="dropdown-item" @onclick="() => ColumnTypeSelected(SheetColumnType.TotalCost)">@ColumnTypeNamesMap[SheetColumnType.TotalCost]</div>
-            <div class="dropdown-item" @onclick="() => ColumnTypeSelected(SheetColumnType.UnitAskingPrice)">@ColumnTypeNamesMap[SheetColumnType.UnitAskingPrice]</div>
-            <div class="dropdown-item" @onclick="() => ColumnTypeSelected(SheetColumnType.TotalAskingPrice)">@ColumnTypeNamesMap[SheetColumnType.TotalAskingPrice]</div>
+            <div class="dropdown-item mud-ripple" @onclick="() => ColumnTypeSelected(SheetColumnType.Description)">@ColumnTypeNamesMap[SheetColumnType.Description]</div>
+            <div class="dropdown-item mud-ripple" @onclick="() => ColumnTypeSelected(SheetColumnType.Quantity)">@ColumnTypeNamesMap[SheetColumnType.Quantity]</div>
+            <div class="dropdown-item mud-ripple" @onclick="() => ColumnTypeSelected(SheetColumnType.Unit)">@ColumnTypeNamesMap[SheetColumnType.Unit]</div>
+            <div class="dropdown-item mud-ripple" @onclick="() => ColumnTypeSelected(SheetColumnType.UnitCost)">@ColumnTypeNamesMap[SheetColumnType.UnitCost]</div>
+            <div class="dropdown-item mud-ripple" @onclick="() => ColumnTypeSelected(SheetColumnType.TotalCost)">@ColumnTypeNamesMap[SheetColumnType.TotalCost]</div>
+            <div class="dropdown-item mud-ripple" @onclick="() => ColumnTypeSelected(SheetColumnType.UnitAskingPrice)">@ColumnTypeNamesMap[SheetColumnType.UnitAskingPrice]</div>
+            <div class="dropdown-item mud-ripple" @onclick="() => ColumnTypeSelected(SheetColumnType.TotalAskingPrice)">@ColumnTypeNamesMap[SheetColumnType.TotalAskingPrice]</div>
         </div>
     }
 </div>
