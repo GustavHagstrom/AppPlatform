@@ -25,13 +25,16 @@
 }
 
 .dropdown-content-active {
-    display: block;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
     position: absolute;
     margin-top: 1px;
     width: 100%;
     z-index: 1;
     background-color: var(--mud-palette-background);
     box-shadow: var(--mud-elevation-2);
+    justify-content: center;
 }
 
 .dropdown-item {

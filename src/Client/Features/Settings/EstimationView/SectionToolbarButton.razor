@@ -2,6 +2,8 @@
     .section-button{
         display: flex ;
         padding: 2px 4px 2px 4px; 
+        justify-content: center;
+        align-content: center;
     }
     .section-button-enabled {
         color: var(--mud-palette-text-primary);
@@ -25,13 +27,14 @@
 </style>
 
 <div class="@($"{BaseClass} {SelectedClass} {DisabledClass}")" @onclick="OnClick">
-    <MudIcon Icon="@Icon" Class="my-auto" Size="Size.Small"/>
+    <MudIcon Icon="@Icon" Class="my-auto" Size="Size" />
 </div>
 
 @code {
     [Parameter] public string? Icon { get; set; }
     [Parameter] public bool Selected { get; set; } = false;
     [Parameter] public bool Disabled { get; set; } = false;
+    [Parameter] public Size Size { get; set; } = Size.Small;
     [Parameter] public EventCallback<MouseEventArgs> OnClick { get; set; }
 
     string BaseClass = " section-button";

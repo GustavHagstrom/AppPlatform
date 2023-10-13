@@ -14,6 +14,7 @@
                 <div @onclick="() => SetSelection(column, groupCell)"
                      style="@(CellStyle(groupCell))"
                      class="@CellClass(groupCell)">
+                    <MudSpacer />
                     @($"{Localizer["Grupp"]} - {ColumnTypeNamesMap[column.ColumnType]}")
                 </div>
             </td>
@@ -28,6 +29,7 @@
                 <div @onclick="() => SetSelection(column, partCell)"
                      style="@(CellStyle(partCell))"
                      class="@CellClass(partCell)">
+                     <MudSpacer/>
                     @($"{Localizer["Del"]} - {ColumnTypeNamesMap[column.ColumnType]}")
                 </div>
             </td>
@@ -42,6 +44,7 @@
                 <div @onclick="() => SetSelection(column, postCell)"
                      style="@(CellStyle(postCell))"
                      class="@CellClass(postCell)">
+                    <MudSpacer />
                     @($"{Localizer["Post"]} - {ColumnTypeNamesMap[column.ColumnType]}")
                 </div>
             </td>

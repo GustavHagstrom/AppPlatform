@@ -53,15 +53,10 @@ td {
     flex-grow: 1;
 }
 td div {
-    display: block;
-    /*flex-direction: column;
-    flex-wrap: wrap;
-    justify-content: space-between;
-    align-items: stretch;
-    align-content: stretch;
-    flex-grow: 1;*/
+    display: flex;
+    flex-direction: column;
     cursor: cell;
-    /*padding: 4px;*/
     word-wrap: break-word;
     flex-grow: 1;
+    vertical-align: text-bottom;
 }
