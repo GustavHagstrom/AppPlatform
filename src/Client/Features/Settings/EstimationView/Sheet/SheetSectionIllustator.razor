@@ -2,91 +2,52 @@
 @using Client.Shared.EstimationViewTemplate.Models;
 @using SharedLibrary.Enums.ViewTemplate;
 
-<style>
-    .cell-unselected {
-        /* padding: 4px; */
- /*        border: 0px;
-        border-style: solid; */
-        /* border-color: transparent; */
-    }
-
-    .cell-unselected:hover {
-        background-color: var(--mud-palette-action-default-hover);
-       /*  padding: 3px;
-        border: 1px;
-        border-style: solid;
-        border-color: var(--mud-palette-text-primary); */
-    }
-
-    .cell-selected {
-       /*  padding: 2px;
-        border: 2px;
-        border-style: solid;
-        border-color: var(--mud-palette-primary); */
-        background-color: var(--mud-palette-primary-hover);
-    }
-
-    .cell {
-        transition-property: width;
-        transition-duration: 100ms;
-        transition-timing-function: ease-in-out;
-        display: flex;
-        flex-direction: column;
-        align-self: stretch;
-        justify-content: flex-end; 
-        flex-wrap: wrap;
-        cursor: cell;
-        width: 100%;
-        padding: 4px;
-    }
-    .column{
-        display: flex;
-       /*  transition: width 100ms ease-in-out; */
-    }
-
-    .row {
-        display: flex;
-        min-height: 15px;
-    }
-</style>
 <SheetToolbar IsActive="IsSelected" SelectedColumn="SelectedColumn" SelectedCell="SelectedCell" Section="Section" 
               StateChangeRequest="StateHasChanged" ColumnDeleted="() => {SelectedColumn = null; SelectedCell = null;}" />
-<div class="row">
-    
-    @foreach (var column in Section.Columns)
-    {
-        var groupCell = column.Cells.First(x => x.RowType == SheetRowType.Group);
-        <div @onclick="() => SetSelection(column, groupCell)"
-             style="@(CellStyle(groupCell) + ColumnStyle(column))"
-             class="@CellClass(groupCell)">
-            @($"{Localizer["Grupp"]} - {ColumnTypeNamesMap[column.ColumnType]}")
-        </div>
-    }
-</div>
-<div class="row">
-    
-    @foreach (var column in Section.Columns)
-    {
-        var partCell = column.Cells.First(x => x.RowType == SheetRowType.Part);
-        <div @onclick="() => SetSelection(column, partCell)"
-             style="@(CellStyle(partCell) + ColumnStyle(column))"
-             class="@CellClass(partCell)">
-            @($"{Localizer["Del"]} - {ColumnTypeNamesMap[column.ColumnType]}")
-        </div>
-    }
-</div>
-<div class="row">
-    
-    @foreach (var column in Section.Columns)
-    {
-        var postCell = column.Cells.First(x => x.RowType == SheetRowType.Post);
-        <div @onclick="() => SetSelection(column, postCell)"
-             style="@(CellStyle(postCell) + ColumnStyle(column))"
-             class="@CellClass(postCell)">
-            @($"{Localizer["Post"]} - {ColumnTypeNamesMap[column.ColumnType]}")
-        </div>
-    }
-</div>
+<table style="width: 100%; border-collapse: collapse; table-layout: fixed;">
+    <tr>
+
+        @foreach (var column in Section.Columns)
+        {
+            var groupCell = column.Cells.First(x => x.RowType == SheetRowType.Group);
+            <td style="@TdStyle(column, groupCell)">
+                <div @onclick="() => SetSelection(column, groupCell)"
+                     style="@(CellStyle(groupCell))"
+                     class="@CellClass(groupCell)">
+                    @($"{Localizer["Grupp"]} - {ColumnTypeNamesMap[column.ColumnType]}")
+                </div>
+            </td>
+        }
+    </tr>
+    <tr>
+
+        @foreach (var column in Section.Columns)
+        {
+            var partCell = column.Cells.First(x => x.RowType == SheetRowType.Part);
+            <td style="@TdStyle(column, partCell)">
+                <div @onclick="() => SetSelection(column, partCell)"
+                     style="@(CellStyle(partCell))"
+                     class="@CellClass(partCell)">
+                    @($"{Localizer["Del"]} - {ColumnTypeNamesMap[column.ColumnType]}")
+                </div>
+            </td>
+        }
+    </tr>
+    <tr>
+
+        @foreach (var column in Section.Columns)
+        {
+            var postCell = column.Cells.First(x => x.RowType == SheetRowType.Post);
+            <td style="@TdStyle(column, postCell)">
+                <div @onclick="() => SetSelection(column, postCell)"
+                     style="@(CellStyle(postCell))"
+                     class="@CellClass(postCell)">
+                    @($"{Localizer["Post"]} - {ColumnTypeNamesMap[column.ColumnType]}")
+                </div>
+            </td>
+        }
+    </tr>
+</table>
 
 @code {
     [Inject] public required IStringLocalizer<SheetSectionIllustator> Localizer { get; set; }
@@ -98,8 +59,8 @@
 
     int ColumnWidthSum => Section.Columns.Sum(x => x.Width);
 
-    string CellClass(SheetCell column) => SelectedCell == column && IsSelected ? "cell column cell-selected" : "cell column cell-unselected";
-
+    string CellClass(SheetCell column) => SelectedCell == column && IsSelected ? "cell-selected" : "cell-unselected";
+    string TdStyle(SheetColumn column, SheetCell cell) => $"{WidthStyle(column)} {BorderColorStyle(cell)}";
 
     Dictionary<SheetColumnType, string> ColumnTypeNamesMap = new();
 
@@ -124,7 +85,7 @@
         double percent = (double)column.Width / (double)widthSum * 100;
         return percent.ToString(CultureInfo.InvariantCulture);
     }
-    string ColumnStyle(SheetColumn column)
+    string WidthStyle(SheetColumn column)
     {
         var width = $"width: {WidthPercent(column)}%;";
         return width;
@@ -144,10 +105,15 @@
             _ => string.Empty,
         };
         var fontSize = $"font-size: {(int)(cell.CellFormat.FontSize * 1.33)}px;";
-        var borderStyle = "border-style: solid;";
-        // var borderColor = "border-color: var(--mud-palette-lines-inputs)";
-        var border = $"border-width: {Convert.ToInt32(cell.CellFormat.BorderTop)}px {Convert.ToInt32(cell.CellFormat.BorderRight)}px {Convert.ToInt32(cell.CellFormat.BorderBottom)}px {Convert.ToInt32(cell.CellFormat.BorderLeft)}px;";
 
-        return font + italic + bold + underline + alignment + fontSize + verticalAlignment + borderStyle + border;
+        return font + italic + bold + underline + alignment + fontSize + verticalAlignment;// + borderStyle;// + border + padding;
+    }
+    string BorderColorStyle(SheetCell Cell)
+    {
+        var bottom = Cell.CellFormat.BorderBottom ? "border-bottom-color: var(--mud-palette-lines-inputs);" : string.Empty;
+        var top = Cell.CellFormat.BorderTop ? "border-top-color: var(--mud-palette-lines-inputs);" : string.Empty;
+        var left = Cell.CellFormat.BorderLeft ? "border-left-color: var(--mud-palette-lines-inputs);" : string.Empty;
+        var right = Cell.CellFormat.BorderRight ? "border-right-color: var(--mud-palette-lines-inputs);" : string.Empty;
+        return bottom + top + left + right;
     }
 }
