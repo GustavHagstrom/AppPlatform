@@ -4,7 +4,6 @@
     padding: 0px;
     border: 1px;
     border-style: solid;
-    /*width: 115px;*/
 }
 
 .dropdown-enabled {
@@ -42,6 +41,6 @@
     cursor: pointer;
 }
 
-    .dropdown-item:hover {
-        background-color: var(--mud-palette-action-default-hover);
-    }
+.dropdown-item:hover {
+    background-color: var(--mud-palette-action-default-hover);
+}

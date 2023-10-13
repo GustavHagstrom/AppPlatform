@@ -1,0 +1,44 @@
+﻿<CascadingValue Value="this">
+    <div class="@DropDownClass" @onmouseleave="MouseLeave" @onmouseenter="MouseEnter">
+
+        <div class="activator mud-ripple" @onclick="Toggle">
+            @ActivatorContent
+        </div>
+        <div class="@DropDownContentClass">
+            @DropDownContent
+        </div>
+
+    </div>
+</CascadingValue>
+@code {
+    [Parameter] public RenderFragment? ActivatorContent { get; set; }
+    [Parameter] public RenderFragment? DropDownContent { get; set; }
+    [Parameter] public EventCallback OnActivatorClick { get; set; }
+    [Parameter] public bool Disabled { get; set; } = false;
+
+    bool IsActive = false;
+    bool IsMouseOver = false;
+
+    string DropDownClass => $"container {DropDownDisabledClass}";
+    string DropDownDisabledClass => Disabled ? "container-disabled" : "container-enabled";
+
+    string DropDownContentClass => IsActive ? $"content-active" : $"content-inactive";
+
+    public void Toggle()
+    {
+        IsActive = !IsActive;
+    }
+    async Task MouseLeave()
+    {
+        IsMouseOver = false;
+        await Task.Delay(400);
+        if (!IsMouseOver)
+        {
+            IsActive = false;
+        }
+    }
+    void MouseEnter()
+    {
+        IsMouseOver = true;
+    }
+}
