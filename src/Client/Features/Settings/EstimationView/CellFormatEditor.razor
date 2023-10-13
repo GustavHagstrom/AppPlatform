@@ -16,17 +16,17 @@
 
         <div class="d-flex gap-1" style="flex-direction: column; height: 100%;">
             <div class="d-flex flex-grow-1 gap-1" style="height: calc(50% - 2px);">
-                <SectionToolbarButton Icon="@Icons.Material.Sharp.FormatAlignLeft" Selected="Format?.Align == SharedLibrary.Enums.ViewTemplate.Align.Left" Disabled="Format is null"
+                <ToggleIconButton Icon="@Icons.Material.Sharp.FormatAlignLeft" Selected="Format?.Align == SharedLibrary.Enums.ViewTemplate.Align.Left" Disabled="Format is null"
                                       OnClick="() => SetAlignment(SharedLibrary.Enums.ViewTemplate.Align.Left)" />
-                <SectionToolbarButton Icon="@Icons.Material.Sharp.FormatAlignCenter" Selected="Format?.Align == SharedLibrary.Enums.ViewTemplate.Align.Center" Disabled="Format is null"
+                <ToggleIconButton Icon="@Icons.Material.Sharp.FormatAlignCenter" Selected="Format?.Align == SharedLibrary.Enums.ViewTemplate.Align.Center" Disabled="Format is null"
                                       OnClick="() => SetAlignment(SharedLibrary.Enums.ViewTemplate.Align.Center)" />
-                <SectionToolbarButton Icon="@Icons.Material.Sharp.FormatAlignRight" Selected="Format?.Align == SharedLibrary.Enums.ViewTemplate.Align.Right" Disabled="Format is null"
+                <ToggleIconButton Icon="@Icons.Material.Sharp.FormatAlignRight" Selected="Format?.Align == SharedLibrary.Enums.ViewTemplate.Align.Right" Disabled="Format is null"
                                       OnClick="() => SetAlignment(SharedLibrary.Enums.ViewTemplate.Align.Right)" />
             </div>
             <div class="d-flex flex-grow-1 gap-1" style="height: calc(50% - 2px);">
-                <SectionToolbarButton Icon="@Icons.Material.Sharp.FormatBold" Selected="Format?.Bold == true" Disabled="Format is null" OnClick="ToggleBold" />
-                <SectionToolbarButton Icon="@Icons.Material.Sharp.FormatItalic" Selected="Format?.Italic == true" Disabled="Format is null" OnClick="ToggleItalic" />
-                <SectionToolbarButton Icon="@Icons.Material.Sharp.FormatUnderlined" Selected="Format?.Underline == true" Disabled="Format is null" OnClick="ToggleUnderline" />
+                <ToggleIconButton Icon="@Icons.Material.Sharp.FormatBold" Selected="Format?.Bold == true" Disabled="Format is null" OnClick="ToggleBold" />
+                <ToggleIconButton Icon="@Icons.Material.Sharp.FormatItalic" Selected="Format?.Italic == true" Disabled="Format is null" OnClick="ToggleItalic" />
+                <ToggleIconButton Icon="@Icons.Material.Sharp.FormatUnderlined" Selected="Format?.Underline == true" Disabled="Format is null" OnClick="ToggleUnderline" />
             </div>
         </div>
     </div>
