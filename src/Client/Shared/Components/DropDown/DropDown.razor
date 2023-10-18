@@ -1,16 +1,14 @@
-﻿<CascadingValue Value="this">
-    <div class="@ContainerClass" style="@Style" @onmouseleave="MouseLeave" @onmouseenter="MouseEnter">
+﻿<div class="@ContainerClass" style="@Style" @onmouseleave="MouseLeave" @onmouseenter="MouseEnter">
 
-        <div class="@ActivatorClass" style="height: 100%; width: 100%" @onclick="ActivatorClick">
-            @ActivatorContent
-        </div>
-        
-        <div class="@ContentClass" @onclick="ContentClick">
-            @DropDownContent
-        </div>
-
+    <div class="@ActivatorClass" style="height: 100%; width: 100%" @onclick="ActivatorClick">
+        @ActivatorContent
     </div>
-</CascadingValue>
+        
+    <div class="@ContentClass" @onclick="ContentClick">
+        @DropDownContent
+    </div>
+
+</div>
 @code {
     [Parameter] public RenderFragment? ActivatorContent { get; set; }
     [Parameter] public RenderFragment? DropDownContent { get; set; }
