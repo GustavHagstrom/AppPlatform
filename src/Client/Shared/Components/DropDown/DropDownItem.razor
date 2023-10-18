@@ -1,19 +1,8 @@
-﻿<div class="dropdown-item mud-ripple" @onclick="OnClickHandler">
+﻿<div class="dropdown-item mud-ripple" @onclick="OnClick">
     @ChildContent
 </div>
 
 @code {
-    [CascadingParameter] public DropDown? DropDown { get; set; }
     [Parameter] public RenderFragment? ChildContent { get; set; }
-    [Parameter] public bool CloseOnClick { get; set; } = true;
     [Parameter] public EventCallback OnClick { get; set; }
-
-    void OnClickHandler()
-    {
-        if (CloseOnClick)
-        {
-            DropDown?.Toggle();
-        }
-        OnClick.InvokeAsync();
-    }
 }

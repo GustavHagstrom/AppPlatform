@@ -1,9 +1,8 @@
 ﻿.container {
     position: relative;
     display: inline-block;
-    padding: 0px;
-    border: 1px;
-    border-style: solid;
+    user-select: none;
+    overflow: visible;
 }
 
 .container-enabled {
@@ -15,8 +14,6 @@
     color: var(--mud-palette-action-disabled);
 }
 
-
-
 .content-inactive {
     display: none;
 }
@@ -24,19 +21,18 @@
 .content-active {
     display: flex;
     flex-direction: column;
-    gap: 4px;
     position: absolute;
-    margin-top: 1px;
+    top: 100%;
     width: 100%;
     z-index: 1;
     background-color: var(--mud-palette-background);
     box-shadow: var(--mud-elevation-2);
-    justify-content: center;
 }
 
 .activator{
-
+    transition: background-color 75ms linear;
 }
-.activator:hover {
-    background-color: var(--mud-palette-action-default-hover);
-}
+    .activator:hover {
+        background-color: var(--mud-palette-action-default-hover);
+        /*background-color: var(--mud-palette-primary-hover);*/
+    }
