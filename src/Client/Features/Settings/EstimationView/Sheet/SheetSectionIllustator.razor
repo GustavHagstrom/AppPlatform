@@ -9,7 +9,7 @@
 
         @foreach (var column in Section.Columns)
         {
-            var groupCell = column.Cells.First(x => x.RowType == SheetRowType.Group);
+            var groupCell = column.CellTemplates.First(x => x.RowType == SheetRowType.Group);
             <td style="@TdStyle(column, groupCell)">
                 <div @onclick="() => SetSelection(column, groupCell)"
                      style="@(CellStyle(groupCell))"
@@ -24,7 +24,7 @@
 
         @foreach (var column in Section.Columns)
         {
-            var partCell = column.Cells.First(x => x.RowType == SheetRowType.Part);
+            var partCell = column.CellTemplates.First(x => x.RowType == SheetRowType.Part);
             <td style="@TdStyle(column, partCell)">
                 <div @onclick="() => SetSelection(column, partCell)"
                      style="@(CellStyle(partCell))"
@@ -39,7 +39,7 @@
 
         @foreach (var column in Section.Columns)
         {
-            var postCell = column.Cells.First(x => x.RowType == SheetRowType.Post);
+            var postCell = column.CellTemplates.First(x => x.RowType == SheetRowType.Post);
             <td style="@TdStyle(column, postCell)">
                 <div @onclick="() => SetSelection(column, postCell)"
                      style="@(CellStyle(postCell))"
@@ -58,12 +58,12 @@
     [Parameter, EditorRequired] public bool IsSelected { get; set; }
 
     SheetColumn? SelectedColumn;
-    SheetCell? SelectedCell;
+    SheetCellTemplate? SelectedCell;
 
     int ColumnWidthSum => Section.Columns.Sum(x => x.Width);
 
-    string CellClass(SheetCell column) => SelectedCell == column && IsSelected ? "cell-selected" : "cell-unselected";
-    string TdStyle(SheetColumn column, SheetCell cell) => $"{WidthStyle(column)} {BorderColorStyle(cell)}";
+    string CellClass(SheetCellTemplate column) => SelectedCell == column && IsSelected ? "cell-selected" : "cell-unselected";
+    string TdStyle(SheetColumn column, SheetCellTemplate cell) => $"{WidthStyle(column)} {BorderColorStyle(cell)}";
 
     Dictionary<SheetColumnType, string> ColumnTypeNamesMap = new();
 
@@ -77,7 +77,7 @@
         ColumnTypeNamesMap.Add(SheetColumnType.UnitAskingPrice, Localizer["Apris/enhet"]);
         ColumnTypeNamesMap.Add(SheetColumnType.TotalAskingPrice, Localizer["Apris totalt"]);
     }
-    void SetSelection(SheetColumn column, SheetCell cell)
+    void SetSelection(SheetColumn column, SheetCellTemplate cell)
     {
         SelectedColumn = column;
         SelectedCell = cell;
@@ -93,7 +93,7 @@
         var width = $"width: {WidthPercent(column)}%;";
         return width;
     }
-    string CellStyle(SheetCell cell)
+    string CellStyle(SheetCellTemplate cell)
     {
         var verticalAlignment = "vertical-align: bottom;";
         var font = $"font-family: {cell.CellFormat.FontFamily};";
@@ -111,7 +111,7 @@
 
         return font + italic + bold + underline + alignment + fontSize + verticalAlignment;// + borderStyle;// + border + padding;
     }
-    string BorderColorStyle(SheetCell Cell)
+    string BorderColorStyle(SheetCellTemplate Cell)
     {
         var bottom = Cell.CellFormat.BorderBottom ? "border-bottom-color: var(--mud-palette-lines-inputs);" : string.Empty;
         var top = Cell.CellFormat.BorderTop ? "border-top-color: var(--mud-palette-lines-inputs);" : string.Empty;

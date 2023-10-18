@@ -43,7 +43,7 @@
         </div>
 
     </div>
-    <div class="mx-auto" style="display: flex; align-items: flex-end; font-size: 11px; height: 20px;">@Localizer["Kolumn"]</div>
+   @*  <div class="mx-auto" style="display: flex; align-items: flex-end; font-size: 11px; height: 20px;">@Localizer["Kolumn"]</div> *@
 </div>
 
 @code {
@@ -64,12 +64,17 @@
                 Column.Width = result;
                 StateChangeRequest.InvokeAsync();
             }
-            
+
         }
     }
     void AddColumn()
     {
         var newColumn = new SheetColumn { Width = 10 };
+        foreach (var cellTemplate in newColumn.CellTemplates)
+        {
+            cellTemplate.CellFormat.BorderTop = true;
+            cellTemplate.CellFormat.BorderBottom = true;
+        }
         Section.Columns.Add(newColumn);
         StateChangeRequest.InvokeAsync();
     }

@@ -7,12 +7,11 @@ public class SheetColumn
     public int Order { get; set; }
     public int Width { get; set; }
     public SheetColumnType ColumnType { get; set; }
-    //public CellFormat CellFormat { get; set; } = new(); //to be removed
-    public SheetCell[] Cells { get; private set; } = new [] 
+    public SheetCellTemplate[] CellTemplates { get; private set; } = new [] 
     { 
-        new SheetCell(SheetRowType.Group),
-        new SheetCell(SheetRowType.Part),
-        new SheetCell(SheetRowType.Post),
+        new SheetCellTemplate(SheetRowType.Group),
+        new SheetCellTemplate(SheetRowType.Part),
+        new SheetCellTemplate(SheetRowType.Post),
     };
 
 }

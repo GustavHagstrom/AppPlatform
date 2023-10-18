@@ -32,7 +32,7 @@
 .activator{
     transition: background-color 75ms linear;
 }
-    .activator:hover {
-        background-color: var(--mud-palette-action-default-hover);
-        /*background-color: var(--mud-palette-primary-hover);*/
-    }
+.container-enabled .activator:hover {
+    background-color: var(--mud-palette-action-default-hover);
+    /*background-color: var(--mud-palette-primary-hover);*/
+}

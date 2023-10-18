@@ -3,9 +3,9 @@
 @using SharedLibrary.Enums.ViewTemplate;
 
 
-<DropDown Disabled="Column is null" >
+<DropDown Disabled="Column is null" CloseOnContentClick="true" >
     <ActivatorContent>
-        <div style="display: flex; height: 27px; align-items: center; padding: 4px;">
+        <div class="border border-solid" style="display: flex; height: 27px; align-items: center; padding: 4px;">
             <span class="d-flex flex-grow-1">
                 @if (Column is not null)
                 {
@@ -14,24 +14,20 @@
             </span>
             <MudIcon Icon="@Icons.Material.Sharp.KeyboardArrowDown" />
         </div>
-       @*  <span class="d-flex flex-grow-1">
-            @if (Column is not null)
-            {
-                @ColumnTypeNamesMap[Column.ColumnType]
-            }
-        </span>
-        <MudIcon Icon="@Icons.Material.Sharp.KeyboardArrowDown" /> *@
     </ActivatorContent>
     <DropDownContent>
+        
         @if (Column is not null)
         {
-            <DropDownItem CloseOnClick="true" OnClick="() => SetColumnType(SheetColumnType.Description)">@ColumnTypeNamesMap[SheetColumnType.Description]</DropDownItem>
-            <DropDownItem CloseOnClick="true" OnClick="() => SetColumnType(SheetColumnType.Quantity)">@ColumnTypeNamesMap[SheetColumnType.Quantity]</DropDownItem>
-            <DropDownItem CloseOnClick="true" OnClick="() => SetColumnType(SheetColumnType.Unit)">@ColumnTypeNamesMap[SheetColumnType.Unit]</DropDownItem>
-            <DropDownItem CloseOnClick="true" OnClick="() => SetColumnType(SheetColumnType.UnitCost)">@ColumnTypeNamesMap[SheetColumnType.UnitCost]</DropDownItem>
-            <DropDownItem CloseOnClick="true" OnClick="() => SetColumnType(SheetColumnType.TotalCost)">@ColumnTypeNamesMap[SheetColumnType.TotalCost]</DropDownItem>
-            <DropDownItem CloseOnClick="true" OnClick="() => SetColumnType(SheetColumnType.UnitAskingPrice)">@ColumnTypeNamesMap[SheetColumnType.UnitAskingPrice]</DropDownItem>
-            <DropDownItem CloseOnClick="true" OnClick="() => SetColumnType(SheetColumnType.TotalAskingPrice)">@ColumnTypeNamesMap[SheetColumnType.TotalAskingPrice]</DropDownItem>
+            <div class="border border-solid">
+                <DropDownItem OnClick="() => SetColumnType(SheetColumnType.Description)">@ColumnTypeNamesMap[SheetColumnType.Description]</DropDownItem>
+                <DropDownItem OnClick="() => SetColumnType(SheetColumnType.Quantity)">@ColumnTypeNamesMap[SheetColumnType.Quantity]</DropDownItem>
+                <DropDownItem OnClick="() => SetColumnType(SheetColumnType.Unit)">@ColumnTypeNamesMap[SheetColumnType.Unit]</DropDownItem>
+                <DropDownItem OnClick="() => SetColumnType(SheetColumnType.UnitCost)">@ColumnTypeNamesMap[SheetColumnType.UnitCost]</DropDownItem>
+                <DropDownItem OnClick="() => SetColumnType(SheetColumnType.TotalCost)">@ColumnTypeNamesMap[SheetColumnType.TotalCost]</DropDownItem>
+                <DropDownItem OnClick="() => SetColumnType(SheetColumnType.UnitAskingPrice)">@ColumnTypeNamesMap[SheetColumnType.UnitAskingPrice]</DropDownItem>
+                <DropDownItem OnClick="() => SetColumnType(SheetColumnType.TotalAskingPrice)">@ColumnTypeNamesMap[SheetColumnType.TotalAskingPrice]</DropDownItem>
+            </div>
         }
         
     </DropDownContent>
@@ -43,12 +39,7 @@
     [Parameter, EditorRequired] public required SheetColumn? Column { get; set; }
     [Parameter] public string Height { get; set; } = "30px";
 
-    // bool IsActive = false;
 
-    // string DropDownClass => $"dropdown {DropDownDisabledClass}";
-    // string DropDownDisabledClass => Column is null ? "dropdown-disabled" : "dropdown-enabled";
-
-    // string DropDownContentClass => IsActive ? $"dropdown-content-active" : $"dropdown-content-inactive";
 
     Dictionary<SheetColumnType, string> ColumnTypeNamesMap = new();
 

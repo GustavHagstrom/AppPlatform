@@ -2,9 +2,9 @@
 
 namespace Client.Shared.EstimationViewTemplate.Models;
 
-public class SheetCell
+public class SheetCellTemplate
 {
-    public SheetCell(SheetRowType rowType)
+    public SheetCellTemplate(SheetRowType rowType)
     {
         RowType = rowType;
     }
