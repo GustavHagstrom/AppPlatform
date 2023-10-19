@@ -11,7 +11,6 @@ public class CellFormat
     public bool Italic { get; set; } = false;
     public bool Underline { get; set; } = false;
     public Align Align { get; set; } = Align.Left;
-    //public Justify Justify { get; set; } = Justify.Bottom;  //Remove
     public TextFormatType FormatType { get; set; } = TextFormatType.Text;
     public bool ThoasandsSeparator { get; set; } = true;
     public int DecimalCount { get; set; } = 0;

@@ -3,14 +3,14 @@
 
 <SectionToolbar IsActive="IsActive">
 
-    <div class="d-flex mx-auto" style="padding-bottom: 2px; height: 100%;">
+    <div class="d-flex mx-auto" style="height: 100%;">
 
         <MudHidden Breakpoint="Breakpoint.Xs">
             <CellFormatEditor Format="SelectedCell?.CellFormat" StateChangeRequest="StateChangeRequest" />
         </MudHidden>
 
         <MudHidden Breakpoint="Breakpoint.SmAndUp">
-            <Client.Shared.Components.DropDown.DropDown CloseOnContentClick="false" ActivatorStyle="height: 100%;" DropDownContentStyle="width: auto;">
+            <Client.Shared.Components.DropDown.DropDown CloseOnContentClick="false" ContainerStyle="height: 100%;" DropDownContentStyle="width: auto;">
                 <ActivatorContent>
                     <div style="height: 100%; display: flex; flex-direction: column; align-items: center;">
                         <MudIcon Icon="@Icons.Material.Sharp.TextFormat" Size="Size.Large" />

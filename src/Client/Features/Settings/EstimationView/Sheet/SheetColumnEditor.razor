@@ -24,26 +24,28 @@
 
 </style>
 
-<div class="d-flex" style="flex-direction: column; height: 100%;">
-    <div class="d-flex gap-1" style="height: calc(100% - 20px);">
+<div class="d-flex gap-1" style="height: 100%;">
+    
 
-        <div class="d-flex gap-1 flex-column justify-end" style="height: 100%;">
-            <SheetColumnTypeDropdown Column="Column" Height="calc(50% - 2px)" />
-            <SectionToolbarInput Style="height: valv(50% - 2px); width: 115px;" Value="@Column?.Width" OnChange="WidthInputChanged" Disabled="@(Column is null)" 
-                                 Icon="@Icons.Material.Sharp.Height" IconStyle="transform: rotate(90deg)"/>
+    <div class="d-flex flex-column" style="height: 100%; justify-content: space-between">
+        <div style="height: calc(50% - 2px)">
+            <SheetColumnTypeDropdown Column="Column" />
         </div>
-
-        <div class="d-flex gap-1 flex-column justify-end" style="height: 100%;">
-            <MudButton Class="pa-1" Variant="Variant.Filled" Style="min-width: 0px; height: 50%;" Color="Color.Error" Disabled="Column is null" OnClick="DeleteColumn">
-                <MudIcon Icon="@Icons.Material.Sharp.Delete" Size="Size.Small" />
-            </MudButton>
-            <MudButton Class="pa-1" Variant="Variant.Filled" Style="min-width: 0px;  height: 50%;" Color="Color.Success" OnClick="AddColumn">
-                <MudIcon Icon="@Icons.Material.Sharp.Add" Size="Size.Small" />
-            </MudButton>
+        <div style="height: calc(50% - 2px)">
+            <SectionToolbarInput Style="height: 100%; width: 115px;" Value="@Column?.Width" OnChange="WidthInputChanged" Disabled="@(Column is null)" Icon="@Icons.Material.Sharp.Height" IconStyle="transform: rotate(90deg)" />
         </div>
-
     </div>
-   @*  <div class="mx-auto" style="display: flex; align-items: flex-end; font-size: 11px; height: 20px;">@Localizer["Kolumn"]</div> *@
+
+    <div class="d-flex flex-column gap-1" style="height: 100%;">
+        <MudButton Class="pa-1 d-flex flex-grow-1" Variant="Variant.Filled" Style="min-width: 0px;" Color="Color.Error" Disabled="Column is null" OnClick="DeleteColumn">
+            <MudIcon Icon="@Icons.Material.Sharp.Delete" Size="Size.Small" />
+        </MudButton>
+        <MudButton Class="pa-1 d-flex flex-grow-1" Variant="Variant.Filled" Style="min-width: 0px;" Color="Color.Success" OnClick="AddColumn">
+            <MudIcon Icon="@Icons.Material.Sharp.Add" Size="Size.Small" />
+        </MudButton>
+    </div>
+
+    
 </div>
 
 @code {

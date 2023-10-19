@@ -3,16 +3,16 @@
 @using SharedLibrary.Enums.ViewTemplate;
 
 
-<DropDown Disabled="Column is null" CloseOnContentClick="true" >
+<DropDown ContainerStyle="height: 100%; width: 100%;" Disabled="Column is null" CloseOnContentClick="true">
     <ActivatorContent>
-        <div class="border border-solid" style="display: flex; height: 27px; align-items: center; padding: 4px;">
-            <span class="d-flex flex-grow-1">
+        <div class="border border-solid" style="display: flex; height: 100%; align-items: center;">
+            <span class="d-flex flex-grow-1 pa-1">
                 @if (Column is not null)
                 {
                     @ColumnTypeNamesMap[Column.ColumnType]
                 }
             </span>
-            <MudIcon Icon="@Icons.Material.Sharp.KeyboardArrowDown" />
+            <MudIcon Icon="@Icons.Material.Sharp.KeyboardArrowDown" Style="width: 20px; height: 20px;"/>
         </div>
     </ActivatorContent>
     <DropDownContent>
@@ -37,7 +37,6 @@
     [Inject] public required IStringLocalizer<SheetColumnTypeDropdown> Localizer { get; set; }
 
     [Parameter, EditorRequired] public required SheetColumn? Column { get; set; }
-    [Parameter] public string Height { get; set; } = "30px";
 
 
 
