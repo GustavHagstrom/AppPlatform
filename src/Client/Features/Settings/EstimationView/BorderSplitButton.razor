@@ -19,7 +19,6 @@
 
 @code {
     [Parameter] public CellFormat? CellFormat { get; set; }
-    // [Parameter, EditorRequired] public EventCallback StateChangeRequest { get; set; }
 
     bool IsActive = false;
     bool IsBorderClear => CellFormat is not null && !CellFormat.BorderBottom && !CellFormat.BorderTop && !CellFormat.BorderLeft && !CellFormat.BorderRight;

@@ -4,6 +4,7 @@
     padding: 0px;
     border: 1px;
     border-style: solid;
+    height: 100%;
 }
 
 .dropdown-enabled {

@@ -1,36 +1,36 @@
 ﻿@using Client.Shared.EstimationViewTemplate.Models;
 
-<div class="d-flex" style="flex-direction: column; height: 100%;">
 
-    <div class="d-flex" style="gap: 4px; height: calc(100% - 20px);">
-        <div class="d-flex gap-1 flex-column" style="height: 100%; width: 127px;">
+
+<div class="d-flex" style="gap: 4px; height: 100%;">
+    <div class="d-flex flex-column" style="height: 100%; width: 127px; justify-content: space-between;">
+        <div style="height: calc(50% - 2px)">
             <SectionToolbarInput Class="d-flex flex-grow-1" Style="height: 100%;" Value="Format?.FontFamily" OnChange="FontFamilyInputChanged" Disabled="@(Format is null)" />
-            <div class="d-flex gap-1" style="height: calc(50% - 2px); width: 100%">
-
-                <SectionToolbarInput Style="height: 100%; width: 65px;" Value="Format?.FontSize" OnChange="FontSizeInputChanged" Disabled="@(Format is null)" Icon="@Icons.Material.Sharp.FormatSize" />
-                <BorderSplitButton CellFormat="Format"/>
-            </div>
         </div>
-
-
-
-        <div class="d-flex gap-1" style="flex-direction: column; height: 100%;">
-            <div class="d-flex flex-grow-1 gap-1" style="height: calc(50% - 2px);">
-                <ToggleIconButton Icon="@Icons.Material.Sharp.FormatAlignLeft" Selected="Format?.Align == SharedLibrary.Enums.ViewTemplate.Align.Left" Disabled="Format is null"
-                                      OnClick="() => SetAlignment(SharedLibrary.Enums.ViewTemplate.Align.Left)" />
-                <ToggleIconButton Icon="@Icons.Material.Sharp.FormatAlignCenter" Selected="Format?.Align == SharedLibrary.Enums.ViewTemplate.Align.Center" Disabled="Format is null"
-                                      OnClick="() => SetAlignment(SharedLibrary.Enums.ViewTemplate.Align.Center)" />
-                <ToggleIconButton Icon="@Icons.Material.Sharp.FormatAlignRight" Selected="Format?.Align == SharedLibrary.Enums.ViewTemplate.Align.Right" Disabled="Format is null"
-                                      OnClick="() => SetAlignment(SharedLibrary.Enums.ViewTemplate.Align.Right)" />
-            </div>
-            <div class="d-flex flex-grow-1 gap-1" style="height: calc(50% - 2px);">
-                <ToggleIconButton Icon="@Icons.Material.Sharp.FormatBold" Selected="Format?.Bold == true" Disabled="Format is null" OnClick="ToggleBold" />
-                <ToggleIconButton Icon="@Icons.Material.Sharp.FormatItalic" Selected="Format?.Italic == true" Disabled="Format is null" OnClick="ToggleItalic" />
-                <ToggleIconButton Icon="@Icons.Material.Sharp.FormatUnderlined" Selected="Format?.Underline == true" Disabled="Format is null" OnClick="ToggleUnderline" />
-            </div>
+        
+        <div class="d-flex gap-1" style="height: calc(50% - 2px); width: 100%">
+            <SectionToolbarInput Style="height: 100%; width: 65px;" Value="Format?.FontSize" OnChange="FontSizeInputChanged" Disabled="@(Format is null)" Icon="@Icons.Material.Sharp.FormatSize" />
+            <BorderSplitButton CellFormat="Format"/>
         </div>
     </div>
-    @* <div class="mx-auto" style="display: flex; align-items: flex-end; font-size: 11px; height: 20px;">@Localizer["Cell"]</div> *@
+
+
+
+    <div class="d-flex gap-1" style="flex-direction: column; height: 100%;">
+        <div class="d-flex flex-grow-1 gap-1" style="height: calc(50% - 2px);">
+            <ToggleIconButton Icon="@Icons.Material.Sharp.FormatAlignLeft" Selected="Format?.Align == SharedLibrary.Enums.ViewTemplate.Align.Left" Disabled="Format is null"
+                                    OnClick="() => SetAlignment(SharedLibrary.Enums.ViewTemplate.Align.Left)" />
+            <ToggleIconButton Icon="@Icons.Material.Sharp.FormatAlignCenter" Selected="Format?.Align == SharedLibrary.Enums.ViewTemplate.Align.Center" Disabled="Format is null"
+                                    OnClick="() => SetAlignment(SharedLibrary.Enums.ViewTemplate.Align.Center)" />
+            <ToggleIconButton Icon="@Icons.Material.Sharp.FormatAlignRight" Selected="Format?.Align == SharedLibrary.Enums.ViewTemplate.Align.Right" Disabled="Format is null"
+                                    OnClick="() => SetAlignment(SharedLibrary.Enums.ViewTemplate.Align.Right)" />
+        </div>
+        <div class="d-flex flex-grow-1 gap-1" style="height: calc(50% - 2px);">
+            <ToggleIconButton Icon="@Icons.Material.Sharp.FormatBold" Selected="Format?.Bold == true" Disabled="Format is null" OnClick="ToggleBold" />
+            <ToggleIconButton Icon="@Icons.Material.Sharp.FormatItalic" Selected="Format?.Italic == true" Disabled="Format is null" OnClick="ToggleItalic" />
+            <ToggleIconButton Icon="@Icons.Material.Sharp.FormatUnderlined" Selected="Format?.Underline == true" Disabled="Format is null" OnClick="ToggleUnderline" />
+        </div>
+    </div>
 </div>
 
 @code {
