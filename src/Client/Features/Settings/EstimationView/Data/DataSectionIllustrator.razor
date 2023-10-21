@@ -1,5 +1,11 @@
-﻿<MudTextField T="string" Variant="Variant.Outlined" Margin="Margin.Dense" Style="width: 100px"/>
+﻿@using Client.Shared.EstimationViewTemplate.Models;
 
+<DataToolbar IsActive="IsSelected" SelectedCell="null" Section="Section" StateChangeRequest="StateHasChanged" />
+<div style="min-height: 30px;">
+
+</div>
 @code {
-
+    [Inject] public required IStringLocalizer<DataSectionIllustrator> Localizer { get; set; }
+    [Parameter, EditorRequired] public required DataSection Section { get; set; }
+    [Parameter, EditorRequired] public bool IsSelected { get; set; }
 }

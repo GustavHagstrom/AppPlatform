@@ -1,12 +1,9 @@
 ﻿@using Client.Shared.EstimationViewTemplate.Models;
 
-
 <SectionToolbar IsActive="IsActive">
-
     <div class="d-flex mx-auto" style="height: 100%;">
-
         <MudHidden Breakpoint="Breakpoint.Xs">
-            <CellFormatEditor Format="SelectedCell?.CellFormat" StateChangeRequest="StateChangeRequest" />
+            <CellFormatEditor Format="SelectedCell?.Format" StateChangeRequest="StateChangeRequest" />
         </MudHidden>
 
         <MudHidden Breakpoint="Breakpoint.SmAndUp">
@@ -17,39 +14,38 @@
                         <MudText Typo="Typo.caption">
                             @Localizer["Format"]
                         </MudText>
-                        <MudSpacer/>
+                        <MudSpacer />
                         <MudIcon Icon="@Icons.Material.Sharp.KeyboardArrowDown" Size="Size.Small" />
                     </div>
-                    
+
 
                 </ActivatorContent>
                 <DropDownContent>
                     <div class="border border-solid pa-1" style="height: 65px;">
-                        <CellFormatEditor Format="SelectedCell?.CellFormat" StateChangeRequest="StateChangeRequest" />
+                        <CellFormatEditor Format="SelectedCell?.Format" StateChangeRequest="StateChangeRequest" />
                     </div>
                 </DropDownContent>
             </Client.Shared.Components.DropDown.DropDown>
         </MudHidden>
 
-        
-        
         <MudDivider Light="false" Vertical="true" Class="mx-2" />
 
-        <SheetColumnEditor Column="SelectedColumn" ColumnDeleted="ColumnDeleted" Section="Section" StateChangeRequest="StateChangeRequest" />
+        <MudDivider Light="false" Vertical="true" Class="mx-2" />
+
+        <MudDivider Light="false" Vertical="true" Class="mx-2" />
 
     </div>
     
 </SectionToolbar>
 
 @code {
-    [Inject] public required IStringLocalizer<SheetToolbar> Localizer { get; set; }
-    [Inject] public required IDialogService DialogService { get; set; }
-
-    [Parameter, EditorRequired] public bool IsActive { get; set; }
-    [Parameter, EditorRequired] public SheetColumn? SelectedColumn { get; set; }
-    [Parameter, EditorRequired] public SheetCellTemplate? SelectedCell { get; set; }
-    [Parameter, EditorRequired] public required SheetSection Section { get; set; }
-    [Parameter, EditorRequired] public EventCallback StateChangeRequest { get; set; }
-    [Parameter, EditorRequired] public EventCallback ColumnDeleted { get; set; }
+        [Inject] public required IStringLocalizer<DataToolbar> Localizer { get; set; }
+    
+        [Parameter, EditorRequired] public bool IsActive { get; set; }
+       
+        [Parameter, EditorRequired] public DataCell? SelectedCell { get; set; }
+        [Parameter, EditorRequired] public required DataSection Section { get; set; }
+        [Parameter, EditorRequired] public EventCallback StateChangeRequest { get; set; }
+        // [Parameter, EditorRequired] public EventCallback ColumnDeleted { get; set; }
 
 }

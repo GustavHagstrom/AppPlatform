@@ -2,7 +2,7 @@
 
 <Client.Shared.Components.DropDown.DropDown CloseOnContentClick="false" ContainerStyle="@DropDownContainerStyle" Disabled="CellFormat is null">
     <ActivatorContent>
-        <div class="d-flex border border-solid">
+        <div class="d-flex border border-solid" style="height: 100%">
             <MudIcon Icon="@Icons.Material.Sharp.BorderStyle" />
             <MudIcon Icon="@Icons.Material.Sharp.KeyboardArrowDown" />
         </div>
@@ -24,22 +24,13 @@
 
     string DropDownContainerStyle => $"height: {Height}; width: {Width};";
 
-    //bool IsActive = false;
     bool IsBorderClear => CellFormat is not null && !CellFormat.BorderBottom && !CellFormat.BorderTop && !CellFormat.BorderLeft && !CellFormat.BorderRight;
     bool IsBorderOuter => CellFormat is not null && CellFormat.BorderBottom && CellFormat.BorderTop && CellFormat.BorderLeft && CellFormat.BorderRight;
 
     string DropDownClass => $"dropdown {DropDownDisabledClass}";
     string DropDownDisabledClass => CellFormat is null ? "dropdown-disabled" : "dropdown-enabled";
 
-    //string DropDownContentClass => IsActive ? $"dropdown-content-active" : $"dropdown-content-inactive";
 
-    //void ToggleActive()
-    //{
-    //    if(CellFormat is not null)
-    //    {
-    //        IsActive = !IsActive;
-    //    }
-    //}
     void ToggleBorderBottom()
     {
         if(CellFormat is not null)

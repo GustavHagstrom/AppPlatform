@@ -38,7 +38,7 @@
         <div class="@RowClass(section)" @onclick="() => Select(section)">
             @if (section is DataSection dataSection)
             {
-                <DataSectionIllustrator />
+                <DataSectionIllustrator Section="dataSection" IsSelected="dataSection == SelectedSection" />
             }
             @if (section is SheetSection sheetSection)
             {
