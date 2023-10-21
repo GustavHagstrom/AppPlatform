@@ -13,9 +13,9 @@
     
         @if (IsRefreshing == false && ItemTree is not null)
         {
-            <table class="striped">
+            <table class="striped" style="width: 100%;">
                 <tbody>
-                    <Virtualize Items="ItemTree!.SearchEstimations(Filter)!.OrderBy(x => x.Name).ToHashSet()">
+                    <Virtualize Items="ItemTree.SearchEstimations(Filter)!.OrderBy(x => x.Name).ToHashSet()">
                         <tr class="d-flex">
                             <td class="d-flex flex-grow-1">
                                 <MudCheckBox @bind-Checked="context.IsSelected" />
