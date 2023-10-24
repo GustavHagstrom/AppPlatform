@@ -1,0 +1,44 @@
+﻿@using Client.Shared.Components.DropDown
+@using Client.Shared.EstimationViewTemplate.Models;
+@using SharedLibrary.Enums.ViewTemplate;
+
+<Client.Shared.Components.DropDown.DropDown>
+    <ActivatorContent>
+        <div class="border border-solid" style="display: flex; height: 100%; align-items: center; width:100px;">
+            <span class="d-flex flex-grow-1 pa-1">
+                @if (Format is not null)
+                {
+                    @TypeNamesMap[Format.FormatType]
+                }
+            </span>
+            <MudIcon Icon="@Icons.Material.Sharp.KeyboardArrowDown" Style="width: 20px; height: 20px;"/>
+        </div>
+    </ActivatorContent>
+    <DropDownContent>
+        <DropDownItem OnClick="() => SetFormatType(TextFormatType.Text)">@TypeNamesMap[TextFormatType.Text]</DropDownItem>
+        <DropDownItem OnClick="() => SetFormatType(TextFormatType.Number)">@TypeNamesMap[TextFormatType.Number]</DropDownItem>
+        <DropDownItem OnClick="() => SetFormatType(TextFormatType.DateTime)">@TypeNamesMap[TextFormatType.DateTime]</DropDownItem>
+    </DropDownContent>
+</Client.Shared.Components.DropDown.DropDown>
+
+@code {
+    [Inject] public required IStringLocalizer<FormatTypeComponent> Localizer { get; set; }
+
+    [Parameter, EditorRequired] public CellFormat? Format { get; set; }
+
+    Dictionary<TextFormatType, string> TypeNamesMap = new();
+
+    protected override void OnInitialized()
+    {
+        TypeNamesMap.Add(TextFormatType.Text, Localizer["Text"]);
+        TypeNamesMap.Add(TextFormatType.Number, Localizer["Tal"]);
+        TypeNamesMap.Add(TextFormatType.DateTime, Localizer["Datum"]);
+    }
+    void SetFormatType(TextFormatType type)
+    {
+        if (Format is not null)
+        {
+            Format.FormatType = type;
+        }
+    }
+}
