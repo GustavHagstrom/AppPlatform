@@ -1,0 +1,7 @@
+﻿@using Client.Shared.EstimationViewTemplate.Models;
+<h3>DateTimeComponent</h3>
+
+@code {
+    [Parameter, EditorRequired] public CellFormat? Format { get; set; }
+    [Parameter] public bool IsReadOnly { get; set; } = false;
+}

@@ -1,0 +1,9 @@
+﻿@using Client.Shared.EstimationViewTemplate.Models;
+
+<SectionToolbarInput Style="width: 20px;" Disabled="IsReadOnly" @bind-Value="Format!.DecimalCount"></SectionToolbarInput>
+
+@code {
+    [Inject] public required IStringLocalizer<NumberFormatComponent> Localizer { get; set; }
+    [Parameter, EditorRequired] public CellFormat? Format { get; set; }
+    [Parameter] public bool IsReadOnly { get; set; } = false;
+}

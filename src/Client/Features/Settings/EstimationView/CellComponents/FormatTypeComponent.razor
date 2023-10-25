@@ -2,29 +2,52 @@
 @using Client.Shared.EstimationViewTemplate.Models;
 @using SharedLibrary.Enums.ViewTemplate;
 
-<Client.Shared.Components.DropDown.DropDown>
-    <ActivatorContent>
-        <div class="border border-solid" style="display: flex; height: 100%; align-items: center; width:100px;">
-            <span class="d-flex flex-grow-1 pa-1">
-                @if (Format is not null)
-                {
-                    @TypeNamesMap[Format.FormatType]
-                }
-            </span>
-            <MudIcon Icon="@Icons.Material.Sharp.KeyboardArrowDown" Style="width: 20px; height: 20px;"/>
-        </div>
-    </ActivatorContent>
-    <DropDownContent>
-        <DropDownItem OnClick="() => SetFormatType(TextFormatType.Text)">@TypeNamesMap[TextFormatType.Text]</DropDownItem>
-        <DropDownItem OnClick="() => SetFormatType(TextFormatType.Number)">@TypeNamesMap[TextFormatType.Number]</DropDownItem>
-        <DropDownItem OnClick="() => SetFormatType(TextFormatType.DateTime)">@TypeNamesMap[TextFormatType.DateTime]</DropDownItem>
-    </DropDownContent>
-</Client.Shared.Components.DropDown.DropDown>
+
+@* Div container to split in half vertically, top contains drop down botton a div container *@
+<div class="d-flex gap-1" style="flex-direction: column; height: 100%; width: 150px;">
+    <div class="d-flex flex-grow-1 gap-1" style="height: calc(50% - 2px);">
+        <Client.Shared.Components.DropDown.DropDown Disabled="IsReadOnly" ContainerStyle="width: 100%;">
+            <ActivatorContent>
+                <div class="border border-solid" style="display: flex; height: 100%; align-items: center; width: 100%;">
+                    <span class="d-flex flex-grow-1 pa-1">
+                        @if (Format is not null)
+                        {
+                            @TypeNamesMap[Format.FormatType]
+                        }
+                    </span>
+                    <MudIcon Icon="@Icons.Material.Sharp.KeyboardArrowDown" Style="width: 20px; height: 20px;" />
+                </div>
+            </ActivatorContent>
+            <DropDownContent>
+                <DropDownItem OnClick="() => SetFormatType(TextFormatType.Text)">@TypeNamesMap[TextFormatType.Text]</DropDownItem>
+                <DropDownItem OnClick="() => SetFormatType(TextFormatType.Number)">@TypeNamesMap[TextFormatType.Number]</DropDownItem>
+                <DropDownItem OnClick="() => SetFormatType(TextFormatType.DateTime)">@TypeNamesMap[TextFormatType.DateTime]</DropDownItem>
+            </DropDownContent>
+        </Client.Shared.Components.DropDown.DropDown>
+    </div>
+    <div class="d-flex flex-grow-1 gap-1" style="height: calc(50% - 2px);">
+        @if(Format?.FormatType == TextFormatType.Number)
+        {
+            <NumberFormatComponent Format="Format" IsReadOnly="IsReadOnly" />
+        }
+        else if(Format?.FormatType == TextFormatType.DateTime)
+        {
+            <DateTimeFormatComponent Format="Format" IsReadOnly="IsReadOnly" />
+        }
+        else
+        {
+            <TextFormatComponent Format="Format" IsReadOnly="IsReadOnly" />
+        }
+    </div>
+</div>
+
+
 
 @code {
     [Inject] public required IStringLocalizer<FormatTypeComponent> Localizer { get; set; }
 
     [Parameter, EditorRequired] public CellFormat? Format { get; set; }
+    [Parameter] public bool IsReadOnly { get; set; } = false;
 
     Dictionary<TextFormatType, string> TypeNamesMap = new();
 
