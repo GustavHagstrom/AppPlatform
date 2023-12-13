@@ -5,10 +5,7 @@ namespace Server.Enteties;
 
 public class User : IdentityUser
 {
-    [StringLength(50)]
-    public required string OrganizationId { get; set; }
-    public Organization? Organization { get; set; }
+    public IEnumerable<UserOrganization>? UserOrganizations { get; set; }
     public bool IsDarkMode { get; set; } = false;
-    public License? License { get; set; }
     public IEnumerable<UserViewTemplate>? UserViewTemplates { get; set; }
 }

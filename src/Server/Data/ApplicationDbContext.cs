@@ -28,5 +28,7 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
             .HasForeignKey(uvt => uvt.UserId)
             .OnDelete(DeleteBehavior.NoAction);
 
+        modelBuilder.Entity<UserOrganization>()
+            .HasKey(uo => new { uo.UserId, uo.OrganizationId });
     }
 }

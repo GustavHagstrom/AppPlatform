@@ -28,20 +28,20 @@ public class EstimationViewTemplateService : IEstimationViewTemplateService
             .Include(x => x.HeaderOrFooters)
             .Include(x => x.DataSections).ThenInclude(x => x.Columns)
             .Include(x => x.DataSections).ThenInclude(x => x.Cells).ThenInclude(x => x.Format)
-            .FirstOrDefaultAsync(x => x.Id == dto.Id && x.OrganizationId == organizationId);
+            .FirstOrDefaultAsync(x => x.Id == dto.Id && x.OrganizationId == Guid.Parse(organizationId));
 
         if (existing is null)
         {
             _logger.LogInformation("No existing entity found. Inserting a new");
             var entity = dto.Adapt<EstimationViewTemplate>();
-            entity.OrganizationId = organizationId;
+            entity.OrganizationId = Guid.Parse(organizationId);
             await _dbContext.EstimationViewTemplates.AddAsync(entity);
         }
         else
         {
             _logger.LogInformation("Existing entity found. Updating existing");
             var updateSrc = dto.Adapt<EstimationViewTemplate>();
-            updateSrc.OrganizationId = organizationId;
+            updateSrc.OrganizationId = Guid.Parse(organizationId);
             _estimationViewTemplateUpdater.Update(existing, updateSrc);
             _dbContext.Update(existing);
         }
@@ -51,7 +51,7 @@ public class EstimationViewTemplateService : IEstimationViewTemplateService
     public async Task<IEnumerable<EstimationViewTemplateDto>?> GetAllAsShallowListAsync(string organizationId)
     {
         var entities = await _dbContext.EstimationViewTemplates
-            .Where(x => x.OrganizationId == organizationId)
+            .Where(x => x.OrganizationId == Guid.Parse(organizationId))
             .ToListAsync();
         var dtos = entities.Adapt<List<EstimationViewTemplateDto>>();
         return dtos;
@@ -64,7 +64,7 @@ public class EstimationViewTemplateService : IEstimationViewTemplateService
             .Include(x => x.HeaderOrFooters)
             .Include(x => x.DataSections).ThenInclude(x => x.Columns)
             .Include(x => x.DataSections).ThenInclude(x => x.Cells).ThenInclude(x => x.Format)
-            .Where(x => x.OrganizationId == organizationId)
+            .Where(x => x.OrganizationId == Guid.Parse(organizationId))
             .ToListAsync();
         var dtos = entities.Adapt<List<EstimationViewTemplateDto>>();
         return dtos;
@@ -77,14 +77,14 @@ public class EstimationViewTemplateService : IEstimationViewTemplateService
             .Include(x => x.HeaderOrFooters)
             .Include(x => x.DataSections).ThenInclude(x => x.Columns)
             .Include(x => x.DataSections).ThenInclude(x => x.Cells).ThenInclude(x => x.Format)
-            .FirstOrDefaultAsync(x => x.Id == id && x.OrganizationId == organizationId);
+            .FirstOrDefaultAsync(x => x.Id == id && x.OrganizationId == Guid.Parse(organizationId));
 
         var dto = entity?.Adapt<EstimationViewTemplateDto>();
         return dto;
     }
     public async Task DeleteAsync(Guid id, string organizationId)
     {
-        var entity = await _dbContext.EstimationViewTemplates.FirstOrDefaultAsync(x => x.Id == id && x.OrganizationId == organizationId);
+        var entity = await _dbContext.EstimationViewTemplates.FirstOrDefaultAsync(x => x.Id == id && x.OrganizationId == Guid.Parse(organizationId));
         if (entity is not null)
         {
             _dbContext.EstimationViewTemplates.Remove(entity);
