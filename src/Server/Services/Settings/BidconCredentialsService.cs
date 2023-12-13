@@ -17,14 +17,14 @@ public class BidconCredentialsService : IBidconCredentialsService
 
     public async Task<BC_DatabaseCredentialsDto?> GetAsync(string organizationId)
     {
-        var result = await _context.BidconAccessCredentials.FirstOrDefaultAsync(x => x.OrganizationId == organizationId);
+        var result = await _context.BidconAccessCredentials.FirstOrDefaultAsync(x => x.OrganizationId == Guid.Parse(organizationId));
         return result?.Adapt<BC_DatabaseCredentialsDto>();
     }
 
     public async Task UpsertAsync(BC_DatabaseCredentialsDto credentialsDto, string organizationId)
     {
         var credentials = credentialsDto.Adapt<BidconAccessCredentials>();
-        credentials.OrganizationId = organizationId;
+        credentials.OrganizationId = Guid.Parse(organizationId);
         var existingCredentials = await _context.BidconAccessCredentials.FindAsync(organizationId);
 
         if (existingCredentials is null)

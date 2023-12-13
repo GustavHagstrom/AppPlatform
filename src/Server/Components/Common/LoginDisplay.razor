@@ -2,34 +2,11 @@
 @using Microsoft.AspNetCore.Identity
 @using Server.Data
 @implements IDisposable
-@rendermode InteractiveServer
 
 @inject IJSRuntime JSRuntime
 @inject NavigationManager NavigationManager
 @inject SignInManager<User> SignInManager
 
-@* <AuthorizeView>
-    <Authorized>
-        @context.User.FindFirst("name")?.Value
-        <MudButton Class="mr-n2" Style="height: 100%" OnClick="SignOutAsync">
-            <MudText Typo="Typo.subtitle2">Log out</MudText>
-        </MudButton>
-
-        
-    </Authorized>
-    <NotAuthorized>
-        <MudButton Class="mr-n2" Style="height: 100%" OnClick="SignInAsync">
-            <MudText Typo="Typo.subtitle2">Log in</MudText>
-        </MudButton>
-
-        
-    </NotAuthorized>
-</AuthorizeView>
-
-@code {
-    
-}
- *@
 <AuthorizeView>
     <Authorized>
         
