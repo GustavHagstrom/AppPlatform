@@ -81,15 +81,17 @@
 @code {
     [Inject] public required IStringLocalizer<MainLayout> Localizer { get; set; }
     [Inject] public required StyleService StyleService { get; set; }
-    [Inject] public required IDarkModeService DarkModeService { get; set; }
+    [Inject] public required Server.Services.Settings.IDarkModeService DarkModeService { get; set; }
+    [CascadingParameter] HttpContext? HttpContext { get; set; }
 
     bool IsDarkMode { get; set; } = false;
     MudTheme Theme { get; set; } = CustomThemes.PlatformStandard;
 
     protected override async Task OnInitializedAsync()
     {
-        var isDarkMode = await DarkModeService.GetUserDarkModeSettingAsync();
-        SetDarkMode(isDarkMode);
+        var usr = HttpContext?.User;
+        // var isDarkMode = await DarkModeService.GetUserDarkModeSettingAsync();
+        // SetDarkMode(isDarkMode);
     }
 
     void SetDarkMode(bool isDarkMode)

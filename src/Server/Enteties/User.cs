@@ -10,6 +10,5 @@ public class User : IdentityUser
     public Organization? Organization { get; set; }
     public bool IsDarkMode { get; set; } = false;
     public License? License { get; set; }
-    public Guid? RoleId { get; set; }
     public IEnumerable<UserViewTemplate>? UserViewTemplates { get; set; }
 }
