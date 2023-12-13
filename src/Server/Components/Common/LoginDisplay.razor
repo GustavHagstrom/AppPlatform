@@ -1,7 +1,4 @@
-﻿@using Microsoft.Graph;
-@implements IDisposable
-
-<AuthorizeView>
+﻿<AuthorizeView>
     <Authorized>
         
         <MudButton Class="px-2" Variant="Variant.Text" Color="Color.Inherit" OnClick="() => PopOverIsVisible = !PopOverIsVisible">
@@ -36,21 +33,12 @@
 
 @code{
     [Inject] public required IStringLocalizer<LoginDisplay> Localizer { get; set; }
-    [Inject] public required GraphServiceClient GraphClient { get; set; }
     [Inject] public required AuthenticationStateProvider AuthStateProvider { get; set; }
     [Inject] public required NavigationManager NavManager { get; set; }
 
     public bool PopOverIsVisible { get; set; } = false;
-    public string? PhotoString { get; set; }
-    public void Dispose()
-    {
-        AuthStateProvider.AuthenticationStateChanged -= async (x) => await OnAuthStateChangedAsync(x);
-    }
-    protected override void OnInitialized()
-    {
-        AuthStateProvider.AuthenticationStateChanged += async (x) => await OnAuthStateChangedAsync(x);
+  
 
-    }
     protected override async Task OnInitializedAsync()
     {
         await OnAuthStateChangedAsync(AuthStateProvider.GetAuthenticationStateAsync());
@@ -66,29 +54,11 @@
     public void LogOut()
     {
         PopOverIsVisible = false;
-        NavManager.NavigateToLogout(ClientRoutes.Authentication.Logout);
+        throw new NotImplementedException();
     }
     public void LogIn()
     {
-        NavManager.NavigateToLogout(ClientRoutes.Authentication.Login);
-    }
-    public async Task GetPhotoStringAsync()
-    {
-        var photo = await GraphClient.Me.Photo.GetAsync();
-        if (!photo!.AdditionalData.ContainsKey("error"))
-        {
-            var ms = new MemoryStream();
-            var photoStream = await GraphClient.Me.Photo.Content.GetAsync();
-            photoStream!.CopyTo(ms);
-            var photoBytes = ms.ToArray();
-            var photoBase64 = Convert.ToBase64String(photoBytes);
-            PhotoString = $"data:image/png;base64,{photoBase64}";
-        }
-        else
-        {
-            PhotoString = string.Empty;
-        }
-        StateHasChanged();
+        throw new NotImplementedException();
     }
     public static string GetInitials(string? name)
     {

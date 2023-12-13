@@ -1,5 +1,11 @@
 ﻿@page "/bidcon/import"
-@using Client.Shared.EstimationProcessing.Services;
+@using Server.Components.Import.Components
+@using Server.Components.Import.Components
+@using Server.Services;
+@using Server.Components.Import.Models
+@using Server.Components.Import.Services
+@using Server.Services
+@using SharedLibrary.Constants
 @using SharedLibrary.DTOs.BidconAccess;
 
 
@@ -100,7 +106,7 @@
         if (estimationBatches is not null)
         {
             EstimationContainer.ImportedEstimations = estimationBatches.ToList();
-            Navigation.NavigateTo(ClientRoutes.Report);
+            Navigation.NavigateTo(ApplicationRoutes.Report);
         }
 
 

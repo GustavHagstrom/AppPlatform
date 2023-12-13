@@ -1,6 +1,6 @@
 ﻿using Client.Shared.EstimationProcessing.Models;
 
-namespace Client.Features.Import.Models;
+namespace Server.Components.Import.Models;
 public class SelectableDbFolder
 {
     private bool _isSelected;

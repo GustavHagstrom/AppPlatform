@@ -1,4 +1,5 @@
-﻿<div style="@($"height: {Height}")">
+﻿@using Server.Components.Import.Models
+<div style="@($"height: {Height}")">
     <div>
         <div class="d-flex">
             <input placeholder="Sökfilter" class="pa-2 flex-grow-1" style="outline: none; background-color: var(--mud-palette-background); color: var(--mud-palette-text-primary)" @bind="Filter" @bind:event="oninput" />

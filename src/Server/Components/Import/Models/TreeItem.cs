@@ -1,7 +1,7 @@
 ﻿using Client.Shared.EstimationProcessing.Models;
 using SharedLibrary.DTOs;
 
-namespace Client.Features.Import.Models;
+namespace Server.Components.Import.Models;
 public class TreeItem
 {
     private bool _isSelected;

@@ -1,4 +1,4 @@
-﻿@using Client.Shared.Constants;
+﻿@using SharedLibrary.Constants;
 @inherits LayoutComponentBase
 
 <MudThemeProvider Theme="CustomThemes.PlatformStandard" @bind-IsDarkMode="IsDarkMode" DefaultScrollbar="false" />
@@ -19,17 +19,17 @@
             <Authorized>
                 <MudDivider Light="false" Vertical="true" FlexItem="true" Class="my-2 mr-2" />
                 <MudTooltip Text="@Localizer["Startsida"]" RootClass="align-self-center">
-                    <MudButton Href="@ClientRoutes.Dashboard" Class="py-1 px-3" Variant="Variant.Text" Color="Color.Inherit" Style="@StyleService.CreateNavigationButtonStyle("dashboard")">
+                    <MudButton Href="@ApplicationRoutes.Dashboard" Class="py-1 px-3" Variant="Variant.Text" Color="Color.Inherit" Style="@StyleService.CreateNavigationButtonStyle("dashboard")">
                         <MudIcon Icon="@Icons.Material.Sharp.Dashboard" />
                     </MudButton>
                 </MudTooltip>
                 <MudTooltip Text="@Localizer["Importera från BidCon"]" RootClass="align-self-center">
-                    <MudButton Href="@ClientRoutes.Import" Class="py-1 px-3" Variant="Variant.Text" Color="Color.Inherit" Style="@StyleService.CreateNavigationButtonStyle("bidcon")">
+                    <MudButton Href="@ApplicationRoutes.Import" Class="py-1 px-3" Variant="Variant.Text" Color="Color.Inherit" Style="@StyleService.CreateNavigationButtonStyle("bidcon")">
                         <MudIcon Icon="@CustomIcons.BidconIcon" />
                     </MudButton>
                 </MudTooltip>
                 <MudTooltip Text="@Localizer["Inställningar"]" RootClass="align-self-center">
-                    <MudButton Href="@ClientRoutes.Settings" Class="py-1 px-3" Variant="Variant.Text" Color="Color.Inherit" Style="@StyleService.CreateNavigationButtonStyle("settings")">
+                    <MudButton Href="@ApplicationRoutes.Settings" Class="py-1 px-3" Variant="Variant.Text" Color="Color.Inherit" Style="@StyleService.CreateNavigationButtonStyle("settings")">
                         <MudIcon Icon="@Icons.Material.Sharp.Settings" />
                     </MudButton>
                 </MudTooltip>

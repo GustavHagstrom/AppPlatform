@@ -1,6 +1,6 @@
 ﻿using SharedLibrary.DTOs.BidconAccess;
 
-namespace Client.Features.Import.Services;
+namespace Server.Components.Import.Services;
 public interface IBidconBackendAccessService
 {
     Task<BC_EstimationBatchDto?> GetBatchAsync(EstimationRequestBatchModelDto request, CancellationToken cancellationToken = default);

@@ -1,6 +1,4 @@
-﻿@using Microsoft.Graph.Models;
-
-<div class="relative">
+﻿<div class="relative">
     <MudOverlay DarkBackground="true" Visible="IsLoading" Absolute="true">
         <MudProgressCircular Size="Size.Large" Color="Color.Primary" Indeterminate="true" />
     </MudOverlay>
@@ -10,7 +8,7 @@
         {
             @foreach (var user in Users)
             {
-                <MudText Typo="Typo.subtitle2">@($"{user.DisplayName} - {user.Id}")</MudText>
+                <MudText Typo="Typo.subtitle2">@($"{user.UserName} - {user.Id}")</MudText>
             }
         }
     </div>
@@ -18,15 +16,14 @@
 
 @code {
     [Inject] public required IStringLocalizer<LicenseFrameContent> Localizer { get; set; }
-    [Inject] public required GraphServiceClient GraphClient { get; set; }
+
 
     bool IsLoading = true;
-    ICollection<User>? Users;
+    ICollection<User> Users = new List<User>();
 
     protected override async Task OnInitializedAsync()
     {
-        var users = await GraphClient.Users.GetAsync();
-        Users = users?.Value;
+        throw new NotImplementedException();
         IsLoading = false;
         StateHasChanged();
     }

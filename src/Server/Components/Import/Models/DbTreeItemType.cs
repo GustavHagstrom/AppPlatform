@@ -1,4 +1,4 @@
-﻿namespace Client.Features.Import.Models;
+﻿namespace Server.Components.Import.Models;
 public enum DbTreeItemType
 {
     Folder,

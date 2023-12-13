@@ -11,5 +11,4 @@ public class Organization
     public BidconAccessCredentials? BidconCredentials { get; set; }
     public License? License { get; set; }
     public IEnumerable<EstimationViewTemplate>? EstimationViewTemplates { get; set; }
-    public IEnumerable<Role>? Roles { get; set; }
 }
