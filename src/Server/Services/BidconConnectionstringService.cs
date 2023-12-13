@@ -15,7 +15,7 @@ public class BidconConnectionstringService : IConnectionstringService
     {
         ArgumentException.ThrowIfNullOrEmpty(organization);
 
-        var credentials = await _bidconCredentialsService.GetAsync(organization);
+        var credentials = await _bidconCredentialsService.GetAsync();
 
         ArgumentNullException.ThrowIfNull(credentials);
         ArgumentException.ThrowIfNullOrEmpty(credentials.Server);

@@ -1,4 +1,5 @@
-﻿@using Client.Shared.EstimationViewTemplate.Models;
+﻿@using Server.Components.DropDown
+@using Server.EstimationViewTemplate_old.Models;
 
 
 <SectionToolbar IsActive="IsActive">
@@ -10,7 +11,7 @@
         </MudHidden>
 
         <MudHidden Breakpoint="Breakpoint.SmAndUp">
-            <Client.Shared.Components.DropDown.DropDown CloseOnContentClick="false" ContainerStyle="height: 100%;" DropDownContentStyle="width: auto;">
+            <DropDown CloseOnContentClick="false" ContainerStyle="height: 100%;" DropDownContentStyle="width: auto;">
                 <ActivatorContent>
                     <div style="height: 100%; display: flex; flex-direction: column; align-items: center;">
                         <MudIcon Icon="@Icons.Material.Sharp.TextFormat" Size="Size.Large" />
@@ -28,7 +29,7 @@
                         <CellFormatEditor Format="SelectedCell?.CellFormat" StateChangeRequest="StateChangeRequest" />
                     </div>
                 </DropDownContent>
-            </Client.Shared.Components.DropDown.DropDown>
+            </DropDown>
         </MudHidden>
 
         

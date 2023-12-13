@@ -1,6 +1,5 @@
 ﻿
 <div class="d-flex" style="@($"margin-left: {IndentLevel * 48}px")">
-    @*<div style="width: 48px; height: 48px;">*@
         @if(IsNested)
         {
             @if (IsExpanded)
@@ -12,7 +11,6 @@
             <MudIconButton Icon="@Icons.Material.Sharp.KeyboardArrowRight" OnClick="ToggleExpansion" Class="pa-2" />
             }
         }
-   @* </div>*@
     
     <MudCheckBox @bind-Checked="TreeItem!.IsSelected" Class="span-40" />
     @if (TreeItem!.Type == DbTreeItemType.Folder)

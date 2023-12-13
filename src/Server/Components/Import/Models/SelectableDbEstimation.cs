@@ -1,4 +1,4 @@
-﻿using Client.Shared.EstimationProcessing.Models;
+﻿using Server.EstimationProcessing.Models;
 
 namespace Server.Components.Import.Models;
 public class SelectableDbEstimation : EstimationInfo

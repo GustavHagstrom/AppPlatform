@@ -1,4 +1,4 @@
-﻿using Client.Shared.EstimationProcessing.Models;
+﻿using Server.EstimationProcessing.Models;
 using SharedLibrary.DTOs;
 
 namespace Server.Components.Import.Models;

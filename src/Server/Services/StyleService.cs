@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Components;
-using SharedLibraryWasmLibrary.Extensions;
+using Server.Extensions;
 
 namespace Server.Services;
 
