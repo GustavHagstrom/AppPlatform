@@ -1,4 +1,5 @@
-﻿﻿@using Microsoft.AspNetCore.Authentication
+﻿@using Microsoft.AspNetCore.Antiforgery
+﻿@using Microsoft.AspNetCore.Authentication
 @using Microsoft.AspNetCore.Identity
 @using Server.Data
 @implements IDisposable
@@ -6,11 +7,12 @@
 @inject IJSRuntime JSRuntime
 @inject NavigationManager NavigationManager
 @inject SignInManager<User> SignInManager
+@inject IAntiforgery Antiforgery
 
 <AuthorizeView>
     <Authorized>
         
-        <MudButton Class="px-2" Variant="Variant.Text" Color="Color.Inherit" OnClick="() => PopOverIsVisible = !PopOverIsVisible">
+ @*        <MudButton Class="px-2" Variant="Variant.Text" Color="Color.Inherit" OnClick="() => PopOverIsVisible = !PopOverIsVisible">
             <div class="d-flex mud-elevation-5 justify-center" style="height:40px; width:40px; border-radius: 50%;">
                 <MudText Typo="Typo.h6" Class="align-self-center mud-primary-text" Style="">@GetInitials(context.User.Identity?.Name)</MudText>
             </div>
@@ -27,7 +29,13 @@
                 </div>
             </MudStack>            
         </MudPopover>
+ *@
 
+            <MudButton OnClick="LogOut" Class="px-4" Variant="Variant.Text" Color="Color.Inherit" StartIcon="@Icons.Material.Sharp.Logout">@Localizer["Logga ut"]</MudButton>
+            <form id="@LogoutFormId" action="Account/Logout" method="post">
+                <AntiforgeryToken />
+                <input type="hidden" name="ReturnUrl" value="@currentUrl" />
+            </form>
     </Authorized>
     <NotAuthorized>
         <MudButton OnClick="LogIn" Class="px-4" Variant="Variant.Text" Color="Color.Inherit" StartIcon="@Icons.Material.Sharp.Login">@Localizer["Logga in"]</MudButton>
