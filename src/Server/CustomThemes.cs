@@ -8,29 +8,27 @@ public static class CustomThemes
     {
         Palette = new PaletteLight
         {
-            Primary = Colors.Blue.Darken2,
-            PrimaryLighten = Colors.Blue.Darken1,
-            PrimaryDarken = Colors.Blue.Darken3,
-            Tertiary = "#fed932",
-            TertiaryLighten = "#ffdc51",
-            TertiaryDarken = "#fbbd00",
+            AppbarBackground = "#ffffff",
+            AppbarText = "#594ae2",
+            //Secondary = "#1ec8a5",
+            //SecondaryLighten = "#2adfbb",
+            //SecondaryDarken = "#19a98c",
+            //Tertiary = "#00FFFF ",
+            //TertiaryLighten = "#E0FFFF ",
+            //TertiaryDarken = "#008B8B",
         },
         PaletteDark = new PaletteDark
         {
-            Primary = Colors.Blue.Darken2,
-            PrimaryLighten = Colors.Blue.Darken1,
-            PrimaryDarken = Colors.Blue.Darken3,
-            Tertiary = "#fed932",
-            TertiaryLighten = "#ffdc51",
-            TertiaryDarken = "#fbbd00",
+            //Secondary = "#1ec8a5",
+            //SecondaryLighten = "#2adfbb",
+            //SecondaryDarken = "#19a98c",
+            //Tertiary = "#00FFFF ",
+            //TertiaryLighten = "#E0FFFF ",
+            //TertiaryDarken = "#008B8B",
         },
         LayoutProperties = new LayoutProperties
         {
-            DefaultBorderRadius = "0",
-            DrawerWidthRight = "300px",
-            DrawerWidthLeft = "300px",
-            AppbarHeight = "0",
-
+            DefaultBorderRadius = "0"
         },
         PseudoCss = new PseudoCss
         {
@@ -42,11 +40,11 @@ public static class CustomThemes
         },
         Typography = new Typography
         {
-            Button = new Button { TextTransform = "none" },
-            H5 = new H5 { FontWeight = 600 },
-            H6 = new H6 { FontWeight = 600 },
-            Subtitle1 = new Subtitle1 { FontWeight = 500 },
-            Default = new Default { LineHeight = 1 },
+            //Button = new Button { TextTransform = "none" },
+            //H5 = new H5 { FontWeight = 600 },
+            //H6 = new H6 { FontWeight = 600 },
+            //Subtitle1 = new Subtitle1 { FontWeight = 500 },
+            //Default = new Default { LineHeight = 1 },
         },
         ZIndex = new ZIndex
         {

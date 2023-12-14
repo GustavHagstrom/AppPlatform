@@ -10,10 +10,13 @@
 <AuthorizeView>
     <Authorized>
         
-        <MudButton Class="px-2" Variant="Variant.Text" Color="Color.Inherit" OnClick="() => PopOverIsVisible = !PopOverIsVisible">
+        <MudButton Class="px-2" Style="height: 100%;" Variant="Variant.Text" Color="Color.Inherit" OnClick="() => PopOverIsVisible = !PopOverIsVisible">
+            @* <div class="d-flex mud-elevation-5 justify-center" style="height:40px; width:40px; border-radius: 50%;">
+                <MudText Typo="Typo.h6" Class="align-self-center mud-primary-text" Style="">@GetInitials(context.User.Identity?.Name)</MudText>
+            </div> *@
             <div class="d-flex mud-elevation-5 justify-center" style="height:40px; width:40px; border-radius: 50%;">
                 <MudText Typo="Typo.h6" Class="align-self-center mud-primary-text" Style="">@GetInitials(context.User.Identity?.Name)</MudText>
-            </div>
+                </div>
         </MudButton>
         <MudPopover Class="pa-4" Open="PopOverIsVisible" AnchorOrigin="Origin.BottomRight" TransformOrigin="Origin.TopRight">
             <MudStack Spacing="1">

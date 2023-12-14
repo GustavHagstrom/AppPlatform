@@ -2,18 +2,50 @@
 @inherits LayoutComponentBase
 
 <MudThemeProvider Theme="CustomThemes.PlatformStandard" @bind-IsDarkMode="IsDarkMode" DefaultScrollbar="false" />
-<MudDialogProvider FullWidth="true"
-                    MaxWidth="MaxWidth.ExtraSmall"
-                    CloseButton="true"
-                    DisableBackdropClick="true"
-                    NoHeader="false"
-                    Position="DialogPosition.Center"
-                    CloseOnEscapeKey="true" />
+<MudDialogProvider />
 <MudSnackbarProvider />
+
+<PageTitle>@($"{CommonAppConstants.ApplicationName} {CommonAppConstants.ApplicationVersion}")</PageTitle>
 
 <CascadingValue Name="DarkModeAction" Value="SetDarkMode">
 
-    <div class="d-flex align-stretch mud-elevation-3 border-b border-solid" style="height: 50px; position: fixed; width: 100%; background-color: var(--mud-palette-background);">
+    <MudLayout Style="height: 100vh">
+        <MudAppBar Elevation="3" Dense="true" DisableGutters="true" Class="px-2">
+            <MudIcon Icon="@CustomIcons.BidconHub" Color="Color.Primary" Class="mr-2"  Size="Size.Large"/>
+            <MudText Typo="Typo.h5" Class="ml-0 pr-4">@CommonAppConstants.ApplicationName</MudText>
+            <MudSpacer />
+            <LoginDisplay />
+        </MudAppBar>
+        
+        <MudDrawer Open="false" ClipMode="DrawerClipMode.Always" DisableOverlay="true" Variant="DrawerVariant.Mini" Elevation="5">
+            <MudNavMenu Color="Color.Primary" Dense="false">
+               @*  <MudNavLink Match="NavLinkMatch.All" Icon="@Icons.Material.Sharp.Dashboard" Href="@ApplicationRoutes.Dashboard" />
+
+                <MudNavLink Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Sharp.RocketLaunch" Href="@ApplicationRoutes.Projects.List" />
+                <MudNavLink Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Sharp.Handyman" Href="/test" />
+                <MudNavLink Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Sharp.ShoppingCart" Href="@ApplicationRoutes.Orders.List" />
+                <MudNavLink Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Sharp.Handshake" Href="/test" />
+                <MudNavLink Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Sharp.Flag" Href="@ApplicationRoutes.Milestones.List" />
+                <MudNavLink Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Sharp.People" Href="/test" />
+
+                <MudNavLink Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Sharp.CalendarMonth" Href="/test" /> *@
+            </MudNavMenu>
+
+            <MudSpacer />
+
+            <MudNavMenu Color="Color.Primary" Dense="false">
+                <MudNavLink Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Sharp.Settings" Href="/settings" />
+            </MudNavMenu>
+        </MudDrawer>
+
+        <MudMainContent Style="height: 100%">
+            @Body
+        </MudMainContent>
+
+    </MudLayout>
+
+
+    @* <div class="d-flex align-stretch mud-elevation-3 border-b border-solid" style="height: 50px; position: fixed; width: 100%; background-color: var(--mud-palette-background);">
         <MudIcon Icon="@CustomIcons.BidconHub" Color="Color.Primary" Style="height: 50px; width: 50px;" Class="pa-1"/>
         <AuthorizeView>
             <Authorized>
@@ -40,41 +72,7 @@
     </div>
     <div style="position: fixed; height: calc(100% - 50px); width: 100%; top: 50px; background-color: var(--mud-palette-background-grey);">
         @Body
-    </div>
-  @*  <div class="d-flex align-stretch mud-elevation-3" style="height: @Height; position: fixed; width: 100%; z-index: 1000; background-color: var(--mud-palette-background);">
-        @ChildContent
-        
-    </div>*@
-    @*<div class="d-flex align-stretch mud-elevation-3" style="height: 50px; position: fixed; width: 100%; z-index: 1000; background-color: var(--mud-palette-background);">
-        <MudIcon Icon="@CustomIcons.BidconHub" Color="Color.Primary" Style="height: 50px; width: 50px;" Class="pa-1"/>
-        <AuthorizeView>
-            <Authorized>
-                <MudDivider Light="false" Vertical="true" FlexItem="true" Class="my-2 mr-2" />
-                <MudTooltip Text="@Localizer["Startsida"]" RootClass="align-self-center">
-                    <MudButton Href="@ClientRoutes.Dashboard" Class="py-1 px-3" Variant="Variant.Text" Color="Color.Inherit" Style="@StyleService.CreateNavigationButtonStyle("dashboard")">
-                        <MudIcon Icon="@Icons.Material.Sharp.Dashboard" />
-                    </MudButton>
-                </MudTooltip>
-                <MudTooltip Text="@Localizer["Importera från BidCon"]" RootClass="align-self-center">
-                    <MudButton Href="@ClientRoutes.Import" Class="py-1 px-3" Variant="Variant.Text" Color="Color.Inherit" Style="@StyleService.CreateNavigationButtonStyle("bidcon")">
-                        <MudIcon Icon="@CustomIcons.BidconIcon" />
-                    </MudButton>
-                </MudTooltip>
-                <MudTooltip Text="@Localizer["Inställningar"]" RootClass="align-self-center">
-                    <MudButton Href="@ClientRoutes.Settings" Class="py-1 px-3" Variant="Variant.Text" Color="Color.Inherit" Style="@StyleService.CreateNavigationButtonStyle("settings")">
-                        <MudIcon Icon="@Icons.Material.Sharp.Settings" />
-                    </MudButton>
-                </MudTooltip>
-            </Authorized>
-        </AuthorizeView>
-        <MudSpacer />
-        <LoginDisplay />
-    </div>
-    <div style="position: fixed; height: calc(100% - 50px); width: 100%; top: 50px; background-color: var(--mud-palette-background-grey); z-index: 500;">
-        @Body
-    </div>*@
-
-
+    </div> *@
     
 </CascadingValue>
 
