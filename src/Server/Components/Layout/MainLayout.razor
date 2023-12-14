@@ -19,22 +19,14 @@
         
         <MudDrawer Open="false" ClipMode="DrawerClipMode.Always" DisableOverlay="true" Variant="DrawerVariant.Mini" Elevation="5">
             <MudNavMenu Color="Color.Primary" Dense="false">
-               @*  <MudNavLink Match="NavLinkMatch.All" Icon="@Icons.Material.Sharp.Dashboard" Href="@ApplicationRoutes.Dashboard" />
-
-                <MudNavLink Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Sharp.RocketLaunch" Href="@ApplicationRoutes.Projects.List" />
-                <MudNavLink Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Sharp.Handyman" Href="/test" />
-                <MudNavLink Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Sharp.ShoppingCart" Href="@ApplicationRoutes.Orders.List" />
-                <MudNavLink Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Sharp.Handshake" Href="/test" />
-                <MudNavLink Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Sharp.Flag" Href="@ApplicationRoutes.Milestones.List" />
-                <MudNavLink Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Sharp.People" Href="/test" />
-
-                <MudNavLink Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Sharp.CalendarMonth" Href="/test" /> *@
+                <MudNavLink Match="NavLinkMatch.All" Icon="@Icons.Material.Sharp.Dashboard" Href="@ApplicationRoutes.Dashboard" />
+                <MudNavLink Match="NavLinkMatch.Prefix" Icon="@CustomIcons.BidconIcon" Href="@ApplicationRoutes.Import" />
             </MudNavMenu>
 
             <MudSpacer />
 
             <MudNavMenu Color="Color.Primary" Dense="false">
-                <MudNavLink Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Sharp.Settings" Href="/settings" />
+                    <MudNavLink Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Sharp.Settings" Href="@ApplicationRoutes.Settings" />
             </MudNavMenu>
         </MudDrawer>
 
