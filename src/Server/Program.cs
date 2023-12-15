@@ -1,7 +1,7 @@
 using Server.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Components.Authorization;
-using Server.Components.Account;
+using Server.Components.Features.Account;
 using Microsoft.AspNetCore.Identity;
 using Server.Enteties;
 using Server.Components;

@@ -1,0 +1,61 @@
+﻿@using Server.EstimationViewTemplate_old.Models;
+
+<style>
+    .section-unselected {
+        padding: 3px;
+        border: 1px;
+        border-style: solid;
+        border-color: transparent;
+    }
+
+    .section-unselected:hover {
+        padding: 3px;
+        border: 1px;
+        border-style: solid;
+        border-color: var(--mud-palette-text-primary);
+    }
+
+    .section-selected {
+        padding: 2px;
+        border: 2px;
+        border-style: solid;
+        border-color: var(--mud-palette-primary);
+    }
+    .section{
+        transition-property: border-color, background-color;
+        transition-duration: 200ms;
+    }
+
+    
+</style>
+
+
+<div>
+    @foreach (var section in Sections)
+    {
+        <div class="@RowClass(section)" @onclick="() => Select(section)">
+            @if (section is DataSection dataSection)
+            {
+                <DataSectionIllustrator />
+            }
+            @if (section is SheetSection sheetSection)
+            {
+                <SheetSectionIllustator Section="sheetSection" IsSelected="sheetSection == SelectedSection" />
+            }
+        </div>
+    }
+</div>
+
+@code {
+    [Parameter, EditorRequired] public required IEnumerable<IViewSection> Sections { get; set; }
+    [Parameter] public IViewSection? SelectedSection { get; set; }
+    [Parameter] public EventCallback<IViewSection> SelectedSectionChanged { get; set; }
+
+    string RowClass(IViewSection section) => SelectedSection == section ? "section section-selected" : "section section-unselected";
+
+    void Select(IViewSection? section)
+    {
+        SelectedSection = section;
+        SelectedSectionChanged.InvokeAsync(section);
+    }
+}
