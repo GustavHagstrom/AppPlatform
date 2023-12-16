@@ -3,7 +3,7 @@ using SharedLibrary.Constants;
 using SharedLibrary.DTOs.BidconAccess;
 using System.Net.Http.Json;
 
-namespace Server.Components.Import.Services;
+namespace Server.Components.Features.Import.Services;
 
 public class BidconLinkService : IBidconLinkService
 {

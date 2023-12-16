@@ -1,5 +1,6 @@
 ﻿@page "/bidcon/import"
-@using Server.Components.Import.Services
+
+
 @using Server.EstimationProcessing.Services
 @using SharedLibrary.Constants
 @using SharedLibrary.DTOs.BidconAccess
@@ -25,10 +26,10 @@
             
         <MudPaper Square="true" Elevation="4" Style="height: 100%">
             <MudStack Spacing="0" Row="true" Class="d-flex justify-center">
-                <MudButton OnClick="() => ActiveTab = 1" Variant="Variant.Text" StartIcon="@Icons.Material.Sharp.Search" Class="px-4" Style="@GetTabButtonStyle(1)">@Localizer["Sök"]</MudButton>
-                <MudButton OnClick="() => ActiveTab = 2" Variant="Variant.Text" StartIcon="@Icons.Material.Sharp.Folder" Class="px-3" Style="@GetTabButtonStyle(2)">@Localizer["Utforska"]</MudButton>
+                <MudButton OnClick="() => ActiveTab = 1" Variant="Variant.Text" StartIcon="@Icons.Material.Sharp.Search" Class="px-4">@Localizer["Sök"]</MudButton>
+                <MudButton OnClick="() => ActiveTab = 2" Variant="Variant.Text" StartIcon="@Icons.Material.Sharp.Folder" Class="px-3">@Localizer["Utforska"]</MudButton>
                 <MudBadge Content="ItemTree?.SelectedEstimations()?.Count()" Color="Color.Primary" Overlap="true">
-                    <MudButton OnClick="() => ActiveTab = 3" Variant="Variant.Text" StartIcon="@Icons.Material.Sharp.CheckBox" Class="px-3" Style="@GetTabButtonStyle(3)">@Localizer["Valda"]</MudButton>
+                    <MudButton OnClick="() => ActiveTab = 3" Variant="Variant.Text" StartIcon="@Icons.Material.Sharp.CheckBox" Class="px-3">@Localizer["Valda"]</MudButton>
                 </MudBadge>
             </MudStack>
             <MudDivider Light="true" />
@@ -54,7 +55,6 @@
     int ActiveTab = 1;
 
     [CascadingParameter] public required MudTheme Theame { get; set; }
-    [Inject] public required StyleService StyleService { get; set; }
     [Inject] public required IStringLocalizer<Import> Localizer { get; set; }
     [Inject] public required IBidconLinkService _linkService { get; set; }
     [Inject] public required IFolderService _folderService { get; set; }
@@ -67,15 +67,6 @@
     public TreeItem? ItemTree { get; set; }
     public bool IsRefreshing { get; set; } = true;
 
-
-    string GetTabButtonStyle(int tab)
-    {
-        if(tab == ActiveTab)
-        {
-            return StyleService.ActivePageStyle;
-        }
-        return string.Empty;
-    }
     protected override void OnInitialized()
     {
         base.OnInitialized();

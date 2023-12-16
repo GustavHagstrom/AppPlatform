@@ -4,13 +4,13 @@
         @foreach (var tab in Tabs!)
         {
             <MudHidden Breakpoint="Breakpoint.Xs">
-                <MudButton OnClick="() => SetActiveTab(tab)" Class="py-1 px-3" Variant="Variant.Text" StartIcon="@tab.HeaderStartIcon" Style="@StyleService.CreateActiveTabButtonStyle(tab == ActiveTab)" FullWidth="true">
+                <MudButton OnClick="() => SetActiveTab(tab)" Class="py-1 px-3" Variant="Variant.Text" StartIcon="@tab.HeaderStartIcon" FullWidth="true">
                     @tab.HeaderText
                 </MudButton>
             </MudHidden>
 
             <MudHidden Breakpoint="Breakpoint.SmAndUp">
-                <MudButton OnClick="() => SetActiveTab(tab)" Class="py-1 px-3" Variant="Variant.Text" Style="@StyleService.CreateActiveTabButtonStyle(tab == ActiveTab)" FullWidth="true">
+                <MudButton OnClick="() => SetActiveTab(tab)" Class="py-1 px-3" Variant="Variant.Text" FullWidth="true">
                     <MudIcon Icon="@tab.HeaderStartIcon" Size="Size.Medium" Color="Color.Inherit"/>
                 </MudButton>
             </MudHidden>
@@ -26,7 +26,6 @@
 </div>
 
 @code {
-    [Inject] public required StyleService StyleService { get; set; }
     [Parameter] public RenderFragment? ChildContent { get; set; }
 
     private List<PageTab> Tabs { get; set; } = new();

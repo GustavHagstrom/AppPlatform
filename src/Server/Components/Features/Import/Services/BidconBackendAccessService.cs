@@ -3,7 +3,7 @@ using SharedLibrary.DTOs.BidconAccess;
 using SharedLibrary.Wrappers;
 using System.Net.Http.Json;
 
-namespace Server.Components.Import.Services;
+namespace Server.Components.Features.Import.Services;
 
 public class BidconBackendAccessService : IBidconBackendAccessService
 {

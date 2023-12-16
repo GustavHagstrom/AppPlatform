@@ -4,12 +4,15 @@ namespace Client;
 
 public static class CustomThemes
 {
-    public static MudTheme PlatformStandard => new()
+    private static MudTheme _mudDefault = new MudTheme();
+    public static MudTheme PlatformStandard { get; private set; } = new()
     {
         Palette = new PaletteLight
         {
-            AppbarBackground = "#ffffff",
-            AppbarText = "#594ae2",
+            AppbarBackground = _mudDefault.Palette.White,
+            AppbarText = _mudDefault.Palette.Primary,
+            //AppbarBackground = "#ffffff",
+            //AppbarText = "#594ae2",
             //Secondary = "#1ec8a5",
             //SecondaryLighten = "#2adfbb",
             //SecondaryDarken = "#19a98c",
@@ -19,6 +22,9 @@ public static class CustomThemes
         },
         PaletteDark = new PaletteDark
         {
+
+            AppbarText = _mudDefault.Palette.Primary,
+            //AppbarText = "#594ae2",
             //Secondary = "#1ec8a5",
             //SecondaryLighten = "#2adfbb",
             //SecondaryDarken = "#19a98c",

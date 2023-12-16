@@ -1,26 +1,20 @@
 ﻿using Server.Data;
+using Server.Extensions;
+using System.Security.Claims;
 
 namespace Server.Services.Settings;
 
-public class DarkModeService : IDarkModeService
+public class DarkModeService(ApplicationDbContext DbContext) : IDarkModeService
 {
-    private readonly ApplicationDbContext _dbContext;
-
-    public DarkModeService(ApplicationDbContext dbContext)
+    public async Task<bool> GetAsync(ClaimsPrincipal user)
     {
-        _dbContext = dbContext;
+        var result = await DbContext.Users.FindAsync(user.GetUserId());
+        return result?.IsDarkMode ?? false;
     }
-    public async Task<bool> GetUserDarkModeSettingAsync(string userId)
+    public async Task SetAsync(ClaimsPrincipal user, bool isDarkMode)
     {
-        var user = await _dbContext.Users.FindAsync(userId);
-        ArgumentNullException.ThrowIfNull(user);
-        return user.IsDarkMode;
-    }
-    public async Task SetUserDarkModeSettingAsync(string userId, bool isDarkMode)
-    {
-        var user = await _dbContext.Users.FindAsync(userId);
-        ArgumentNullException.ThrowIfNull(user);
-        user.IsDarkMode = isDarkMode;
-        await _dbContext.SaveChangesAsync();
+        (await DbContext.Users.FindAsync(user.GetUserId()))
+            ?.Apply(x => x.IsDarkMode = isDarkMode);
+        await DbContext.SaveChangesAsync();
     }
 }
