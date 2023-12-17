@@ -41,7 +41,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Components\Features\Authentication\" />
     <Folder Include="Migrations\" />
   </ItemGroup>
 

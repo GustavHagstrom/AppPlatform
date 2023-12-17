@@ -67,10 +67,6 @@
     public TreeItem? ItemTree { get; set; }
     public bool IsRefreshing { get; set; } = true;
 
-    protected override void OnInitialized()
-    {
-        base.OnInitialized();
-    }
     protected override async Task OnInitializedAsync()
     {
         await GetEstimationItemTreeAsync();

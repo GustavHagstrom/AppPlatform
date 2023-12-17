@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Identity;
 using Server.Enteties;
 using Server.Components;
 using Server;
+using Server.Components.Features.Authentication;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -50,6 +51,7 @@ builder.Services.AddIdentityCore<User>(options => options.SignIn.RequireConfirme
     .AddEntityFrameworkStores<ApplicationDbContext>()
     .AddSignInManager()
     .AddDefaultTokenProviders();
+builder.Services.AddScoped<IUserClaimsPrincipalFactory<User>, CustomClaimsPrincipalFactory>();
 
 builder.Services.RegisterApplicationServices();
 
