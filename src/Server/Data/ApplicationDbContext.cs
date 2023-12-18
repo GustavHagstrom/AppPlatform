@@ -12,7 +12,7 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
             c => c.Aggregate(0, (a, v) => HashCode.Combine(a, v.GetHashCode())),
             c => c.ToList());
  
-
+    public DbSet<UserOrganization> UserOrganizations { get; set; }
     public DbSet<Organization> Organizations { get; set; }
     public DbSet<License> Licenses { get; set; }
     public DbSet<BidconAccessCredentials> BidconAccessCredentials { get; set; }

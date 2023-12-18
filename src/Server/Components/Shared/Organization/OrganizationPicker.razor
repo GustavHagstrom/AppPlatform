@@ -3,10 +3,9 @@
 @using Server.Data
 @using System.Security.Claims
 @using Server.Extensions
-@inject ApplicationDbContext DbContext
 @inject AuthenticationStateProvider AuthProvider
 @inject IStringLocalizer<OrganizationPicker> Localizer
-@inject SignInManager<User> SignInManager
+@inject IOrganizationService OrganizationService
 
 <MudSelect T="Organization" Label="@Localizer["Organisation"]" AnchorOrigin="Origin.BottomCenter" 
     MultiSelection="false" Value="ActiveOrganization" ValueChanged="OnValueChanged">
@@ -20,45 +19,26 @@
     public List<Organization> Organizations { get; private set; } = new List<Organization>();
     public Organization? ActiveOrganization { get; private set; }
 
+
     async Task OnValueChanged(Organization orgValue)
     {
         var userClaims = (await AuthProvider.GetAuthenticationStateAsync()).User;
-        if (userClaims.Identity?.IsAuthenticated == true)
-        {
-            var user = await DbContext.Users.FindAsync(userClaims.GetUserId());
-            if (user is not null)
-            {
-                ActiveOrganization = orgValue;
-                user.ActiveOrganizationId = orgValue.Id;
-                await DbContext.SaveChangesAsync();
-                await SignInManager.RefreshSignInAsync(user);
-            }
-        };
-        
-        
+        ActiveOrganization = orgValue;
+        // await OrganizationService.SetActiveAsync(userClaims, orgValue);
+
     }
     protected override async Task OnInitializedAsync()
     {
         var userClaims = (await AuthProvider.GetAuthenticationStateAsync()).User;
-        if (userClaims.Identity?.IsAuthenticated == true)
-        {
-            await GetUserOrganizationsAsync(userClaims);
-        };
+        await GetUserOrganizationsAsync(userClaims);
     }
     async Task GetUserOrganizationsAsync(ClaimsPrincipal userClaims)
     {
-        var user = await DbContext.Users
-            .Include(x => x.UserOrganizations)!.ThenInclude(x => x.Organization)
-            .Include(x => x.ActiveOrganization)
-            .FirstOrDefaultAsync(x => x.Id == userClaims.GetUserId());
-
+        var orgs = await OrganizationService.GetAllAsync(userClaims);
         Organizations.Clear();
-        if(user is not null)
-        {
-            var organizations = user.UserOrganizations.Where(x => x is not null).Select(x => x.Organization!);
-            Organizations.AddRange(organizations);
-            ActiveOrganization = organizations.Where(x => x.Id == user.ActiveOrganizationId).FirstOrDefault();
-        }
+        Organizations.AddRange(orgs);
+        var activeOrgId = await OrganizationService.GetActiveOrgIdAsync(userClaims);
+        ActiveOrganization = Organizations.Where(x => x.Id == activeOrgId).FirstOrDefault() ?? null;
         StateHasChanged();
 
     }

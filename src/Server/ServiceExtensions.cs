@@ -1,5 +1,6 @@
 ﻿using MudBlazor;
 using MudBlazor.Services;
+using Server.Components.Shared.Organization;
 using Server.Services.Settings;
 
 
@@ -11,6 +12,7 @@ internal static class ServiceExtensions
     {
         services.AddLocalization();
         services.AddScoped<IDarkModeService, DarkModeService>();
+        services.AddTransient<IOrganizationService, OrganizationService>();
         services.AddMudServices(config =>
         {
             config.SnackbarConfiguration.PositionClass = Defaults.Classes.Position.BottomCenter;
