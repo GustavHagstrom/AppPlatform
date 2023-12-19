@@ -35,7 +35,7 @@ builder.Services.AddAuthentication(options =>
 
 
 
-if(builder.Environment.IsDevelopment())
+if (builder.Environment.IsDevelopment())
 {
     var connectionString = "Data Source=bin/debug/database.db";
     //builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlite(connectionString));
@@ -48,7 +48,6 @@ else
     //builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(connectionString));
     builder.Services.AddDbContextFactory<ApplicationDbContext>(options => options.UseSqlServer(connectionString));
 }
-
 
 builder.Services.AddIdentityCore<User>(options => options.SignIn.RequireConfirmedAccount = false)
     .AddEntityFrameworkStores<ApplicationDbContext>()
