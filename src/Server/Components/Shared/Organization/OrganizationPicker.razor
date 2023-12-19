@@ -8,8 +8,8 @@
 @inject IOrganizationService OrganizationService
 
 
-    <MudSelect T="Organization" Label="@Localizer["Organisation"]" Placeholder="@Localizer["Välj organisation"]" 
-                Variant="Variant.Outlined" AnchorOrigin="Origin.BottomCenter"
+    <MudSelect T="Organization" Placeholder="@Localizer["Välj organisation"]" 
+                Variant="Variant.Filled" AnchorOrigin="Origin.BottomCenter" Style="width: 100px;"
                 MultiSelection="false" Value="ActiveOrganization" ValueChanged="OnValueChanged"
                 Margin="Margin.Dense" Dense="true" ToStringFunc="OrganizationToString">
         @foreach (var organization in Organizations)

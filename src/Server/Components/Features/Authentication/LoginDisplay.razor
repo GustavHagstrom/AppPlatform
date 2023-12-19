@@ -11,6 +11,21 @@
 
 <AuthorizeView>
     <Authorized>
+      @*   <DropDown CloseOnContentClick="false" CloseOnMouseLeaveDelay="100" ContainerStyle="height: 100%;">
+            <ActivatorContent>
+                <MudText Typo="Typo.subtitle2" Class="my-auto" Style="color: var(--mud-palette-primary);">@context.User.Identity?.Name</MudText>
+            </ActivatorContent>
+            <DropDownContent>
+
+                <MudSwitch T="bool" Checked="@(DarkModeManager?.IsDarkMode is not null ? DarkModeManager.IsDarkMode : false)" CheckedChanged="SetDarkMode" />
+                <MudButton OnClick="LogOut" Class="px-4 mr-n2" Variant="Variant.Text" Color="Color.Primary" StartIcon="@Icons.Material.Sharp.Logout">@Localizer["Logga ut"]</MudButton>
+                <form id="@LogoutFormId" action="Account/Logout" method="post">
+                    <AntiforgeryToken />
+                    <input type="hidden" name="ReturnUrl" value="@currentUrl" />
+                </form>
+            </DropDownContent>
+        </DropDown> *@
+        <Server.Components.Shared.Organization.OrganizationPicker/>
         <MudText Typo="Typo.subtitle2" Style="color: var(--mud-palette-text-primary);">@context.User.Identity?.Name</MudText>
         <MudButton OnClick="LogOut" Class="px-4 mr-n2" Style="height: 100%;" Variant="Variant.Text" Color="Color.Inherit" StartIcon="@Icons.Material.Sharp.Logout">@Localizer["Logga ut"]</MudButton>
         <form id="@LogoutFormId" action="Account/Logout" method="post">
@@ -38,6 +53,7 @@
     </script>
 @code{
     [Inject] public required IStringLocalizer<LoginDisplay> Localizer { get; set; }
+    [CascadingParameter] public DarkModeManager? DarkModeManager { get; set; }
 
     [SupplyParameterFromQuery]
     private string? ReturnUrl { get; set; }
@@ -88,5 +104,12 @@
             initials += item.First();
         }
         return initials;
+    }
+    async Task SetDarkMode(bool isDarkMode)
+    {
+        if (DarkModeManager is not null)
+        {
+            await DarkModeManager.SetDarkModeAsync(isDarkMode);
+        }
     }
 }
