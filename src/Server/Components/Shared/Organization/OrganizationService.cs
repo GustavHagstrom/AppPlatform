@@ -9,17 +9,18 @@ namespace Server.Components.Shared.Organization;
 
 public class OrganizationService : IOrganizationService
 {
-    private readonly ApplicationDbContext _dbContext;
+    private readonly IDbContextFactory<ApplicationDbContext> _dbFactory;
     private readonly SignInManager<User> _signInManager;
 
-    public OrganizationService(ApplicationDbContext DbContext, SignInManager<User> SignInManager)
+    public OrganizationService(IDbContextFactory<ApplicationDbContext> dbFactory, SignInManager<User> signInManager)
     {
-        _dbContext = DbContext;
-        _signInManager = SignInManager;
+        _dbFactory = dbFactory;
+        _signInManager = signInManager;
     }
     public async Task<IEnumerable<Enteties.Organization>> GetAllAsync(ClaimsPrincipal userClaims)
     {
-        var organizations = await _dbContext.UserOrganizations
+        var dbContext = _dbFactory.CreateDbContext();
+        var organizations = await dbContext.UserOrganizations
             .Include(x => x.Organization)
             .Where(x => x.UserId == userClaims.GetUserId())
             .ToListAsync();
@@ -28,16 +29,18 @@ public class OrganizationService : IOrganizationService
     }
     public async Task<Guid?> GetActiveOrgIdAsync(ClaimsPrincipal userClaims)
     {
-        var user = await _dbContext.Users.FindAsync(userClaims.GetUserId());
+        var dbContext = _dbFactory.CreateDbContext();
+        var user = await dbContext.Users.FindAsync(userClaims.GetUserId());
         return user?.ActiveOrganizationId;
     }
     public async Task SetActiveAsync(ClaimsPrincipal userClaims, Enteties.Organization organization)
     {
-        var user = await _dbContext.Users.FindAsync(userClaims.GetUserId());
+        var dbContext = _dbFactory.CreateDbContext();
+        var user = await dbContext.Users.FindAsync(userClaims.GetUserId());
         if (user is not null)
         {
             user.ActiveOrganizationId = organization.Id;
-            await _dbContext.SaveChangesAsync();
+            await dbContext.SaveChangesAsync();
             await _signInManager.RefreshSignInAsync(user);
         }
     }

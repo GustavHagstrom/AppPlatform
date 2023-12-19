@@ -7,40 +7,43 @@
 @inject IStringLocalizer<OrganizationPicker> Localizer
 @inject IOrganizationService OrganizationService
 
-<MudSelect T="Organization" Label="@Localizer["Organisation"]" AnchorOrigin="Origin.BottomCenter" 
-    MultiSelection="false" Value="ActiveOrganization" ValueChanged="OnValueChanged">
-    @foreach (var organization in Organizations)
-    {
-        <MudSelectItem Value="@organization">@organization.Name</MudSelectItem>
-    }
-</MudSelect>
+<AuthorizeView>
+    <Authorized>
+        <MudSelect T="Organization" Label="@Localizer["Organisation"]" AnchorOrigin="Origin.BottomCenter"
+                   MultiSelection="false" Value="ActiveOrganization" ValueChanged="OnValueChanged">
+            @foreach (var organization in Organizations)
+            {
+                <MudSelectItem Value="@organization">@organization.Name</MudSelectItem>
+            }
+        </MudSelect>
 
-@code {
-    public List<Organization> Organizations { get; private set; } = new List<Organization>();
-    public Organization? ActiveOrganization { get; private set; }
+        @code {
+        public List<Organization> Organizations { get; private set; } = new List<Organization>();
+        public Organization? ActiveOrganization { get; private set; }
 
 
-    async Task OnValueChanged(Organization orgValue)
-    {
-        var userClaims = (await AuthProvider.GetAuthenticationStateAsync()).User;
-        ActiveOrganization = orgValue;
-        // await OrganizationService.SetActiveAsync(userClaims, orgValue);
+        async Task OnValueChanged(Organization orgValue)
+        {
+            var userClaims = (await AuthProvider.GetAuthenticationStateAsync()).User;
+            ActiveOrganization = orgValue;
+            await OrganizationService.SetActiveAsync(userClaims, orgValue);
+        }
+        protected override async Task OnInitializedAsync()
+        {
+            var userClaims = (await AuthProvider.GetAuthenticationStateAsync()).User;
+            await GetUserOrganizationsAsync(userClaims);
+        }
+        async Task GetUserOrganizationsAsync(ClaimsPrincipal userClaims)
+        {
+            var orgs = await OrganizationService.GetAllAsync(userClaims);
+            Organizations.Clear();
+            Organizations.AddRange(orgs);
+            var activeOrgId = await OrganizationService.GetActiveOrgIdAsync(userClaims);
+            ActiveOrganization = Organizations.Where(x => x.Id == activeOrgId).FirstOrDefault() ?? null;
+        }
+        }
 
-    }
-    protected override async Task OnInitializedAsync()
-    {
-        var userClaims = (await AuthProvider.GetAuthenticationStateAsync()).User;
-        await GetUserOrganizationsAsync(userClaims);
-    }
-    async Task GetUserOrganizationsAsync(ClaimsPrincipal userClaims)
-    {
-        var orgs = await OrganizationService.GetAllAsync(userClaims);
-        Organizations.Clear();
-        Organizations.AddRange(orgs);
-        var activeOrgId = await OrganizationService.GetActiveOrgIdAsync(userClaims);
-        ActiveOrganization = Organizations.Where(x => x.Id == activeOrgId).FirstOrDefault() ?? null;
-        StateHasChanged();
+    </Authorized>
+</AuthorizeView>
 
-    }
-}
 

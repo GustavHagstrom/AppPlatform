@@ -37,18 +37,18 @@ builder.Services.AddAuthentication(options =>
 
 if(builder.Environment.IsDevelopment())
 {
-    //builder.Services.AddDbContext<ApplicationDbContext>(options =>
-    //       options.UseSqlite("Data Source=bin/debug/database.db"));
-    var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
-    builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(connectionString));
-
+    var connectionString = "Data Source=bin/debug/database.db";
+    //builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlite(connectionString));
+    builder.Services.AddDbContextFactory<ApplicationDbContext>(options => options.UseSqlite(connectionString));
     builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 }
 else
 {
     var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
-    builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(connectionString));
+    //builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(connectionString));
+    builder.Services.AddDbContextFactory<ApplicationDbContext>(options => options.UseSqlServer(connectionString));
 }
+
 
 builder.Services.AddIdentityCore<User>(options => options.SignIn.RequireConfirmedAccount = false)
     .AddEntityFrameworkStores<ApplicationDbContext>()
