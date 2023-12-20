@@ -1,0 +1,32 @@
+﻿@using Server.Components.Shared.Layout
+
+@inherits LayoutComponentBase
+@layout MainLayout
+@inject IStringLocalizer<SettingsLayout> Localizer
+
+<MudContainer MaxWidth="MaxWidth.Medium" Style="height: 100%" Class="pa-5">
+    <MudPaper Elevation="5" Height="100%" Width="100%" Class="d-flex">
+        <div class="border-solid border-r" style="height: 100%; width: 56px;">
+            <MudNavMenu Color="Color.Primary" Dense="false">
+                <MudNavLink Match="NavLinkMatch.All" Icon="@Icons.Material.Sharp.DisplaySettings" Href="@ApplicationRoutes.Settings.Common" />
+                <MudNavLink Match="NavLinkMatch.All" Icon="@CustomIcons.BidconIcon" Href="@ApplicationRoutes.Settings.Bidcon" />
+            </MudNavMenu>
+        </div>
+        <div class="flex-grow-1 pa-2" style="height: 100%">
+            @Body
+        </div>
+    </MudPaper>
+</MudContainer>
+
+
+@code{
+    bool open = true;
+
+    void toggleDrawer()
+    {
+        open = !open;
+        StateHasChanged();
+    }
+}
+
+

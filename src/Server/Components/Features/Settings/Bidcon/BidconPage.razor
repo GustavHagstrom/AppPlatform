@@ -1,4 +1,8 @@
-﻿@using SharedLibrary.DTOs.BidconAccess;
+﻿@page "/settings/bidcon"
+
+bidcon page
+@*
+@using SharedLibrary.DTOs.BidconAccess;
 
 
 <div class="relative">
@@ -58,7 +62,7 @@
 
 
 @code {
-    [Inject] public required IStringLocalizer<CredentialsFrameContent> Localizer { get; set; }
+    [Inject] public required IStringLocalizer<BidconPage> Localizer { get; set; }
     [Inject] public required IBidconCredentialsService CredentialsService { get; set; }
     bool IsLoading = false;
 
@@ -140,3 +144,4 @@
         StateHasChanged();
     }
 }
+ *@

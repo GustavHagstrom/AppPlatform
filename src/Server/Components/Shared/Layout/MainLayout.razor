@@ -29,11 +29,11 @@
             <MudSpacer />
 
             <MudNavMenu Color="Color.Primary" Dense="false">
-                    <MudNavLink Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Sharp.Settings" Href="@ApplicationRoutes.Settings" />
+                    <MudNavLink Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Sharp.Settings" Href="@ApplicationRoutes.Settings.Common" />
             </MudNavMenu>
         </MudDrawer>
 
-        <MudMainContent Style="height: 100%">
+            <MudMainContent Style="height: 100%; background-color: var(--mud-palette-background-grey)">
             @Body
         </MudMainContent>
 

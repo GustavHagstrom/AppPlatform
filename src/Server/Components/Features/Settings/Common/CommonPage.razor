@@ -1,0 +1,31 @@
+﻿@page "/settings"
+@inject IStringLocalizer<CommonPage> Localizer
+<div class="relative">
+    <MudOverlay DarkBackground="true" Visible="IsLoading" Absolute="true">
+        <MudProgressCircular Size="Size.Large" Color="Color.Primary" Indeterminate="true" />
+    </MudOverlay>
+
+    <MudSwitch T="bool" Checked="@(DarkModeManager?.IsDarkMode is not null ? DarkModeManager.IsDarkMode : false)" CheckedChanged="SetDarkMode" Color="Color.Primary" Label="@Localizer["Mörkt tema"]" />
+</div>
+    
+    
+
+
+@code {
+    [CascadingParameter] public DarkModeManager? DarkModeManager { get; set; }
+
+    bool IsLoading = true;
+
+    protected override async Task OnInitializedAsync()
+    {
+        IsLoading = false;
+    }
+    async Task SetDarkMode(bool value)
+    {
+        if (DarkModeManager is not null)
+        {
+            await DarkModeManager.SetDarkModeAsync(value);
+        }
+    }
+   
+}

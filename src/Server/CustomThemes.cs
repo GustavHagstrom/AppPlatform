@@ -23,7 +23,9 @@ public static class CustomThemes
         PaletteDark = new PaletteDark
         {
 
-            AppbarText = _mudDefault.Palette.Primary,
+            AppbarText = _mudDefault.PaletteDark.Primary,
+            AppbarBackground = _mudDefault.PaletteDark.Surface,
+            DrawerBackground = _mudDefault.PaletteDark.Surface,
             //AppbarText = "#594ae2",
             //Secondary = "#1ec8a5",
             //SecondaryLighten = "#2adfbb",
