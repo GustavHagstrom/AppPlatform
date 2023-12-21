@@ -1,0 +1,9 @@
+﻿<MudText Typo="Typo.subtitle1" Style="font-weight: bold;">@Title</MudText>
+<div class="@(TopBorder ? "border-t border-solid" : string.Empty)" style="min-width: 300px; max-width: 600px;">
+    @ChildContent
+</div>
+@code {
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+    [Parameter] public string Title { get; set; } = string.Empty;
+    [Parameter] public bool TopBorder { get; set; } = false;
+}

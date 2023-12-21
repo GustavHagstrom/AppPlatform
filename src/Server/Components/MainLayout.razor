@@ -15,7 +15,7 @@
     <MudLayout Style="height: 100vh">
         <MudAppBar Elevation="3" Dense="true" DisableGutters="true" Class="px-2">
             <MudIcon Icon="@CustomIcons.BidconHub" Color="Color.Primary" Class="mr-2"  Size="Size.Large"/>
-            <MudText Typo="Typo.h5" Class="ml-0 pr-4">@CommonAppConstants.ApplicationName</MudText>
+            <MudText Typo="Typo.h5" Class="ml-0 pr-4" Style="font-weight: bold;">@CommonAppConstants.ApplicationName</MudText>
             <MudSpacer />
             <LoginDisplay />
         </MudAppBar>
@@ -24,16 +24,11 @@
             <MudNavMenu Color="Color.Primary" Dense="false">
                 <MudNavLink Match="NavLinkMatch.All" Icon="@Icons.Material.Sharp.Dashboard" Href="@ApplicationRoutes.Dashboard" />
                 <MudNavLink Match="NavLinkMatch.Prefix" Icon="@CustomIcons.BidconIcon" Href="@ApplicationRoutes.Import" />
-            </MudNavMenu>
-
-            <MudSpacer />
-
-            <MudNavMenu Color="Color.Primary" Dense="false">
                     <MudNavLink Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Sharp.Settings" Href="@ApplicationRoutes.Settings.Common" />
             </MudNavMenu>
         </MudDrawer>
 
-            <MudMainContent Style="height: 100%; background-color: var(--mud-palette-background-grey)">
+            <MudMainContent Style="height: 100%;">
             @Body
         </MudMainContent>
 

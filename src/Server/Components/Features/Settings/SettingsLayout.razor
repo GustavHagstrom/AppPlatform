@@ -1,22 +1,26 @@
-﻿@using Server.Components.Shared.Layout
+﻿@using Server.Components
 
 @inherits LayoutComponentBase
 @layout MainLayout
 @inject IStringLocalizer<SettingsLayout> Localizer
 
-<MudContainer MaxWidth="MaxWidth.Medium" Style="height: 100%" Class="pa-5">
-    <MudPaper Elevation="5" Height="100%" Width="100%" Class="d-flex">
-        <div class="border-solid border-r" style="height: 100%; width: 56px;">
-            <MudNavMenu Color="Color.Primary" Dense="false">
-                <MudNavLink Match="NavLinkMatch.All" Icon="@Icons.Material.Sharp.DisplaySettings" Href="@ApplicationRoutes.Settings.Common" />
-                <MudNavLink Match="NavLinkMatch.All" Icon="@CustomIcons.BidconIcon" Href="@ApplicationRoutes.Settings.Bidcon" />
-            </MudNavMenu>
-        </div>
-        <div class="flex-grow-1 pa-2" style="height: 100%">
-            @Body
-        </div>
-    </MudPaper>
-</MudContainer>
+
+<div style="height: 100%; max-width: 100%; display: flex">
+    <div class="border-solid border-r" style="height: 100%;">
+        <MudText Class="pt-3 px-4" Typo="Typo.h6" Style="font-weight: bold;">@Localizer["Inställningar"]</MudText>
+        <MudNavMenu Color="Color.Primary" Dense="false">
+            <MudNavLink Match="NavLinkMatch.All" Icon="@Icons.Material.Sharp.Settings" Href="@ApplicationRoutes.Settings.Common" >
+                <MudText Typo="Typo.subtitle1" Style="font-weight: 500;">@Localizer["Allmänt"]</MudText>
+            </MudNavLink>
+            <MudNavLink Match="NavLinkMatch.All" Icon="@CustomIcons.BidconIcon" Href="@ApplicationRoutes.Settings.Bidcon">
+                <MudText Typo="Typo.subtitle1" Style="font-weight: 500;">@Localizer["Bidcon"]</MudText>
+            </MudNavLink>
+        </MudNavMenu>
+    </div>
+    <div class="flex-grow-1 py-3 px-4" style="height: 100%">
+        @Body
+    </div>
+</div>
 
 
 @code{

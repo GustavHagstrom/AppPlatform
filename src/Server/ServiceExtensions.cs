@@ -13,6 +13,7 @@ internal static class ServiceExtensions
         services.AddLocalization();
         services.AddScoped<IDarkModeService, DarkModeService>();
         services.AddTransient<IOrganizationService, OrganizationService>();
+        services.AddTransient<IBidconCredentialsService, BidconCredentialsService>();
         services.AddMudServices(config =>
         {
             config.SnackbarConfiguration.PositionClass = Defaults.Classes.Position.BottomCenter;

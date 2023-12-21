@@ -1,12 +1,11 @@
 ﻿@page "/settings"
 @inject IStringLocalizer<CommonPage> Localizer
-<div class="relative">
-    <MudOverlay DarkBackground="true" Visible="IsLoading" Absolute="true">
-        <MudProgressCircular Size="Size.Large" Color="Color.Primary" Indeterminate="true" />
-    </MudOverlay>
 
-    <MudSwitch T="bool" Checked="@(DarkModeManager?.IsDarkMode is not null ? DarkModeManager.IsDarkMode : false)" CheckedChanged="SetDarkMode" Color="Color.Primary" Label="@Localizer["Mörkt tema"]" />
-</div>
+<SettingsPage Title="@Localizer["Allmänt"]" Loading="Loading">
+    <SettingsSection Title="@Localizer["Utseende"]">
+        <MudSwitch T="bool?" Checked="DarkModeManager?.IsDarkMode" CheckedChanged="SetDarkMode" Color="Color.Primary" Label="@Localizer["Mörkt tema"]" />
+    </SettingsSection>
+</SettingsPage>
     
     
 
@@ -14,17 +13,13 @@
 @code {
     [CascadingParameter] public DarkModeManager? DarkModeManager { get; set; }
 
-    bool IsLoading = true;
+    bool Loading = false;
 
-    protected override async Task OnInitializedAsync()
+    async Task SetDarkMode(bool? value)
     {
-        IsLoading = false;
-    }
-    async Task SetDarkMode(bool value)
-    {
-        if (DarkModeManager is not null)
+        if (DarkModeManager is not null && value is not null)
         {
-            await DarkModeManager.SetDarkModeAsync(value);
+            await DarkModeManager.SetDarkModeAsync(value.Value);
         }
     }
    
