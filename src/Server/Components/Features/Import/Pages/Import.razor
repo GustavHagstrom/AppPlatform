@@ -1,7 +1,8 @@
 ﻿@page "/bidcon/import"
-
+@inject AuthenticationStateProvider AuthenticationStateProvider
 
 @using Server.EstimationProcessing.Services
+@using Server.Services.Settings
 @using SharedLibrary.Constants
 @using SharedLibrary.DTOs.BidconAccess
 
@@ -74,7 +75,12 @@
 
     private async Task DownloadAsync()
     {
-        var credentials = await BidconCredentialsService.GetAsync();
+        var state = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+        if (state.User.Identity?.IsAuthenticated is false)
+        {
+            return;
+        }
+        var credentials = await BidconCredentialsService.GetAsync(state.User);
         if(ItemTree is null || credentials is null)
         {
             return;
@@ -98,22 +104,27 @@
     }
     private async Task GetEstimationItemTreeAsync()
     {
+        var state = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+        if (state.User.Identity?.IsAuthenticated is false)
+        {
+            return;
+        }
         IsRefreshing = true;
         ItemTree = null;
-        var credentials = await BidconCredentialsService.GetAsync();
-        var batch = await GetFolderBatchAsync(credentials);
-        if (batch is not null)
-        {
-            var folder = _folderService.CreateFromBatch(batch);
-            ItemTree = new TreeItem(folder);
-            ItemTree.SelectionChanged = StateHasChanged;
-        }
-        else
-        {
-            Snackbar.Add($"Error: no folders returned", Severity.Error);
-        }
-        IsRefreshing = false;
-        StateHasChanged();
+        var credentials = await BidconCredentialsService.GetAsync(state.User);
+        // var batch = await GetFolderBatchAsync(credentials);
+        // if (batch is not null)
+        // {
+        //     var folder = _folderService.CreateFromBatch(batch);
+        //     ItemTree = new TreeItem(folder);
+        //     ItemTree.SelectionChanged = StateHasChanged;
+        // }
+        // else
+        // {
+        //     Snackbar.Add($"Error: no folders returned", Severity.Error);
+        // }
+        // IsRefreshing = false;
+        // StateHasChanged();
     }
     async Task<BC_EstimationFolderBatch?> GetFolderBatchAsync(BC_DatabaseCredentialsDto? credentials)
     {

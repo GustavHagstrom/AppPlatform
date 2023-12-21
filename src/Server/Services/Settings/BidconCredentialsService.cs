@@ -26,7 +26,9 @@ public class BidconCredentialsService(IDbContextFactory<ApplicationDbContext> Co
         var orgId = user.GetOrganizationId();
         if (orgId is not null)
         {
-            var existingCredentials = await dbContext.BidconAccessCredentials.FindAsync(orgId);
+            credentials.OrganizationId = Guid.Parse(orgId);
+            var existingCredentials = await dbContext.BidconAccessCredentials
+                .FirstOrDefaultAsync(x => x.OrganizationId == credentials.OrganizationId);
             if (existingCredentials is null)
             {
                 // Insert a new record if it doesn't exist
@@ -37,6 +39,7 @@ public class BidconCredentialsService(IDbContextFactory<ApplicationDbContext> Co
             else
             {
                 // Update the existing record if it exists
+                existingCredentials.OrganizationId = credentials.OrganizationId;
                 existingCredentials.Server = credentials.Server;
                 existingCredentials.Database = credentials.Database;
                 existingCredentials.User = credentials.User;

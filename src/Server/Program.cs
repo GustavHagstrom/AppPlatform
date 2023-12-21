@@ -33,21 +33,16 @@ builder.Services.AddAuthentication(options =>
     })
     .AddIdentityCookies();
 
-
-
-if (builder.Environment.IsDevelopment())
-{
+#if DEBUG
     var connectionString = "Data Source=bin/debug/database.db";
-    //builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlite(connectionString));
     builder.Services.AddDbContextFactory<ApplicationDbContext>(options => options.UseSqlite(connectionString));
     builder.Services.AddDatabaseDeveloperPageExceptionFilter();
-}
-else
-{
+#else
     var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
-    //builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(connectionString));
     builder.Services.AddDbContextFactory<ApplicationDbContext>(options => options.UseSqlServer(connectionString));
-}
+#endif
+
+
 
 builder.Services.AddIdentityCore<User>(options => options.SignIn.RequireConfirmedAccount = false)
     .AddEntityFrameworkStores<ApplicationDbContext>()

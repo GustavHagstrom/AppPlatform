@@ -14,27 +14,27 @@
             </MudItem>
 
             <MudItem xs="12">
-                <MudSwitch T="bool" Checked="Credentials.UseDesktopBidconLink" Label="@Localizer["Skrivbordslänk"]" Color="Color.Primary" CheckedChanged="x => UpdateProperty(nameof(UseDesktopBidconLink), x)" />
+                <MudSwitch T="bool" Checked="Credentials.UseDesktopBidconLink" Label="@Localizer["Skrivbordslänk"]" Color="Color.Primary" CheckedChanged="UpdateUseDesktopBidconLink" />
             </MudItem>
 
             <MudItem xs="12">
-                <MudSwitch T="bool" Checked="!Credentials.UseDesktopBidconLink" Label="@Localizer["Direktanslutning"]" Color="Color.Primary" CheckedChanged="x => UpdateProperty(nameof(UseDesktopBidconLink), !x)" />
+                <MudSwitch T="bool" Checked="!Credentials.UseDesktopBidconLink" Label="@Localizer["Direktanslutning"]" Color="Color.Primary" CheckedChanged="x => UpdateUseDesktopBidconLink(!x)" />
             </MudItem>
 
             @if (!Credentials.UseDesktopBidconLink)
             {
                 <MudItem xs="12" sm="12" md="12">
-                    <MudSwitch T="bool" Checked="Credentials.ServerAuthentication" Label="@Localizer["Autentisering"]" Color="Color.Primary" CheckedChanged="x => UpdateProperty(nameof(ServerAuthentication), x)" />
+                    <MudSwitch T="bool" Checked="Credentials.ServerAuthentication" Label="@Localizer["Autentisering"]" Color="Color.Primary" CheckedChanged="UpdateServerAuthentication" />
                 </MudItem>
 
                 <MudItem xs="12" sm="12" md="6">
                     <MudText Typo="Typo.subtitle2" Style="color: var(--mud-palette-text-primary)">@Localizer["Servernamn"]</MudText>
-                        <MudTextField T="string" Margin="Margin.Dense" Value="Credentials.Server" Variant="Variant.Outlined" ValueChanged="x => UpdateProperty(nameof(Server), x)" />
+                        <MudTextField T="string" Margin="Margin.Dense" Value="Credentials.Server" Variant="Variant.Outlined" ValueChanged="UpdateServer" />
                     </MudItem>
 
                 <MudItem xs="12" sm="12" md="6">
                     <MudText Typo="Typo.subtitle2" Style="color: var(--mud-palette-text-primary)">@Localizer["Databasnamn"]</MudText>
-                    <MudTextField T="string" Margin="Margin.Dense" Value="Credentials.Database" Variant="Variant.Outlined" ValueChanged="x => UpdateProperty(nameof(Database), x)" />
+                    <MudTextField T="string" Margin="Margin.Dense" Value="Credentials.Database" Variant="Variant.Outlined" ValueChanged="UpdateDatabase" />
                 </MudItem>
 
 
@@ -43,12 +43,12 @@
                 {
                     <MudItem xs="12" sm="12" md="6">
                         <MudText Typo="Typo.subtitle2" Style="color: var(--mud-palette-text-primary)">@Localizer["Användare"]</MudText>
-                        <MudTextField T="string" Margin="Margin.Dense" Value="User" Variant="Variant.Outlined" ValueChanged="x => UpdateProperty(nameof(User), x)" />
+                        <MudTextField T="string" Margin="Margin.Dense" Value="Credentials.User" Variant="Variant.Outlined" ValueChanged="UpdateUser" />
                     </MudItem>
 
                     <MudItem xs="12" sm="12" md="6">
                         <MudText Typo="Typo.subtitle2" Style="color: var(--mud-palette-text-primary)">@Localizer["Lösenord"]</MudText>
-                        <MudTextField T="string" Margin="Margin.Dense" Value="Password" Variant="Variant.Outlined" ValueChanged="x => UpdateProperty(nameof(Password), x)" />
+                        <MudTextField T="string" Margin="Margin.Dense" Value="Credentials.Password" Variant="Variant.Outlined" ValueChanged="UpdatePassword" />
                     </MudItem>
                 }
             }
@@ -56,104 +56,24 @@
         </MudGrid>
     </SettingsSection>
 </SettingsPage>
-@*
-@using SharedLibrary.DTOs.BidconAccess;
 
-
-<div class="relative">
-    <MudOverlay DarkBackground="true" Absolute="true" Visible="IsLoading">
-        <MudProgressCircular Indeterminate="true" Size="Size.Large" Color="Color.Primary" />
-    </MudOverlay>
-
-    <MudGrid Spacing="1" Justify="Justify.FlexStart" Class="pa-4">
-
-        <MudItem xs="12" sm="12" md="6">
-            <MudText Typo="Typo.subtitle2" Style="color: var(--mud-palette-text-primary)">@Localizer["Senast uppdaterad:"]</MudText>
-            <MudTextField T="string" Margin="Margin.Dense" Variant="Variant.Outlined" ReadOnly="true" Value="@LastUpdated?.ToString("yyyy-MM-dd HH:mm")" />
-        </MudItem>
-
-        <MudItem xs="12">
-            <MudSwitch T="bool" Checked="UseDesktopBidconLink" Label="@Localizer["Skrivbordslänk"]" Color="Color.Primary" CheckedChanged="x => UpdateProperty(nameof(UseDesktopBidconLink), x)" />
-        </MudItem>
-
-        <MudItem xs="12">
-            <MudSwitch T="bool" Checked="!UseDesktopBidconLink" Label="@Localizer["Direktanslutning"]" Color="Color.Primary" CheckedChanged="x => UpdateProperty(nameof(UseDesktopBidconLink), !x)" />
-        </MudItem>
-
-        @if (!UseDesktopBidconLink)
-        {
-            <MudItem xs="12" sm="12" md="12">
-                <MudSwitch T="bool" Checked="ServerAuthentication" Label="@Localizer["Autentisering"]" Color="Color.Primary" CheckedChanged="x => UpdateProperty(nameof(ServerAuthentication), x)" />
-            </MudItem>
-
-            <MudItem xs="12" sm="12" md="6">
-                <MudText Typo="Typo.subtitle2" Style="color: var(--mud-palette-text-primary)">@Localizer["Servernamn"]</MudText>
-                <MudTextField T="string" Margin="Margin.Dense" Value="Server" Variant="Variant.Outlined" ValueChanged="x => UpdateProperty(nameof(Server), x)" />
-            </MudItem>
-
-            <MudItem xs="12" sm="12" md="6">
-                <MudText Typo="Typo.subtitle2" Style="color: var(--mud-palette-text-primary)">@Localizer["Databasnamn"]</MudText>
-                <MudTextField T="string" Margin="Margin.Dense" Value="Database" Variant="Variant.Outlined" ValueChanged="x => UpdateProperty(nameof(Database), x)" />
-            </MudItem>
-
-
-
-            @if (ServerAuthentication)
-            {
-                <MudItem xs="12" sm="12" md="6">
-                    <MudText Typo="Typo.subtitle2" Style="color: var(--mud-palette-text-primary)">@Localizer["Användare"]</MudText>
-                    <MudTextField T="string" Margin="Margin.Dense" Value="User" Variant="Variant.Outlined" ValueChanged="x => UpdateProperty(nameof(User), x)" />
-                </MudItem>
-
-                <MudItem xs="12" sm="12" md="6">
-                    <MudText Typo="Typo.subtitle2" Style="color: var(--mud-palette-text-primary)">@Localizer["Lösenord"]</MudText>
-                    <MudTextField T="string" Margin="Margin.Dense" Value="Password" Variant="Variant.Outlined" ValueChanged="x => UpdateProperty(nameof(Password), x)" />
-                </MudItem>
-            }
-        }
-
-    </MudGrid>
-</div>
-*@
 @code {
     bool IsLoading = false;
-
-    // string Server = string.Empty;
-    // string Database = string.Empty;
-    // string User = string.Empty;
-    // string Password = string.Empty;
-    // bool ServerAuthentication;
-    // bool UseDesktopBidconLink;
-    // DateTime? LastUpdated;
-
     BidconAccessCredentials Credentials = new();
 
-    // async Task UpdateProperty(string propertyName, object value)
-    // {
-    //     switch (propertyName)
-    //     {
-    //         case nameof(Server):
-    //             Server = (string)value;
-    //             break;
-    //         case nameof(Database):
-    //             Database = (string)value;
-    //             break;
-    //         case nameof(User):
-    //             User = (string)value;
-    //             break;
-    //         case nameof(Password):
-    //             Password = (string)value;
-    //             break;
-    //         case nameof(ServerAuthentication):
-    //             ServerAuthentication = (bool)value;
-    //             break;
-    //         case nameof(UseDesktopBidconLink):
-    //             UseDesktopBidconLink = (bool)value;
-    //             break;
-    //     }
-    //     await SaveValuesAsync(CreateDtoFromValues());
-    //     LastUpdated = DateTime.Now;
-    // }
+    async Task UpdateUseDesktopBidconLink(bool useDesktopBidconLink) => await UpdatePropertyAsync(() => Credentials.UseDesktopBidconLink = useDesktopBidconLink);
+    async Task UpdateServerAuthentication(bool userServerAuthentication) => await UpdatePropertyAsync(() => Credentials.ServerAuthentication = userServerAuthentication);
+    async Task UpdateServer(string server) => await UpdatePropertyAsync(() => Credentials.Server = server);
+    async Task UpdateDatabase(string database) => await UpdatePropertyAsync(() => Credentials.Database = database);
+    async Task UpdateUser(string user) => await UpdatePropertyAsync(() => Credentials.User = user);
+    async Task UpdatePassword(string password) => await UpdatePropertyAsync(() => Credentials.Password = password);
+
+    async Task UpdatePropertyAsync(Action updateAction)
+    {
+        updateAction();
+        await UpsertAsync();
+    }
+
     protected override async Task OnInitializedAsync()
     {
         await RefreshFromBackendAsync();
@@ -177,6 +97,7 @@
         {
             return;
         }
+        Credentials.LastUpdated = DateTime.Now;
         await CredentialsService.UpsertAsync(state.User, Credentials);
     }
 
