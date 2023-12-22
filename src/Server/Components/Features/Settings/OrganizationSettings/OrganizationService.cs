@@ -5,7 +5,7 @@ using Server.Enteties;
 using Server.Extensions;
 using System.Security.Claims;
 
-namespace Server.Components.Shared.Organization;
+namespace Server.Components.Features.Settings.OrganizationSettings;
 
 public class OrganizationService : IOrganizationService
 {
@@ -17,7 +17,7 @@ public class OrganizationService : IOrganizationService
         _contextFactory = contextFactory;
         _signInManager = signInManager;
     }
-    public async Task<IEnumerable<Enteties.Organization>> GetAllAsync(ClaimsPrincipal userClaims)
+    public async Task<IEnumerable<Organization>> GetAllAsync(ClaimsPrincipal userClaims)
     {
         var dbContext = _contextFactory.CreateDbContext();
         var organizations = await dbContext.UserOrganizations
@@ -33,7 +33,7 @@ public class OrganizationService : IOrganizationService
         var user = await dbContext.Users.FindAsync(userClaims.GetUserId());
         return user?.ActiveOrganizationId;
     }
-    public async Task SetActiveAsync(ClaimsPrincipal userClaims, Enteties.Organization organization)
+    public async Task SetActiveAsync(ClaimsPrincipal userClaims, Organization organization)
     {
         var dbContext = _contextFactory.CreateDbContext();
         var user = await dbContext.Users.FindAsync(userClaims.GetUserId());
