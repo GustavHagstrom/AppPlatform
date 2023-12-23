@@ -1,9 +1,17 @@
 ﻿@page "/settings/organization"
 @inject IStringLocalizer<OrganizationPage> Localizer
+@inject NavigationManager NavigationManager
 <SettingsPage Title="@Localizer["Organisation"]">
-    <SettingsSection Title="@Localizer["Allmänt"]">
+    @* <SettingsSection Title="@Localizer["Allmänt"]">
+        
+    </SettingsSection> *@
+    <div class="d-flex gap-1">
         <OrganizationPicker />
-    </SettingsSection>
+        <MudIconButton Variant="Variant.Outlined" Icon="@Icons.Material.Sharp.Add" Color="@Color.Primary"
+                       Style="margin-bottom: 2px; margin-top: 3px;"
+                       OnClick="() => NavigationManager.NavigateTo(ApplicationRoutes.Settings.Organization.New)"/>
+    </div>
+    
 </SettingsPage>
 
 @code {

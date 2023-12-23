@@ -35,13 +35,38 @@ public class OrganizationService : IOrganizationService
     }
     public async Task SetActiveAsync(ClaimsPrincipal userClaims, Organization organization)
     {
-        var dbContext = _contextFactory.CreateDbContext();
-        var user = await dbContext.Users.FindAsync(userClaims.GetUserId());
-        if (user is not null)
+        await ExecuteIfUserIsNotNull(userClaims, async (user, dbContext) =>
         {
             user.ActiveOrganizationId = organization.Id;
             await dbContext.SaveChangesAsync();
             await _signInManager.RefreshSignInAsync(user);
+        });
+    }
+
+    public async Task CreateAsync(ClaimsPrincipal userClaims, Organization organization)
+    {
+        await ExecuteIfUserIsNotNull(userClaims, async (user, dbContext) =>
+        {
+            organization.Id = Guid.NewGuid();
+            dbContext.Organizations.Add(organization);
+            dbContext.UserOrganizations.Add(new UserOrganization
+            {
+                OrganizationId = organization.Id,
+                UserId = user.Id
+            });
+            user.ActiveOrganizationId = organization.Id;
+            await dbContext.SaveChangesAsync();
+            //await _signInManager.RefreshSignInAsync(user);
+        });
+    }
+
+    private async Task ExecuteIfUserIsNotNull(ClaimsPrincipal userClaims, Func<User, ApplicationDbContext, Task> action)
+    {
+        var dbContext = _contextFactory.CreateDbContext();
+        var user = await dbContext.Users.FindAsync(userClaims.GetUserId());
+        if (user is not null)
+        {
+            await action(user, dbContext);
         }
     }
 }
