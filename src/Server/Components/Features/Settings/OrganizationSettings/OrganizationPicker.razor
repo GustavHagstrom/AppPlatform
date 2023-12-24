@@ -10,7 +10,7 @@
 
     <MudSelect T="Organization" Placeholder="@Localizer["Välj organisation"]" Label="@Localizer["Aktiv organisation"]" 
                 Variant="Variant.Outlined" AnchorOrigin="Origin.BottomCenter" Style="width: 250px;"
-                MultiSelection="false" Value="ActiveOrganization" ValueChanged="OnValueChanged"
+                MultiSelection="false" Value="ActiveOrganizationContainer?.ActiveOrganization" ValueChanged="OnValueChanged"
                 Margin="Margin.Dense" Dense="true" ToStringFunc="OrganizationToString">
         @foreach (var organization in Organizations)
         {
@@ -18,16 +18,17 @@
         }
     </MudSelect>
 
- @code {
+@code {
     public List<Organization> Organizations { get; private set; } = new List<Organization>();
-    public Organization? ActiveOrganization { get; private set; }
+    [CascadingParameter] public ActiveOrganizationContainer? ActiveOrganizationContainer { get; set; }
 
     Func<Organization, string> OrganizationToString = org => org?.Name ?? string.Empty;
     async Task OnValueChanged(Organization orgValue)
     {
-        var userClaims = (await AuthProvider.GetAuthenticationStateAsync()).User;
-        ActiveOrganization = orgValue;
-        await OrganizationService.SetActiveAsync(userClaims, orgValue);
+        if(ActiveOrganizationContainer is not null)
+        {
+            await ActiveOrganizationContainer.SetActiveOrganizationAsync(orgValue);
+        }
     }
     protected override async Task OnInitializedAsync()
     {
@@ -39,8 +40,6 @@
         var orgs = await OrganizationService.GetAllAsync(userClaims);
         Organizations.Clear();
         Organizations.AddRange(orgs);
-        var activeOrgId = await OrganizationService.GetActiveOrgIdAsync(userClaims);
-        ActiveOrganization = Organizations.Where(x => x.Id == activeOrgId).FirstOrDefault() ?? null;
     }
 }
 

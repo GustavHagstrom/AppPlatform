@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Server.Data;
 using Server.Enteties;
 using Server.Extensions;
@@ -10,12 +9,10 @@ namespace Server.Components.Features.Settings.OrganizationSettings;
 public class OrganizationService : IOrganizationService
 {
     private readonly IDbContextFactory<ApplicationDbContext> _contextFactory;
-    private readonly SignInManager<User> _signInManager;
 
-    public OrganizationService(IDbContextFactory<ApplicationDbContext> contextFactory, SignInManager<User> signInManager)
+    public OrganizationService(IDbContextFactory<ApplicationDbContext> contextFactory)
     {
         _contextFactory = contextFactory;
-        _signInManager = signInManager;
     }
     public async Task<IEnumerable<Organization>> GetAllAsync(ClaimsPrincipal userClaims)
     {
@@ -39,7 +36,6 @@ public class OrganizationService : IOrganizationService
         {
             user.ActiveOrganizationId = organization.Id;
             await dbContext.SaveChangesAsync();
-            await _signInManager.RefreshSignInAsync(user);
         });
     }
 
@@ -56,7 +52,6 @@ public class OrganizationService : IOrganizationService
             });
             user.ActiveOrganizationId = organization.Id;
             await dbContext.SaveChangesAsync();
-            //await _signInManager.RefreshSignInAsync(user);
         });
     }
 

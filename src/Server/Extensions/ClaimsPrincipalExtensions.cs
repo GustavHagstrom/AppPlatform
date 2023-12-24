@@ -9,8 +9,4 @@ public static class ClaimsPrincipalExtensions
     {
         return userPrincipal.FindFirst(ClaimTypes.NameIdentifier)?.Value;
     }
-    public static string? GetOrganizationId(this ClaimsPrincipal userPrincipal)
-    {
-        return userPrincipal.FindFirst(AuthenticationConstants.OrganizationIdClaim)?.Value;
-    }
 }

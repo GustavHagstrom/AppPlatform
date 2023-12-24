@@ -1,0 +1,43 @@
+﻿@using Microsoft.EntityFrameworkCore
+@using Server.Data
+@using Server.Extensions
+@inject ApplicationDbContext _dbContext
+@inject AuthenticationStateProvider _authProvider
+<div/>
+@code{
+    public Organization? ActiveOrganization { get; private set; }
+    public string ActiveOrganizationName => ActiveOrganization?.Name ?? string.Empty;
+
+    public async Task SetActiveOrganizationAsync(Organization? organization)
+    {
+        var state = await _authProvider.GetAuthenticationStateAsync();
+        if (state.User.Identity?.IsAuthenticated == true)
+        {
+            ActiveOrganization = organization;
+            var user = await _dbContext.Users.FindAsync(state.User.GetUserId());
+            if(user is not null)
+            {
+                user.ActiveOrganizationId = organization?.Id;
+                await _dbContext.SaveChangesAsync();
+                StateHasChanged();
+            }
+        }
+    }
+    public async Task RefreshAsync()
+    {
+        var state = await _authProvider.GetAuthenticationStateAsync();
+        if (state.User.Identity?.IsAuthenticated == true)
+        {
+            var user = await _dbContext.Users
+                .Include(x => x.ActiveOrganization)
+                .Where(x => x.Id == state.User.GetUserId())
+                .FirstOrDefaultAsync();
+            await SetActiveOrganizationAsync(user?.ActiveOrganization);
+        }
+    }
+    protected override async Task OnInitializedAsync()
+    {
+        await RefreshAsync();
+    }
+
+}
