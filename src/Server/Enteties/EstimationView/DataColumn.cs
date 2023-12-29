@@ -1,10 +1,14 @@
-﻿namespace Server.Enteties.EstimationView;
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace Server.Enteties.EstimationView;
 public class DataColumn : IEstimationViewEntity
 {
-    public Guid Id { get; set; }
+    [StringLength(450)]
+    public string Id { get; set; } = Guid.NewGuid().ToString();
     public int Order { get; set; }
     public int WidthPercent { get; set; }
 
-    public Guid DataSectionTemplateId { get; set; }
+    [StringLength(450)]
+    public string DataSectionTemplateId { get; set; } = string.Empty;
     public DataSectionTemplate? DataSectionTemplate { get; set; }
 }

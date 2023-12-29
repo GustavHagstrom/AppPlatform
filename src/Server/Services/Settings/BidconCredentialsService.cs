@@ -29,7 +29,7 @@ public class BidconCredentialsService(IDbContextFactory<ApplicationDbContext> Co
             return;
         }
         
-        credentials.OrganizationId = user.ActiveOrganizationId.Value;
+        credentials.OrganizationId = user.ActiveOrganizationId;
         var existingCredentials = await dbContext.BidconAccessCredentials
             .FirstOrDefaultAsync(x => x.OrganizationId == credentials.OrganizationId);
         if (existingCredentials is null)

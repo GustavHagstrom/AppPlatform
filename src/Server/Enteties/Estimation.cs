@@ -1,8 +1,12 @@
-﻿namespace Server.Enteties;
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace Server.Enteties;
 
 public class Estimation
 {
-    public Guid Id { get; set; }
-    public Guid OrganizationId { get; set; }
+    [StringLength(450)]
+    public string Id { get; set; } = Guid.NewGuid().ToString();
+    [StringLength(450)]
+    public string OrganizationId { get; set; } = string.Empty;
     public Organization? Organization { get; set; }
 }

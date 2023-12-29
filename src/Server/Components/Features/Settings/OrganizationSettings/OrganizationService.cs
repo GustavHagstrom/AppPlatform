@@ -24,7 +24,7 @@ public class OrganizationService : IOrganizationService
         return organizations.Select(x => x.Organization!);
 
     }
-    public async Task<Guid?> GetActiveOrgIdAsync(ClaimsPrincipal userClaims)
+    public async Task<string?> GetActiveOrgIdAsync(ClaimsPrincipal userClaims)
     {
         var dbContext = _contextFactory.CreateDbContext();
         var user = await dbContext.Users.FindAsync(userClaims.GetUserId());
@@ -43,7 +43,7 @@ public class OrganizationService : IOrganizationService
     {
         await ExecuteIfUserIsNotNull(userClaims, async (user, dbContext) =>
         {
-            organization.Id = Guid.NewGuid();
+            //organization.Id = Guid.NewGuid().To;
             dbContext.Organizations.Add(organization);
             dbContext.UserOrganizations.Add(new UserOrganization
             {

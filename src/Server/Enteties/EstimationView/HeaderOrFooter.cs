@@ -4,13 +4,15 @@ using System.ComponentModel.DataAnnotations;
 namespace Server.Enteties.EstimationView;
 public class HeaderOrFooter : IEstimationViewEntity
 {
-    public Guid Id { get; set; }
+    [StringLength(450)]
+    public string Id { get; set; } = Guid.NewGuid().ToString();
     [StringLength(50)]
     public required string Value { get; set; }
     public required HeaderOrFooterPosition Position { get; set; }
 
 
 
-    public Guid EstimationViewTemplateId { get; set; }
+    [StringLength(450)]
+    public string EstimationViewTemplateId { get; set; } = string.Empty;
     public EstimationViewTemplate? EstimationViewTemplate { get; set; }
 }

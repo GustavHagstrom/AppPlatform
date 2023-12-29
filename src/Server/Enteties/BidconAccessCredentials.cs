@@ -6,7 +6,8 @@ namespace Server.Enteties;
 public class BidconAccessCredentials
 {
     [Key]
-    public Guid OrganizationId { get; set; }
+    [StringLength(450)]
+    public string OrganizationId { get; set; } = string.Empty;
     public Organization? Organization { get; set; }
     [StringLength(50)]
     [AllowNull]

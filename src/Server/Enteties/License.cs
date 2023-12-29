@@ -4,8 +4,10 @@ namespace Server.Enteties;
 
 public class License
 {
-    public Guid Id { get; set; }
+    [StringLength(450)]
+    public string Id { get; set; } = Guid.NewGuid().ToString();
     public int UserLimit { get; set; }
-    public Guid OrganizationId { get; set; }
+    [StringLength(450)]
+    public string OrganizationId { get; set; } = string.Empty;
     public Organization? Organization { get; set; }
 }
