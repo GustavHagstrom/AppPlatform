@@ -2,15 +2,18 @@
 @inject IStringLocalizer<OrganizationPage> Localizer
 @inject NavigationManager NavigationManager
 <SettingsPage Title="@Localizer["Organisation"]">
-    @* <SettingsSection Title="@Localizer["Allmänt"]">
-        
-    </SettingsSection> *@
-    <div class="d-flex gap-1">
-        <OrganizationPicker />
-        <MudIconButton Variant="Variant.Outlined" Icon="@Icons.Material.Sharp.Add" Color="@Color.Primary"
-                       Style="margin-bottom: 2px; margin-top: 3px;"
-                       OnClick="() => NavigationManager.NavigateTo(ApplicationRoutes.Settings.Organization.New)"/>
-    </div>
+    
+    <SettingsSection Title="@Localizer["Välj"]">
+        <div class="d-flex gap-1 pb-4">
+            <OrganizationPicker />
+            <MudIconButton Variant="Variant.Outlined" Icon="@Icons.Material.Sharp.Add" Color="@Color.Primary"
+                           Style="margin-bottom: 2px; margin-top: 3px;"
+                           OnClick="() => NavigationManager.NavigateTo(ApplicationRoutes.Settings.Organization.New)" />
+        </div>
+    </SettingsSection>
+    <SettingsSection Title="@Localizer["Redigera"]">
+        <OrganizationEditor />
+    </SettingsSection>
     
 </SettingsPage>
 

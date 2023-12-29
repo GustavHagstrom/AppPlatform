@@ -3,28 +3,20 @@
 @using Server.Extensions
 @inject ApplicationDbContext _dbContext
 @inject AuthenticationStateProvider _authProvider
+@inject IOrganizationService _organizationService
 <CascadingValue Value="this">
     @ChildContent
 </CascadingValue>
 @code{
     [Parameter] public RenderFragment? ChildContent { get; set; }
     public Organization? ActiveOrganization { get; private set; }
-    // public string ActiveOrganizationName => ActiveOrganization?.Name ?? string.Empty;
 
     public async Task SetActiveOrganizationAsync(Organization? organization)
     {
         var state = await _authProvider.GetAuthenticationStateAsync();
-        if (state.User.Identity?.IsAuthenticated == true)
-        {
-            ActiveOrganization = organization;
-            var user = await _dbContext.Users.FindAsync(state.User.GetUserId());
-            if(user is not null)
-            {
-                user.ActiveOrganizationId = organization?.Id;
-                await _dbContext.SaveChangesAsync();
-                StateHasChanged();
-            }
-        }
+        await _organizationService.SetActiveAsync(state.User, organization);
+        ActiveOrganization = organization;
+        StateHasChanged();
     }
     public async Task RefreshAsync()
     {
@@ -37,6 +29,17 @@
                 .FirstOrDefaultAsync();
             await SetActiveOrganizationAsync(user?.ActiveOrganization);
         }
+    }
+    /// <summary>
+    /// Saves changes to the active organization to the database
+    /// </summary>
+    /// <returns></returns>
+    public async Task SaveChangesAsync()
+    {
+        if (ActiveOrganization is null) return;
+        var state = await _authProvider.GetAuthenticationStateAsync();
+        await _organizationService.UpdateAsync(state.User, ActiveOrganization);
+        StateHasChanged();
     }
     protected override async Task OnInitializedAsync()
     {

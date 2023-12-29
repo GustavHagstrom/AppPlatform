@@ -1,0 +1,24 @@
+﻿@inject IStringLocalizer<OrganizationEditor> Localizer
+
+<MudTextField T="string" Value="ActiveOrganizationContainer?.ActiveOrganization?.Name" ValueChanged="OnValueChanged"
+              Label="@Localizer["Namn"]"  Margin="Margin.Dense" Variant="Variant.Outlined"/>
+
+
+
+
+
+@code {
+    [CascadingParameter] public ActiveOrganizationContainer? ActiveOrganizationContainer { get; set; }
+
+    string EmptyString = string.Empty;
+
+    async Task OnValueChanged(string value)
+    {
+        if (ActiveOrganizationContainer?.ActiveOrganization is not null)
+        {
+            ActiveOrganizationContainer.ActiveOrganization.Name = value;
+            await ActiveOrganizationContainer.SetActiveOrganizationAsync(ActiveOrganizationContainer.ActiveOrganization);
+        }
+        
+    }
+}

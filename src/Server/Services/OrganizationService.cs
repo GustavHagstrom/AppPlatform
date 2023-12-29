@@ -4,7 +4,7 @@ using Server.Enteties;
 using Server.Extensions;
 using System.Security.Claims;
 
-namespace Server.Components.Features.Settings.OrganizationSettings;
+namespace Server.Services;
 
 public class OrganizationService : IOrganizationService
 {
@@ -30,11 +30,11 @@ public class OrganizationService : IOrganizationService
         var user = await dbContext.Users.FindAsync(userClaims.GetUserId());
         return user?.ActiveOrganizationId;
     }
-    public async Task SetActiveAsync(ClaimsPrincipal userClaims, Organization organization)
+    public async Task SetActiveAsync(ClaimsPrincipal userClaims, Organization? organization)
     {
         await ExecuteIfUserIsNotNull(userClaims, async (user, dbContext) =>
         {
-            user.ActiveOrganizationId = organization.Id;
+            user.ActiveOrganizationId = organization?.Id;
             await dbContext.SaveChangesAsync();
         });
     }
@@ -43,7 +43,6 @@ public class OrganizationService : IOrganizationService
     {
         await ExecuteIfUserIsNotNull(userClaims, async (user, dbContext) =>
         {
-            //organization.Id = Guid.NewGuid().To;
             dbContext.Organizations.Add(organization);
             dbContext.UserOrganizations.Add(new UserOrganization
             {
@@ -54,9 +53,21 @@ public class OrganizationService : IOrganizationService
             await dbContext.SaveChangesAsync();
         });
     }
-
+ public async Task UpdateAsync(ClaimsPrincipal userClaims, Organization organization)
+    {
+        await ExecuteIfUserIsNotNull(userClaims, async (user, dbContext) =>
+        {
+            var org = await dbContext.Organizations.FindAsync(organization.Id);
+            if(org is not null)
+            {
+                org.Name = organization.Name;
+                await dbContext.SaveChangesAsync();
+            }
+        });
+    }
     private async Task ExecuteIfUserIsNotNull(ClaimsPrincipal userClaims, Func<User, ApplicationDbContext, Task> action)
     {
+        if (userClaims.Identity?.IsAuthenticated == false) return;
         var dbContext = _contextFactory.CreateDbContext();
         var user = await dbContext.Users.FindAsync(userClaims.GetUserId());
         if (user is not null)
@@ -64,4 +75,6 @@ public class OrganizationService : IOrganizationService
             await action(user, dbContext);
         }
     }
+
+   
 }

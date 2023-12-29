@@ -1,7 +1,7 @@
 ﻿using MudBlazor;
 using MudBlazor.Services;
-using Server.Components.Features.Settings.OrganizationSettings;
 using Server.Components.Shared.StateManagment;
+using Server.Services;
 using Server.Services.Settings;
 
 
