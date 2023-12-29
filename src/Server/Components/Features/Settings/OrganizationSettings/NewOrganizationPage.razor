@@ -6,13 +6,20 @@
 @inject NavigationManager NavigationManager
 
 <SettingsPage Title="@Localizer["Skapa ny organisation"]" >
-    <MudTextField T="string" Label="@Localizer["Namn"]" Variant="Variant.Outlined" @bind-Value="Name" Validation="@(new Func<string, string>(ValidateName))" />
-    <div class="d-flex">
-        <MudButton Variant="Variant.Outlined" Color="Color.Primary" @onclick="Submit">@Localizer["Skapa"]</MudButton>
-        <MudButton Variant="Variant.Outlined" Color="Color.Secondary" @onclick="@(async () => await JSRuntime.InvokeVoidAsync("history.back"))">@Localizer["Avbryt"]</MudButton>
+    <div>
+        <MudTextField T="string" Label="@Localizer["Namn"]" Variant="Variant.Outlined" @bind-Value="Name" Validation="@(new Func<string, string>(ValidateName))" 
+                      Margin="Margin.Dense"/>
+        <div style="margin-top: 16px;"/>
+        <div class="d-flex gap-1">
+            <MudSpacer />
+            <MudButton Variant="Variant.Outlined" Color="Color.Secondary" @onclick="@(async () => await JSRuntime.InvokeVoidAsync("history.back"))">@Localizer["Avbryt"]</MudButton>
+            <MudButton Variant="Variant.Outlined" Color="Color.Primary" @onclick="Submit">@Localizer["Skapa"]</MudButton>
+        </div>
     </div>
+    
 </SettingsPage>
-    @code {
+
+@code {
     string Name { get; set; } = string.Empty;
     [CascadingParameter] public ActiveOrganizationContainer? ActiveOrganizationContainer { get; set; }
 
@@ -41,7 +48,7 @@
             await OrganizationService.CreateAsync(state.User, org);
             if (ActiveOrganizationContainer is not null)
             {
-                await ActiveOrganizationContainer.RefreshAsync();
+                await ActiveOrganizationContainer.SetActiveOrganizationAsync(org);
             }
             NavigationManager.NavigateTo(ApplicationRoutes.Settings.Organization.Index);
         }
