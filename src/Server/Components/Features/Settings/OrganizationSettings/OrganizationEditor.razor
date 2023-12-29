@@ -1,11 +1,8 @@
 ﻿@inject IStringLocalizer<OrganizationEditor> Localizer
-
+@inject IOrganizationService OrganizationService
+@inject AuthenticationStateProvider AuthProvider
 <MudTextField T="string" Value="ActiveOrganizationContainer?.ActiveOrganization?.Name" ValueChanged="OnValueChanged"
               Label="@Localizer["Namn"]"  Margin="Margin.Dense" Variant="Variant.Outlined"/>
-
-
-
-
 
 @code {
     [CascadingParameter] public ActiveOrganizationContainer? ActiveOrganizationContainer { get; set; }
@@ -17,7 +14,9 @@
         if (ActiveOrganizationContainer?.ActiveOrganization is not null)
         {
             ActiveOrganizationContainer.ActiveOrganization.Name = value;
-            await ActiveOrganizationContainer.SetActiveOrganizationAsync(ActiveOrganizationContainer.ActiveOrganization);
+            var state = await AuthProvider.GetAuthenticationStateAsync();
+            await OrganizationService.UpdateAsync(state.User, ActiveOrganizationContainer.ActiveOrganization);
+            await ActiveOrganizationContainer.RefreshAsync();
         }
         
     }
