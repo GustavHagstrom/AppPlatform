@@ -3,10 +3,13 @@
 @using Server.Extensions
 @inject ApplicationDbContext _dbContext
 @inject AuthenticationStateProvider _authProvider
-<div/>
+<CascadingValue Value="this">
+    @ChildContent
+</CascadingValue>
 @code{
+    [Parameter] public RenderFragment? ChildContent { get; set; }
     public Organization? ActiveOrganization { get; private set; }
-    public string ActiveOrganizationName => ActiveOrganization?.Name ?? string.Empty;
+    // public string ActiveOrganizationName => ActiveOrganization?.Name ?? string.Empty;
 
     public async Task SetActiveOrganizationAsync(Organization? organization)
     {
