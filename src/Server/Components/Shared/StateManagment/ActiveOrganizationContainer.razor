@@ -11,6 +11,8 @@
     [Parameter] public RenderFragment? ChildContent { get; set; }
     public Organization? ActiveOrganization { get; private set; }
 
+    public void NotifyStateChanged() => StateHasChanged();
+
     public async Task SetActiveOrganizationAsync(Organization? organization)
     {
         var state = await _authProvider.GetAuthenticationStateAsync();
@@ -18,7 +20,7 @@
         ActiveOrganization = organization;
         StateHasChanged();
     }
-    public async Task RefreshAsync()
+    protected override async Task OnInitializedAsync()
     {
         var state = await _authProvider.GetAuthenticationStateAsync();
         if (state.User.Identity?.IsAuthenticated == true)
@@ -30,10 +32,6 @@
             await SetActiveOrganizationAsync(user?.ActiveOrganization);
             StateHasChanged();
         }
-    }
-    protected override async Task OnInitializedAsync()
-    {
-        await RefreshAsync();
     }
 
 }

@@ -1,5 +1,4 @@
 ﻿@using Server.Components
-
 @inherits LayoutComponentBase
 @layout MainLayout
 @inject IStringLocalizer<SettingsLayout> Localizer
@@ -15,7 +14,7 @@
             <MudNavLink Match="NavLinkMatch.All" Icon="@CustomIcons.BidconIcon" Href="@ApplicationRoutes.Settings.Bidcon">
                 <MudText Typo="Typo.subtitle1" Style="font-weight: 500;">@Localizer["Bidcon"]</MudText>
             </MudNavLink>
-            <MudNavLink Match="NavLinkMatch.All" Icon="@Icons.Material.Sharp.Business" Href="@ApplicationRoutes.Settings.Organization.Index">
+            <MudNavLink Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Sharp.Business" Href="@ApplicationRoutes.Settings.Organization.Index">
                 <MudText Typo="Typo.subtitle1" Style="font-weight: 500;">@Localizer["Organisation"]</MudText>
             </MudNavLink>
         </MudNavMenu>

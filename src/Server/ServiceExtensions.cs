@@ -1,6 +1,6 @@
 ﻿using MudBlazor;
 using MudBlazor.Services;
-using Server.Components.Shared.StateManagment;
+using Server.Components.Features.Settings.OrganizationSettings;
 using Server.Services;
 using Server.Services.Settings;
 
@@ -15,7 +15,7 @@ internal static class ServiceExtensions
         services.AddScoped<IDarkModeService, DarkModeService>();
         services.AddTransient<IOrganizationService, OrganizationService>();
         services.AddTransient<IBidconCredentialsService, BidconCredentialsService>();
-
+        services.AddTransient<OrganizationValidation>();
         services.AddMudServices(config =>
         {
             config.SnackbarConfiguration.PositionClass = Defaults.Classes.Position.BottomCenter;

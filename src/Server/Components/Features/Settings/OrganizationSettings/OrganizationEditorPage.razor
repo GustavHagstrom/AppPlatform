@@ -1,0 +1,50 @@
+﻿@page "/settings/organization/edit"
+@inject IStringLocalizer<OrganizationEditorPage> Localizer
+@inject IOrganizationService OrganizationService
+@inject AuthenticationStateProvider AuthProvider
+@inject OrganizationValidation OrganizationValidation
+@inject IJSRuntime JSRuntime
+@inject NavigationManager NavigationManager
+
+<SettingsPage Title="@Localizer["Redigera"]">
+    
+    <div>
+        <MudTextField T="string" @bind-Value="Name" Validation="@(new Func<string, string>(OrganizationValidation.ValidateName))"
+                      Label="@Localizer["Namn"]" Margin="Margin.Dense" Variant="Variant.Outlined" />
+        <div style="margin-top: 16px;" />
+        <div class="d-flex gap-1">
+            <MudSpacer />
+            <MudButton Variant="Variant.Outlined" Color="Color.Secondary" @onclick="@(async () => await JSRuntime.InvokeVoidAsync("history.back"))">@Localizer["Avbryt"]</MudButton>
+            <MudButton Variant="Variant.Outlined" Color="Color.Primary" @onclick="Submit">@Localizer["Spara"]</MudButton>
+        </div>
+    </div>
+</SettingsPage>
+
+
+@code {
+    [CascadingParameter] public ActiveOrganizationContainer? ActiveOrganizationContainer { get; set; }
+
+    string Name = string.Empty;
+
+    protected override void OnInitialized()
+    {
+        Name = ActiveOrganizationContainer?.ActiveOrganization?.Name ?? string.Empty;
+    }
+    protected override void OnParametersSet()
+    {
+        Name = ActiveOrganizationContainer?.ActiveOrganization?.Name ?? string.Empty;
+    }
+
+    async Task Submit()
+    {
+        if (ActiveOrganizationContainer?.ActiveOrganization is not null)
+        {
+            ActiveOrganizationContainer.ActiveOrganization.Name = Name;
+            var state = await AuthProvider.GetAuthenticationStateAsync();
+            await OrganizationService.UpdateAsync(state.User, ActiveOrganizationContainer.ActiveOrganization);
+            ActiveOrganizationContainer.NotifyStateChanged();
+            NavigationManager.NavigateTo(ApplicationRoutes.Settings.Organization.Index);
+        }
+        
+    }
+}
