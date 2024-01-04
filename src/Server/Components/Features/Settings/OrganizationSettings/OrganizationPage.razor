@@ -1,6 +1,7 @@
 ﻿@page "/settings/organization"
 @inject IStringLocalizer<OrganizationPage> Localizer
 @inject NavigationManager NavigationManager
+@inject IActiveOrganizationChangeSubscriber ActiveOrganizationChangeSubscriber
 <SettingsPage Title="@Localizer["Organisation"]">
     
     <SettingsSection Title="@Localizer["Välj"]">
@@ -14,5 +15,20 @@
                             OnClick="() => NavigationManager.NavigateTo(ApplicationRoutes.Settings.Organization.Edit)" />
         </div>
     </SettingsSection>
+    <SettingsSection Title="@Localizer["Licens"]">
+
+    </SettingsSection>
+    <SettingsSection Title="@Localizer["Användare"]">
+
+    </SettingsSection>
+
     
 </SettingsPage>
+
+@code{
+
+    override OnInitialized()
+    {
+        ActiveOrganizationChangeSubscriber.OnActiveOrganizationChanged += OnActiveOrganizationChanged;
+    }
+}

@@ -10,6 +10,7 @@
 @code{
     [Parameter] public RenderFragment? ChildContent { get; set; }
     public Organization? ActiveOrganization { get; private set; }
+    public event Action<Organization>? OnActiveOrganizationChanged;
 
     public void NotifyStateChanged() => StateHasChanged();
 
@@ -18,6 +19,7 @@
         var state = await _authProvider.GetAuthenticationStateAsync();
         await _organizationService.SetActiveAsync(state.User, organization);
         ActiveOrganization = organization;
+        await OnActiveOrganizationChanged?.Invoke(organization);
         StateHasChanged();
     }
     protected override async Task OnInitializedAsync()
