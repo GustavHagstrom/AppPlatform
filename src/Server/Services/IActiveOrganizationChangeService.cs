@@ -2,7 +2,7 @@
 using Server.Enteties;
 
 namespace Server.Services;
-public interface IActiveOrganizationChangeSubscriber : IDisposable
+public interface IActiveOrganizationChangeService : IDisposable
 {
     void SetSubscription(ActiveOrganizationContainer activeOrganizationContainer, Func<Organization, Task> OnChangeTask);
 }

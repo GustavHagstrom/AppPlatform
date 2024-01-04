@@ -3,7 +3,7 @@ using Server.Enteties;
 
 namespace Server.Services;
 
-public class ActiveOrganizationChangeSubscriber : IActiveOrganizationChangeSubscriber
+public class ActiveOrganizationChangeService : IActiveOrganizationChangeService
 {
     private ActiveOrganizationContainer? _activeOrganizationContainer;
     Func<Organization, Task>? _onChangeTask;
@@ -12,6 +12,7 @@ public class ActiveOrganizationChangeSubscriber : IActiveOrganizationChangeSubsc
         Dispose();
         _activeOrganizationContainer = activeOrganizationContainer;
         _onChangeTask = OnChangeTask;
+        _activeOrganizationContainer.OnActiveOrganizationChanged += _onChangeTask;
     }
     public void Dispose()
     {
