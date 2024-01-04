@@ -14,7 +14,7 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
  
     public DbSet<UserOrganization> UserOrganizations { get; set; }
     public DbSet<Organization> Organizations { get; set; }
-    public DbSet<License> Licenses { get; set; }
+    public DbSet<Subscription> Licenses { get; set; }
     public DbSet<BidconAccessCredentials> BidconAccessCredentials { get; set; }
     public DbSet<EstimationViewTemplate> EstimationViewTemplates { get; set; }
     //public DbSet<Estimation> Estimations { get; set; }

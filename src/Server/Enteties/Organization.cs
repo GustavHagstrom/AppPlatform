@@ -12,6 +12,6 @@ public class Organization
     public IEnumerable<UserOrganization>? UserOrganizations { get; set; }
     public IEnumerable<OrganizationInvitaion>? OrganizationInvitaions { get; set; }
     public BidconAccessCredentials? BidconCredentials { get; set; }
-    public License? License { get; set; }
+    public Subscription? License { get; set; }
     public IEnumerable<EstimationViewTemplate>? EstimationViewTemplates { get; set; }
 }
