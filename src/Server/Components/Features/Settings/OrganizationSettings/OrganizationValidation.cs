@@ -16,4 +16,24 @@ public class OrganizationValidation(IStringLocalizer<OrganizationValidation> Loc
         }
         return string.Empty;
     }
+    public string ExpireDate(DateTime? value)
+    {
+        if (value == null)
+        {
+            return Localizer["Utgångsdatum är obligatoriskt"];
+        }
+        if (value < DateTime.Now)
+        {
+            return Localizer["Utgångsdatum får inte vara i det förflutna"];
+        }
+        return string.Empty;
+    }
+    public string UserLimit(int value)
+    {
+        if (value < 1)
+        {
+            return Localizer["Användarantal får inte vara mindre än 1"];
+        }
+        return string.Empty;
+    }
 }

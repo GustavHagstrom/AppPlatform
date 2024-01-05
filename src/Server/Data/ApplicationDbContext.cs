@@ -16,6 +16,7 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
     public DbSet<Organization> Organizations { get; set; }
     public DbSet<BidconAccessCredentials> BidconAccessCredentials { get; set; }
     public DbSet<EstimationViewTemplate> EstimationViewTemplates { get; set; }
+    public DbSet<OrganizationInvitaion> OrganizationInvitaions { get; set; }
     //public DbSet<Estimation> Estimations { get; set; }
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

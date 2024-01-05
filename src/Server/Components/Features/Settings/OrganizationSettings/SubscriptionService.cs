@@ -7,7 +7,7 @@ namespace Server.Components.Features.Settings.OrganizationSettings;
 
 public class SubscriptionService(IDbContextFactory<ApplicationDbContext> dbContextFactory, ILogger<SubscriptionService> logger)
 {
-    public async Task Update(ClaimsPrincipal userClaims, Organization organization)
+    public async Task Update(Organization organization)
     {
         var dbContext = dbContextFactory.CreateDbContext();
         var existingOrganization = await dbContext.Organizations.FindAsync(organization.Id);
