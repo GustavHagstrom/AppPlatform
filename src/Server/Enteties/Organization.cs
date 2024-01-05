@@ -1,5 +1,6 @@
 ﻿using Server.Enteties.EstimationView;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Server.Enteties;
 
@@ -12,6 +13,10 @@ public class Organization
     public IEnumerable<UserOrganization>? UserOrganizations { get; set; }
     public IEnumerable<OrganizationInvitaion>? OrganizationInvitaions { get; set; }
     public BidconAccessCredentials? BidconCredentials { get; set; }
-    public Subscription? License { get; set; }
     public IEnumerable<EstimationViewTemplate>? EstimationViewTemplates { get; set; }
+    [NotMapped]
+    public bool IsExpired => ExpireDate is null ? true : ExpireDate < DateTime.UtcNow;
+    public DateTime? ExpireDate { get; set; }
+    [Range(1, int.MaxValue)]
+    public int UserLimit { get; set; }
 }

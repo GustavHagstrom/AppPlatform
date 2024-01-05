@@ -17,6 +17,7 @@ internal static class ServiceExtensions
         services.AddTransient<IBidconCredentialsService, BidconCredentialsService>();
         services.AddTransient<OrganizationValidation>();
         services.AddTransient<SubscriptionService>();
+        services.AddTransient<UserListService>();
         services.AddMudServices(config =>
         {
             config.SnackbarConfiguration.PositionClass = Defaults.Classes.Position.BottomCenter;

@@ -5,7 +5,7 @@
 <SettingsPage Title="@Localizer["Organisation"]">
     
     <SettingsSection Title="@Localizer["Välj"]">
-        <div class="d-flex gap-1 pb-4">
+        <div class="d-flex gap-1">
             <OrganizationPicker />
             <MudIconButton Variant="Variant.Outlined" Icon="@Icons.Material.Sharp.Add" Color="@Color.Primary"
                            Style="margin-bottom: 2px; margin-top: 3px;"
@@ -15,12 +15,14 @@
                             OnClick="() => NavigationManager.NavigateTo(ApplicationRoutes.Settings.Organization.Edit)" />
         </div>
     </SettingsSection>
-    <SettingsSection Title="@Localizer["Licens"]">
-        <SubscriptionHandler />
+    <SettingsSection Title="@Localizer["Prenumeration"]" DividerOnTop="true">
+        <SubscriptionDisplay />
     </SettingsSection>
-    <SettingsSection Title="@Localizer["Användare"]">
+    <SettingsSection Title="@Localizer["Medlemmar"]" DividerOnTop="true">
+        <UserList/>
+    </SettingsSection>
+    <SettingsSection Title="@Localizer["Medlemsförfrågningar"]" DividerOnTop="true">
 
     </SettingsSection>
-
     
 </SettingsPage>

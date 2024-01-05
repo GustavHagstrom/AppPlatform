@@ -19,6 +19,7 @@ public static class ApplicationRoutes
             public const string Index = "/settings/organization";
             public const string Edit = "/settings/organization/edit";
             public const string New = "/settings/organization/new";
+            public const string SubscriptionHandle ="/settings/organization/subscription";
         }
     }
 }

@@ -11,7 +11,7 @@
 
 <AuthorizeView>
     <Authorized>
-        <MudText>@ActiveOrganizationContainer?.ActiveOrganization?.Name</MudText>
+        <MudText Class="pr-2">@ActiveOrganizationContainer?.ActiveOrganization?.Name</MudText>
         
         <MudFab StartIcon="@Icons.Material.Sharp.Person" IconSize="Size.Medium" Size="Size.Small" OnClick="ToggltPopover" />
         <MudPopover Open="PopOverIsVisible" AnchorOrigin="Origin.BottomRight" TransformOrigin="Origin.TopRight">

@@ -23,12 +23,10 @@ public class CustomClaimsPrincipalFactory(
     {
         var identity = await base.GenerateClaimsAsync(user);
         var dbContext = dbContextFactory.CreateDbContext();
-        var organization = await dbContext.Organizations
-            .Include(x => x.License)
-            .FirstOrDefaultAsync(x => x.Id == user.ActiveOrganizationId);
-        if (organization?.License is not null)
+        var organization = await dbContext.Organizations.FindAsync(user.ActiveOrganizationId);
+        if (organization is not null)
         {
-            identity.AddClaim(new Claim("ValidSubscription_ChangeToConstant", (!organization.License.IsExpired).ToString()));
+            identity.AddClaim(new Claim("ValidSubscription_ChangeToConstant", (!organization.IsExpired).ToString()));
         }
         
         return identity;

@@ -1,0 +1,57 @@
+﻿@implements IDisposable
+@inject IStringLocalizer<SubscriptionDisplay> Localizer
+@inject NavigationManager NavigationManager
+
+@if (ActiveOrganizationContainer?.ActiveOrganization is not null)
+{
+    <div class="d-flex gap-1" style="width: 100%">
+        <MudField Margin="Margin.Dense" Variant="Variant.Outlined" Label="@Localizer["Status"]">
+            @if (ActiveOrganizationContainer.ActiveOrganization.IsExpired || ActiveOrganizationContainer.ActiveOrganization.ExpireDate is null)
+            {
+                <MudText Typo="Typo.body2" Color="Color.Warning">@Localizer["Inaktiv"]</MudText>
+            }
+            else
+            {
+                <MudText Typo="Typo.body2" Color="Color.Success">@Localizer["Aktiv"]</MudText>
+            }
+        </MudField>
+        <MudIconButton Variant="Variant.Outlined" Color="Color.Primary" Icon="@Icons.Material.Sharp.Edit" Style="margin-bottom: 2px; margin-top: 3px;"
+                       OnClick="() => NavigationManager.NavigateTo(ApplicationRoutes.Settings.Organization.SubscriptionHandle)"/>
+    </div>
+    
+
+    <MudField Margin="Margin.Dense" Variant="Variant.Outlined" Label="@Localizer["Utgångsdatum"]">
+        <MudText Typo="Typo.body2">
+            @(ActiveOrganizationContainer?.ActiveOrganization?.ExpireDate is null ? string.Empty : ActiveOrganizationContainer?.ActiveOrganization.ExpireDate.Value.ToString("yyyy-MM-dd"))
+        </MudText>
+    </MudField>
+    <MudField Margin="Margin.Dense" Variant="Variant.Outlined" Label="@Localizer["Max antal användare"]">
+        <MudText Typo="Typo.body2">
+            @ActiveOrganizationContainer.ActiveOrganization.UserLimit
+        </MudText>
+    </MudField>
+    
+}
+
+@code {
+    [CascadingParameter] public ActiveOrganizationContainer? ActiveOrganizationContainer { get; set; }
+
+    protected override void OnInitialized()
+    {
+        if (ActiveOrganizationContainer is not null)
+        {
+            ActiveOrganizationContainer.OnActiveOrganizationChanged += OnOrganizationChange;
+        }
+    }
+    async Task OnOrganizationChange(Organization? newOrg)
+    {
+        await InvokeAsync(StateHasChanged);
+    }
+    public void Dispose()
+    {
+        if (ActiveOrganizationContainer is not null)
+        {
+            ActiveOrganizationContainer.OnActiveOrganizationChanged -= OnOrganizationChange;
+        }
+    }
+}
