@@ -1,0 +1,4 @@
+﻿@inject IStringLocalizer<InvitationList> Localizer
+@inject NavigationManager NavigationManager
+
+<MudButton OnClick="() => NavigationManager.NavigateTo(ApplicationRoutes.Settings.Organization.Invite)">@Localizer["Bjud in"]</MudButton>

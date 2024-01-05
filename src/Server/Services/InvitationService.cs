@@ -14,7 +14,7 @@ public class InvitationService(IDbContextFactory<ApplicationDbContext> dbContext
         var invitation = await dbContext.OrganizationInvitaions.FindAsync(Id);
         return invitation;
     }
-    public async Task Create(ClaimsPrincipal userClaims, OrganizationInvitaion invitation)
+    public async Task Create(ClaimsPrincipal userClaims, string email)
     {
         var dbContext = dbContextFactory.CreateDbContext();
         var user = await dbContext.Users.FindAsync(userClaims.GetUserId());
@@ -23,6 +23,11 @@ public class InvitationService(IDbContextFactory<ApplicationDbContext> dbContext
             logger.LogWarning("{User} has no active organization", user);
             return;
         }
+        var invitation = new OrganizationInvitaion
+        {
+            Email = email,
+            OrganizationId = user.ActiveOrganizationId
+        };
         invitation.OrganizationId = user.ActiveOrganizationId;
         await dbContext.OrganizationInvitaions.AddAsync(invitation);
         await dbContext.SaveChangesAsync();
