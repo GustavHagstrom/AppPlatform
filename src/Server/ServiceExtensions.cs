@@ -2,6 +2,7 @@
 using MudBlazor.Services;
 using Server.Components.Features.Settings.OrganizationSettings;
 using Server.Services;
+using Server.Services.Email;
 using Server.Services.Settings;
 
 
@@ -9,17 +10,22 @@ namespace Server;
 
 internal static class ServiceExtensions
 {
-    public static void RegisterApplicationServices(this IServiceCollection services)
+    public static void RegisterApplicationServices(this WebApplicationBuilder builder)
     {
-        services.AddLocalization();
-        services.AddScoped<IDarkModeService, DarkModeService>();
-        services.AddTransient<IOrganizationService, OrganizationService>();
-        services.AddTransient<IBidconCredentialsService, BidconCredentialsService>();
-        services.AddTransient<OrganizationValidation>();
-        services.AddTransient<SubscriptionService>();
-        services.AddTransient<UserListService>();
-        services.AddTransient<IInvitationService, InvitationService>();
-        services.AddMudServices(config =>
+        builder.Services.AddLocalization();
+        builder.Services.AddScoped<IDarkModeService, DarkModeService>();
+        builder.Services.AddTransient<IOrganizationService, OrganizationService>();
+        builder.Services.AddTransient<IBidconCredentialsService, BidconCredentialsService>();
+        builder.Services.AddTransient<OrganizationValidation>();
+        builder.Services.AddTransient<SubscriptionService>();
+        builder.Services.AddTransient<UserListService>();
+        builder.Services.AddTransient<IInvitationService, InvitationService>();
+        builder.Services.AddSingleton<IEmailService, EmailService>(sp =>
+        {
+            var credentials = builder.Configuration.GetSection("EmailCredentials").Get<EmailCredentials>() ?? throw new InvalidOperationException("Section 'EmailCredentials' not found.");
+            return new EmailService(credentials);
+        });
+        builder.Services.AddMudServices(config =>
         {
             config.SnackbarConfiguration.PositionClass = Defaults.Classes.Position.BottomCenter;
             config.SnackbarConfiguration.PreventDuplicates = false;

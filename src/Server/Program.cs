@@ -52,7 +52,7 @@ builder.Services.AddIdentityCore<User>(options => options.SignIn.RequireConfirme
     .AddDefaultTokenProviders();
 builder.Services.AddScoped<IUserClaimsPrincipalFactory<User>, CustomClaimsPrincipalFactory>();
 
-builder.Services.RegisterApplicationServices();
+builder.RegisterApplicationServices();
 
 
 builder.Services.AddSingleton<IEmailSender<User>, IdentityNoOpEmailSender>();
