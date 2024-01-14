@@ -20,11 +20,7 @@ internal static class ServiceExtensions
         builder.Services.AddTransient<SubscriptionService>();
         builder.Services.AddTransient<UserListService>();
         builder.Services.AddTransient<IInvitationService, InvitationService>();
-        builder.Services.AddSingleton<IEmailService, EmailService>(sp =>
-        {
-            var credentials = builder.Configuration.GetSection("EmailCredentials").Get<EmailCredentials>() ?? throw new InvalidOperationException("Section 'EmailCredentials' not found.");
-            return new EmailService(credentials);
-        });
+        builder.Services.AddSingleton<IEmailService, EmailService>();
         builder.Services.AddMudServices(config =>
         {
             config.SnackbarConfiguration.PositionClass = Defaults.Classes.Position.BottomCenter;

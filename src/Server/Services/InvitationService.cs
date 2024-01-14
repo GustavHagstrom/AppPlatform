@@ -3,10 +3,17 @@ using Server.Data;
 using Server.Enteties;
 using System.Security.Claims;
 using Server.Extensions;
+using Server.Services.Email;
+using SharedLibrary.Constants;
+using Microsoft.AspNetCore.Components;
 
 namespace Server.Services;
 
-public class InvitationService(IDbContextFactory<ApplicationDbContext> dbContextFactory, ILogger<InvitationService> logger) : IInvitationService
+public class InvitationService(
+    IDbContextFactory<ApplicationDbContext> dbContextFactory, 
+    ILogger<InvitationService> logger, 
+    IEmailService emailService,
+    NavigationManager navigationManager) : IInvitationService
 {
     public async Task<OrganizationInvitaion?> GetAsync(string Id)
     {
@@ -17,8 +24,11 @@ public class InvitationService(IDbContextFactory<ApplicationDbContext> dbContext
     public async Task Create(ClaimsPrincipal userClaims, string email)
     {
         var dbContext = dbContextFactory.CreateDbContext();
-        var user = await dbContext.Users.FindAsync(userClaims.GetUserId());
-        if (user?.ActiveOrganizationId is null)
+        var user = await dbContext.Users
+            .Where(x => x.Id == userClaims.GetUserId())
+            .Include(x => x.ActiveOrganization)
+            .FirstOrDefaultAsync();
+        if (user?.ActiveOrganization is null)
         {
             logger.LogWarning("{User} has no active organization", user);
             return;
@@ -26,11 +36,17 @@ public class InvitationService(IDbContextFactory<ApplicationDbContext> dbContext
         var invitation = new OrganizationInvitaion
         {
             Email = email,
-            OrganizationId = user.ActiveOrganizationId
+            OrganizationId = user.ActiveOrganization.Id
         };
-        invitation.OrganizationId = user.ActiveOrganizationId;
+        invitation.OrganizationId = user.ActiveOrganization.Id;
         await dbContext.OrganizationInvitaions.AddAsync(invitation);
         await dbContext.SaveChangesAsync();
+        await emailService.SendAsync(
+            "noreply@companion.com", 
+            invitation.Email, 
+            "Invitation to join organization",
+            $""""""<h4> You have been invited to join <a href="{navigationManager.BaseUri}{ApplicationRoutes.InvitationConfirmation.Replace("/", string.Empty)}/{invitation.Id}">{user.ActiveOrganization.Name}</a></h4>"""""",
+            true);
     }
     public async Task UpdateAsync(OrganizationInvitaion invitation)
     {

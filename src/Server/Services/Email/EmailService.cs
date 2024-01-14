@@ -1,11 +1,17 @@
 ﻿using Server.Enteties;
 using System.Net.Mail;
 using System.Net;
+using Microsoft.Identity.Client.Platforms.Features.DesktopOs.Kerberos;
 
 namespace Server.Services.Email;
 //Needs integration tests
-public class EmailService(EmailCredentials credentails) : IEmailService
+public class EmailService : IEmailService
 {
+    private readonly EmailCredentials _credentials;
+    public EmailService(IConfiguration configuration)
+    {
+        _credentials = configuration.GetSection("EmailCredentials").Get<EmailCredentials>() ?? throw new InvalidOperationException("Section 'EmailCredentials' not found.");
+    }
     public async Task SendAsync(string from, string to, string subject, string body, bool isBodyHtml = false)
     {
         using (var mail = new MailMessage())
@@ -16,9 +22,9 @@ public class EmailService(EmailCredentials credentails) : IEmailService
             mail.Body = body;
             mail.IsBodyHtml = isBodyHtml;
 
-            using (SmtpClient smtp = new SmtpClient(credentails.Host, credentails.Port))
+            using (SmtpClient smtp = new SmtpClient(_credentials.Host, _credentials.Port))
             {
-                smtp.Credentials = new NetworkCredential(credentails.Username, credentails.Password);
+                smtp.Credentials = new NetworkCredential(_credentials.Username, _credentials.Password);
                 smtp.EnableSsl = false;
                 await smtp.SendMailAsync(mail);
             }
