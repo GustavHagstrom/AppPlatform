@@ -33,7 +33,7 @@
         }
         var state = await AuthProvider.GetAuthenticationStateAsync();
 
-        await InvitationService.Create(state.User, email);
+        await InvitationService.SendAsync(state.User, email);
         //TODO: Send email
         //TODO: Show success message
         await JSRuntime.InvokeVoidAsync("history.back");

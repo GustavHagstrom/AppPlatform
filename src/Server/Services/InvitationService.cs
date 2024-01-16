@@ -6,6 +6,7 @@ using Server.Extensions;
 using Server.Services.Email;
 using SharedLibrary.Constants;
 using Microsoft.AspNetCore.Components;
+using static Server.Enteties.OrganizationInvitaion;
 
 namespace Server.Services;
 
@@ -21,7 +22,7 @@ public class InvitationService(
         var invitation = await dbContext.OrganizationInvitaions.FindAsync(Id);
         return invitation;
     }
-    public async Task Create(ClaimsPrincipal userClaims, string email)
+    public async Task SendAsync(ClaimsPrincipal userClaims, string email)
     {
         var dbContext = dbContextFactory.CreateDbContext();
         var user = await dbContext.Users
@@ -33,24 +34,25 @@ public class InvitationService(
             logger.LogWarning("{User} has no active organization", user);
             return;
         }
+
         var invitation = new OrganizationInvitaion
         {
             Email = email,
-            OrganizationId = user.ActiveOrganization.Id
+            OrganizationId = user.ActiveOrganization.Id,
+            Status = InvitationStatus.Pending,
         };
-        invitation.OrganizationId = user.ActiveOrganization.Id;
         await dbContext.OrganizationInvitaions.AddAsync(invitation);
         await dbContext.SaveChangesAsync();
-        await emailService.SendAsync(
-            "noreply@companion.com", 
-            invitation.Email, 
-            "Invitation to join organization",
-            $""""""<h4> You have been invited to join <a href="{navigationManager.BaseUri}{ApplicationRoutes.InvitationConfirmation.Replace("/", string.Empty)}/{invitation.Id}">{user.ActiveOrganization.Name}</a></h4>"""""",
-            true);
+        var link = $"{navigationManager.BaseUri}{ApplicationRoutes.InvitationConfirmation.Replace("/", string.Empty)}/{invitation.Id}";
+        var subject = "Organization invitation";
+        var body = $@"<h4>You have been invited to join the organization ""{user.ActiveOrganization.Name}"".</h4><p>To accept follow this link: <a href=""{link}"">{link}</a></p>";
+        var isBodyHtml = true;
+        await emailService.SendAsync(email, subject, body, isBodyHtml);
     }
     public async Task UpdateAsync(OrganizationInvitaion invitation)
     {
         var dbContext = dbContextFactory.CreateDbContext();
+        
         var existingInvitation = await dbContext.OrganizationInvitaions.FindAsync(invitation.Id);
         if (existingInvitation is null)
         {
@@ -61,7 +63,7 @@ public class InvitationService(
         dbContext.OrganizationInvitaions.Update(invitation);
         await dbContext.SaveChangesAsync();
     }
-    public async Task AcceptInvitaionAsync(ClaimsPrincipal userClaims, OrganizationInvitaion invitaion)
+    public async Task AcceptInvitaionAsync(ClaimsPrincipal userClaims, OrganizationInvitaion invitation)
     {
         var dbContext = dbContextFactory.CreateDbContext();
         var user = await dbContext.Users.FindAsync(userClaims.GetUserId());
@@ -72,12 +74,25 @@ public class InvitationService(
         }
         var userOrg = new UserOrganization
         {
-            OrganizationId = invitaion.OrganizationId,
+            OrganizationId = invitation.OrganizationId,
             UserId = user.Id
         };
-        user.ActiveOrganizationId = invitaion.OrganizationId;
+        invitation.Status = InvitationStatus.Accepted;
+        dbContext.Attach(invitation);
+        dbContext.OrganizationInvitaions.Update(invitation);
+
+        user.ActiveOrganizationId = invitation.OrganizationId;
         dbContext.Users.Update(user);
         dbContext.UserOrganizations.Add(userOrg);
         await dbContext.SaveChangesAsync();
+    }
+
+    public async Task<IEnumerable<OrganizationInvitaion>> GetAllAsync(Organization organization)
+    {
+        var dbContext = dbContextFactory.CreateDbContext();
+        var invitations = await dbContext.OrganizationInvitaions
+            .Where(x => x.OrganizationId == organization.Id)
+            .ToListAsync();
+        return invitations;
     }
 }
