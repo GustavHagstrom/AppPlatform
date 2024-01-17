@@ -1,4 +1,4 @@
-﻿namespace Client.Shared.Constants;
+﻿namespace AppPlatform.Client.Shared.Constants;
 
 public static class HttpClientNames
 {

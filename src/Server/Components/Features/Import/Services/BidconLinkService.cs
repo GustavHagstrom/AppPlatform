@@ -1,4 +1,4 @@
-﻿using Client.Shared.Constants;
+﻿using AppPlatform.Client.Shared.Constants;
 using SharedLibrary.Constants;
 using SharedLibrary.DTOs.BidconAccess;
 using System.Net.Http.Json;

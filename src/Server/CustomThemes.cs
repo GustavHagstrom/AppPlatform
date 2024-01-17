@@ -1,6 +1,6 @@
 ﻿using MudBlazor;
 
-namespace Client;
+namespace AppPlatform.Client;
 
 public static class CustomThemes
 {
