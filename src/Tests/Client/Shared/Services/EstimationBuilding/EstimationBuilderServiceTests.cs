@@ -1,8 +1,8 @@
 ﻿//using BidconLink.BidconAccess.Enteties;
-//using Client.Shared.EstimationProcessing.Services;
+//using Server.EstimationProcessing.Services;
 //using System.Text.Json;
 
-//namespace Tests.Client.Shared.Services.EstimationBuilding;
+//namespace Tests.Server.Services.EstimationBuilding;
 //[TestFixture]
 //public class EstimationBuilderServiceTests
 //{

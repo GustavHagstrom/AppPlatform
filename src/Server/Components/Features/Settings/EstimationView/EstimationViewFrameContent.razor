@@ -1,0 +1,107 @@
+﻿@using Server.EstimationViewTemplate_old.Models;
+@using Server.EstimationViewTemplate_old.Services;
+
+<div class="relative">
+    <EditTemplatePopover UpsertSuccefulCallback="TryRefreshListAsync" ParentComponent="this" />
+
+    <MudOverlay DarkBackground="true" Visible="IsLoading" Absolute="true">
+        <MudProgressCircular Size="Size.Large" Color="Color.Primary" Indeterminate="true" />
+    </MudOverlay>
+
+    
+    <div class="d-flex pa-2">
+        <MudSpacer/>
+        <MudIconButton Icon="@Icons.Material.Sharp.Add" Color="Color.Success" Size="Size.Small" Variant="Variant.Text" OnClick="() => ShowEditTemplatePopOver(null)"/>
+    </div>
+
+    @if(Templates.Count > 0)
+    {
+        <div class="d-flex">
+            <table class="striped border border-solid mx-2 mb-2 flex-grow-1">
+                @foreach (var template in Templates)
+                {
+                    <tr class="d-flex pa-1">
+                        <MudText Class="d-flex flex-grow-1 my-auto" Typo="Typo.subtitle1">@template.Name</MudText>
+                        <MudStack Row="true" Spacing="1">
+                            <MudIconButton Class="d-flex my-auto" Icon="@Icons.Material.Sharp.Edit" Color="Color.Primary" Size="Size.Small" Variant="Variant.Text" OnClick="() => ShowEditTemplatePopOver(template.Id)"/>
+                            <MudIconButton Class="d-flex my-auto" Icon="@Icons.Material.Sharp.Delete" Color="Color.Error" Size="Size.Small" Variant="Variant.Text" OnClick="() => DeleteTemplate(template)" />
+                        </MudStack>
+                    </tr>
+                }
+            </table>
+        </div>
+    }
+    
+</div>
+
+
+@code {
+    [Inject] public required IStringLocalizer<EstimationViewFrameContent> Localizer { get; set; }
+    [Inject] public required IEstimationViewTemplateServices TemplateService { get; set; }
+    [Inject] public required IDialogService DialogService { get; set; }
+
+    //Set by the popover, invoked by this component to show popover
+    public Func<Guid?, Task>? ShowPopoverFunction { get; set; } 
+
+    bool IsLoading = true;
+    List<ViewTemplate> Templates { get; set; } = new();
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        await TryRefreshListAsync();
+    }
+    async Task TryRefreshListAsync()
+    {
+        try
+        {
+            UpdateIsLoading(true);
+
+            Templates.Clear();
+            var templates = await TemplateService.GetAllShallowAsync();
+            Templates.AddRange(templates);
+        }
+        catch (Exception)
+        {
+            //Handle exception
+            throw;
+        }
+        UpdateIsLoading(false);
+    }
+    async Task ShowEditTemplatePopOver(Guid? id = null)
+    {
+        var task = ShowPopoverFunction?.Invoke(id);
+        if(task is not null)
+        {
+            await task;
+        }
+    }
+    async Task DeleteTemplate(ViewTemplate template)
+    {
+        var parameters = new DialogParameters<YesNoDialog>();
+        parameters.Add(x => x.Info, Localizer["Vill du ta bort mallen \""] + template.Name + "\"?");
+
+        var dialog = await DialogService.ShowAsync<YesNoDialog>(Localizer["Ta bort"], parameters);
+        var result = await dialog.Result;
+        if (!result.Canceled)
+        {
+            try
+            {
+                UpdateIsLoading(true);
+                await TemplateService.DeleteAsync(template);
+                await TryRefreshListAsync();
+            }
+            catch (Exception)
+            {
+                //Handle exception
+                throw;
+            }
+            UpdateIsLoading(false);
+        }
+    }
+    void UpdateIsLoading(bool isLoading)
+    {
+        IsLoading = isLoading;
+        StateHasChanged();
+    }
+}

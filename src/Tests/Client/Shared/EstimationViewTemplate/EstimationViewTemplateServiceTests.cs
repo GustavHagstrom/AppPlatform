@@ -1,5 +1,5 @@
-﻿using Client.Shared.EstimationViewTemplate.Models;
-using Client.Shared.EstimationViewTemplate.Services;
+﻿using Server.EstimationViewTemplate_old.Models;
+using Server.EstimationViewTemplate_old.Services;
 using Microsoft.Extensions.Logging;
 using Moq;
 using SharedLibrary.Constants;
@@ -7,7 +7,7 @@ using SharedLibrary.DTOs.EstimationView;
 using SharedLibrary.Wrappers;
 using System.Net;
 
-namespace Tests.Client.Shared.EstimationViewTemplate;
+namespace Tests.Server.EstimationViewTemplate_old;
 public class EstimationViewTemplateServiceTests
 {
     private EstimationViewTemplateService _estimationViewTemplateService;

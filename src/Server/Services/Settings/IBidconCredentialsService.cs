@@ -1,8 +1,9 @@
-﻿using SharedLibrary.DTOs.BidconAccess;
+﻿using Server.Enteties;
+using System.Security.Claims;
 
 namespace Server.Services.Settings;
 public interface IBidconCredentialsService
 {
-    Task<BC_DatabaseCredentialsDto?> GetAsync(string organizationId);
-    Task UpsertAsync(BC_DatabaseCredentialsDto credentialsDto, string organizationId);
+    Task<BidconAccessCredentials?> GetAsync(ClaimsPrincipal userClaims);
+    Task UpsertAsync(ClaimsPrincipal userClaims, BidconAccessCredentials credentialsDto);
 }

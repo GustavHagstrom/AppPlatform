@@ -1,0 +1,99 @@
+﻿@using Server.EstimationViewTemplate_old.Models;
+
+<style>
+    .dropdown {
+        display: flex;
+        padding: 0px;
+        border: 1px;
+        border-style: solid;
+    }
+
+    .dropdown-enabled {
+        color: var(--mud-palette-text-primary);
+        cursor: pointer;
+    }
+
+    .dropdown-disabled {
+        color: var(--mud-palette-action-disabled);
+    }
+
+    .dropdown-enabled:hover {
+        background-color: var(--mud-palette-action-default-hover);
+    }
+
+
+</style>
+
+<div class="d-flex gap-1" style="height: 100%;">
+    
+
+    <div class="d-flex flex-column" style="height: 100%; justify-content: space-between">
+        <div style="height: calc(50% - 2px)">
+            <SheetColumnTypeDropdown Column="Column" />
+        </div>
+        <div style="height: calc(50% - 2px)">
+            <SectionToolbarInput Style="height: 100%; width: 115px;" Value="@Column?.Width" OnChange="WidthInputChanged" Disabled="@(Column is null)" Icon="@Icons.Material.Sharp.Height" IconStyle="transform: rotate(90deg)" />
+        </div>
+    </div>
+
+    <div class="d-flex flex-column gap-1" style="height: 100%;">
+        <MudButton Class="pa-1 d-flex flex-grow-1" Variant="Variant.Filled" Style="min-width: 0px;" Color="Color.Error" Disabled="Column is null" OnClick="DeleteColumn">
+            <MudIcon Icon="@Icons.Material.Sharp.Delete" Size="Size.Small" />
+        </MudButton>
+        <MudButton Class="pa-1 d-flex flex-grow-1" Variant="Variant.Filled" Style="min-width: 0px;" Color="Color.Success" OnClick="AddColumn">
+            <MudIcon Icon="@Icons.Material.Sharp.Add" Size="Size.Small" />
+        </MudButton>
+    </div>
+
+    
+</div>
+
+@code {
+    [Inject] public required IStringLocalizer<SheetColumnEditor> Localizer { get; set; }
+    [Inject] public required IDialogService DialogService { get; set; }
+
+    [Parameter, EditorRequired] public required SheetSection Section { get; set; }
+    [Parameter, EditorRequired] public SheetColumn? Column { get; set; }
+    [Parameter, EditorRequired] public EventCallback StateChangeRequest { get; set; }
+    [Parameter, EditorRequired] public EventCallback ColumnDeleted { get; set; }
+
+    void WidthInputChanged(ChangeEventArgs args)
+    {
+        if (Column is not null && args.Value is not null)
+        {
+            if(int.TryParse(args.Value as string, out int result))
+            {
+                Column.Width = result;
+                StateChangeRequest.InvokeAsync();
+            }
+
+        }
+    }
+    void AddColumn()
+    {
+        var newColumn = new SheetColumn { Width = 10 };
+        foreach (var cellTemplate in newColumn.CellTemplates)
+        {
+            cellTemplate.CellFormat.BorderTop = true;
+            cellTemplate.CellFormat.BorderBottom = true;
+        }
+        Section.Columns.Add(newColumn);
+        StateChangeRequest.InvokeAsync();
+    }
+    async Task DeleteColumn()
+    {
+        if (Column is not null)
+        {
+            var parameters = new DialogParameters<YesNoDialog>();
+            parameters.Add(x => x.Info, Localizer["Vill du ta bort kolumnen?"]);
+
+            var dialog = await DialogService.ShowAsync<YesNoDialog>(Localizer["Ta bort"], parameters);
+            var result = await dialog.Result;
+            if (!result.Canceled)
+            {
+                Section.Columns.Remove(Column);
+                await ColumnDeleted.InvokeAsync();
+            }
+        }
+    }
+}

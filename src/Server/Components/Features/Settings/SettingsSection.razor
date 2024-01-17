@@ -1,0 +1,15 @@
+﻿@* @if (DividerOnTop)
+{
+    <MudDivider Style="flex-grow: 0;"/>
+} *@
+<div class="py-2">
+    <MudText Typo="Typo.subtitle1" Style="font-weight: bold;">@Title</MudText>
+    <div class="pt-2" style="min-width: 300px; max-width: 600px; display: flex; flex-direction: column; gap: 8px;">
+        @ChildContent
+    </div>
+</div>
+@code {
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+    [Parameter] public string Title { get; set; } = string.Empty;
+    [Parameter] public bool DividerOnTop { get; set; } = false;
+}

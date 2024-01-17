@@ -1,0 +1,59 @@
+﻿@page "/settings/organization/subscription"
+@inject IStringLocalizer<SubscriptionDisplay> Localizer
+@inject SubscriptionService SubscriptionService
+@inject OrganizationValidation OrganizationValidation
+@inject IJSRuntime JSRuntime
+
+
+<SettingsPage Title="@Localizer["Redigera prenumeration"]">
+    @if (ActiveOrganizationContainer?.ActiveOrganization is not null)
+    {
+
+        <div>
+            <MudForm @ref="Form">
+                <MudDatePicker Label="@Localizer["Utgångsdatum"]" @bind-Date="ExpireDate" Validation="@(new Func<DateTime?, string>(OrganizationValidation.ExpireDate))" />
+                <MudNumericField Label="@Localizer["Max antal användare"]" @bind-Value="UserLimit" Validation="@(new Func<int, string>(OrganizationValidation.UserLimit))" />
+            </MudForm>
+            <div class="d-flex gap-1" style="margin-top: 16px;">
+                <MudSpacer />
+                <MudButton Variant="Variant.Outlined" Color="Color.Secondary" @onclick="@(async () => await JSRuntime.InvokeVoidAsync("history.back"))">@Localizer["Avbryt"]</MudButton>
+                <MudButton Variant="Variant.Outlined" Color="Color.Primary" @onclick="SubmitAsync">@Localizer["Spara"]</MudButton>
+            </div>
+         </div>
+    }
+</SettingsPage>
+
+@code {
+    [CascadingParameter] public ActiveOrganizationContainer? ActiveOrganizationContainer { get; set; }
+
+    MudForm? Form { get; set; }
+
+    DateTime? ExpireDate { get; set; }
+    int UserLimit { get; set; }
+
+    protected override void OnInitialized()
+    {
+        if(ActiveOrganizationContainer?.ActiveOrganization is not null)
+        {
+            ExpireDate = ActiveOrganizationContainer.ActiveOrganization.ExpireDate;
+            UserLimit = ActiveOrganizationContainer.ActiveOrganization.UserLimit;
+        }
+    }
+    async Task SubmitAsync()
+    {
+        var org = ActiveOrganizationContainer?.ActiveOrganization;
+        if (Form is null || org is null)
+        {
+            return;
+        }
+        await Form.Validate();
+        if(Form.IsValid)
+        {
+            org.ExpireDate = ExpireDate;
+            org.UserLimit = UserLimit;
+            await SubscriptionService.Update(org);
+            ActiveOrganizationContainer?.NotifyStateChanged();
+            await JSRuntime.InvokeVoidAsync("history.back");
+        }
+    }
+}

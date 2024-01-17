@@ -1,0 +1,28 @@
+﻿@page "/settings"
+@inject IStringLocalizer<CommonPage> Localizer
+
+
+
+<SettingsPage Title="@Localizer["Allmänt"]" Loading="Loading">
+    <SettingsSection Title="@Localizer["Utseende"]">
+        <MudSwitch T="bool?" Checked="ThemeManager?.IsDarkMode" CheckedChanged="SetDarkMode" Color="Color.Primary" Label="@Localizer["Mörkt tema"]" />
+    </SettingsSection>
+</SettingsPage>
+    
+    
+
+
+@code {
+    [CascadingParameter] public CascadingThemeManager? ThemeManager { get; set; }
+
+    bool Loading = false;
+
+    async Task SetDarkMode(bool? value)
+    {
+        if (ThemeManager is not null && value is not null)
+        {
+            await ThemeManager.SetDarkModeAsync(value.Value);
+        }
+    }
+   
+}

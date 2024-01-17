@@ -1,15 +1,22 @@
 ﻿using Server.Enteties.EstimationView;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Server.Enteties;
 
 public class Organization
 {
-    [StringLength(50)]
-    public required string Id { get; set; }
-    public IEnumerable<User>? Users { get; set; }
+    [StringLength(450)]
+    public string Id { get; set; } = Guid.NewGuid().ToString();
+    [StringLength(50, MinimumLength = 1)]
+    public string Name { get; set; } = string.Empty;
+    public IEnumerable<UserOrganization>? UserOrganizations { get; set; }
+    public IEnumerable<OrganizationInvitaion>? OrganizationInvitaions { get; set; }
     public BidconAccessCredentials? BidconCredentials { get; set; }
-    public License? License { get; set; }
     public IEnumerable<EstimationViewTemplate>? EstimationViewTemplates { get; set; }
-    public IEnumerable<Role>? Roles { get; set; }
+    [NotMapped]
+    public bool IsExpired => ExpireDate is null ? true : ExpireDate < DateTime.UtcNow;
+    public DateTime? ExpireDate { get; set; }
+    [Range(1, int.MaxValue)]
+    public int UserLimit { get; set; }
 }

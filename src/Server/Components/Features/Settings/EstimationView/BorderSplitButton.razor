@@ -1,0 +1,72 @@
+﻿@using Server.EstimationViewTemplate_old.Models;
+
+<DropDown CloseOnContentClick="false" ContainerStyle="@DropDownContainerStyle" Disabled="CellFormat is null">
+    <ActivatorContent>
+        <div class="d-flex border border-solid" style="height: 100%">
+            <MudIcon Icon="@Icons.Material.Sharp.BorderStyle" />
+            <MudIcon Icon="@Icons.Material.Sharp.KeyboardArrowDown" />
+        </div>
+    </ActivatorContent>
+    <DropDownContent>
+        <ToggleIconButton Selected="CellFormat?.BorderBottom == true" OnClick="ToggleBorderBottom" Icon="@Icons.Material.Sharp.BorderBottom" Size="Size.Medium" />
+        <ToggleIconButton Selected="CellFormat?.BorderTop == true" OnClick="ToggleBorderTop" Icon="@Icons.Material.Sharp.BorderTop" Size="Size.Medium" />
+        <ToggleIconButton Selected="CellFormat?.BorderLeft == true" OnClick="ToggleBorderLeft" Icon="@Icons.Material.Sharp.BorderLeft" Size="Size.Medium" />
+        <ToggleIconButton Selected="CellFormat?.BorderRight == true" OnClick="ToggleBorderRight" Icon="@Icons.Material.Sharp.BorderRight" Size="Size.Medium" />
+        <ToggleIconButton Selected="IsBorderClear" OnClick="ToggleOuterBorders" Icon="@Icons.Material.Sharp.BorderClear" Size="Size.Medium" />
+        <ToggleIconButton Selected="IsBorderOuter" OnClick="ToggleOuterBorders" Icon="@Icons.Material.Sharp.BorderOuter" Size="Size.Medium" />
+    </DropDownContent>
+</DropDown>
+
+@code {
+    [Parameter] public CellFormat? CellFormat { get; set; }
+    [Parameter] public string Height { get; set; } = "100%";
+    [Parameter] public string Width { get; set; } = "100%";
+
+    string DropDownContainerStyle => $"height: {Height}; width: {Width};";
+
+    bool IsBorderClear => CellFormat is not null && !CellFormat.BorderBottom && !CellFormat.BorderTop && !CellFormat.BorderLeft && !CellFormat.BorderRight;
+    bool IsBorderOuter => CellFormat is not null && CellFormat.BorderBottom && CellFormat.BorderTop && CellFormat.BorderLeft && CellFormat.BorderRight;
+
+    string DropDownClass => $"dropdown {DropDownDisabledClass}";
+    string DropDownDisabledClass => CellFormat is null ? "dropdown-disabled" : "dropdown-enabled";
+
+
+    void ToggleBorderBottom()
+    {
+        if(CellFormat is not null)
+        {
+            CellFormat.BorderBottom = !CellFormat.BorderBottom;
+        }
+    }
+    void ToggleBorderTop()
+    {
+        if (CellFormat is not null)
+        {
+            CellFormat.BorderTop = !CellFormat.BorderTop;
+        }
+    }
+    void ToggleBorderLeft()
+    {
+        if (CellFormat is not null)
+        {
+            CellFormat.BorderLeft = !CellFormat.BorderLeft;
+        }
+    }
+    void ToggleBorderRight()
+    {
+        if (CellFormat is not null)
+        {
+            CellFormat.BorderRight = !CellFormat.BorderRight;
+        }
+    }
+    void ToggleOuterBorders()
+    {
+        if (CellFormat is not null)
+        {
+            CellFormat.BorderTop = !CellFormat.BorderBottom;
+            CellFormat.BorderLeft = !CellFormat.BorderBottom;
+            CellFormat.BorderRight = !CellFormat.BorderBottom;
+            CellFormat.BorderBottom = !CellFormat.BorderBottom;
+        }
+    }
+}

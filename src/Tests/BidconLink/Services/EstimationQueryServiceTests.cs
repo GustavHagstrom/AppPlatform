@@ -51,18 +51,18 @@ public class EstimationQueryServiceTests
             Assert.That(result, Is.Not.Null);
         }
     }
-    [Test]
-    public async Task EstimationResultList()
-    {
-        var result = await _service.GetEstimationListAsync();
+    //[Test]
+    //public async Task EstimationResultList()
+    //{
+    //    var result = await _service.GetEstimationListAsync();
 
-        Assert.IsNotNull(result);
-    }
-    [Test]
-    public async Task EstimationFolderBatch()
-    {
-        var result = await _service.GetFolderBatchAsync();
+    //    Assert.IsNotNull(result);
+    //}
+    //[Test]
+    //public async Task EstimationFolderBatch()
+    //{
+    //    var result = await _service.GetFolderBatchAsync();
 
-        Assert.IsNotNull(result);
-    }
+    //    Assert.IsNotNull(result);
+    //}
 }

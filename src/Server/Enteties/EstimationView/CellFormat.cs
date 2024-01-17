@@ -5,7 +5,8 @@ namespace Server.Enteties.EstimationView;
 
 public class CellFormat : IEstimationViewEntity
 {
-    public Guid Id { get; set; }
+    [StringLength(450)]
+    public string Id { get; set; } = Guid.NewGuid().ToString();
     [StringLength(50)]
     public required string FontFamily { get; set; }
     public int FontSize { get; set; }
@@ -26,8 +27,10 @@ public class CellFormat : IEstimationViewEntity
 
 
 
-    public Guid? SheetColumnId { get; set; }
+    [StringLength(450)]
+    public string? SheetColumnId { get; set; } = string.Empty;
     public SheetColumn? SheetColumn { get; set; }
-    public Guid? CellTemplateId { get; set; }
+    [StringLength(450)]
+    public string? CellTemplateId { get; set; } = string.Empty;
     public CellTemplate? CellTemplate { get; set; }
 }

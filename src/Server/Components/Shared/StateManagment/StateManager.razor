@@ -1,0 +1,9 @@
+﻿<ActiveOrganizationContainer>
+    <CascadingThemeManager>
+        @ChildContent
+    </CascadingThemeManager>
+</ActiveOrganizationContainer>
+
+@code {
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+}

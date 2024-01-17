@@ -1,0 +1,38 @@
+﻿@using Server.Components
+@inherits LayoutComponentBase
+@layout MainLayout
+@inject IStringLocalizer<SettingsLayout> Localizer
+
+
+<div style="height: 100%; max-width: 100%; display: flex">
+    <div class="border-solid border-r" style="height: 100%;">
+        <MudText Class="pt-3 px-4" Typo="Typo.h6" Style="font-weight: bold;">@Localizer["Inställningar"]</MudText>
+        <MudNavMenu Color="Color.Primary" Dense="false">
+            <MudNavLink Match="NavLinkMatch.All" Icon="@Icons.Material.Sharp.Settings" Href="@ApplicationRoutes.Settings.Common" >
+                <MudText Typo="Typo.subtitle1" Style="font-weight: 500;">@Localizer["Allmänt"]</MudText>
+            </MudNavLink>
+            <MudNavLink Match="NavLinkMatch.All" Icon="@CustomIcons.BidconIcon" Href="@ApplicationRoutes.Settings.Bidcon">
+                <MudText Typo="Typo.subtitle1" Style="font-weight: 500;">@Localizer["Bidcon"]</MudText>
+            </MudNavLink>
+            <MudNavLink Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Sharp.Business" Href="@ApplicationRoutes.Settings.Organization.Index">
+                <MudText Typo="Typo.subtitle1" Style="font-weight: 500;">@Localizer["Organisation"]</MudText>
+            </MudNavLink>
+        </MudNavMenu>
+    </div>
+    <div class="flex-grow-1 py-3 px-4" style="height: 100%">
+        @Body
+    </div>
+</div>
+
+
+@code{
+    bool open = true;
+    [CascadingParameter] public ActiveOrganizationContainer? ActiveOrganizationContainer { get; set; }
+    void toggleDrawer()
+    {
+        open = !open;
+        StateHasChanged();
+    }
+}
+
+

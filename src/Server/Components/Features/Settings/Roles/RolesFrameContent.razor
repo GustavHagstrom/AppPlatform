@@ -1,0 +1,21 @@
+﻿@using Server.EstimationViewTemplate_old.Models;
+@using Server.EstimationViewTemplate_old.Services;
+
+<div class="relative">
+    <MudOverlay DarkBackground="true" Visible="IsLoading" Absolute="true">
+        <MudProgressCircular Size="Size.Large" Color="Color.Primary" Indeterminate="true" />
+    </MudOverlay>
+
+    <div class="pa-4">
+       
+    </div>
+</div>
+
+
+@code {
+    [Inject] public required IStringLocalizer<RolesFrameContent> Localizer { get; set; }
+    
+
+    bool IsLoading = true;
+    
+}

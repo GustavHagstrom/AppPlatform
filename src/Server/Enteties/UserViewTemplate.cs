@@ -5,10 +5,12 @@ namespace Server.Enteties;
 
 public class UserViewTemplate
 {
-    public Guid Id { get; set; }
-    [StringLength(50)]
+    [StringLength(450)]
+    public string Id { get; set; } = Guid.NewGuid().ToString();
+    [StringLength(450)]
     public required string UserId { get; set; }
     public User? User { get; set; }
-    public Guid EstimationViewTemplateId { get; set; }
+    [StringLength(450)]
+    public string EstimationViewTemplateId { get; set; } = string.Empty;
     public EstimationViewTemplate? EstimationViewTemplate { get; set; }
 }

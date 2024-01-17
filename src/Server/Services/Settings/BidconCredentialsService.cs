@@ -1,42 +1,48 @@
 ﻿using Server.Data;
 using Server.Enteties;
-using SharedLibrary.DTOs.BidconAccess;
-using Mapster;
 using Microsoft.EntityFrameworkCore;
+using System.Security.Claims;
+using Server.Extensions;
 
 namespace Server.Services.Settings;
 
-public class BidconCredentialsService : IBidconCredentialsService
+public class BidconCredentialsService(IDbContextFactory<ApplicationDbContext> ContextFactory) : IBidconCredentialsService
 {
-    private readonly ApplicationDbContext _context;
-
-    public BidconCredentialsService(ApplicationDbContext context)
+    public async Task<BidconAccessCredentials?> GetAsync(ClaimsPrincipal userClaims)
     {
-        _context = context;
+        var dbContext = ContextFactory.CreateDbContext();
+        var user = await dbContext.Users.FindAsync(userClaims.GetUserId());
+        if(user?.ActiveOrganizationId is null)
+        {
+            return null;
+        }
+        var result = await dbContext.BidconAccessCredentials.FirstOrDefaultAsync(x => x.OrganizationId == user.ActiveOrganizationId);
+        return result;
     }
 
-    public async Task<BC_DatabaseCredentialsDto?> GetAsync(string organizationId)
+    public async Task UpsertAsync(ClaimsPrincipal userClaims, BidconAccessCredentials credentials)
     {
-        var result = await _context.BidconAccessCredentials.FirstOrDefaultAsync(x => x.OrganizationId == organizationId);
-        return result?.Adapt<BC_DatabaseCredentialsDto>();
-    }
-
-    public async Task UpsertAsync(BC_DatabaseCredentialsDto credentialsDto, string organizationId)
-    {
-        var credentials = credentialsDto.Adapt<BidconAccessCredentials>();
-        credentials.OrganizationId = organizationId;
-        var existingCredentials = await _context.BidconAccessCredentials.FindAsync(organizationId);
-
+        var dbContext = ContextFactory.CreateDbContext();
+        var user = await dbContext.Users.FindAsync(userClaims.GetUserId());
+        if (user?.ActiveOrganizationId is null)
+        {
+            return;
+        }
+        
+        credentials.OrganizationId = user.ActiveOrganizationId;
+        var existingCredentials = await dbContext.BidconAccessCredentials
+            .FirstOrDefaultAsync(x => x.OrganizationId == credentials.OrganizationId);
         if (existingCredentials is null)
         {
             // Insert a new record if it doesn't exist
 
             credentials.LastUpdated = DateTime.UtcNow;
-            _context.BidconAccessCredentials.Add(credentials);
+            dbContext.BidconAccessCredentials.Add(credentials);
         }
         else
         {
             // Update the existing record if it exists
+            existingCredentials.OrganizationId = credentials.OrganizationId;
             existingCredentials.Server = credentials.Server;
             existingCredentials.Database = credentials.Database;
             existingCredentials.User = credentials.User;
@@ -44,7 +50,7 @@ public class BidconCredentialsService : IBidconCredentialsService
             existingCredentials.ServerAuthentication = credentials.ServerAuthentication;
             existingCredentials.LastUpdated = DateTime.Now;
         }
-
-        await _context.SaveChangesAsync();
+        await dbContext.SaveChangesAsync();
+        
     }
 }

@@ -1,7 +1,9 @@
-﻿namespace Server.Services.Settings;
+﻿using System.Security.Claims;
+
+namespace Server.Services.Settings;
 
 public interface IDarkModeService
 {
-    Task<bool> GetUserDarkModeSettingAsync(string userId);
-    Task SetUserDarkModeSettingAsync(string userId, bool isDarkMode);
+    Task<bool> GetAsync(ClaimsPrincipal user);
+    Task SetAsync(ClaimsPrincipal user, bool isDarkMode);
 }

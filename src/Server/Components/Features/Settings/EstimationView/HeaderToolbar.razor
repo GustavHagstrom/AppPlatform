@@ -1,0 +1,170 @@
+﻿@using Server.EstimationViewTemplate_old.Models;
+@using MudBlazor.Services;
+@implements IBrowserViewportObserver
+@implements IAsyncDisposable
+
+<style>
+    .custom-input-padding input{
+        padding: 4px!important;
+    }
+</style>
+
+
+
+<MudPaper Style="height: 40px" Elevation="0" Class="border-b border-solid d-flex justify-space-between">
+
+    <MudHidden Breakpoint="Breakpoint.SmAndDown">
+            <div class="d-flex justify-start align-self-stretch" style="width: 33%">
+
+            </div>
+    </MudHidden>
+      
+    
+
+    
+    <div class="@SectionActionsClass" style="width: 33%">
+        <MudButton Variant="Variant.Text" Style="min-width: 40px;" Color="Color.Primary" 
+                    Disabled="SelectedSection is null || SectionsInOrder.Count < 2 || SectionsInOrder.FirstOrDefault() == SelectedSection"
+                    OnClick="PushSelectedSectionUp">
+            <MudIcon Icon="@Icons.Material.Sharp.ArrowUpward" />
+        </MudButton>
+        <MudButton Class="px-2" Variant="Variant.Text" Style="min-width: 40px;" Color="Color.Primary" 
+                    Disabled="SelectedSection is null || SectionsInOrder.Count < 2  || SectionsInOrder.LastOrDefault() == SelectedSection"
+                    OnClick="PushSelectedSectionDown">
+            <MudIcon Icon="@Icons.Material.Sharp.ArrowDownward" />
+        </MudButton>
+        <MudMenu Dense="true" AnchorOrigin="Origin.BottomCenter" TransformOrigin="Origin.TopCenter">
+            <ActivatorContent>
+                <MudButton Variant="Variant.Text" Style="min-width: 40px;" Color="Color.Success">
+                    <MudIcon Icon="@Icons.Material.Sharp.Add" />
+                </MudButton>
+            </ActivatorContent>
+            <ChildContent>
+                <MudMenuItem OnClick="() => CreateNewSection(new DataSection())">@Localizer["Data sektion"]</MudMenuItem>
+                <MudMenuItem OnClick="() => CreateNewSection(new SheetSection())">@Localizer["Tabell sektion"]</MudMenuItem>
+            </ChildContent>
+        </MudMenu>
+        <MudButton Class="px-2" Variant="Variant.Text" Style="min-width: 40px;" Color="Color.Error"
+                    Disabled="SelectedSection is null" OnClick="DeleteRequestIfConfirmed">
+            <MudIcon Icon="@Icons.Material.Sharp.Delete" />
+        </MudButton>
+    </div>
+
+    <div class="d-flex justify-end align-self-start" style="width: 33%">
+        <MudButton Variant="Variant.Text" Style="min-width: 0;" Color="Color.Success" OnClick="SaveAndCloseRequest">
+            <MudIcon Icon="@Icons.Material.Sharp.Save" />
+            <MudHidden Breakpoint="Breakpoint.SmAndDown">
+                <MudText Class="pl-2">
+                    @Localizer["Spara och stäng"]
+                </MudText>
+            </MudHidden>
+        </MudButton>
+
+        <MudButton Variant="Variant.Text" Style="min-width: 0;" Color="Color.Error" Class="pa-2" OnClick="CloseRequest">
+            <MudIcon Icon="@Icons.Material.Sharp.Close" />
+        </MudButton>
+    </div>
+
+</MudPaper>
+
+@code {
+    [Inject] public required IStringLocalizer<HeaderToolbar> Localizer { get; set; }
+    [Inject] public required IDialogService DialogService { get; set; }
+    [Inject] public required IBrowserViewportService BrowserViewportService { get; set; }
+
+    [Parameter, EditorRequired] public EventCallback CloseRequest { get; set; }
+    [Parameter, EditorRequired] public EventCallback SaveAndCloseRequest { get; set; }
+    [Parameter, EditorRequired] public EventCallback OrderChanged { get; set; }
+    [Parameter, EditorRequired] public EventCallback<IViewSection> CreateNewSectionRequest { get; set; }
+    [Parameter, EditorRequired] public EventCallback<IViewSection> DeleteSectionRequest { get; set; }
+    [Parameter, EditorRequired] public IViewSection? SelectedSection { get; set; }
+    [Parameter, EditorRequired] public required List<IViewSection> SectionsInOrder { get; set; }
+
+    Breakpoint CurrentBreakpoint;
+    string SectionActionsClass => BreakpointIsSmAndDown(CurrentBreakpoint) ? "d-flex justify-start align-self-stretch" : "d-flex justify-center align-self-stretch";
+    public Guid Id { get; } = Guid.NewGuid();
+
+    bool BreakpointIsSmAndDown(Breakpoint breakpoint)
+    {
+        if (breakpoint == Breakpoint.Sm || breakpoint == Breakpoint.Xs)
+        {
+            return true;
+        }
+        return false;
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            await BrowserViewportService.SubscribeAsync(this, fireImmediately: true);
+        }
+
+        await base.OnAfterRenderAsync(firstRender);
+    }
+
+    public async ValueTask DisposeAsync() => await BrowserViewportService.UnsubscribeAsync(this);
+
+
+
+    public ResizeOptions ResizeOptions { get; } = new()
+        {
+            ReportRate = 250,
+            NotifyOnBreakpointOnly = true
+        };
+
+    public async Task NotifyBrowserViewportChangeAsync(BrowserViewportEventArgs browserViewportEventArgs)
+    {
+        CurrentBreakpoint = browserViewportEventArgs.Breakpoint;
+        await InvokeAsync(StateHasChanged);
+    }
+
+
+
+
+    async Task DeleteRequestIfConfirmed()
+    {
+        var parameters = new DialogParameters<YesNoDialog>();
+        parameters.Add(x => x.Info, Localizer["Ta bort sektionen?"]);
+
+        var dialog = await DialogService.ShowAsync<YesNoDialog>(Localizer["Ta bort"], parameters);
+        var result = await dialog.Result;
+        if (!result.Canceled)
+        {
+            await DeleteSectionRequest.InvokeAsync(SelectedSection);
+        }
+    }
+    void CreateNewSection(IViewSection section)
+    {
+        CreateNewSectionRequest.InvokeAsync(section);
+    }
+    void PushSelectedSectionDown()
+    {
+        if (SelectedSection is not null)
+        {
+            var selectedSectionIndex = SectionsInOrder.IndexOf(SelectedSection);
+            var section2 = SectionsInOrder[selectedSectionIndex + 1];
+            SwitchOrder(SelectedSection, section2);
+        }
+    }
+    void PushSelectedSectionUp()
+    {
+        if (SelectedSection is not null)
+        {
+            var selectedSectionIndex = SectionsInOrder.IndexOf(SelectedSection);
+            var section2 = SectionsInOrder[selectedSectionIndex - 1];
+            SwitchOrder(SelectedSection, section2);
+        }
+    }
+    void SwitchOrder(IViewSection section1, IViewSection section2)
+    {
+        if(section1.Order == section2.Order)
+        {
+            section1.Order -= 1;
+        }
+        int tempVal = section1.Order;
+        section1.Order = section2.Order;
+        section2.Order = tempVal;
+        OrderChanged.InvokeAsync();
+    }
+}

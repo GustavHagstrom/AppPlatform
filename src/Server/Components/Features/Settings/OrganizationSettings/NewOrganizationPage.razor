@@ -1,0 +1,45 @@
+﻿@page "/settings/organization/new"
+@inject IStringLocalizer<NewOrganizationPage> Localizer
+@inject IOrganizationService OrganizationService
+@inject AuthenticationStateProvider AuthProvider
+@inject IJSRuntime JSRuntime
+@inject NavigationManager NavigationManager
+@inject OrganizationValidation OrganizationValidation
+
+<SettingsPage Title="@Localizer["Skapa ny organisation"]" >
+    <div>
+        <MudTextField T="string" Label="@Localizer["Namn"]" Variant="Variant.Outlined" @bind-Value="Name" Validation="@(new Func<string, string>(OrganizationValidation.ValidateName))"
+                      Margin="Margin.Dense"/>
+        <div style="margin-top: 16px;"/>
+        <div class="d-flex gap-1">
+            <MudSpacer />
+            <MudButton Variant="Variant.Outlined" Color="Color.Secondary" @onclick="@(async () => await JSRuntime.InvokeVoidAsync("history.back"))">@Localizer["Avbryt"]</MudButton>
+            <MudButton Variant="Variant.Outlined" Color="Color.Primary" @onclick="Submit">@Localizer["Spara"]</MudButton>
+        </div>
+    </div>
+    
+</SettingsPage>
+
+@code {
+    string Name { get; set; } = string.Empty;
+
+    [CascadingParameter] public ActiveOrganizationContainer? ActiveOrganizationContainer { get; set; }
+
+    async Task Submit()
+    {
+        var state = await AuthProvider.GetAuthenticationStateAsync();
+        if (state.User.Identity?.IsAuthenticated == true && string.IsNullOrEmpty(OrganizationValidation.ValidateName(Name)))
+        {
+            var org = new Organization
+            {
+                Name = Name
+            };
+            await OrganizationService.CreateAsync(state.User, org);
+            if (ActiveOrganizationContainer is not null)
+            {
+                await ActiveOrganizationContainer.SetActiveOrganizationAsync(org);
+            }
+            NavigationManager.NavigateTo(ApplicationRoutes.Settings.Organization.Index);
+        }
+    }
+}

@@ -1,15 +1,18 @@
 ﻿using SharedLibrary.Enums.ViewTemplate;
+using System.ComponentModel.DataAnnotations;
 
 namespace Server.Enteties.EstimationView;
 
 public class SheetColumn : IEstimationViewEntity
 {
-    public Guid Id { get; set; }
+    [StringLength(450)]
+    public string Id { get; set; } = Guid.NewGuid().ToString();
     public int Order { get; set; }
     public int WidthPercent { get; set; }
     public SheetColumnType ColumnType { get; set; }
 
     public required CellFormat CellFormat { get; set; }
-    public Guid NetSheetSectionTemplateId { get; set; }
+    [StringLength(450)]
+    public string NetSheetSectionTemplateId { get; set; } = string.Empty;
     public SheetSectionTemplate? NetSheetSectionTemplate { get; set; }
 }

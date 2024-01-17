@@ -1,0 +1,45 @@
+﻿@page "/invitationconfirmation/{Id}"
+@attribute [Authorize]
+@inject IInvitationService InvitationService
+@inject IStringLocalizer<Index> Localizer
+@inject NavigationManager NavigationManager
+@inject ILogger<Index> Logger
+@inject AuthenticationStateProvider AuthProvider
+
+@if(Invitaion is null)
+{
+    <p>@Localizer["Laddar..."]</p>
+}
+else
+{
+    <MudButton OnClick="Accept">
+        @Localizer["Acceptera"]
+    </MudButton>
+}
+
+@code {
+    [Parameter] public string Id { get; set; } = string.Empty;
+
+    OrganizationInvitaion? Invitaion { get; set; }
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        if(string.IsNullOrEmpty(Id))
+        {
+            Logger.LogError("Id is null or empty");
+            return;
+        }
+        Invitaion = await InvitationService.GetAsync(Id);
+    }
+    async Task Accept()
+    {
+        if (Invitaion is null)
+        {
+            return;
+        }
+        var state = await AuthProvider.GetAuthenticationStateAsync();
+        await InvitationService.AcceptInvitaionAsync(state.User, Invitaion);
+        NavigationManager.NavigateTo(ApplicationRoutes.Dashboard, true);
+    }
+}
