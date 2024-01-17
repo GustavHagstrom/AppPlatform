@@ -1,8 +1,0 @@
-input {
-    display: flex;
-    flex-grow: 1;
-    min-width: 0;
-    padding: 4px;
-    background-color: var(--mud-palette-background);
-    color: var(--mud-palette-text-primary);
-}
