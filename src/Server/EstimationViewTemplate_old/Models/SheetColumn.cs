@@ -1,4 +1,4 @@
-﻿using SharedLibrary.Enums.ViewTemplate;
+﻿using AppPlatform.Shared.Enums.ViewTemplate;
 
 namespace AppPlatform.Server.EstimationViewTemplate_old.Models;
 public class SheetColumn

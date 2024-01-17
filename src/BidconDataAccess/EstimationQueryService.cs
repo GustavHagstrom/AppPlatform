@@ -1,6 +1,6 @@
 ﻿using Dapper;
 using Microsoft.Data.SqlClient;
-using SharedLibrary.DTOs.BidconAccess;
+using AppPlatform.Shared.DTOs.BidconAccess;
 using System.Data;
 
 namespace AppPlatform.BidconDataAccess;

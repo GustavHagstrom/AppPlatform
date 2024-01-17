@@ -1,4 +1,4 @@
-﻿namespace SharedLibrary.DTOs.EstimationView;
+﻿namespace AppPlatform.Shared.DTOs.EstimationView;
 public class DataColumnDto
 {
     public Guid Id { get; set; }

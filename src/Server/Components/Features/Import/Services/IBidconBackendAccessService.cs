@@ -1,4 +1,4 @@
-﻿using SharedLibrary.DTOs.BidconAccess;
+﻿using AppPlatform.Shared.DTOs.BidconAccess;
 
 namespace AppPlatform.Server.Components.Features.Import.Services;
 public interface IBidconBackendAccessService

@@ -1,4 +1,4 @@
-﻿namespace SharedLibrary.Enums;
+﻿namespace AppPlatform.Shared.Enums;
 public enum ApplicationRight
 {
     AdminSettings = 1,

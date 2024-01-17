@@ -1,4 +1,4 @@
-﻿namespace SharedLibrary.Wrappers;
+﻿namespace AppPlatform.Shared.Wrappers;
 
 public interface IHttpClientWrapper : IDisposable
 {

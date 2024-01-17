@@ -1,4 +1,4 @@
-﻿namespace SharedLibrary.Utilities.Placeholder;
+﻿namespace AppPlatform.Shared.Utilities.Placeholder;
 [AttributeUsage(AttributeTargets.Property, AllowMultiple = false)]
 public class PlaceholderAttribute : Attribute
 {

@@ -1,8 +1,8 @@
 ﻿using AppPlatform.Server.EstimationViewTemplate_old.Models;
 using Mapster;
-using SharedLibrary.Constants;
-using SharedLibrary.DTOs.EstimationView;
-using SharedLibrary.Wrappers;
+using AppPlatform.Shared.Constants;
+using AppPlatform.Shared.DTOs.EstimationView;
+using AppPlatform.Shared.Wrappers;
 using System.Net.Http.Json;
 
 namespace AppPlatform.Server.EstimationViewTemplate_old.Services;

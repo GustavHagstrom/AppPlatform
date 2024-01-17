@@ -1,6 +1,6 @@
 ﻿using AppPlatform.BidconDataAccess;
 using  AppPlatform.BidconLink.Services;
-using SharedLibrary.DTOs.BidconAccess;
+using AppPlatform.Shared.DTOs.BidconAccess;
 using System.Text.Json;
 
 namespace Tests.BidconLink.Services;

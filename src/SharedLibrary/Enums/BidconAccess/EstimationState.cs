@@ -1,4 +1,4 @@
-﻿namespace SharedLibrary.Enums.BidconAccess;
+﻿namespace AppPlatform.Shared.Enums.BidconAccess;
 public enum EstimationState
 {
     Tender = 1,

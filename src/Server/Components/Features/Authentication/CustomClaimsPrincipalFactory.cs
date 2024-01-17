@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using AppPlatform.Server.Data;
 using AppPlatform.Server.Enteties;
-using SharedLibrary.Constants;
+using AppPlatform.Shared.Constants;
 using System.Security.Claims;
 
 namespace AppPlatform.Server.Components.Features.Authentication;

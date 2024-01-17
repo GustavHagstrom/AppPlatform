@@ -1,4 +1,4 @@
-﻿using SharedLibrary.DTOs.BidconAccess;
+﻿using AppPlatform.Shared.DTOs.BidconAccess;
 using AppPlatform.Server.EstimationProcessing.Models;
 
 namespace AppPlatform.Server.EstimationProcessing.Services;

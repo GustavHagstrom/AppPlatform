@@ -1,4 +1,4 @@
-﻿using SharedLibrary.Constants;
+﻿using AppPlatform.Shared.Constants;
 using System.Security.Claims;
 
 namespace AppPlatform.Server.Extensions;

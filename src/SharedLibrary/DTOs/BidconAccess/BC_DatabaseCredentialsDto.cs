@@ -1,4 +1,4 @@
-﻿namespace SharedLibrary.DTOs.BidconAccess;
+﻿namespace AppPlatform.Shared.DTOs.BidconAccess;
 
 public record BC_DatabaseCredentialsDto(
     string Server, 

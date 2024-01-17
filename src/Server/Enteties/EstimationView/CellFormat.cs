@@ -1,4 +1,4 @@
-﻿using SharedLibrary.Enums.ViewTemplate;
+﻿using AppPlatform.Shared.Enums.ViewTemplate;
 using System.ComponentModel.DataAnnotations;
 
 namespace AppPlatform.Server.Enteties.EstimationView;

@@ -1,5 +1,5 @@
 ﻿//using AppPlatform.Server.Services.EstimationView;
-//using SharedLibrary.DTOs.EstimationView;
+//using AppPlatform.Shared.DTOs.EstimationView;
 //using Microsoft.AspNetCore.Http;
 //using Microsoft.AspNetCore.Mvc;
 //using Microsoft.Extensions.Logging;

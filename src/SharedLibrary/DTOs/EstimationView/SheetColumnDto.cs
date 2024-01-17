@@ -1,6 +1,6 @@
-﻿using SharedLibrary.Enums.ViewTemplate;
+﻿using AppPlatform.Shared.Enums.ViewTemplate;
 
-namespace SharedLibrary.DTOs.EstimationView;
+namespace AppPlatform.Shared.DTOs.EstimationView;
 
 public class SheetColumnDto
 {

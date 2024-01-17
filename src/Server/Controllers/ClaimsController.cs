@@ -1,5 +1,5 @@
-﻿//using SharedLibrary.Constants;
-//using SharedLibrary.DTOs;
+﻿//using AppPlatform.Shared.Constants;
+//using AppPlatform.Shared.DTOs;
 //using Microsoft.AspNetCore.Mvc;
 
 //namespace AppPlatform.Server.Controllers;

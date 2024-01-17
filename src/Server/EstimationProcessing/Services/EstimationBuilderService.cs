@@ -1,7 +1,7 @@
 ﻿using AppPlatform.Server.EstimationProcessing.Calculations;
 using AppPlatform.Server.EstimationProcessing.Models;
-using SharedLibrary.DTOs.BidconAccess;
-using SharedLibrary.Enums.BidconAccess;
+using AppPlatform.Shared.DTOs.BidconAccess;
+using AppPlatform.Shared.Enums.BidconAccess;
 
 namespace AppPlatform.Server.EstimationProcessing.Services;
 public class EstimationBuilderService : IEstimationBuilderService

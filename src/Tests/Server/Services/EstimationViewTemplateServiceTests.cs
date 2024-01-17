@@ -1,6 +1,6 @@
 ﻿//using AppPlatform.Server.Data;
 //using AppPlatform.Server.Services.EstimationView;
-//using SharedLibrary.DTOs.EstimationView;
+//using AppPlatform.Shared.DTOs.EstimationView;
 //using Mapster;
 //using Microsoft.EntityFrameworkCore;
 //using Microsoft.Extensions.Logging;

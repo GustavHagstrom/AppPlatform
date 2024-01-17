@@ -1,4 +1,4 @@
-﻿namespace SharedLibrary.DTOs.BidconAccess;
+﻿namespace AppPlatform.Shared.DTOs.BidconAccess;
 public class BC_ATADto
 {
     public Guid EstimationId { get; set; }

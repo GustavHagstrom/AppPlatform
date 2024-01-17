@@ -1,5 +1,5 @@
 ﻿//using AppPlatform.Server.Services.EstimationView;
-//using SharedLibrary.DTOs.EstimationView;
+//using AppPlatform.Shared.DTOs.EstimationView;
 //using Microsoft.AspNetCore.Mvc;
 
 //namespace AppPlatform.Server.Controllers;

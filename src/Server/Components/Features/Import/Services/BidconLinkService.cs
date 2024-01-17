@@ -1,6 +1,6 @@
 ﻿using AppPlatform.Client.Shared.Constants;
-using SharedLibrary.Constants;
-using SharedLibrary.DTOs.BidconAccess;
+using AppPlatform.Shared.Constants;
+using AppPlatform.Shared.DTOs.BidconAccess;
 using System.Net.Http.Json;
 
 namespace AppPlatform.Server.Components.Features.Import.Services;

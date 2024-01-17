@@ -30,7 +30,7 @@
     <ProjectReference Include="..\BidconLink\AppPlatform.BidconLink.csproj" />
     <ProjectReference Include="..\Client\AppPlatform.Client.csproj" />
     <ProjectReference Include="..\Server\AppPlatform.Server.csproj" />
-    <ProjectReference Include="..\SharedLibrary\SharedLibrary.csproj" />
+    <ProjectReference Include="..\SharedLibrary\AppPlatform.Shared.csproj" />
   </ItemGroup>
 
   <ItemGroup>

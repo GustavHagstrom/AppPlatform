@@ -1,5 +1,5 @@
-﻿using SharedLibrary.DTOs;
-using SharedLibrary.DTOs.BidconAccess;
+﻿using AppPlatform.Shared.DTOs;
+using AppPlatform.Shared.DTOs.BidconAccess;
 
 namespace AppPlatform.Server.Services;
 

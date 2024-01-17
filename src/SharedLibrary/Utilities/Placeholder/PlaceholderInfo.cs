@@ -1,4 +1,4 @@
 ﻿using System.Reflection;
 
-namespace SharedLibrary.Utilities.Placeholder;
+namespace AppPlatform.Shared.Utilities.Placeholder;
 public record PlaceholderInfo(string Placeholder, PropertyInfo PropertyInfo);

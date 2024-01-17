@@ -4,7 +4,7 @@ using AppPlatform.Server.Enteties;
 using System.Security.Claims;
 using AppPlatform.Server.Extensions;
 using AppPlatform.Server.Services.Email;
-using SharedLibrary.Constants;
+using AppPlatform.Shared.Constants;
 using Microsoft.AspNetCore.Components;
 using static AppPlatform.Server.Enteties.OrganizationInvitaion;
 

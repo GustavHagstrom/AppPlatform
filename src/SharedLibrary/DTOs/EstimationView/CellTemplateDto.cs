@@ -1,4 +1,4 @@
-﻿namespace SharedLibrary.DTOs.EstimationView;
+﻿namespace AppPlatform.Shared.DTOs.EstimationView;
 public class CellTemplateDto
 {
     public Guid Id { get; set; }

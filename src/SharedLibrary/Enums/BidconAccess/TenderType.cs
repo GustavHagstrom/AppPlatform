@@ -1,4 +1,4 @@
-﻿namespace SharedLibrary.Enums.BidconAccess;
+﻿namespace AppPlatform.Shared.Enums.BidconAccess;
 public enum TenderType
 {
     Manual = 1,

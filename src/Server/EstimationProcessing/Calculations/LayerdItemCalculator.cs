@@ -1,5 +1,5 @@
-﻿using SharedLibrary.DTOs.BidconAccess;
-using SharedLibrary.Enums.BidconAccess;
+﻿using AppPlatform.Shared.DTOs.BidconAccess;
+using AppPlatform.Shared.Enums.BidconAccess;
 
 namespace AppPlatform.Server.EstimationProcessing.Calculations;
 public class LayerdItemCalculator : ILayerdItemCalculator

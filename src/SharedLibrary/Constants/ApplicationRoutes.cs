@@ -1,4 +1,4 @@
-﻿namespace SharedLibrary.Constants;
+﻿namespace AppPlatform.Shared.Constants;
 
 public static class ApplicationRoutes
 {

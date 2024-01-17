@@ -1,4 +1,4 @@
-﻿using SharedLibrary.DTOs.EstimationView;
+﻿using AppPlatform.Shared.DTOs.EstimationView;
 
 namespace AppPlatform.Server.EstimationViewTemplate_old.Models;
 public class ViewTemplate

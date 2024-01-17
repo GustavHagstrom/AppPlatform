@@ -1,4 +1,4 @@
-﻿using SharedLibrary.Enums.BidconAccess;
+﻿using AppPlatform.Shared.Enums.BidconAccess;
 using System.ComponentModel.DataAnnotations;
 
 namespace AppPlatform.Server.Enteties.EstimationView;

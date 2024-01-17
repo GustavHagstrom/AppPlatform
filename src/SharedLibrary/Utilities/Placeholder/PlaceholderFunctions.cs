@@ -1,6 +1,6 @@
 ﻿using System.Reflection;
 
-namespace SharedLibrary.Utilities.Placeholder;
+namespace AppPlatform.Shared.Utilities.Placeholder;
 public static class PlaceholderFunctions
 {
     public static IEnumerable<PlaceholderInfo> GetPlaceholderPreopertyInfos(Type type)

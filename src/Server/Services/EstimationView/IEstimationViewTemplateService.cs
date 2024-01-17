@@ -1,4 +1,4 @@
-﻿using SharedLibrary.DTOs.EstimationView;
+﻿using AppPlatform.Shared.DTOs.EstimationView;
 
 namespace AppPlatform.Server.Services.EstimationView;
 public interface IEstimationViewTemplateService

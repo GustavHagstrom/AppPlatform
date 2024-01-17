@@ -1,6 +1,6 @@
-﻿using SharedLibrary.Enums.BidconAccess;
+﻿using AppPlatform.Shared.Enums.BidconAccess;
 
-namespace SharedLibrary.DTOs.EstimationView;
+namespace AppPlatform.Shared.DTOs.EstimationView;
 
 public class SheetSectionTemplateDto
 {

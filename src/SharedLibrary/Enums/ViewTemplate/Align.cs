@@ -1,4 +1,4 @@
-﻿namespace SharedLibrary.Enums.ViewTemplate;
+﻿namespace AppPlatform.Shared.Enums.ViewTemplate;
 
 public enum Align
 {

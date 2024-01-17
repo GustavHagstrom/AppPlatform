@@ -2,9 +2,9 @@
 using AppPlatform.Server.EstimationViewTemplate_old.Services;
 using Microsoft.Extensions.Logging;
 using Moq;
-using SharedLibrary.Constants;
-using SharedLibrary.DTOs.EstimationView;
-using SharedLibrary.Wrappers;
+using AppPlatform.Shared.Constants;
+using AppPlatform.Shared.DTOs.EstimationView;
+using AppPlatform.Shared.Wrappers;
 using System.Net;
 
 namespace Tests.Server.EstimationViewTemplate_old;

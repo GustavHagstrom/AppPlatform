@@ -1,6 +1,6 @@
 ﻿using System.Net.Http.Json;
 
-namespace SharedLibrary.Wrappers;
+namespace AppPlatform.Shared.Wrappers;
 public class HttpClientWrapper : IHttpClientWrapper
 {
     private readonly HttpClient _httpClient;
