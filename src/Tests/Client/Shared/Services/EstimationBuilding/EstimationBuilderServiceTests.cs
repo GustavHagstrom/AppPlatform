@@ -1,4 +1,4 @@
-﻿//using BidconLink.BidconAccess.Enteties;
+﻿//using  AppPlatform.BidconLink.BidconAccess.Enteties;
 //using Server.EstimationProcessing.Services;
 //using System.Text.Json;
 

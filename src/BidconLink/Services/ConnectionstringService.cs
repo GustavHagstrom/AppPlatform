@@ -1,8 +1,8 @@
 ﻿using AppPlatform.BidconDataAccess;
-using BidconLink.Constants;
+using  AppPlatform.BidconLink.Constants;
 using System.Security.Cryptography;
 
-namespace BidconLink.Services;
+namespace AppPlatform.BidconLink.Services;
 public class ConnectionstringService : IConnectionstringService
 {
     private readonly byte[] ENCRYPTION_KEY = new byte[8] { 45, 103, 246, 79, 36, 99, 167, 3 };

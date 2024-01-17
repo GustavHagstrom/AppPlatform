@@ -27,7 +27,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\BidconLink\BidconLink.csproj" />
+    <ProjectReference Include="..\BidconLink\AppPlatform.BidconLink.csproj" />
     <ProjectReference Include="..\Client\Client.csproj" />
     <ProjectReference Include="..\Server\Server.csproj" />
     <ProjectReference Include="..\SharedLibrary\SharedLibrary.csproj" />

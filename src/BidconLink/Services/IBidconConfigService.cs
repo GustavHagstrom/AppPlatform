@@ -1,4 +1,4 @@
-﻿namespace BidconLink.Services;
+﻿namespace AppPlatform.BidconLink.Services;
 
 public interface IBidconConfigService
 {

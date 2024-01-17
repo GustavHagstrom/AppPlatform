@@ -1,4 +1,4 @@
-﻿namespace BidconLink.Constants;
+﻿namespace AppPlatform.BidconLink.Constants;
 
 public static class InitConstants
 {

@@ -1,7 +1,7 @@
-﻿using BidconLink.Constants;
+﻿using  AppPlatform.BidconLink.Constants;
 using System.Xml.Linq;
 
-namespace BidconLink.Services;
+namespace AppPlatform.BidconLink.Services;
 
 public class BidconConfigService : IBidconConfigService
 {

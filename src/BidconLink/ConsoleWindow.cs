@@ -1,6 +1,6 @@
 ﻿using System.Runtime.InteropServices;
 
-namespace BidconLink;
+namespace AppPlatform.BidconLink;
 
 public static class ConsoleWindow
 {

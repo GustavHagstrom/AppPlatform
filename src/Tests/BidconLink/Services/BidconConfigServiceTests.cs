@@ -1,4 +1,4 @@
-﻿using BidconLink.Services;
+﻿using  AppPlatform.BidconLink.Services;
 
 namespace Tests.BidconLink.Services;
 

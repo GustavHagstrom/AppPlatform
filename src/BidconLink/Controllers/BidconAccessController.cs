@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using AppPlatform.BidconDataAccess;
 
-namespace BidconLink.Controllers;
+namespace AppPlatform.BidconLink.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]

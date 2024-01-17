@@ -1,5 +1,5 @@
 ﻿using AppPlatform.BidconDataAccess;
-using BidconLink.Services;
+using  AppPlatform.BidconLink.Services;
 using SharedLibrary.DTOs.BidconAccess;
 using System.Text.Json;
 
