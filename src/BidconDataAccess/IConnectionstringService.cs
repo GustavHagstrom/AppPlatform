@@ -1,4 +1,4 @@
-﻿namespace BidconDataAccess;
+﻿namespace AppPlatform.BidconDataAccess;
 
 public interface IConnectionstringService
 {

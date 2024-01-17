@@ -3,7 +3,7 @@ using Microsoft.Data.SqlClient;
 using SharedLibrary.DTOs.BidconAccess;
 using System.Data;
 
-namespace BidconDataAccess;
+namespace AppPlatform.BidconDataAccess;
 public class EstimationQueryService : IEstimationQueryService
 {
     private readonly IConnectionstringService _connectionStringBuilder;

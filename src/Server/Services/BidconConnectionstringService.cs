@@ -1,4 +1,4 @@
-﻿using BidconDataAccess;
+﻿using AppPlatform.BidconDataAccess;
 using Server.Services.Settings;
 
 namespace Server.Services;

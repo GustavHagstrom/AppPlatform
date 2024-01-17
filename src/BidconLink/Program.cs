@@ -1,6 +1,6 @@
 ﻿using BidconLink.Services;
 using Serilog;
-using BidconDataAccess;
+using AppPlatform.BidconDataAccess;
 
 var loggerConfig = new LoggerConfiguration();
 

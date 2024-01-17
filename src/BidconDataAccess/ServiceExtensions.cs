@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 
-namespace BidconDataAccess;
+namespace AppPlatform.BidconDataAccess;
 
 public static class ServiceExtensions
 {

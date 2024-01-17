@@ -38,7 +38,7 @@
 
 
   <ItemGroup>
-    <ProjectReference Include="..\BidconDataAccess\BidconDataAccess.csproj" />
+    <ProjectReference Include="..\BidconDataAccess\AppPlatform.BidconDataAccess.csproj" />
     <ProjectReference Include="..\Client\Client.csproj" />
     <ProjectReference Include="..\SharedLibrary\SharedLibrary.csproj" />
   </ItemGroup>

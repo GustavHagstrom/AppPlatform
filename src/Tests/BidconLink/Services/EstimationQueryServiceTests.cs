@@ -1,4 +1,4 @@
-﻿using BidconDataAccess;
+﻿using AppPlatform.BidconDataAccess;
 using BidconLink.Services;
 using SharedLibrary.DTOs.BidconAccess;
 using System.Text.Json;

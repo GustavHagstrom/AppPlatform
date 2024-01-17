@@ -1,6 +1,6 @@
 ﻿//using SharedLibrary.DTOs.BidconAccess;
 //using Microsoft.AspNetCore.Mvc;
-//using BidconDataAccess;
+//using AppPlatform.BidconDataAccess;
 //using System.Security.Claims;
 
 //namespace Server.Controllers;

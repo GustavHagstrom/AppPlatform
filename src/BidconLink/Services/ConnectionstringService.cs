@@ -1,4 +1,4 @@
-﻿using BidconDataAccess;
+﻿using AppPlatform.BidconDataAccess;
 using BidconLink.Constants;
 using System.Security.Cryptography;
 

@@ -13,7 +13,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BidconLink", "BidconLink\Bi
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tests", "Tests\Tests.csproj", "{95F44499-4F20-4845-9326-FFCEF8F0EE09}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BidconDataAccess", "BidconDataAccess\BidconDataAccess.csproj", "{81FAC7CE-792D-45AD-8949-547D31FD1B19}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AppPlatform.BidconDataAccess", "BidconDataAccess\AppPlatform.BidconDataAccess.csproj", "{81FAC7CE-792D-45AD-8949-547D31FD1B19}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
