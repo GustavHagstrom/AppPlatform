@@ -2,7 +2,7 @@
 //using SharedLibrary.DTOs;
 //using Microsoft.AspNetCore.Mvc;
 
-//namespace Server.Controllers;
+//namespace AppPlatform.Server.Controllers;
 //[Route("api/[controller]")]
 //[ApiController]
 //public class ClaimsController : ControllerBase

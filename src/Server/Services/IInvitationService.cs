@@ -1,8 +1,8 @@
-﻿using Server.Data;
-using Server.Enteties;
+﻿using AppPlatform.Server.Data;
+using AppPlatform.Server.Enteties;
 using System.Security.Claims;
 
-namespace Server.Services;
+namespace AppPlatform.Server.Services;
 public interface IInvitationService
 {
     Task AcceptInvitaionAsync(ClaimsPrincipal userClaims, OrganizationInvitaion invitaion);

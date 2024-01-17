@@ -1,4 +1,4 @@
-﻿namespace Server.EstimationViewTemplate_old.Models;
+﻿namespace AppPlatform.Server.EstimationViewTemplate_old.Models;
 public interface IViewSection
 {
     Guid Id { get; set; }

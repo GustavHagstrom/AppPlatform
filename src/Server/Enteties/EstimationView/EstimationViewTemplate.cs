@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace Server.Enteties.EstimationView;
+namespace AppPlatform.Server.Enteties.EstimationView;
 public class EstimationViewTemplate : IEstimationViewEntity
 {
     [StringLength(450)]

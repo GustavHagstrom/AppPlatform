@@ -3,7 +3,7 @@
 //using AppPlatform.BidconDataAccess;
 //using System.Security.Claims;
 
-//namespace Server.Controllers;
+//namespace AppPlatform.Server.Controllers;
 
 //[Route("api/[controller]")]
 //[ApiController]

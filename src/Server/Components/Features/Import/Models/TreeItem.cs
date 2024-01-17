@@ -1,6 +1,6 @@
-﻿using Server.EstimationProcessing.Models;
+﻿using AppPlatform.Server.EstimationProcessing.Models;
 
-namespace Server.Components.Features.Import.Models;
+namespace AppPlatform.Server.Components.Features.Import.Models;
 public class TreeItem
 {
     private bool _isSelected;

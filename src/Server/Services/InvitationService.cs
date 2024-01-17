@@ -1,14 +1,14 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Server.Data;
-using Server.Enteties;
+using AppPlatform.Server.Data;
+using AppPlatform.Server.Enteties;
 using System.Security.Claims;
-using Server.Extensions;
-using Server.Services.Email;
+using AppPlatform.Server.Extensions;
+using AppPlatform.Server.Services.Email;
 using SharedLibrary.Constants;
 using Microsoft.AspNetCore.Components;
-using static Server.Enteties.OrganizationInvitaion;
+using static AppPlatform.Server.Enteties.OrganizationInvitaion;
 
-namespace Server.Services;
+namespace AppPlatform.Server.Services;
 
 public class InvitationService(
     IDbContextFactory<ApplicationDbContext> dbContextFactory, 

@@ -2,7 +2,7 @@
 
 #nullable disable
 
-namespace Server.Migrations
+namespace AppPlatform.Server.Migrations
 {
     /// <inheritdoc />
     public partial class Invitations : Migration

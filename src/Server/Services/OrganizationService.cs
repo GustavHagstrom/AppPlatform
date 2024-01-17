@@ -1,10 +1,10 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Server.Data;
-using Server.Enteties;
-using Server.Extensions;
+using AppPlatform.Server.Data;
+using AppPlatform.Server.Enteties;
+using AppPlatform.Server.Extensions;
 using System.Security.Claims;
 
-namespace Server.Services;
+namespace AppPlatform.Server.Services;
 
 public class OrganizationService : IOrganizationService
 {

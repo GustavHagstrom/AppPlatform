@@ -1,5 +1,5 @@
-using Server.Components.Features.Account.Pages;
-using Server.Components.Features.Account.Pages.Manage;
+using AppPlatform.Server.Components.Features.Account.Pages;
+using AppPlatform.Server.Components.Features.Account.Pages.Manage;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Http.Extensions;
@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Primitives;
 using System.Security.Claims;
 using System.Text.Json;
-using Server.Enteties;
+using AppPlatform.Server.Enteties;
 
 namespace Microsoft.AspNetCore.Routing;
 internal static class IdentityComponentsEndpointRouteBuilderExtensions

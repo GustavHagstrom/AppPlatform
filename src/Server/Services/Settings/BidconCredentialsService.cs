@@ -1,10 +1,10 @@
-﻿using Server.Data;
-using Server.Enteties;
+﻿using AppPlatform.Server.Data;
+using AppPlatform.Server.Enteties;
 using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
-using Server.Extensions;
+using AppPlatform.Server.Extensions;
 
-namespace Server.Services.Settings;
+namespace AppPlatform.Server.Services.Settings;
 
 public class BidconCredentialsService(IDbContextFactory<ApplicationDbContext> ContextFactory) : IBidconCredentialsService
 {

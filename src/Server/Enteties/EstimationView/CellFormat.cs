@@ -1,7 +1,7 @@
 ﻿using SharedLibrary.Enums.ViewTemplate;
 using System.ComponentModel.DataAnnotations;
 
-namespace Server.Enteties.EstimationView;
+namespace AppPlatform.Server.Enteties.EstimationView;
 
 public class CellFormat : IEstimationViewEntity
 {

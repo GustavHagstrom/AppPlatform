@@ -1,8 +1,8 @@
-﻿//using Server.Services.EstimationView;
+﻿//using AppPlatform.Server.Services.EstimationView;
 //using SharedLibrary.DTOs.EstimationView;
 //using Microsoft.AspNetCore.Mvc;
 
-//namespace Server.Controllers;
+//namespace AppPlatform.Server.Controllers;
 
 //[Route("api/[controller]")]
 //[ApiController]

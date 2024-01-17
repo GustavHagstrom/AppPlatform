@@ -1,8 +1,8 @@
-﻿using Server.Enteties.EstimationView;
+﻿using AppPlatform.Server.Enteties.EstimationView;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Server.Enteties;
+namespace AppPlatform.Server.Enteties;
 
 public class Organization
 {

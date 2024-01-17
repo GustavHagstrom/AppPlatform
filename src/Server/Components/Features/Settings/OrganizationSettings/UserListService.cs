@@ -1,8 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Server.Data;
-using Server.Enteties;
+using AppPlatform.Server.Data;
+using AppPlatform.Server.Enteties;
 
-namespace Server.Components.Features.Settings.OrganizationSettings;
+namespace AppPlatform.Server.Components.Features.Settings.OrganizationSettings;
 
 public class UserListService(IDbContextFactory<ApplicationDbContext> dbContextFactory)
 {

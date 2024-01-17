@@ -1,12 +1,12 @@
-using Server.Data;
+using AppPlatform.Server.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Components.Authorization;
-using Server.Components.Features.Account;
+using AppPlatform.Server.Components.Features.Account;
 using Microsoft.AspNetCore.Identity;
-using Server.Enteties;
-using Server.Components;
-using Server;
-using Server.Components.Features.Authentication;
+using AppPlatform.Server.Enteties;
+using AppPlatform.Server.Components;
+using AppPlatform.Server;
+using AppPlatform.Server.Components.Features.Authentication;
 
 var builder = WebApplication.CreateBuilder(args);
 

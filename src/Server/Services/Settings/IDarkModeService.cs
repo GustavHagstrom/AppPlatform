@@ -1,6 +1,6 @@
 ﻿using System.Security.Claims;
 
-namespace Server.Services.Settings;
+namespace AppPlatform.Server.Services.Settings;
 
 public interface IDarkModeService
 {

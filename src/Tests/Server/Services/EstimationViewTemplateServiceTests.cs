@@ -1,5 +1,5 @@
-﻿//using Server.Data;
-//using Server.Services.EstimationView;
+﻿//using AppPlatform.Server.Data;
+//using AppPlatform.Server.Services.EstimationView;
 //using SharedLibrary.DTOs.EstimationView;
 //using Mapster;
 //using Microsoft.EntityFrameworkCore;

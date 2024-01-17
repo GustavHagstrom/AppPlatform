@@ -1,12 +1,12 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
-using Server.Data;
-using Server.Enteties;
+using AppPlatform.Server.Data;
+using AppPlatform.Server.Enteties;
 using SharedLibrary.Constants;
 using System.Security.Claims;
 
-namespace Server.Components.Features.Authentication;
+namespace AppPlatform.Server.Components.Features.Authentication;
 
 public class CustomClaimsPrincipalFactory(
     UserManager<User> userManager, 

@@ -1,9 +1,9 @@
-﻿//using Server.Services.Settings;
+﻿//using AppPlatform.Server.Services.Settings;
 //using SharedLibrary.DTOs.BidconAccess;
 //using Microsoft.AspNetCore.Mvc;
 //using System.Security.Claims;
 
-//namespace Server.Controllers;
+//namespace AppPlatform.Server.Controllers;
 //[Route("api/[controller]")]
 //[ApiController]
 //public class BidconCredentialsController : ControllerBase

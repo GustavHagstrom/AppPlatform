@@ -1,7 +1,7 @@
 ﻿using SharedLibrary.DTOs;
 using SharedLibrary.DTOs.BidconAccess;
 
-namespace Server.Services;
+namespace AppPlatform.Server.Services;
 
 public class EstimationContainerService : IEstimationContainerService
 {

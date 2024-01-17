@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Components;
 
-namespace Server.Extensions;
+namespace AppPlatform.Server.Extensions;
 
 public static class NavigationManagerExtensions
 {

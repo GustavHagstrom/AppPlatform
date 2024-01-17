@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace Server.Migrations
+namespace AppPlatform.Server.Migrations
 {
     /// <inheritdoc />
     public partial class Subscription : Migration

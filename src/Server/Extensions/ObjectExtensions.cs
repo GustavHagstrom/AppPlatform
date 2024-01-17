@@ -1,4 +1,4 @@
-﻿namespace Server.Extensions;
+﻿namespace AppPlatform.Server.Extensions;
 
 public static class ObjectExtensions
 {

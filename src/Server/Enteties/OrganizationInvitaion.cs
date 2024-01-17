@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace Server.Enteties;
+namespace AppPlatform.Server.Enteties;
 
 public class OrganizationInvitaion
 {

@@ -1,7 +1,7 @@
 ﻿using SharedLibrary.Constants;
 using System.Security.Claims;
 
-namespace Server.Extensions;
+namespace AppPlatform.Server.Extensions;
 
 public static class ClaimsPrincipalExtensions
 {

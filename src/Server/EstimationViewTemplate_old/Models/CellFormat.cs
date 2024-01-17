@@ -1,6 +1,6 @@
 ﻿using SharedLibrary.Enums.ViewTemplate;
 
-namespace Server.EstimationViewTemplate_old.Models;
+namespace AppPlatform.Server.EstimationViewTemplate_old.Models;
 
 public class CellFormat
 {

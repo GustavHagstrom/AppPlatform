@@ -1,5 +1,5 @@
 ﻿//using  AppPlatform.BidconLink.BidconAccess.Enteties;
-//using Server.EstimationProcessing.Services;
+//using AppPlatform.Server.EstimationProcessing.Services;
 //using System.Text.Json;
 
 //namespace Tests.Server.Services.EstimationBuilding;

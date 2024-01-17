@@ -1,6 +1,6 @@
 ﻿using System.Text.Json;
 
-namespace Server.EstimationViewTemplate_old.Models;
+namespace AppPlatform.Server.EstimationViewTemplate_old.Models;
 
 public class DataSection : IViewSection
 {

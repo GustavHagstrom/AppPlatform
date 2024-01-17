@@ -1,6 +1,6 @@
 ﻿using SharedLibrary.DTOs.EstimationView;
 
-namespace Server.Services.EstimationView;
+namespace AppPlatform.Server.Services.EstimationView;
 public interface IEstimationViewTemplateService
 {
     Task DeleteAsync(Guid id, string organizationId);

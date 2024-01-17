@@ -1,4 +1,4 @@
-﻿namespace Server.EstimationViewTemplate_old.Models;
+﻿namespace AppPlatform.Server.EstimationViewTemplate_old.Models;
 public class DataCell
 {
     public Guid Id { get; set; }

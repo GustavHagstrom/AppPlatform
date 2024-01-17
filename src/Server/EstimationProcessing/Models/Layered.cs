@@ -1,4 +1,4 @@
-﻿namespace Server.EstimationProcessing.Models;
+﻿namespace AppPlatform.Server.EstimationProcessing.Models;
 public class Layered : ISheetItem
 {
     private double? _quantity;

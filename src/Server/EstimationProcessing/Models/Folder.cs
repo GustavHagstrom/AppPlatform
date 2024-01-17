@@ -1,4 +1,4 @@
-﻿namespace Server.EstimationProcessing.Models;
+﻿namespace AppPlatform.Server.EstimationProcessing.Models;
 public class Folder
 {
     public int FolderNum { get; set; }

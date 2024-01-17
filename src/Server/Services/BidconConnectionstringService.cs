@@ -1,7 +1,7 @@
 ﻿using AppPlatform.BidconDataAccess;
-using Server.Services.Settings;
+using AppPlatform.Server.Services.Settings;
 
-namespace Server.Services;
+namespace AppPlatform.Server.Services;
 
 public class BidconConnectionstringService : IConnectionstringService
 {

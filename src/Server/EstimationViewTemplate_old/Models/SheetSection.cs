@@ -1,7 +1,7 @@
 ﻿using SharedLibrary.Enums.BidconAccess;
 using System.Text.Json;
 
-namespace Server.EstimationViewTemplate_old.Models;
+namespace AppPlatform.Server.EstimationViewTemplate_old.Models;
 
 public class SheetSection : IViewSection
 {

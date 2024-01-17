@@ -1,12 +1,12 @@
 ﻿using MudBlazor;
 using MudBlazor.Services;
-using Server.Components.Features.Settings.OrganizationSettings;
-using Server.Services;
-using Server.Services.Email;
-using Server.Services.Settings;
+using AppPlatform.Server.Components.Features.Settings.OrganizationSettings;
+using AppPlatform.Server.Services;
+using AppPlatform.Server.Services.Email;
+using AppPlatform.Server.Services.Settings;
 
 
-namespace Server;
+namespace AppPlatform.Server;
 
 internal static class ServiceExtensions
 {

@@ -1,7 +1,7 @@
 ﻿using SharedLibrary.DTOs.BidconAccess;
 using SharedLibrary.Enums.BidconAccess;
 
-namespace Server.EstimationProcessing.Calculations;
+namespace AppPlatform.Server.EstimationProcessing.Calculations;
 public class WRLayerCalculator : ILayerCostCalculator
 {
     public void Calculate(BC_EstimationBatchDto batch, string layerId, out double unitCost, out double unitAskingPrice)

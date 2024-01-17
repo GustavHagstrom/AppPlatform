@@ -1,4 +1,4 @@
-﻿namespace Server.Enteties.EstimationView;
+﻿namespace AppPlatform.Server.Enteties.EstimationView;
 
 public interface IEstimationViewEntity
 {

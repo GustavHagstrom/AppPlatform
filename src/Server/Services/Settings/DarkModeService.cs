@@ -1,9 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Server.Data;
-using Server.Extensions;
+using AppPlatform.Server.Data;
+using AppPlatform.Server.Extensions;
 using System.Security.Claims;
 
-namespace Server.Services.Settings;
+namespace AppPlatform.Server.Services.Settings;
 
 public class DarkModeService(IDbContextFactory<ApplicationDbContext> ContextFactory) : IDarkModeService
 {

@@ -1,8 +1,8 @@
-﻿using Server.Enteties.EstimationView;
+﻿using AppPlatform.Server.Enteties.EstimationView;
 using Microsoft.EntityFrameworkCore;
 
 
-namespace Server.Services.EstimationView;
+namespace AppPlatform.Server.Services.EstimationView;
 
 public class EstimationViewTemplateUpdater : IEstimationViewTemplateUpdater
 {

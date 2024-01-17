@@ -1,10 +1,10 @@
-﻿using Server.Enteties;
-using Server.Enteties.EstimationView;
+﻿using AppPlatform.Server.Enteties;
+using AppPlatform.Server.Enteties.EstimationView;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 
-namespace Server.Data;
+namespace AppPlatform.Server.Data;
 
 public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : IdentityDbContext<User>(options)
 {

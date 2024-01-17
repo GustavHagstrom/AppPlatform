@@ -1,9 +1,9 @@
-﻿using Server.EstimationProcessing.Calculations;
-using Server.EstimationProcessing.Models;
+﻿using AppPlatform.Server.EstimationProcessing.Calculations;
+using AppPlatform.Server.EstimationProcessing.Models;
 using SharedLibrary.DTOs.BidconAccess;
 using SharedLibrary.Enums.BidconAccess;
 
-namespace Server.EstimationProcessing.Services;
+namespace AppPlatform.Server.EstimationProcessing.Services;
 public class EstimationBuilderService : IEstimationBuilderService
 {
     private readonly Dictionary<int, Func<BC_EstimationSheetDto, BC_EstimationBatchDto, ISheetItem?, ICollection<Models.ATA>, ISheetItem>> _createSheetItemFunctionMap;

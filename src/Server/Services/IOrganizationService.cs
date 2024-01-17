@@ -1,7 +1,7 @@
-﻿using Server.Enteties;
+﻿using AppPlatform.Server.Enteties;
 using System.Security.Claims;
 
-namespace Server.Services;
+namespace AppPlatform.Server.Services;
 public interface IOrganizationService
 {
     Task<string?> GetActiveOrgIdAsync(ClaimsPrincipal userClaims);

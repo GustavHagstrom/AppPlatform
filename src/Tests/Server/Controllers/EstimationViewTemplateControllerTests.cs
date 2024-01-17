@@ -1,4 +1,4 @@
-﻿//using Server.Services.EstimationView;
+﻿//using AppPlatform.Server.Services.EstimationView;
 //using SharedLibrary.DTOs.EstimationView;
 //using Microsoft.AspNetCore.Http;
 //using Microsoft.AspNetCore.Mvc;

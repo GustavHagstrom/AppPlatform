@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
-using Server.Enteties;
+using AppPlatform.Server.Enteties;
 
-namespace Server.Services.Email;
+namespace AppPlatform.Server.Services.Email;
 
 public interface IEmailService : IEmailSender<User>
 {

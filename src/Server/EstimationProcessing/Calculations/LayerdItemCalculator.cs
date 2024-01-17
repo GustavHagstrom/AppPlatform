@@ -1,7 +1,7 @@
 ﻿using SharedLibrary.DTOs.BidconAccess;
 using SharedLibrary.Enums.BidconAccess;
 
-namespace Server.EstimationProcessing.Calculations;
+namespace AppPlatform.Server.EstimationProcessing.Calculations;
 public class LayerdItemCalculator : ILayerdItemCalculator
 {
     private readonly Dictionary<int, ILayerCostCalculator> _calculatorMap = new()

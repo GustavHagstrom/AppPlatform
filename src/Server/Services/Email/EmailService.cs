@@ -1,8 +1,8 @@
-﻿using Server.Enteties;
+﻿using AppPlatform.Server.Enteties;
 using System.Net.Mail;
 using System.Net;
 
-namespace Server.Services.Email;
+namespace AppPlatform.Server.Services.Email;
 //Needs integration tests
 public class EmailService : IEmailService
 {

@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace Server.Enteties.EstimationView;
+namespace AppPlatform.Server.Enteties.EstimationView;
 public class DataColumn : IEstimationViewEntity
 {
     [StringLength(450)]

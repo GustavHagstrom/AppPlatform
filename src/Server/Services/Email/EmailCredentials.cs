@@ -1,4 +1,4 @@
-﻿namespace Server.Services.Email;
+﻿namespace AppPlatform.Server.Services.Email;
 
 public class EmailCredentials
 {

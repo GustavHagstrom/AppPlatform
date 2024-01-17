@@ -1,6 +1,6 @@
 ﻿using SharedLibrary.DTOs.EstimationView;
 
-namespace Server.EstimationViewTemplate_old.Models;
+namespace AppPlatform.Server.EstimationViewTemplate_old.Models;
 public class ViewTemplate
 {
     public Guid Id { get; set; }

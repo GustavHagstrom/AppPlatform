@@ -1,7 +1,7 @@
-﻿//using Server.Services.Settings;
+﻿//using AppPlatform.Server.Services.Settings;
 //using Microsoft.AspNetCore.Mvc;
 
-//namespace Server.Controllers;
+//namespace AppPlatform.Server.Controllers;
 
 //[Route("api/[controller]")]
 //[ApiController]

@@ -1,4 +1,4 @@
-﻿using Server.Services.Email;
+﻿using AppPlatform.Server.Services.Email;
 
 namespace Tests.Server.Services.Email;
 [TestFixture]

@@ -1,7 +1,7 @@
-﻿using Server.Enteties.EstimationView;
+﻿using AppPlatform.Server.Enteties.EstimationView;
 using System.ComponentModel.DataAnnotations;
 
-namespace Server.Enteties;
+namespace AppPlatform.Server.Enteties;
 
 public class UserViewTemplate
 {

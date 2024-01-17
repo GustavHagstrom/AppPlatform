@@ -1,6 +1,6 @@
 ﻿using Microsoft.JSInterop;
 
-namespace Server.Services;
+namespace AppPlatform.Server.Services;
 public class ScreenSizeService
 {
     private readonly IJSRuntime _jSRuntime;

@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.Diagnostics.CodeAnalysis;
 
-namespace Server.Enteties;
+namespace AppPlatform.Server.Enteties;
 
 public class BidconAccessCredentials
 {

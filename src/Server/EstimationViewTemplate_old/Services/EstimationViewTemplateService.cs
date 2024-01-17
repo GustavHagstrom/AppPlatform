@@ -1,11 +1,11 @@
-﻿using Server.EstimationViewTemplate_old.Models;
+﻿using AppPlatform.Server.EstimationViewTemplate_old.Models;
 using Mapster;
 using SharedLibrary.Constants;
 using SharedLibrary.DTOs.EstimationView;
 using SharedLibrary.Wrappers;
 using System.Net.Http.Json;
 
-namespace Server.EstimationViewTemplate_old.Services;
+namespace AppPlatform.Server.EstimationViewTemplate_old.Services;
 
 public class EstimationViewTemplateService : IEstimationViewTemplateServices
 {

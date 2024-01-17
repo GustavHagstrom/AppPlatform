@@ -1,5 +1,5 @@
-﻿using Server.EstimationViewTemplate_old.Models;
-using Server.EstimationViewTemplate_old.Services;
+﻿using AppPlatform.Server.EstimationViewTemplate_old.Models;
+using AppPlatform.Server.EstimationViewTemplate_old.Services;
 using Microsoft.Extensions.Logging;
 using Moq;
 using SharedLibrary.Constants;

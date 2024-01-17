@@ -1,10 +1,10 @@
-﻿using Server.Data;
-using Server.Enteties.EstimationView;
+﻿using AppPlatform.Server.Data;
+using AppPlatform.Server.Enteties.EstimationView;
 using SharedLibrary.DTOs.EstimationView;
 using Mapster;
 using Microsoft.EntityFrameworkCore;
 
-namespace Server.Services.EstimationView;
+namespace AppPlatform.Server.Services.EstimationView;
 
 public class EstimationViewTemplateService : IEstimationViewTemplateService
 {

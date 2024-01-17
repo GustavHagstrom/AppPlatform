@@ -1,6 +1,6 @@
-﻿using Server.EstimationViewTemplate_old.Models;
+﻿using AppPlatform.Server.EstimationViewTemplate_old.Models;
 
-namespace Server.EstimationViewTemplate_old.Services;
+namespace AppPlatform.Server.EstimationViewTemplate_old.Services;
 public interface IEstimationViewTemplateServices
 {
     Task DeleteAsync(ViewTemplate viewTemplate, CancellationToken cancellationToken = default);

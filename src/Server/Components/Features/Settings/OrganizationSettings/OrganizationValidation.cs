@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.Localization;
 
-namespace Server.Components.Features.Settings.OrganizationSettings;
+namespace AppPlatform.Server.Components.Features.Settings.OrganizationSettings;
 
 public class OrganizationValidation(IStringLocalizer<OrganizationValidation> Localizer)
 {

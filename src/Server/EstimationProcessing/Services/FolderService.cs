@@ -1,7 +1,7 @@
-﻿using Server.EstimationProcessing.Models;
+﻿using AppPlatform.Server.EstimationProcessing.Models;
 using SharedLibrary.DTOs.BidconAccess;
 
-namespace Server.EstimationProcessing.Services;
+namespace AppPlatform.Server.EstimationProcessing.Services;
 public class FolderService : IFolderService
 {
     public Folder CreateFromBatch(BC_EstimationFolderBatch batch)
