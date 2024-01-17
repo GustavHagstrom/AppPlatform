@@ -7,7 +7,7 @@
 //using System.Security.Claims;
 //using static SharedLibrary.Constants.BackendApiEndpoints;
 
-//namespace Tests.Server.Controllers;
+//namespace AppPlatform.Tests.Server.Controllers;
 //[TestFixture]
 //public class EstimationViewTemplateControllerTests
 //{

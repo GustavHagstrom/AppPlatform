@@ -7,7 +7,7 @@ using AppPlatform.Shared.DTOs.EstimationView;
 using AppPlatform.Shared.Wrappers;
 using System.Net;
 
-namespace Tests.Server.EstimationViewTemplate_old;
+namespace AppPlatform.Tests.Server.EstimationViewTemplate_old;
 public class EstimationViewTemplateServiceTests
 {
     private EstimationViewTemplateService _estimationViewTemplateService;

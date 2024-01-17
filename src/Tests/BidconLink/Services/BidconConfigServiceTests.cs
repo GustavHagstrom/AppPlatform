@@ -1,6 +1,6 @@
 ﻿using  AppPlatform.BidconLink.Services;
 
-namespace Tests.BidconLink.Services;
+namespace AppPlatform.Tests.BidconLink.Services;
 
 public class BidconConfigServiceTests
 {

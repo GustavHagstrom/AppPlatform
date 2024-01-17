@@ -3,7 +3,7 @@ using  AppPlatform.BidconLink.Services;
 using AppPlatform.Shared.DTOs.BidconAccess;
 using System.Text.Json;
 
-namespace Tests.BidconLink.Services;
+namespace AppPlatform.Tests.BidconLink.Services;
 public class EstimationQueryServiceTests
 {
  

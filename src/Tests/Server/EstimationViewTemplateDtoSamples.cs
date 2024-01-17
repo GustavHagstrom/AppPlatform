@@ -1,7 +1,7 @@
 ﻿using AppPlatform.Shared.DTOs.EstimationView;
 using AppPlatform.Shared.Enums.ViewTemplate;
 
-namespace Tests.Server;
+namespace AppPlatform.Tests.Server;
 public static class EstimationViewTemplateDtoSamples
 {
     public static EstimationViewTemplateDto Sample()

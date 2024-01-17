@@ -6,7 +6,7 @@
 //using Microsoft.Extensions.Logging;
 //using Moq;
 
-//namespace Tests.Server.Services;
+//namespace AppPlatform.Tests.Server.Services;
 //[TestFixture]
 //public class EstimationViewTemplateServiceTests
 //{

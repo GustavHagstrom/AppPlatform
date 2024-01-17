@@ -11,7 +11,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AppPlatform.Server", "Serve
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AppPlatform.BidconLink", "BidconLink\AppPlatform.BidconLink.csproj", "{AFE0C233-135C-4884-A8B2-2E494C06B441}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tests", "Tests\Tests.csproj", "{95F44499-4F20-4845-9326-FFCEF8F0EE09}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AppPlatform.Tests", "Tests\AppPlatform.Tests.csproj", "{95F44499-4F20-4845-9326-FFCEF8F0EE09}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AppPlatform.BidconDataAccess", "BidconDataAccess\AppPlatform.BidconDataAccess.csproj", "{81FAC7CE-792D-45AD-8949-547D31FD1B19}"
 EndProject

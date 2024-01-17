@@ -2,7 +2,7 @@
 //using AppPlatform.Server.EstimationProcessing.Services;
 //using System.Text.Json;
 
-//namespace Tests.Server.Services.EstimationBuilding;
+//namespace AppPlatform.Tests.Server.Services.EstimationBuilding;
 //[TestFixture]
 //public class EstimationBuilderServiceTests
 //{

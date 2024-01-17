@@ -1,6 +1,6 @@
 ﻿using AppPlatform.Server.Services.Email;
 
-namespace Tests.Server.Services.Email;
+namespace AppPlatform.Tests.Server.Services.Email;
 [TestFixture]
 public class EmailServiceTests
 {
