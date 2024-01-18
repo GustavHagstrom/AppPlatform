@@ -1,4 +1,4 @@
-﻿using AppPlatform.Shared.DTOs.EstimationView;
+﻿using AppPlatform.Core.DTOs.EstimationView;
 using AppPlatform.Core.Enums.ViewTemplate;
 
 namespace AppPlatform.Tests.Server;

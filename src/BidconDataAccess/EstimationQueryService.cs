@@ -1,7 +1,7 @@
 ﻿using Dapper;
 using Microsoft.Data.SqlClient;
-using AppPlatform.Shared.DTOs.BidconAccess;
 using System.Data;
+using AppPlatform.Core.DTOs.BidconAccess;
 
 namespace AppPlatform.BidconDataAccess;
 public class EstimationQueryService : IEstimationQueryService

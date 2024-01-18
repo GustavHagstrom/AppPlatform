@@ -1,5 +1,5 @@
-﻿using AppPlatform.Server.EstimationProcessing.Models;
-using AppPlatform.Shared.DTOs.BidconAccess;
+﻿using AppPlatform.Core.DTOs.BidconAccess;
+using AppPlatform.Server.EstimationProcessing.Models;
 
 namespace AppPlatform.Server.EstimationProcessing.Services;
 public class FolderService : IFolderService

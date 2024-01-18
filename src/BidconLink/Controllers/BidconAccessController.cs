@@ -1,6 +1,6 @@
-﻿using AppPlatform.Shared.DTOs.BidconAccess;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using AppPlatform.BidconDataAccess;
+using AppPlatform.Core.DTOs.BidconAccess;
 
 namespace AppPlatform.BidconLink.Controllers;
 

@@ -3,7 +3,7 @@ using AppPlatform.Server.EstimationViewTemplate_old.Services;
 using Microsoft.Extensions.Logging;
 using Moq;
 using AppPlatform.Core.Constants;
-using AppPlatform.Shared.DTOs.EstimationView;
+using AppPlatform.Core.DTOs.EstimationView;
 using AppPlatform.Shared.Wrappers;
 using System.Net;
 

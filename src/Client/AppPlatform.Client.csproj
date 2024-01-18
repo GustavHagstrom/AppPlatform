@@ -24,7 +24,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Core\AppPlatform.Core.csproj" />
-    <ProjectReference Include="..\Shared\AppPlatform.Core.csproj" />
   </ItemGroup>
+
 
 </Project>

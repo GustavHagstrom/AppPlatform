@@ -1,6 +1,7 @@
-﻿@page "/bidcon/import"
+﻿@* @page "/bidcon/import"
 @inject AuthenticationStateProvider AuthenticationStateProvider
 
+@using AppPlatform.Core.DTOs.BidconAccess
 @using AppPlatform.Server.EstimationProcessing.Services
 @using AppPlatform.Core.Services.Settings
 @using AppPlatform.Core.Constants
@@ -141,4 +142,4 @@
             return await BidconBackendAccessService.GetFolderBatchAsync();
         }
     }
-}
+} *@

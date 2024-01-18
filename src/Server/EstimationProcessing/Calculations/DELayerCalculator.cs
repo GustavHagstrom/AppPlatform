@@ -1,4 +1,4 @@
-﻿using AppPlatform.Shared.DTOs.BidconAccess;
+﻿using AppPlatform.Core.DTOs.BidconAccess;
 
 namespace AppPlatform.Server.EstimationProcessing.Calculations;
 public class DELayerCalculator : ILayerCostCalculator

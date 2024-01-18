@@ -1,5 +1,5 @@
-﻿using AppPlatform.Shared.DTOs.BidconAccess;
-using AppPlatform.Server.EstimationProcessing.Models;
+﻿using AppPlatform.Server.EstimationProcessing.Models;
+using AppPlatform.Core.DTOs.BidconAccess;
 
 namespace AppPlatform.Server.EstimationProcessing.Services;
 public interface IEstimationBuilderService
