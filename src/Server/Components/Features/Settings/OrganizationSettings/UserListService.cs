@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using AppPlatform.Server.Data;
-using AppPlatform.Server.Enteties;
+using AppPlatform.Core.Data;
+using AppPlatform.Core.Enteties;
 
 namespace AppPlatform.Server.Components.Features.Settings.OrganizationSettings;
 

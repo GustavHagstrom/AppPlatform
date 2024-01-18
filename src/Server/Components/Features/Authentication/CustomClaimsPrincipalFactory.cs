@@ -1,9 +1,9 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
-using AppPlatform.Server.Data;
-using AppPlatform.Server.Enteties;
-using AppPlatform.Shared.Constants;
+using AppPlatform.Core.Data;
+using AppPlatform.Core.Enteties;
+using AppPlatform.Core.Constants;
 using System.Security.Claims;
 
 namespace AppPlatform.Server.Components.Features.Authentication;

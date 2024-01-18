@@ -1,4 +1,4 @@
-﻿//using AppPlatform.Server.Services.Settings;
+﻿//using AppPlatform.Core.Services.Settings;
 //using Microsoft.AspNetCore.Mvc;
 
 //namespace AppPlatform.Server.Controllers;

@@ -1,5 +1,5 @@
 ﻿using AppPlatform.Shared.DTOs.EstimationView;
-using AppPlatform.Shared.Enums.ViewTemplate;
+using AppPlatform.Core.Enums.ViewTemplate;
 
 namespace AppPlatform.Tests.Server;
 public static class EstimationViewTemplateDtoSamples

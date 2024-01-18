@@ -1,9 +1,9 @@
 ﻿using MudBlazor;
 using MudBlazor.Services;
 using AppPlatform.Server.Components.Features.Settings.OrganizationSettings;
-using AppPlatform.Server.Services;
-using AppPlatform.Server.Services.Email;
-using AppPlatform.Server.Services.Settings;
+using AppPlatform.Core.Services;
+using AppPlatform.Core.Services.Email;
+using AppPlatform.Core.Services.Settings;
 
 
 namespace AppPlatform.Server;

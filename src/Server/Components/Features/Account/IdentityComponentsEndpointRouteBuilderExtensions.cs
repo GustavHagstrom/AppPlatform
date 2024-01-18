@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Primitives;
 using System.Security.Claims;
 using System.Text.Json;
-using AppPlatform.Server.Enteties;
+using AppPlatform.Core.Enteties;
 
 namespace Microsoft.AspNetCore.Routing;
 internal static class IdentityComponentsEndpointRouteBuilderExtensions

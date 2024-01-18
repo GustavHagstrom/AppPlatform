@@ -1,4 +1,4 @@
-﻿//using AppPlatform.Shared.Constants;
+﻿//using AppPlatform.Core.Constants;
 //using AppPlatform.Shared.DTOs;
 //using Microsoft.AspNetCore.Mvc;
 

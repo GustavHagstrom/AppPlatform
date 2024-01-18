@@ -1,5 +1,5 @@
-﻿using AppPlatform.Server.Data;
-using AppPlatform.Server.Enteties.EstimationView;
+﻿using AppPlatform.Core.Data;
+using AppPlatform.Core.Enteties.EstimationView;
 using Microsoft.EntityFrameworkCore;
 
 namespace AppPlatform.Tests.Server;

@@ -1,5 +1,5 @@
 using Microsoft.AspNetCore.Identity;
-using AppPlatform.Server.Enteties;
+using AppPlatform.Core.Enteties;
 
 namespace AppPlatform.Server.Components.Features.Account;
 internal sealed class IdentityUserAccessor(UserManager<User> userManager, IdentityRedirectManager redirectManager)

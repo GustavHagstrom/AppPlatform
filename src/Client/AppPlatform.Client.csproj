@@ -23,7 +23,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Shared\AppPlatform.Shared.csproj" />
+    <ProjectReference Include="..\Core\AppPlatform.Core.csproj" />
+    <ProjectReference Include="..\Shared\AppPlatform.Core.csproj" />
   </ItemGroup>
 
 </Project>

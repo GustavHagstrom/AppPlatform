@@ -24,11 +24,11 @@ public class Layered : ISheetItem
         {
             return ManualAskingUnitPrice;
         }
-        if (AddedInPhase == (int)AppPlatform.Shared.Enums.BidconAccess.EstimationState.Production)
+        if (AddedInPhase == (int)AppPlatform.Core.Enums.BidconAccess.EstimationState.Production)
         {
             return ResourceUnitCosts.Sum(x => x.Value * GetATAAskingFactor(x.Key));
         }
-        if (TenderType == (int)AppPlatform.Shared.Enums.BidconAccess.TenderType.None)
+        if (TenderType == (int)AppPlatform.Core.Enums.BidconAccess.TenderType.None)
         {
             return null;
         }

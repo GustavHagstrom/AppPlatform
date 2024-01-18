@@ -1,5 +1,5 @@
 ﻿using AppPlatform.Client.Shared.Constants;
-using AppPlatform.Shared.Constants;
+using AppPlatform.Core.Constants;
 using AppPlatform.Shared.DTOs.BidconAccess;
 using System.Net.Http.Json;
 

@@ -1,4 +1,4 @@
-﻿using AppPlatform.Shared.DTOs.BidconAccess;
+﻿using AppPlatform.Core.DTOs.BidconAccess;
 
 namespace AppPlatform.BidconDataAccess;
 public interface IEstimationQueryService

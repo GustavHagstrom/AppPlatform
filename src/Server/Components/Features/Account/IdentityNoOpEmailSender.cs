@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
-using AppPlatform.Server.Enteties;
+using AppPlatform.Core.Enteties;
 
 namespace AppPlatform.Server.Components.Features.Account;
 // Remove the "else if (EmailSender is IdentityNoOpEmailSender)" block from RegisterConfirmation.razor after updating with a real implementation.

@@ -1,4 +1,4 @@
-﻿using AppPlatform.Shared.Enums.BidconAccess;
+﻿using AppPlatform.Core.Enums.BidconAccess;
 using System.Text.Json;
 
 namespace AppPlatform.Server.EstimationViewTemplate_old.Models;

@@ -1,9 +1,9 @@
-using AppPlatform.Server.Data;
+using AppPlatform.Core.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Components.Authorization;
 using AppPlatform.Server.Components.Features.Account;
 using Microsoft.AspNetCore.Identity;
-using AppPlatform.Server.Enteties;
+using AppPlatform.Core.Enteties;
 using AppPlatform.Server.Components;
 using AppPlatform.Server;
 using AppPlatform.Server.Components.Features.Authentication;

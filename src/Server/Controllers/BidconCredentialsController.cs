@@ -1,4 +1,4 @@
-﻿//using AppPlatform.Server.Services.Settings;
+﻿//using AppPlatform.Core.Services.Settings;
 //using AppPlatform.Shared.DTOs.BidconAccess;
 //using Microsoft.AspNetCore.Mvc;
 //using System.Security.Claims;

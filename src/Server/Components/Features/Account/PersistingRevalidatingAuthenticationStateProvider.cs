@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Components.Server;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Options;
-using AppPlatform.Server.Enteties;
+using AppPlatform.Core.Enteties;
 using System.Diagnostics;
 using System.Security.Claims;
 
