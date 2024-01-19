@@ -7,6 +7,9 @@ using AppPlatform.Core.Enteties;
 using AppPlatform.Server.Components;
 using AppPlatform.Server;
 using AppPlatform.Server.Components.Features.Authentication;
+using Microsoft.AspNetCore.Authentication.OpenIdConnect;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Identity.Web;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -21,22 +24,29 @@ builder.Services.AddScoped<IdentityRedirectManager>();
 builder.Services.AddScoped<AuthenticationStateProvider, PersistingRevalidatingAuthenticationStateProvider>();
 
 
-builder.Services.AddAuthentication(options =>
-    {
-        options.DefaultScheme = IdentityConstants.ApplicationScheme;
-        options.DefaultSignInScheme = IdentityConstants.ExternalScheme;
-    })
-    .AddMicrosoftAccount(options =>
-    {
-        options.ClientId = builder.Configuration["Authentication:Microsoft:ClientId"]!;
-        options.ClientSecret = builder.Configuration["Authentication:Microsoft:ClientSecret"]!;
-    })
-    .AddIdentityCookies();
+//string[] initialScopes = builder.Configuration.GetValue<string>("DownstreamApi:Scopes")?.Split(' ') ?? throw new ArgumentNullException();
+
+builder.Services.AddAuthentication(OpenIdConnectDefaults.AuthenticationScheme)
+    .AddMicrosoftIdentityWebApp(builder.Configuration.GetSection("AzureAD"));
+//.EnableTokenAcquisitionToCallDownstreamApi(initialScopes)
+//.AddInMemoryTokenCaches();
+
+//builder.Services.AddAuthentication(options =>
+//    {
+//        options.DefaultScheme = IdentityConstants.ApplicationScheme;
+//        options.DefaultSignInScheme = IdentityConstants.ExternalScheme;
+//    })
+//    .AddMicrosoftAccount(options =>
+//    {
+//        options.ClientId = builder.Configuration["Authentication:Microsoft:ClientId"]!;
+//        options.ClientSecret = builder.Configuration["Authentication:Microsoft:ClientSecret"]!;
+//    })
+//    .AddIdentityCookies();
 
 #if DEBUG
-    //var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
-    //builder.Services.AddDbContextFactory<ApplicationDbContext>(options => options.UseSqlServer(connectionString));
-    var connectionString = "Data Source=bin/debug/database.db";
+//var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
+//builder.Services.AddDbContextFactory<ApplicationDbContext>(options => options.UseSqlServer(connectionString));
+var connectionString = "Data Source=bin/debug/database.db";
     builder.Services.AddDbContextFactory<ApplicationDbContext>(options => options.UseSqlite(connectionString));
     builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 #else

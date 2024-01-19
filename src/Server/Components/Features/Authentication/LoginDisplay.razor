@@ -34,7 +34,7 @@
     <form id="@LoginFormId" action="Account/PerformExternalLogin" method="post">
         <AntiforgeryToken />
         <input type="hidden" name="ReturnUrl" value="@currentUrl" />
-        <input type="hidden" name="provider" value="@msLoginScheme?.Name" />
+        <input type="hidden" name="provider" value="@loginScheme?.Name" />
     </form>
     <script>
         window.submitForm = function (formId) {
@@ -56,7 +56,7 @@
     private const string LoginFormId = "loginForm";
     private const string LogoutFormId = "logoutForm";
     private string? currentUrl;
-    private AuthenticationScheme? msLoginScheme;
+    private AuthenticationScheme? loginScheme;
 
     void ToggltPopover()
     {
@@ -65,7 +65,7 @@
 
     protected override async Task OnInitializedAsync()
     {
-        msLoginScheme = (await SignInManager.GetExternalAuthenticationSchemesAsync()).Single();
+        loginScheme = (await SignInManager.GetExternalAuthenticationSchemesAsync()).Single();
     }
     protected override void OnInitialized()
     {
