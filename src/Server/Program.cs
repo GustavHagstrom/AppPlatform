@@ -24,24 +24,19 @@ builder.Services.AddScoped<IdentityRedirectManager>();
 builder.Services.AddScoped<AuthenticationStateProvider, PersistingRevalidatingAuthenticationStateProvider>();
 
 
-//string[] initialScopes = builder.Configuration.GetValue<string>("DownstreamApi:Scopes")?.Split(' ') ?? throw new ArgumentNullException();
-
+var authBuilder = builder.Services.AddAuthentication(options =>
+    {
+        options.DefaultScheme = IdentityConstants.ApplicationScheme;
+        options.DefaultSignInScheme = IdentityConstants.ExternalScheme;
+    });
 builder.Services.AddAuthentication(OpenIdConnectDefaults.AuthenticationScheme)
     .AddMicrosoftIdentityWebApp(builder.Configuration.GetSection("AzureAD"));
-//.EnableTokenAcquisitionToCallDownstreamApi(initialScopes)
-//.AddInMemoryTokenCaches();
-
-//builder.Services.AddAuthentication(options =>
-//    {
-//        options.DefaultScheme = IdentityConstants.ApplicationScheme;
-//        options.DefaultSignInScheme = IdentityConstants.ExternalScheme;
-//    })
-//    .AddMicrosoftAccount(options =>
-//    {
-//        options.ClientId = builder.Configuration["Authentication:Microsoft:ClientId"]!;
-//        options.ClientSecret = builder.Configuration["Authentication:Microsoft:ClientSecret"]!;
-//    })
-//    .AddIdentityCookies();
+authBuilder.AddMicrosoftAccount(options =>
+{
+    options.ClientId = builder.Configuration["Authentication:Microsoft:ClientId"]!;
+    options.ClientSecret = builder.Configuration["Authentication:Microsoft:ClientSecret"]!;
+});
+authBuilder.AddIdentityCookies();
 
 #if DEBUG
 //var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");

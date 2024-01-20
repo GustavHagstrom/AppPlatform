@@ -65,7 +65,8 @@
 
     protected override async Task OnInitializedAsync()
     {
-        loginScheme = (await SignInManager.GetExternalAuthenticationSchemesAsync()).Single();
+        loginScheme = (await SignInManager.GetExternalAuthenticationSchemesAsync()).First();
+        //loginScheme = (await SignInManager.GetExternalAuthenticationSchemesAsync()).First();
     }
     protected override void OnInitialized()
     {
