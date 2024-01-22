@@ -10,6 +10,7 @@ using AppPlatform.Server.Components.Features.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.IdentityModel.Protocols.OpenIdConnect;
+using Microsoft.AspNetCore.Components;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -53,11 +54,22 @@ builder.Services.AddScoped<AuthenticationStateProvider, PersistingRevalidatingAu
         //options.Scope.Add("openid");
         //options.Scope.Add("profile");
         //options.Scope.Add("User.Read");
-        //options.Scope.Add("Organization.Read.All");
+        options.Scope.Add("Organization.Read.All");
 
         //options.CallbackPath = "/signin-oidc"; // Modify as needed
         //options.SignedOutCallbackPath = "/signout-callback-oidc"; // Modify as needed
 
+
+        options.Events = new OpenIdConnectEvents //fix this
+        {
+            OnRemoteFailure = context =>
+            {
+                context.Response.Redirect(""); // Redirect to your custom access denied page or take appropriate action
+                context.HandleResponse();
+                
+                return Task.CompletedTask;
+            }
+        };
     })
     .AddIdentityCookies();
 
