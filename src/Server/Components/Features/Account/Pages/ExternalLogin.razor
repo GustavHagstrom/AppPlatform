@@ -7,6 +7,7 @@
 @using Microsoft.AspNetCore.Identity
 @using Microsoft.AspNetCore.WebUtilities
 @using AppPlatform.Core.Data
+@using Microsoft.Identity.Web
 
 @inject SignInManager<User> SignInManager
 @inject UserManager<User> UserManager
@@ -69,7 +70,6 @@
 
     protected override async Task OnInitializedAsync()
     {
-        //TODO: opon login. Get MSAL admin consent if not already then sync users from Azure Entra ID
         if (RemoteError is not null)
         {
             RedirectManager.RedirectToWithStatus("Account/Login", $"Error from external provider: {RemoteError}", HttpContext);
@@ -80,6 +80,7 @@
         {
             RedirectManager.RedirectToWithStatus("Account/Login", "Error loading external login information.", HttpContext);
         }
+
 
         externalLoginInfo = info;
 
@@ -120,7 +121,7 @@
         }
 
         // If the user does not have an account, then ask the user to create an account.
-        var email = externalLoginInfo.Principal.FindFirstValue(ClaimTypes.Email);
+        var email = externalLoginInfo.Principal.FindFirstValue(ClaimTypes.Email) ?? externalLoginInfo.Principal.FindFirstValue(ClaimConstants.PreferredUserName);
         if (email is not null)
         {
             Input.Email = email;
@@ -134,42 +135,97 @@
 
     private async Task OnValidSubmitAsync()
     {
-        var emailStore = GetEmailStore();
-        var user = CreateUser();
+        var mail = Input.Email.ToUpper();
+        var user = await UserStore.FindByNameAsync(mail, CancellationToken.None);
+        IdentityResult result;
 
-        await UserStore.SetUserNameAsync(user, Input.Email, CancellationToken.None);
-        await emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);
-
-        var result = await UserManager.CreateAsync(user);
-        if (result.Succeeded)
+        if(user is null)
         {
-            result = await UserManager.AddLoginAsync(user, externalLoginInfo);
-            if (result.Succeeded)
+            var emailStore = GetEmailStore();
+            user = CreateUser();
+
+            await UserStore.SetUserNameAsync(user, Input.Email, CancellationToken.None);
+            await emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);
+            result = await UserManager.CreateAsync(user);
+            if(result.Succeeded)
             {
                 Logger.LogInformation("User created an account using {Name} provider.", externalLoginInfo.LoginProvider);
-
-                var userId = await UserManager.GetUserIdAsync(user);
-                var code = await UserManager.GenerateEmailConfirmationTokenAsync(user);
-                code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
-
-                var callbackUrl = NavigationManager.GetUriWithQueryParameters(
-                    NavigationManager.ToAbsoluteUri("Account/ConfirmEmail").AbsoluteUri,
-                    new Dictionary<string, object?> { ["userId"] = userId, ["code"] = code });
-                await EmailSender.SendConfirmationLinkAsync(user, Input.Email, HtmlEncoder.Default.Encode(callbackUrl));
-
-                // If account confirmation is required, we need to show the link if we don't have a real email sender
-                if (UserManager.Options.SignIn.RequireConfirmedAccount)
-                {
-                    RedirectManager.RedirectTo("Account/RegisterConfirmation", new() { ["email"] = Input.Email });
-                }
-
-                await SignInManager.SignInAsync(user, isPersistent: false, externalLoginInfo.LoginProvider);
-                RedirectManager.RedirectTo(ReturnUrl);
+            }
+            else
+            {
+                message = $"Error: {string.Join(",", result.Errors.Select(error => error.Description))}";
+                return;
+            }
+        }
+        else
+        {
+            result = await UserManager.AddLoginAsync(user, externalLoginInfo);
+            if(result.Succeeded)
+            {
+                Logger.LogInformation("Provider {Name} was added to {User}.", externalLoginInfo.LoginProvider, user);
+            }
+            else
+            {
+                message = $"Error: {string.Join(",", result.Errors.Select(error => error.Description))}";
+                return;
             }
         }
 
-        message = $"Error: {string.Join(",", result.Errors.Select(error => error.Description))}";
+        var userId = await UserManager.GetUserIdAsync(user);
+        var code = await UserManager.GenerateEmailConfirmationTokenAsync(user);
+        code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
+
+        var callbackUrl = NavigationManager.GetUriWithQueryParameters(
+            NavigationManager.ToAbsoluteUri("Account/ConfirmEmail").AbsoluteUri,
+            new Dictionary<string, object?> { ["userId"] = userId, ["code"] = code });
+        await EmailSender.SendConfirmationLinkAsync(user, Input.Email, HtmlEncoder.Default.Encode(callbackUrl));
+
+        // If account confirmation is required, we need to show the link if we don't have a real email sender
+        if (UserManager.Options.SignIn.RequireConfirmedAccount)
+        {
+            RedirectManager.RedirectTo("Account/RegisterConfirmation", new() { ["email"] = Input.Email });
+        }
+        await SignInManager.SignInAsync(user, isPersistent: false, externalLoginInfo.LoginProvider);
+        RedirectManager.RedirectTo(ReturnUrl);
     }
+    // private async Task CreateAndLoginUserAsync()
+    // {
+    //     var emailStore = GetEmailStore();
+    //     var user = CreateUser();
+
+    //     await UserStore.SetUserNameAsync(user, Input.Email, CancellationToken.None);
+    //     await emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);
+
+    //     var result = await UserManager.CreateAsync(user);
+    //     if (result.Succeeded)
+    //     {
+    //         result = await UserManager.AddLoginAsync(user, externalLoginInfo);
+    //         if (result.Succeeded)
+    //         {
+    //             Logger.LogInformation("User created an account using {Name} provider.", externalLoginInfo.LoginProvider);
+
+    //             var userId = await UserManager.GetUserIdAsync(user);
+    //             var code = await UserManager.GenerateEmailConfirmationTokenAsync(user);
+    //             code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
+
+    //             var callbackUrl = NavigationManager.GetUriWithQueryParameters(
+    //                 NavigationManager.ToAbsoluteUri("Account/ConfirmEmail").AbsoluteUri,
+    //                 new Dictionary<string, object?> { ["userId"] = userId, ["code"] = code });
+    //             await EmailSender.SendConfirmationLinkAsync(user, Input.Email, HtmlEncoder.Default.Encode(callbackUrl));
+
+    //             // If account confirmation is required, we need to show the link if we don't have a real email sender
+    //             if (UserManager.Options.SignIn.RequireConfirmedAccount)
+    //             {
+    //                 RedirectManager.RedirectTo("Account/RegisterConfirmation", new() { ["email"] = Input.Email });
+    //             }
+
+    //             await SignInManager.SignInAsync(user, isPersistent: false, externalLoginInfo.LoginProvider);
+    //             RedirectManager.RedirectTo(ReturnUrl);
+    //         }
+    //     }
+
+    //     message = $"Error: {string.Join(",", result.Errors.Select(error => error.Description))}";
+    // }
 
     private User CreateUser()
     {

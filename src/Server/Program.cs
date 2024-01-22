@@ -7,9 +7,9 @@ using AppPlatform.Core.Enteties;
 using AppPlatform.Server.Components;
 using AppPlatform.Server;
 using AppPlatform.Server.Components.Features.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Identity.Web;
+using Microsoft.IdentityModel.Protocols.OpenIdConnect;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -23,20 +23,43 @@ builder.Services.AddScoped<IdentityUserAccessor>();
 builder.Services.AddScoped<IdentityRedirectManager>();
 builder.Services.AddScoped<AuthenticationStateProvider, PersistingRevalidatingAuthenticationStateProvider>();
 
-
-var authBuilder = builder.Services.AddAuthentication(options =>
+//builder.Services.AddAuthentication(options =>
+//    {
+//        options.DefaultScheme = IdentityConstants.ApplicationScheme;
+//        options.DefaultSignInScheme = IdentityConstants.ExternalScheme;
+//    })
+//    .AddMicrosoftAccount(options =>
+//    {
+//        options.ClientId = builder.Configuration["Authentication:Microsoft:ClientId"]!;
+//        options.ClientSecret = builder.Configuration["Authentication:Microsoft:ClientSecret"]!;
+//    })
+//    .AddIdentityCookies();
+    builder.Services.AddAuthentication(options =>
     {
         options.DefaultScheme = IdentityConstants.ApplicationScheme;
         options.DefaultSignInScheme = IdentityConstants.ExternalScheme;
-    });
-//builder.Services.AddAuthentication(OpenIdConnectDefaults.AuthenticationScheme)
-//    .AddMicrosoftIdentityWebApp(builder.Configuration.GetSection("AzureAD"));
-authBuilder.AddMicrosoftAccount(options =>
-{
-    options.ClientId = builder.Configuration["Authentication:Microsoft:ClientId"]!;
-    options.ClientSecret = builder.Configuration["Authentication:Microsoft:ClientSecret"]!;
-});
-authBuilder.AddIdentityCookies();
+    })
+    //.AddCookie()
+    .AddOpenIdConnect("EntraId", options =>
+    {
+        //options.Authority = "https://login.microsoftonline.com/common/v2.0";
+        options.Authority = "https://login.microsoftonline.com/9d0a59b5-4fcb-477e-bdac-61281aff99fd/v2.0"; 
+
+        options.ClientId = builder.Configuration["Authentication:Microsoft:ClientId"]!;
+        options.ClientSecret = builder.Configuration["Authentication:Microsoft:ClientSecret"]!;
+        options.ResponseType = "code";
+        options.SaveTokens = true;
+        //options.Scope.Add("https://graph.microsoft.com/.default");
+        //options.Scope.Add("openid");
+        //options.Scope.Add("profile");
+        //options.Scope.Add("User.Read");
+        //options.Scope.Add("Organization.Read.All");
+
+        //options.CallbackPath = "/signin-oidc"; // Modify as needed
+        //options.SignedOutCallbackPath = "/signout-callback-oidc"; // Modify as needed
+
+    })
+    .AddIdentityCookies();
 
 #if DEBUG
 //var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
