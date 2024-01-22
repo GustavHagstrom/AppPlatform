@@ -69,6 +69,7 @@
 
     protected override async Task OnInitializedAsync()
     {
+        //TODO: opon login. Get MSAL admin consent if not already then sync users from Azure Entra ID
         if (RemoteError is not null)
         {
             RedirectManager.RedirectToWithStatus("Account/Login", $"Error from external provider: {RemoteError}", HttpContext);
