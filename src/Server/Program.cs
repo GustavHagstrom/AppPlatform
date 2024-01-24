@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.IdentityModel.Protocols.OpenIdConnect;
 using Microsoft.AspNetCore.Components;
+using System.Security.Claims;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -24,58 +25,44 @@ builder.Services.AddScoped<IdentityUserAccessor>();
 builder.Services.AddScoped<IdentityRedirectManager>();
 builder.Services.AddScoped<AuthenticationStateProvider, PersistingRevalidatingAuthenticationStateProvider>();
 
-//builder.Services.AddAuthentication(options =>
-//    {
-//        options.DefaultScheme = IdentityConstants.ApplicationScheme;
-//        options.DefaultSignInScheme = IdentityConstants.ExternalScheme;
-//    })
-//    .AddMicrosoftAccount(options =>
-//    {
-//        options.ClientId = builder.Configuration["Authentication:Microsoft:ClientId"]!;
-//        options.ClientSecret = builder.Configuration["Authentication:Microsoft:ClientSecret"]!;
-//    })
-//    .AddIdentityCookies();
-    builder.Services.AddAuthentication(options =>
-    {
-        options.DefaultScheme = IdentityConstants.ApplicationScheme;
-        options.DefaultSignInScheme = IdentityConstants.ExternalScheme;
-    })
-    //.AddCookie()
-    .AddOpenIdConnect("EntraId", options =>
-    {
-        //options.Authority = "https://login.microsoftonline.com/common/v2.0";
-        options.Authority = "https://login.microsoftonline.com/9d0a59b5-4fcb-477e-bdac-61281aff99fd/v2.0"; 
+builder.Services.AddAuthentication(options =>
+{
+    options.DefaultScheme = IdentityConstants.ApplicationScheme;
+    options.DefaultSignInScheme = IdentityConstants.ExternalScheme;
+})
+.AddOpenIdConnect("Microsoft Entra Id", options =>
+{
+    var tenantId = builder.Configuration["Authentication:Microsoft:TenantId"]!; 
+    options.Authority = $"https://login.microsoftonline.com/{tenantId}/v2.0"; 
+    options.ClientId = builder.Configuration["Authentication:Microsoft:ClientId"]!;
+    options.ClientSecret = builder.Configuration["Authentication:Microsoft:ClientSecret"]!;
+    options.ResponseType = "code";
+    options.SaveTokens = false;
+    //options.UseTokenLifetime = false;
+    //options.AccessDeniedPath = "";
 
-        options.ClientId = builder.Configuration["Authentication:Microsoft:ClientId"]!;
-        options.ClientSecret = builder.Configuration["Authentication:Microsoft:ClientSecret"]!;
-        options.ResponseType = "code";
-        options.SaveTokens = true;
-        //options.Scope.Add("https://graph.microsoft.com/.default");
-        //options.Scope.Add("openid");
-        //options.Scope.Add("profile");
-        //options.Scope.Add("User.Read");
-        options.Scope.Add("Organization.Read.All");
-
-        //options.CallbackPath = "/signin-oidc"; // Modify as needed
-        //options.SignedOutCallbackPath = "/signout-callback-oidc"; // Modify as needed
+    options.Scope.Add("User.Read");
+    options.Scope.Add("User.ReadBasic.All");
 
 
-        options.Events = new OpenIdConnectEvents //fix this
-        {
-            OnRemoteFailure = context =>
-            {
-                context.Response.Redirect(""); // Redirect to your custom access denied page or take appropriate action
-                context.HandleResponse();
-                
-                return Task.CompletedTask;
-            }
-        };
-    })
-    .AddIdentityCookies();
+    //options.CallbackPath = "/signin-oidc"; // Modify as needed
+    //options.SignedOutCallbackPath = "/signout-callback-oidc"; // Modify as needed
+    //options.Events.OnTokenValidated = context =>
+    //{
+    //    // Access token and ID token are available in context.TokenEndpointResponse
+    //    var accessToken = context.TokenEndpointResponse?.AccessToken;
+    //    var idToken = context.TokenEndpointResponse?.IdToken;
+
+    //    return Task.CompletedTask;
+    //};
+
+})
+.AddIdentityCookies(options =>
+{
+
+});
 
 #if DEBUG
-//var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
-//builder.Services.AddDbContextFactory<ApplicationDbContext>(options => options.UseSqlServer(connectionString));
 var connectionString = "Data Source=bin/debug/database.db";
     builder.Services.AddDbContextFactory<ApplicationDbContext>(options => options.UseSqlite(connectionString));
     builder.Services.AddDatabaseDeveloperPageExceptionFilter();
