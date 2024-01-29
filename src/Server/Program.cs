@@ -94,7 +94,11 @@ app.Run();
 
 async Task OnTokenValidatedFunc(TokenValidatedContext context)
 {
-    // Custom code here
+    var dbContextFactory = context.HttpContext.RequestServices.GetRequiredService<IDbContextFactory<ApplicationDbContext>>();
+    var dbContext = dbContextFactory.CreateDbContext();
+
+    //add roles and claims to the user
     context.Principal?.AddIdentity(new ClaimsIdentity(new[] { new Claim("custom-claim", "custom-value") }));
+    
     await Task.CompletedTask.ConfigureAwait(false);
 }
