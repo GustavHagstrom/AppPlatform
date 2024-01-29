@@ -29,6 +29,8 @@
 	  <PackageReference Include="Mapster" Version="7.4.0" />
 	  
 	  <PackageReference Include="Microsoft.Identity.Web" Version="2.16.1" />
+	  
+	  <PackageReference Include="Microsoft.Identity.Web.UI" Version="2.16.1" />
       <PackageReference Include="Riok.Mapperly" Version="3.3.0" />
   </ItemGroup>
 

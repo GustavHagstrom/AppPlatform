@@ -16,14 +16,14 @@
         <MudFab StartIcon="@Icons.Material.Sharp.Person" IconSize="Size.Medium" Size="Size.Small" OnClick="ToggltPopover" />
         <MudPopover Open="PopOverIsVisible" AnchorOrigin="Origin.BottomRight" TransformOrigin="Origin.TopRight">
             <MudText Typo="Typo.subtitle2" Style="color: var(--mud-palette-text-primary);">@context.User.Identity?.Name</MudText>
-            <MudButton OnClick="LogOut" Class="px-4 mr-n2" Style="height: 100%;" Variant="Variant.Text" Color="Color.Inherit" StartIcon="@Icons.Material.Sharp.Logout">@Localizer["Logga ut"]</MudButton>
+                <MudButton Href="/MicrosoftIdentity/Account/SignOut" OnClick="LogOut" Class="px-4 mr-n2" Style="height: 100%;" Variant="Variant.Text" Color="Color.Inherit" StartIcon="@Icons.Material.Sharp.Logout">@Localizer["Logga ut"]</MudButton>
         </MudPopover>
 
         <MudOverlay Visible="PopOverIsVisible" LockScroll="true" OnClick="ToggltPopover" />
 
     </Authorized>
     <NotAuthorized>
-            <MudButton OnClick="LogIn" Class="px-4 mr-n2" Style="height: 100%;" Variant="Variant.Text" Color="Color.Inherit" StartIcon="@Icons.Material.Sharp.Login">@Localizer["Logga in"]</MudButton>
+            <MudButton Href="/MicrosoftIdentity/Account/SignIn" OnClick="LogIn" Class="px-4 mr-n2" Style="height: 100%;" Variant="Variant.Text" Color="Color.Inherit" StartIcon="@Icons.Material.Sharp.Login">@Localizer["Logga in"]</MudButton>
         
     </NotAuthorized>
 </AuthorizeView>
@@ -86,11 +86,11 @@
     public async Task LogOut()
     {
         PopOverIsVisible = false;
-        await JSRuntime.InvokeVoidAsync("submitForm", LogoutFormId);
+
     }
     public async Task LogIn()
     {
-        await JSRuntime.InvokeVoidAsync("submitForm", LoginFormId);
+
     }
     public static string GetInitials(string? name)
     {

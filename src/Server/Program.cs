@@ -12,6 +12,8 @@ using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.IdentityModel.Protocols.OpenIdConnect;
 using Microsoft.AspNetCore.Components;
 using System.Security.Claims;
+using Microsoft.Identity.Web;
+using Microsoft.Identity.Web.UI;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -25,42 +27,17 @@ builder.Services.AddScoped<IdentityUserAccessor>();
 builder.Services.AddScoped<IdentityRedirectManager>();
 builder.Services.AddScoped<AuthenticationStateProvider, PersistingRevalidatingAuthenticationStateProvider>();
 
-builder.Services.AddAuthentication(options =>
-{
-    options.DefaultScheme = IdentityConstants.ApplicationScheme;
-    options.DefaultSignInScheme = IdentityConstants.ExternalScheme;
-})
-.AddOpenIdConnect("Microsoft Entra Id", options =>
-{
-    var tenantId = builder.Configuration["Authentication:Microsoft:TenantId"]!; 
-    options.Authority = $"https://login.microsoftonline.com/{tenantId}/v2.0"; 
-    options.ClientId = builder.Configuration["Authentication:Microsoft:ClientId"]!;
-    options.ClientSecret = builder.Configuration["Authentication:Microsoft:ClientSecret"]!;
-    options.ResponseType = "code";
-    options.SaveTokens = false;
-    //options.UseTokenLifetime = false;
-    //options.AccessDeniedPath = "";
+builder.Services.AddAuthentication(OpenIdConnectDefaults.AuthenticationScheme)
+    .AddMicrosoftIdentityWebApp(options =>
+    {
+        var section = builder.Configuration.GetSection("AzureAd");
+        section.Bind(options);
+        options.Events.OnTokenValidated += OnTokenValidatedFunc;
+    })
+    .EnableTokenAcquisitionToCallDownstreamApi()
+    .AddInMemoryTokenCaches();
 
-    options.Scope.Add("User.Read");
-    options.Scope.Add("User.ReadBasic.All");
-
-
-    //options.CallbackPath = "/signin-oidc"; // Modify as needed
-    //options.SignedOutCallbackPath = "/signout-callback-oidc"; // Modify as needed
-    //options.Events.OnTokenValidated = context =>
-    //{
-    //    // Access token and ID token are available in context.TokenEndpointResponse
-    //    var accessToken = context.TokenEndpointResponse?.AccessToken;
-    //    var idToken = context.TokenEndpointResponse?.IdToken;
-
-    //    return Task.CompletedTask;
-    //};
-
-})
-.AddIdentityCookies(options =>
-{
-
-});
+builder.Services.AddControllersWithViews().AddMicrosoftIdentityUI();
 
 #if DEBUG
 var connectionString = "Data Source=bin/debug/database.db";
@@ -111,5 +88,13 @@ app.MapRazorComponents<App>()
 
 // Add additional endpoints required by the Identity /Account Razor components.
 app.MapAdditionalIdentityEndpoints();
-
+app.MapControllers();
 app.Run();
+
+
+async Task OnTokenValidatedFunc(TokenValidatedContext context)
+{
+    // Custom code here
+    context.Principal?.AddIdentity(new ClaimsIdentity(new[] { new Claim("custom-claim", "custom-value") }));
+    await Task.CompletedTask.ConfigureAwait(false);
+}
