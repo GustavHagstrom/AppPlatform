@@ -5,7 +5,7 @@
 
 <SettingsPage Title="@Localizer["Allmänt"]" Loading="Loading">
     <SettingsSection Title="@Localizer["Utseende"]">
-        <MudSwitch T="bool?" Checked="ThemeManager?.IsDarkMode" CheckedChanged="SetDarkMode" Color="Color.Primary" Label="@Localizer["Mörkt tema"]" />
+        <MudSwitch T="bool?" Value="ThemeManager?.IsDarkMode" ValueChanged="SetDarkMode" Color="Color.Primary" Label="@Localizer["Mörkt tema"]" />
     </SettingsSection>
 </SettingsPage>
     

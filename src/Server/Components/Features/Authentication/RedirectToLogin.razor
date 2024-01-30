@@ -1,10 +1,13 @@
 ﻿@rendermode InteractiveServer
 @inject NavigationManager NavigationManager
+@inject IJSRuntime JSRuntime
+
 @code {
-    protected override void OnInitialized()
+    protected override async Task OnInitializedAsync()
     {
-        var returnUrl = NavigationManager.ToBaseRelativePath(NavigationManager.Uri);
-        
-        NavigationManager.NavigateTo($"/account/login?returnUrl={returnUrl}");
+        // var returnUrl = NavigationManager.ToBaseRelativePath(NavigationManager.Uri);
+        // NavigationManager.NavigateTo($"/account/login?returnUrl={returnUrl}");
+        var loginUrl = NavigationManager.ToBaseRelativePath("/MicrosoftIdentity/Account/SignIn");
+        await JSRuntime.InvokeVoidAsync("eval", "window.location.replace('https://www.example.com');");
     }
 }

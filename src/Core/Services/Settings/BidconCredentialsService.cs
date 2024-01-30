@@ -10,28 +10,26 @@ public class BidconCredentialsService(IDbContextFactory<ApplicationDbContext> Co
 {
     public async Task<BidconAccessCredentials?> GetAsync(ClaimsPrincipal userClaims)
     {
-        var dbContext = ContextFactory.CreateDbContext();
-        var user = await dbContext.Users.FindAsync(userClaims.GetUserId());
-        if(user?.ActiveOrganizationId is null)
+        var tenantId = userClaims.GetTenantId();
+        if (tenantId is null)
         {
             return null;
         }
-        var result = await dbContext.BidconAccessCredentials.FirstOrDefaultAsync(x => x.OrganizationId == user.ActiveOrganizationId);
+        var dbContext = ContextFactory.CreateDbContext();
+        var result = await dbContext.BidconAccessCredentials.FirstOrDefaultAsync(x => x.TenantId == tenantId);
         return result;
     }
 
     public async Task UpsertAsync(ClaimsPrincipal userClaims, BidconAccessCredentials credentials)
     {
-        var dbContext = ContextFactory.CreateDbContext();
-        var user = await dbContext.Users.FindAsync(userClaims.GetUserId());
-        if (user?.ActiveOrganizationId is null)
+        var tenantId = userClaims.GetTenantId();
+        if (tenantId is null)
         {
             return;
         }
-        
-        credentials.OrganizationId = user.ActiveOrganizationId;
+        var dbContext = ContextFactory.CreateDbContext();
         var existingCredentials = await dbContext.BidconAccessCredentials
-            .FirstOrDefaultAsync(x => x.OrganizationId == credentials.OrganizationId);
+            .FirstOrDefaultAsync(x => x.TenantId == tenantId);
         if (existingCredentials is null)
         {
             // Insert a new record if it doesn't exist
@@ -42,7 +40,7 @@ public class BidconCredentialsService(IDbContextFactory<ApplicationDbContext> Co
         else
         {
             // Update the existing record if it exists
-            existingCredentials.OrganizationId = credentials.OrganizationId;
+            existingCredentials.TenantId = tenantId;
             existingCredentials.Server = credentials.Server;
             existingCredentials.Database = credentials.Database;
             existingCredentials.User = credentials.User;

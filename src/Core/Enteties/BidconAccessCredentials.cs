@@ -1,14 +1,11 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using AppPlatform.Core.Enteties.Abstractions;
+using System.ComponentModel.DataAnnotations;
 using System.Diagnostics.CodeAnalysis;
 
 namespace AppPlatform.Core.Enteties;
 
-public class BidconAccessCredentials
+public class BidconAccessCredentials  : ITenantEntety
 {
-    [Key]
-    [StringLength(450)]
-    public string OrganizationId { get; set; } = string.Empty;
-    public Organization? Organization { get; set; }
     [StringLength(50)]
     [AllowNull]
     public string Server { get; set; } = string.Empty;
@@ -25,4 +22,6 @@ public class BidconAccessCredentials
     public bool UseDesktopBidconLink { get; set; }
     public int DesktopPort { get; set; }
     public DateTime LastUpdated { get; set; }
+    [Key]
+    public string TenantId { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
 }

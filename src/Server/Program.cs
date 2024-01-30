@@ -1,16 +1,8 @@
 using AppPlatform.Core.Data;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.AspNetCore.Components.Authorization;
-using AppPlatform.Server.Components.Features.Account;
-using Microsoft.AspNetCore.Identity;
-using AppPlatform.Core.Enteties;
 using AppPlatform.Server.Components;
 using AppPlatform.Server;
-using AppPlatform.Server.Components.Features.Authentication;
-using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
-using Microsoft.IdentityModel.Protocols.OpenIdConnect;
-using Microsoft.AspNetCore.Components;
 using System.Security.Claims;
 using Microsoft.Identity.Web;
 using Microsoft.Identity.Web.UI;
@@ -23,9 +15,6 @@ builder.Services.AddRazorComponents()
     .AddInteractiveWebAssemblyComponents();
 
 builder.Services.AddCascadingAuthenticationState();
-builder.Services.AddScoped<IdentityUserAccessor>();
-builder.Services.AddScoped<IdentityRedirectManager>();
-builder.Services.AddScoped<AuthenticationStateProvider, PersistingRevalidatingAuthenticationStateProvider>();
 
 builder.Services.AddAuthentication(OpenIdConnectDefaults.AuthenticationScheme)
     .AddMicrosoftIdentityWebApp(options =>
@@ -41,25 +30,21 @@ builder.Services.AddControllersWithViews().AddMicrosoftIdentityUI();
 
 #if DEBUG
 var connectionString = "Data Source=bin/debug/database.db";
-    builder.Services.AddDbContextFactory<ApplicationDbContext>(options => options.UseSqlite(connectionString));
+    builder.Services.AddDbContextFactory<ApplicationDbContext>(options => options.UseSqlite(connectionString, b => b.MigrationsAssembly("AppPlatform.Server")));
     builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 #else
     var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
-    builder.Services.AddDbContextFactory<ApplicationDbContext>(options => options.UseSqlServer(connectionString));
+    builder.Services.AddDbContextFactory<ApplicationDbContext>(options => options.UseSqlServer(connectionString, b => b.MigrationsAssembly("AppPlatform.Server")));
 #endif
 
 
 
-builder.Services.AddIdentityCore<User>(options => options.SignIn.RequireConfirmedAccount = false)
-    .AddEntityFrameworkStores<ApplicationDbContext>()
-    .AddSignInManager()
-    .AddDefaultTokenProviders();
-builder.Services.AddScoped<IUserClaimsPrincipalFactory<User>, CustomClaimsPrincipalFactory>();
+
 
 builder.RegisterApplicationServices();
 
 
-builder.Services.AddSingleton<IEmailSender<User>, IdentityNoOpEmailSender>();
+
 
 var app = builder.Build();
 
@@ -82,12 +67,8 @@ app.UseStaticFiles();
 app.UseAntiforgery();
 
 app.MapRazorComponents<App>()
-    .AddInteractiveServerRenderMode()
-    .AddInteractiveWebAssemblyRenderMode()
-    .AddAdditionalAssemblies(typeof(AppPlatform.Client.UserInfo).Assembly);
+    .AddInteractiveServerRenderMode();
 
-// Add additional endpoints required by the Identity /Account Razor components.
-app.MapAdditionalIdentityEndpoints();
 app.MapControllers();
 app.Run();
 

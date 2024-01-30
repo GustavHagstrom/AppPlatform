@@ -3,8 +3,6 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.5.33627.172
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AppPlatform.Client", "Client\AppPlatform.Client.csproj", "{DEFA23C3-6767-49EC-928E-FD5CD3899E0A}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AppPlatform.Server", "Server\AppPlatform.Server.csproj", "{3E3A094C-5823-44F6-B2EB-5A0AA7EAE2E7}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AppPlatform.BidconLink", "BidconLink\AppPlatform.BidconLink.csproj", "{AFE0C233-135C-4884-A8B2-2E494C06B441}"
@@ -23,10 +21,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{DEFA23C3-6767-49EC-928E-FD5CD3899E0A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{DEFA23C3-6767-49EC-928E-FD5CD3899E0A}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{DEFA23C3-6767-49EC-928E-FD5CD3899E0A}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{DEFA23C3-6767-49EC-928E-FD5CD3899E0A}.Release|Any CPU.Build.0 = Release|Any CPU
 		{3E3A094C-5823-44F6-B2EB-5A0AA7EAE2E7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{3E3A094C-5823-44F6-B2EB-5A0AA7EAE2E7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3E3A094C-5823-44F6-B2EB-5A0AA7EAE2E7}.Release|Any CPU.ActiveCfg = Release|Any CPU

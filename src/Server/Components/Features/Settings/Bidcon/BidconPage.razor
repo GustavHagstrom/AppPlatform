@@ -14,17 +14,17 @@
             </MudItem>
 
             <MudItem xs="12">
-                <MudSwitch T="bool" Checked="Credentials.UseDesktopBidconLink" Label="@Localizer["Skrivbordslänk"]" Color="Color.Primary" CheckedChanged="UpdateUseDesktopBidconLink" />
+                    <MudSwitch T="bool" Value="Credentials.UseDesktopBidconLink" Label="@Localizer["Skrivbordslänk"]" Color="Color.Primary" ValueChanged="UpdateUseDesktopBidconLink" />
             </MudItem>
 
             <MudItem xs="12">
-                <MudSwitch T="bool" Checked="!Credentials.UseDesktopBidconLink" Label="@Localizer["Direktanslutning"]" Color="Color.Primary" CheckedChanged="x => UpdateUseDesktopBidconLink(!x)" />
+                    <MudSwitch T="bool" Value="!Credentials.UseDesktopBidconLink" Label="@Localizer["Direktanslutning"]" Color="Color.Primary" ValueChanged="x => UpdateUseDesktopBidconLink(!x)" />
             </MudItem>
 
             @if (!Credentials.UseDesktopBidconLink)
             {
                 <MudItem xs="12" sm="12" md="12">
-                    <MudSwitch T="bool" Checked="Credentials.ServerAuthentication" Label="@Localizer["Autentisering"]" Color="Color.Primary" CheckedChanged="UpdateServerAuthentication" />
+                    <MudSwitch T="bool" Value="Credentials.ServerAuthentication" Label="@Localizer["Autentisering"]" Color="Color.Primary" ValueChanged="UpdateServerAuthentication" />
                 </MudItem>
 
                 <MudItem xs="12" sm="12" md="6">

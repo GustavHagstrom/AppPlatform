@@ -2,96 +2,41 @@
 ﻿@using Microsoft.AspNetCore.Authentication
 @using Microsoft.AspNetCore.Identity
 @using AppPlatform.Core.Data
-@implements IDisposable
 
-@inject IJSRuntime JSRuntime
-@inject NavigationManager NavigationManager
-@inject SignInManager<User> SignInManager
-@inject IAntiforgery Antiforgery
 
 <AuthorizeView>
     <Authorized>
-        <MudText Class="pr-2">@ActiveOrganizationContainer?.ActiveOrganization?.Name</MudText>
         
         <MudFab StartIcon="@Icons.Material.Sharp.Person" IconSize="Size.Medium" Size="Size.Small" OnClick="ToggltPopover" />
+
         <MudPopover Open="PopOverIsVisible" AnchorOrigin="Origin.BottomRight" TransformOrigin="Origin.TopRight">
             <MudText Typo="Typo.subtitle2" Style="color: var(--mud-palette-text-primary);">@context.User.Identity?.Name</MudText>
-                <MudButton Href="/MicrosoftIdentity/Account/SignOut" OnClick="LogOut" Class="px-4 mr-n2" Style="height: 100%;" Variant="Variant.Text" Color="Color.Inherit" StartIcon="@Icons.Material.Sharp.Logout">@Localizer["Logga ut"]</MudButton>
+                <MudButton Href="/MicrosoftIdentity/Account/SignOut" OnClick="ToggltPopover" Class="px-4 mr-n2" Style="height: 100%;" Variant="Variant.Text" Color="Color.Inherit" StartIcon="@Icons.Material.Sharp.Logout">@Localizer["Logga ut"]</MudButton>
         </MudPopover>
 
         <MudOverlay Visible="PopOverIsVisible" LockScroll="true" OnClick="ToggltPopover" />
 
     </Authorized>
     <NotAuthorized>
-            <MudButton Href="/MicrosoftIdentity/Account/SignIn" OnClick="LogIn" Class="px-4 mr-n2" Style="height: 100%;" Variant="Variant.Text" Color="Color.Inherit" StartIcon="@Icons.Material.Sharp.Login">@Localizer["Logga in"]</MudButton>
-        
+            <MudButton Href="/MicrosoftIdentity/Account/SignIn" Class="px-4 mr-n2" Style="height: 100%;" Variant="Variant.Text" 
+                       Color="Color.Inherit" StartIcon="@Icons.Material.Sharp.Login">@Localizer["Logga in"]</MudButton>
     </NotAuthorized>
 </AuthorizeView>
-    <form id="@LogoutFormId" action="Account/Logout" method="post">
-        <AntiforgeryToken />
-        <input type="hidden" name="ReturnUrl" value="" />
-    </form>
-    <form id="@LoginFormId" action="Account/PerformExternalLogin" method="post">
-        <AntiforgeryToken />
-        <input type="hidden" name="ReturnUrl" value="@currentUrl" />
-        <input type="hidden" name="provider" value="@loginScheme?.Name" />
-    </form>
-    <script>
-        window.submitForm = function (formId) {
-            var form = document.getElementById(formId);
-            if (form) {
-                form.submit();
-            }
-        };
 
-    </script>
     @code{
     [Inject] public required IStringLocalizer<LoginDisplay> Localizer { get; set; }
-    [CascadingParameter] public ActiveOrganizationContainer? ActiveOrganizationContainer { get; set; }
 
     [SupplyParameterFromQuery]
     private string? ReturnUrl { get; set; }
 
     private bool PopOverIsVisible { get; set; } = false;
-    private const string LoginFormId = "loginForm";
-    private const string LogoutFormId = "logoutForm";
     private string? currentUrl;
-    private AuthenticationScheme? loginScheme;
 
     void ToggltPopover()
     {
         PopOverIsVisible = !PopOverIsVisible;
     }
 
-    protected override async Task OnInitializedAsync()
-    {
-        loginScheme = (await SignInManager.GetExternalAuthenticationSchemesAsync()).First();
-        //loginScheme = (await SignInManager.GetExternalAuthenticationSchemesAsync()).First();
-    }
-    protected override void OnInitialized()
-    {
-        currentUrl = NavigationManager.ToBaseRelativePath(NavigationManager.Uri);
-        NavigationManager.LocationChanged += OnLocationChanged;
-    }
-
-    private void OnLocationChanged(object? sender, LocationChangedEventArgs e)
-    {
-        currentUrl = NavigationManager.ToBaseRelativePath(e.Location);
-        StateHasChanged();
-    }
-    public void Dispose()
-    {
-        NavigationManager.LocationChanged -= OnLocationChanged;
-    }
-    public async Task LogOut()
-    {
-        PopOverIsVisible = false;
-
-    }
-    public async Task LogIn()
-    {
-
-    }
     public static string GetInitials(string? name)
     {
         if (name is null) return string.Empty;

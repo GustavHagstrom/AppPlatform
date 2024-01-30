@@ -1,12 +1,11 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using AppPlatform.Core.Enteties.Abstractions;
+using System.ComponentModel.DataAnnotations;
 
 namespace AppPlatform.Core.Enteties;
 
-public class Estimation
+public class Estimation : ITenantEntety
 {
     [StringLength(450)]
     public string Id { get; set; } = Guid.NewGuid().ToString();
-    [StringLength(450)]
-    public string OrganizationId { get; set; } = string.Empty;
-    public Organization? Organization { get; set; }
+    public string TenantId { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
 }
