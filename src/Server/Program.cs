@@ -1,4 +1,3 @@
-using AppPlatform.Core.Data;
 using Microsoft.EntityFrameworkCore;
 using AppPlatform.Server.Components;
 using AppPlatform.Server;
@@ -6,6 +5,10 @@ using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using System.Security.Claims;
 using Microsoft.Identity.Web;
 using Microsoft.Identity.Web.UI;
+using MudBlazor.Services;
+using MudBlazor;
+using AppPlatform.Core.Extensions;
+using AppPlatform.Core.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -38,11 +41,21 @@ var connectionString = "Data Source=bin/debug/database.db";
 #endif
 
 
+builder.Services.AddMudServices(config =>
+{
+    config.SnackbarConfiguration.PositionClass = Defaults.Classes.Position.BottomCenter;
+    config.SnackbarConfiguration.PreventDuplicates = false;
+    config.SnackbarConfiguration.NewestOnTop = false;
+    config.SnackbarConfiguration.ShowCloseIcon = true;
+    config.SnackbarConfiguration.VisibleStateDuration = 1000 * 5;
+    config.SnackbarConfiguration.HideTransitionDuration = 500;
+    config.SnackbarConfiguration.ShowTransitionDuration = 500;
+    config.SnackbarConfiguration.SnackbarVariant = Variant.Filled;
+
+});
 
 
-
-builder.RegisterApplicationServices();
-
+builder.AddCore();
 
 
 

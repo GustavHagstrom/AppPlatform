@@ -1,17 +1,16 @@
 ﻿using AppPlatform.Server.EstimationViewTemplate_old.Models;
 using Mapster;
 using AppPlatform.Core.Constants;
-using AppPlatform.Shared.Wrappers;
 using AppPlatform.Core.DTOs.EstimationView;
 
 namespace AppPlatform.Server.EstimationViewTemplate_old.Services;
 
 public class EstimationViewTemplateService : IEstimationViewTemplateServices
 {
-    private readonly IHttpClientWrapper _httpClient;
+    private readonly HttpClient _httpClient;
     private readonly ILogger<EstimationViewTemplateService> _logger;
 
-    public EstimationViewTemplateService(IHttpClientWrapper httpClient, ILogger<EstimationViewTemplateService> logger)
+    public EstimationViewTemplateService(HttpClient httpClient, ILogger<EstimationViewTemplateService> logger)
     {
         _httpClient = httpClient;
         _logger = logger;

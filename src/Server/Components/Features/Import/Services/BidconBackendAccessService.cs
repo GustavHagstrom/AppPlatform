@@ -1,14 +1,13 @@
 ﻿using AppPlatform.Core.Constants;
 using AppPlatform.Core.DTOs.BidconAccess;
-using AppPlatform.Shared.Wrappers;
 
 namespace AppPlatform.Server.Components.Features.Import.Services;
 
 public class BidconBackendAccessService : IBidconBackendAccessService
 {
-    private readonly IHttpClientWrapper _httpClient;
+    private readonly HttpClient _httpClient;
 
-    public BidconBackendAccessService(IHttpClientWrapper httpClient)
+    public BidconBackendAccessService(HttpClient httpClient)
     {
         _httpClient = httpClient;
     }

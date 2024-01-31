@@ -40,7 +40,6 @@
   <ItemGroup>
     <ProjectReference Include="..\BidconDataAccess\AppPlatform.BidconDataAccess.csproj" />
     <ProjectReference Include="..\Core\AppPlatform.Core.csproj" />
-    <ProjectReference Include="..\Shared\AppPlatform.Shared.csproj" />
   </ItemGroup>
 
   <ItemGroup>

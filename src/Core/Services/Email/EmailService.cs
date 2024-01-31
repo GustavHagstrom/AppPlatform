@@ -32,28 +32,4 @@ public class EmailService : IEmailService
             }
         }
     }
-
-    //public Task SendConfirmationLinkAsync(User user, string email, string confirmationLink)
-    //{
-    //    var subject = "Confirm your email";
-    //    var body = $"Please confirm your account by clicking this link: <a href='{confirmationLink}'>link</a>";
-    //    var isBodyHtml = true;
-    //    return SendAsync(email, subject, body, isBodyHtml);
-    //}
-
-    //public Task SendPasswordResetCodeAsync(User user, string email, string resetCode)
-    //{
-    //    var subject = "Reset your password";
-    //    var body = $"Your reset code is: {resetCode}";
-    //    var isBodyHtml = false;
-    //    return SendAsync(email, subject, body, isBodyHtml);
-    //}
-
-    //public Task SendPasswordResetLinkAsync(User user, string email, string resetLink)
-    //{
-    //    var subject = "Reset your password";
-    //    var body = $"Please reset your password by clicking this link: <a href='{resetLink}'>link</a>";
-    //    var isBodyHtml = true;
-    //    return SendAsync(email, subject, body, isBodyHtml);
-    //}
 }
