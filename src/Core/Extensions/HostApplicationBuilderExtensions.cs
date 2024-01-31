@@ -1,6 +1,5 @@
 ﻿using AppPlatform.Core.Abstractions;
 using AppPlatform.Core.Services.Email;
-using AppPlatform.Core.Services.Navigation;
 using AppPlatform.Core.Services.Settings;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -19,6 +18,5 @@ public static class HostApplicationBuilderExtensions
         builder.Services.AddScoped<IDarkModeService, DarkModeService>();
         builder.Services.AddTransient<IBidconCredentialsService, BidconCredentialsService>();
         builder.Services.AddSingleton<IEmailService, EmailService>();
-        builder.Services.AddScoped<ILinkProvider, LinkProvider>();
     }
 }
