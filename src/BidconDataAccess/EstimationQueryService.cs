@@ -2,6 +2,7 @@
 using Microsoft.Data.SqlClient;
 using System.Data;
 using AppPlatform.Core.DTOs.BidconAccess;
+using System.Security.Claims;
 
 namespace AppPlatform.BidconDataAccess;
 public class EstimationQueryService : IEstimationQueryService
@@ -12,7 +13,7 @@ public class EstimationQueryService : IEstimationQueryService
         _connectionStringBuilder = connectionStringBuilder;
     }
 
-    public async Task<BC_EstimationBatchDto> GetEstimationBatchAsync(string estimationId, string? organization = null)
+    public async Task<BC_EstimationBatchDto> GetEstimationBatchAsync(string estimationId, ClaimsPrincipal userClaims)
     {
         var sql = @"
 SELECT E.EstimationID, E.Name, E.Description, E.Customer, E.Place, E.HandlingOfficer, E.ConfirmationOfficer, E.IsLocked, E.FolderNum, EV.EstCurrency as Currency, EV.ObjectFactor, EV.TenderTotal, EV.TenderType, EV.State as EstimationState FROM Estimation AS E LEFT JOIN EstimationVersion AS EV ON E.EstimationID = EV.EstimationID and EV.Version = E.CurrentVersion WHERE E.EstimationId = @Id;
@@ -25,7 +26,7 @@ SELECT EstimationID, ResourceType, Factor FROM ResourceFactors WHERE EstimationI
 SELECT EstimationID, PMATANum, ID AS Name, Description FROM PM_ATA WHERE EstimationID = @Id AND Version = (SELECT CurrentVersion FROM Estimation WHERE EstimationID = @Id);
 SELECT EstimationID, PMATANum, ResourceType, RemovalPer as RemovealPercent, RemovalExpensePer AS RemovalExpensePercent, AdditionalPer AS AdditionalPercent, AdditionalExpensePer AS AdditionalExpensePercent FROM PM_ATAFactor WHERE EstimationID = @Id AND Version = (SELECT CurrentVersion FROM Estimation WHERE EstimationID = @Id);
 ";
-        using (IDbConnection cnn = new SqlConnection(await _connectionStringBuilder.BuildAsync(organization)))
+        using (IDbConnection cnn = new SqlConnection(await _connectionStringBuilder.BuildAsync(userClaims)))
         {
             using (var multi = await cnn.QueryMultipleAsync(sql, new { Id = estimationId.ToString() }))
             {
@@ -51,7 +52,7 @@ SELECT EstimationID, PMATANum, ResourceType, RemovalPer as RemovealPercent, Remo
             }
         }
     }
-    public async Task<IEnumerable<BC_EstimationBatchDto>> GetEstimationBatchesAsync(IEnumerable<string> estimationIds, string? organization = null)
+    public async Task<IEnumerable<BC_EstimationBatchDto>> GetEstimationBatchesAsync(IEnumerable<string> estimationIds, ClaimsPrincipal userClaims)
     {
         var sql = @"
 SELECT E.EstimationID, E.Name, E.Description, E.Customer, E.Place, E.HandlingOfficer, E.ConfirmationOfficer, E.IsLocked, E.FolderNum, EV.EstCurrency as Currency, EV.ObjectFactor, EV.TenderTotal, EV.TenderType, EV.State as EstimationState FROM Estimation AS E LEFT JOIN EstimationVersion AS EV ON E.EstimationID = EV.EstimationID and EV.Version = E.CurrentVersion WHERE E.EstimationId IN @Ids;
@@ -64,7 +65,7 @@ SELECT EstimationID, ResourceType, Factor FROM ResourceFactors WHERE EstimationI
 SELECT EstimationID, PMATANum, ID AS Name, Description FROM PM_ATA WHERE EstimationID IN @Ids AND Version IN (SELECT CurrentVersion FROM Estimation WHERE EstimationID = PM_ATA.EstimationID);
 SELECT EstimationID, PMATANum, ResourceType, RemovalPer as RemovealPercent, RemovalExpensePer AS RemovalExpensePercent, AdditionalPer AS AdditionalPercent, AdditionalExpensePer AS AdditionalExpensePercent FROM PM_ATAFactor WHERE EstimationID IN @Ids AND Version IN (SELECT CurrentVersion FROM Estimation WHERE EstimationID = PM_ATAFactor.EstimationID);
 ";
-        using (IDbConnection cnn = new SqlConnection(await _connectionStringBuilder.BuildAsync(organization)))
+        using (IDbConnection cnn = new SqlConnection(await _connectionStringBuilder.BuildAsync(userClaims)))
         {
             using (var multi = await cnn.QueryMultipleAsync(sql, new { Ids = estimationIds }))
             {
@@ -110,21 +111,21 @@ SELECT EstimationID, PMATANum, ResourceType, RemovalPer as RemovealPercent, Remo
             }
         }
     }
-    public async Task<IEnumerable<BC_EstimationDto>> GetEstimationListAsync(string? organization = null)
+    public async Task<IEnumerable<BC_EstimationDto>> GetEstimationListAsync(ClaimsPrincipal userClaims)
     {
         var sql = "SELECT EstimationID, Name, Description, Customer, Place, HandlingOfficer, ConfirmationOfficer, IsLocked, FolderNum, CurrentVersion FROM Estimation";
-        using (IDbConnection cnn = new SqlConnection(await _connectionStringBuilder.BuildAsync(organization)))
+        using (IDbConnection cnn = new SqlConnection(await _connectionStringBuilder.BuildAsync(userClaims)))
         {
             return await cnn.QueryAsync<BC_EstimationDto>(sql);
         }
     }
-    public async Task<BC_EstimationFolderBatch> GetFolderBatchAsync(string? organization = null)
+    public async Task<BC_EstimationFolderBatch> GetFolderBatchAsync(ClaimsPrincipal userClaims)
     {
         var sql = @"
 SELECT EstimationID, Name, Description, Customer, Place, HandlingOfficer, ConfirmationOfficer, IsLocked, FolderNum, CurrentVersion FROM Estimation;
 SELECT FolderNum, ParentNum, Name FROM EstimationFolder;
 ";
-        using (IDbConnection cnn = new SqlConnection(await _connectionStringBuilder.BuildAsync(organization)))
+        using (IDbConnection cnn = new SqlConnection(await _connectionStringBuilder.BuildAsync(userClaims)))
         {
             using (var multi = await cnn.QueryMultipleAsync(sql))
             {

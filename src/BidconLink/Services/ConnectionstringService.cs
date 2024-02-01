@@ -1,5 +1,6 @@
 ﻿using AppPlatform.BidconDataAccess;
 using  AppPlatform.BidconLink.Constants;
+using System.Security.Claims;
 using System.Security.Cryptography;
 
 namespace AppPlatform.BidconLink.Services;
@@ -13,7 +14,7 @@ public class ConnectionstringService : IConnectionstringService
     {
         _bidconConfigService = bidconConfigService;
     }
-    public async Task<string> BuildAsync(string? organization)
+    public async Task<string> BuildAsync(ClaimsPrincipal userClaims)
     {
         var map = _bidconConfigService.ConfigMap();
 
