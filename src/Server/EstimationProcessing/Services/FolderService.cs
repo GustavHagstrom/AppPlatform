@@ -4,7 +4,7 @@ using AppPlatform.Server.EstimationProcessing.Models;
 namespace AppPlatform.Server.EstimationProcessing.Services;
 public class FolderService : IFolderService
 {
-    public Folder CreateFromBatch(BC_EstimationFolderBatch batch)
+    public Folder CreateFromBatch(EstimationFolderBatch batch)
     {
         Dictionary<int, Folder> map = new();
         var root = new Folder
@@ -34,7 +34,7 @@ public class FolderService : IFolderService
 
         return root;
     }
-    private Folder CreateDbFolder(BC_EstimationFolder folder)
+    private Folder CreateDbFolder(EstimationFolder folder)
     {
         return new Folder
         {
@@ -45,7 +45,7 @@ public class FolderService : IFolderService
             Name = folder.Name,
         };
     }
-    private EstimationInfo CreateEstimationInfo(BC_Estimation estimation)
+    private EstimationInfo CreateEstimationInfo(BidconDataAccess.Models.Estimation estimation)
     {
         return new EstimationInfo
         {

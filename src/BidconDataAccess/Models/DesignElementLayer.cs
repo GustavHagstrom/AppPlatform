@@ -1,5 +1,5 @@
 ﻿namespace AppPlatform.BidconDataAccess.Models;
-public class BC_MixedElementLayer
+public class DesignElementLayer
 {
     public required string Id { get; set; }
     public Guid EstimationId { get; set; }
@@ -8,5 +8,4 @@ public class BC_MixedElementLayer
     /// Quantity
     /// </summary>
     public double Cons { get; set; }
-    public int LayerType { get; set; }
 }

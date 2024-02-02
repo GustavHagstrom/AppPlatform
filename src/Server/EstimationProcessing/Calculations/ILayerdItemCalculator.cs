@@ -3,5 +3,5 @@
 namespace AppPlatform.Server.EstimationProcessing.Calculations;
 public interface ILayerdItemCalculator
 {
-    Dictionary<int, double?> CalculateUnitCosts(BC_EstimationSheet sheetResult, BC_EstimationBatch batch);
+    Dictionary<int, double?> CalculateUnitCosts(EstimationSheet sheetResult, EstimationBatch batch);
 }

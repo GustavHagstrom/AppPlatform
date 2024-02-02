@@ -1,5 +1,5 @@
 ﻿namespace AppPlatform.BidconDataAccess.Models;
-public class BC_EstimationSheet
+public class EstimationSheet
 {
     public Guid EstimationId { get; set; }
     public required string LayerId { get; set; }
