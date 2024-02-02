@@ -1,12 +1,12 @@
-﻿using AppPlatform.Core.Enums.BidconAccess;
-using AppPlatform.Core.DTOs.BidconAccess;
+﻿using AppPlatform.BidconDataAccess.Models;
+using AppPlatform.Core.Enums.BidconAccess;
 
 namespace AppPlatform.Server.EstimationProcessing.Calculations;
 public class MELayerCalculator : ILayerCostCalculator
 {
     private readonly WRLayerCalculator _wRLayerCalculator = new();
     private readonly DELayerCalculator _dELayerCalculator = new();
-    public void Calculate(BC_EstimationBatchDto batch, string layerId, out double unitCost, out double unitAskingPrice)
+    public void Calculate(BC_EstimationBatch batch, string layerId, out double unitCost, out double unitAskingPrice)
     {
         unitCost = 0;
         unitAskingPrice = 0;
@@ -28,7 +28,7 @@ public class MELayerCalculator : ILayerCostCalculator
         }
     }
 
-    public Dictionary<int, double?> Calculate(BC_EstimationBatchDto batch, string layerId)
+    public Dictionary<int, double?> Calculate(BC_EstimationBatch batch, string layerId)
     {
         var activeLayerItems = batch.MELayers
             .Where(item => item.Id == layerId);

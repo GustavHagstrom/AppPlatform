@@ -1,5 +1,5 @@
-﻿namespace AppPlatform.Core.DTOs.BidconAccess;
-public class BC_ResourceDto
+﻿namespace AppPlatform.BidconDataAccess.Models;
+public class BC_Resource
 {
     public required string Id { get; set; }
     public string? Description { get; set; }

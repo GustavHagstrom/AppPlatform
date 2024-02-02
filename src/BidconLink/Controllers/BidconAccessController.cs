@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using AppPlatform.BidconDataAccess;
-using AppPlatform.Core.DTOs.BidconAccess;
+using AppPlatform.BidconDataAccess.Models;
 
 namespace AppPlatform.BidconLink.Controllers;
 
@@ -17,14 +17,14 @@ public class BidconAccessController : ControllerBase
     }
 
     [HttpPost("GetEstimationBatch")]
-    public async Task<IActionResult> GetEstimationBatch([FromBody] EstimationRequestBatchModelDto request)
+    public async Task<IActionResult> GetEstimationBatch([FromBody] EstimationRequestBatchModel request)
     {
         var result = await _estimationQueryService.GetEstimationBatchAsync(request.EstimationId, HttpContext.User);
         return Ok(result);
     }
 
     [HttpPost("GetEstimationBatches")]
-    public async Task<IActionResult> GetEstimationBatches([FromBody] EstimationRequestBatchesModelDto request)
+    public async Task<IActionResult> GetEstimationBatches([FromBody] EstimationRequestBatchesModel request)
     {
         var result = await _estimationQueryService.GetEstimationBatchesAsync(request.EstimationIds, HttpContext.User);
         return Ok(result);

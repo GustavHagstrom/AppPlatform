@@ -1,5 +1,5 @@
-﻿namespace AppPlatform.Core.DTOs.BidconAccess;
-public class BC_EstimationFolderDto
+﻿namespace AppPlatform.BidconDataAccess.Models;
+public class BC_EstimationFolder
 {
     public int FolderNum { get; set; }
     public int ParentNum { get; set; }

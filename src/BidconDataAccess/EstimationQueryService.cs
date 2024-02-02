@@ -1,7 +1,7 @@
-﻿using Dapper;
+﻿using AppPlatform.BidconDataAccess.Models;
+using Dapper;
 using Microsoft.Data.SqlClient;
 using System.Data;
-using AppPlatform.Core.DTOs.BidconAccess;
 using System.Security.Claims;
 
 namespace AppPlatform.BidconDataAccess;
@@ -13,7 +13,7 @@ public class EstimationQueryService : IEstimationQueryService
         _connectionStringBuilder = connectionStringBuilder;
     }
 
-    public async Task<BC_EstimationBatchDto> GetEstimationBatchAsync(string estimationId, ClaimsPrincipal userClaims)
+    public async Task<BC_EstimationBatch> GetEstimationBatchAsync(string estimationId, ClaimsPrincipal userClaims)
     {
         var sql = @"
 SELECT E.EstimationID, E.Name, E.Description, E.Customer, E.Place, E.HandlingOfficer, E.ConfirmationOfficer, E.IsLocked, E.FolderNum, EV.EstCurrency as Currency, EV.ObjectFactor, EV.TenderTotal, EV.TenderType, EV.State as EstimationState FROM Estimation AS E LEFT JOIN EstimationVersion AS EV ON E.EstimationID = EV.EstimationID and EV.Version = E.CurrentVersion WHERE E.EstimationId = @Id;
@@ -30,16 +30,16 @@ SELECT EstimationID, PMATANum, ResourceType, RemovalPer as RemovealPercent, Remo
         {
             using (var multi = await cnn.QueryMultipleAsync(sql, new { Id = estimationId.ToString() }))
             {
-                var estimation = await multi.ReadFirstAsync<BC_EstimationDto>();
-                var sheets = await multi.ReadAsync<BC_EstimationSheetDto>();
-                var mixedLayers = await multi.ReadAsync<BC_MixedElementLayerDto>();
-                var designElementLayers = await multi.ReadAsync<BC_DesignElementLayerDto>();
-                var workResultLayers = await multi.ReadAsync<BC_WorkResultLayerDto>();
-                var resources = await multi.ReadAsync<BC_ResourceDto>();
-                var resourceFactors = await multi.ReadAsync<BC_ResourceFactorDto>();
-                var ataResults = await multi.ReadAsync<BC_ATADto>();
-                var ataFactorResults = await multi.ReadAsync<BC_ATAFactorDto>();
-                return new BC_EstimationBatchDto(
+                var estimation = await multi.ReadFirstAsync<BC_Estimation>();
+                var sheets = await multi.ReadAsync<BC_EstimationSheet>();
+                var mixedLayers = await multi.ReadAsync<BC_MixedElementLayer>();
+                var designElementLayers = await multi.ReadAsync<BC_DesignElementLayer>();
+                var workResultLayers = await multi.ReadAsync<BC_WorkResultLayer>();
+                var resources = await multi.ReadAsync<BC_Resource>();
+                var resourceFactors = await multi.ReadAsync<BC_ResourceFactor>();
+                var ataResults = await multi.ReadAsync<BC_ATA>();
+                var ataFactorResults = await multi.ReadAsync<BC_ATAFactor>();
+                return new BC_EstimationBatch(
                     estimation,
                     sheets.ToList(),
                     mixedLayers.ToList(),
@@ -52,7 +52,7 @@ SELECT EstimationID, PMATANum, ResourceType, RemovalPer as RemovealPercent, Remo
             }
         }
     }
-    public async Task<IEnumerable<BC_EstimationBatchDto>> GetEstimationBatchesAsync(IEnumerable<string> estimationIds, ClaimsPrincipal userClaims)
+    public async Task<IEnumerable<BC_EstimationBatch>> GetEstimationBatchesAsync(IEnumerable<string> estimationIds, ClaimsPrincipal userClaims)
     {
         var sql = @"
 SELECT E.EstimationID, E.Name, E.Description, E.Customer, E.Place, E.HandlingOfficer, E.ConfirmationOfficer, E.IsLocked, E.FolderNum, EV.EstCurrency as Currency, EV.ObjectFactor, EV.TenderTotal, EV.TenderType, EV.State as EstimationState FROM Estimation AS E LEFT JOIN EstimationVersion AS EV ON E.EstimationID = EV.EstimationID and EV.Version = E.CurrentVersion WHERE E.EstimationId IN @Ids;
@@ -69,17 +69,17 @@ SELECT EstimationID, PMATANum, ResourceType, RemovalPer as RemovealPercent, Remo
         {
             using (var multi = await cnn.QueryMultipleAsync(sql, new { Ids = estimationIds }))
             {
-                var estimationResults = await multi.ReadAsync<BC_EstimationDto>();
-                var sheetResults = await multi.ReadAsync<BC_EstimationSheetDto>();
-                var mixedLayerResults = await multi.ReadAsync<BC_MixedElementLayerDto>();
-                var designElementLayerResults = await multi.ReadAsync<BC_DesignElementLayerDto>();
-                var workResultLayerResults = await multi.ReadAsync<BC_WorkResultLayerDto>();
-                var resourceResults = await multi.ReadAsync<BC_ResourceDto>();
-                var resourceFactorsResults = await multi.ReadAsync<BC_ResourceFactorDto>();
-                var ataResults = await multi.ReadAsync<BC_ATADto>();
-                var ataFactorResults = await multi.ReadAsync<BC_ATAFactorDto>();
+                var estimationResults = await multi.ReadAsync<BC_Estimation>();
+                var sheetResults = await multi.ReadAsync<BC_EstimationSheet>();
+                var mixedLayerResults = await multi.ReadAsync<BC_MixedElementLayer>();
+                var designElementLayerResults = await multi.ReadAsync<BC_DesignElementLayer>();
+                var workResultLayerResults = await multi.ReadAsync<BC_WorkResultLayer>();
+                var resourceResults = await multi.ReadAsync<BC_Resource>();
+                var resourceFactorsResults = await multi.ReadAsync<BC_ResourceFactor>();
+                var ataResults = await multi.ReadAsync<BC_ATA>();
+                var ataFactorResults = await multi.ReadAsync<BC_ATAFactor>();
 
-                var batches = new List<BC_EstimationBatchDto>();
+                var batches = new List<BC_EstimationBatch>();
                 var estimationResultsMap = estimationResults.ToLookup(er => er.EstimationID);
                 foreach (var estimationId in estimationIds.Select(x => Guid.Parse(x)))
                 {
@@ -95,7 +95,7 @@ SELECT EstimationID, PMATANum, ResourceType, RemovalPer as RemovealPercent, Remo
                     var estimation = estimationResultsMap[estimationId].FirstOrDefault();
                     if (estimation is not null)
                     {
-                        batches.Add(new BC_EstimationBatchDto(
+                        batches.Add(new BC_EstimationBatch(
                         estimation,
                         sheets,
                         mixedLayers,
@@ -111,12 +111,12 @@ SELECT EstimationID, PMATANum, ResourceType, RemovalPer as RemovealPercent, Remo
             }
         }
     }
-    public async Task<IEnumerable<BC_EstimationDto>> GetEstimationListAsync(ClaimsPrincipal userClaims)
+    public async Task<IEnumerable<BC_Estimation>> GetEstimationListAsync(ClaimsPrincipal userClaims)
     {
         var sql = "SELECT EstimationID, Name, Description, Customer, Place, HandlingOfficer, ConfirmationOfficer, IsLocked, FolderNum, CurrentVersion FROM Estimation";
         using (IDbConnection cnn = new SqlConnection(await _connectionStringBuilder.BuildAsync(userClaims)))
         {
-            return await cnn.QueryAsync<BC_EstimationDto>(sql);
+            return await cnn.QueryAsync<BC_Estimation>(sql);
         }
     }
     public async Task<BC_EstimationFolderBatch> GetFolderBatchAsync(ClaimsPrincipal userClaims)
@@ -129,8 +129,8 @@ SELECT FolderNum, ParentNum, Name FROM EstimationFolder;
         {
             using (var multi = await cnn.QueryMultipleAsync(sql))
             {
-                var estimations = await multi.ReadAsync<BC_EstimationDto>();
-                var folders = await multi.ReadAsync<BC_EstimationFolderDto>();
+                var estimations = await multi.ReadAsync<BC_Estimation>();
+                var folders = await multi.ReadAsync<BC_EstimationFolder>();
                 return new BC_EstimationFolderBatch(estimations, folders);
             }
         }

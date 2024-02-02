@@ -1,5 +1,5 @@
-﻿namespace AppPlatform.Core.DTOs.BidconAccess;
-public class BC_ResourceFactorDto
+﻿namespace AppPlatform.BidconDataAccess.Models;
+public class BC_ResourceFactor
 {
     public Guid EstimationId { get; set; }
     public required int ResourceType { get; set; }

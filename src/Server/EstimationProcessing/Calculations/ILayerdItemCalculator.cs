@@ -1,7 +1,7 @@
-﻿using AppPlatform.Core.DTOs.BidconAccess;
+﻿using AppPlatform.BidconDataAccess.Models;
 
 namespace AppPlatform.Server.EstimationProcessing.Calculations;
 public interface ILayerdItemCalculator
 {
-    Dictionary<int, double?> CalculateUnitCosts(BC_EstimationSheetDto sheetResult, BC_EstimationBatchDto batch);
+    Dictionary<int, double?> CalculateUnitCosts(BC_EstimationSheet sheetResult, BC_EstimationBatch batch);
 }

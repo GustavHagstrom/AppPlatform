@@ -1,4 +1,4 @@
-﻿using AppPlatform.Core.DTOs.BidconAccess;
+﻿using AppPlatform.BidconDataAccess.Models;
 using AppPlatform.Server.EstimationProcessing.Models;
 
 namespace AppPlatform.Server.EstimationProcessing.Services;
@@ -34,7 +34,7 @@ public class FolderService : IFolderService
 
         return root;
     }
-    private Folder CreateDbFolder(BC_EstimationFolderDto folder)
+    private Folder CreateDbFolder(BC_EstimationFolder folder)
     {
         return new Folder
         {
@@ -45,7 +45,7 @@ public class FolderService : IFolderService
             Name = folder.Name,
         };
     }
-    private EstimationInfo CreateEstimationInfo(BC_EstimationDto estimation)
+    private EstimationInfo CreateEstimationInfo(BC_Estimation estimation)
     {
         return new EstimationInfo
         {

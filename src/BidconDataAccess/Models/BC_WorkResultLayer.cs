@@ -1,5 +1,5 @@
-﻿namespace AppPlatform.Core.DTOs.BidconAccess;
-public class BC_MixedElementLayerDto
+﻿namespace AppPlatform.BidconDataAccess.Models;
+public class BC_WorkResultLayer
 {
     public required string Id { get; set; }
     public Guid EstimationId { get; set; }
@@ -8,5 +8,6 @@ public class BC_MixedElementLayerDto
     /// Quantity
     /// </summary>
     public double Cons { get; set; }
-    public int LayerType { get; set; }
+    public double ConsFactor { get; set; }
+    public int Waste { get; set; }
 }

@@ -1,4 +1,4 @@
-﻿using AppPlatform.Core.DTOs.BidconAccess;
+﻿using AppPlatform.BidconDataAccess.Models;
 using AppPlatform.Core.Enums.BidconAccess;
 
 namespace AppPlatform.Server.EstimationProcessing.Calculations;
@@ -10,7 +10,7 @@ public class LayerdItemCalculator : ILayerdItemCalculator
         { (int)LayerType.DesignElement, new DELayerCalculator() },
         { (int)LayerType.MixedElement, new MELayerCalculator() },
     };
-    public Dictionary<int, double?> CalculateUnitCosts(BC_EstimationSheetDto sheetResult, BC_EstimationBatchDto batch)
+    public Dictionary<int, double?> CalculateUnitCosts(BC_EstimationSheet sheetResult, BC_EstimationBatch batch)
     {
         if (sheetResult.LayerType is null)
         {

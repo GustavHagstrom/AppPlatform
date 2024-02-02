@@ -1,5 +1,5 @@
-﻿namespace AppPlatform.Core.DTOs.BidconAccess;
-public class BC_DesignElementLayerDto
+﻿namespace AppPlatform.BidconDataAccess.Models;
+public class BC_DesignElementLayer
 {
     public required string Id { get; set; }
     public Guid EstimationId { get; set; }
