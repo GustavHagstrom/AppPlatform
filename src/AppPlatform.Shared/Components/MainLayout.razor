@@ -1,4 +1,5 @@
-﻿@using AppPlatform.Core.Services.Settings
+﻿@using AppPlatform.Core.Abstractions
+
 
 @inherits LayoutComponentBase
 @inject IStringLocalizer<MainLayout> Localizer
@@ -19,8 +20,12 @@
         <MudDrawer Open="false" ClipMode="DrawerClipMode.Always" DisableOverlay="true" Variant="DrawerVariant.Mini" Elevation="5">
             <MudNavMenu Color="Color.Primary" Dense="false">
                 <MudNavLink Match="NavLinkMatch.All" Icon="@Icons.Material.Sharp.Dashboard" Href="@ApplicationRoutes.Dashboard" />
-                <MudNavLink Match="NavLinkMatch.Prefix" Icon="@CustomIcons.BidconIcon" Href="@ApplicationRoutes.Import" />
-                <MudNavLink Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Sharp.Settings" Href="@ApplicationRoutes.Settings.Common" />
+                @* <MudNavLink Match="NavLinkMatch.Prefix" Icon="@CustomIcons.BidconIcon" Href="@ApplicationRoutes.Import" /> *@
+                @foreach (var link in MainNavigationLinks)
+                {
+                    <MudNavLink Match="NavLinkMatch.Prefix" Icon="@link.Icon" Href="@link.LinkRoute" />
+                }
+                @* <MudNavLink Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Sharp.Settings" Href="@ApplicationRoutes.Settings.Common" /> *@
             </MudNavMenu>
         </MudDrawer>
 
@@ -28,3 +33,5 @@
             @Body
     </MudMainContent>
 </MudLayout>
+
+@inject IEnumerable<IMainNavigationLink> MainNavigationLinks

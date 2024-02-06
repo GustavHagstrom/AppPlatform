@@ -9,6 +9,7 @@ using MudBlazor.Services;
 using MudBlazor;
 using AppPlatform.Core.Extensions;
 using AppPlatform.Core.Data;
+using AppPlatform.SettingsModule;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -56,7 +57,7 @@ builder.Services.AddMudServices(config =>
 
 
 builder.AddCore();
-
+builder.AddModule<SettingsModule>(); //add assembly to the route aswell
 
 
 var app = builder.Build();
