@@ -3,11 +3,11 @@
 
 
 
-<SettingsPage Title="@Localizer["Allmänt"]" Loading="Loading">
+<SettingsPageBase Title="@Localizer["Allmänt"]" Loading="Loading">
     <SettingsSection Title="@Localizer["Utseende"]">
         <MudSwitch T="bool?" Value="ThemeManager?.IsDarkMode" ValueChanged="SetDarkMode" Color="Color.Primary" Label="@Localizer["Mörkt tema"]" />
     </SettingsSection>
-</SettingsPage>
+</SettingsPageBase>
     
     
 
