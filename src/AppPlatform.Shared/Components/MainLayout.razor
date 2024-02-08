@@ -1,8 +1,7 @@
 ﻿@using AppPlatform.Core.Abstractions
 
-
 @inherits LayoutComponentBase
-@inject IStringLocalizer<MainLayout> Localizer
+
 
 <MudDialogProvider />
 <MudSnackbarProvider />
@@ -35,3 +34,17 @@
 </MudLayout>
 
 @inject IEnumerable<IMainNavigationLink> MainNavigationLinks
+@inject IStringLocalizer<MainLayout> Localizer
+@inject NavigationManager NavigationManager
+@inject ILocalStorageService LocalStorageService
+@code{
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        var redirectUrl = await LocalStorageService.GetItemAsync(LocalStorageKeys.RedirectPostLoginUrl);
+        if (!string.IsNullOrEmpty(redirectUrl))
+        {
+            await LocalStorageService.RemoveItemAsync(LocalStorageKeys.RedirectPostLoginUrl);
+            NavigationManager.NavigateTo(redirectUrl);
+        }
+    }
+}

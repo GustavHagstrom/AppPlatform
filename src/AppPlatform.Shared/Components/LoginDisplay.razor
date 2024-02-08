@@ -2,7 +2,9 @@
 ﻿@using Microsoft.AspNetCore.Authentication
 @using Microsoft.AspNetCore.Identity
 @using AppPlatform.Core.Data
+@using Microsoft.JSInterop
 
+@inject IStringLocalizer<LoginDisplay> Localizer
 
 <AuthorizeView>
     <Authorized>
@@ -11,25 +13,39 @@
 
         <MudPopover Open="PopOverIsVisible" AnchorOrigin="Origin.BottomRight" TransformOrigin="Origin.TopRight">
             <MudText Typo="Typo.subtitle2" Style="color: var(--mud-palette-text-primary);">@context.User.Identity?.Name</MudText>
-                <MudButton Href="/MicrosoftIdentity/Account/SignOut" OnClick="ToggltPopover" Class="px-4 mr-n2" Style="height: 100%;" Variant="Variant.Text" Color="Color.Inherit" StartIcon="@Icons.Material.Sharp.Logout">@Localizer["Logga ut"]</MudButton>
+                <MudButton OnClick="Logout" Class="px-4 mr-n2" Style="height: 100%;" Variant="Variant.Text" Color="Color.Inherit" StartIcon="@Icons.Material.Sharp.Logout">@Localizer["Logga ut"]</MudButton>
         </MudPopover>
 
         <MudOverlay Visible="PopOverIsVisible" LockScroll="true" OnClick="ToggltPopover" />
 
     </Authorized>
     <NotAuthorized>
-            <MudButton Href="/MicrosoftIdentity/Account/SignIn" Class="px-4 mr-n2" Style="height: 100%;" Variant="Variant.Text" 
+            <MudButton OnClick="Login" Class="px-4 mr-n2" Style="height: 100%;" Variant="Variant.Text"
                        Color="Color.Inherit" StartIcon="@Icons.Material.Sharp.Login">@Localizer["Logga in"]</MudButton>
     </NotAuthorized>
 </AuthorizeView>
 
+@inject NavigationManager NavigationManager
+@inject IJSRuntime JSRuntime
+@inject ILocalStorageService LocalStorageService
     @code{
-    [Inject] public required IStringLocalizer<LoginDisplay> Localizer { get; set; }
 
-    [SupplyParameterFromQuery]
-    private string? ReturnUrl { get; set; }
+    [SupplyParameterFromQuery] private string? ReturnUrl { get; set; }
 
     private bool PopOverIsVisible { get; set; } = false;
+
+    async Task Login()
+    {
+        await LocalStorageService.SetItemAsync(LocalStorageKeys.RedirectPostLoginUrl, NavigationManager.Uri);
+        var loginUrl = NavigationManager.ToAbsoluteUri($"/MicrosoftIdentity/Account/SignIn");
+        await JSRuntime.InvokeVoidAsync("eval", $"window.location.replace('{loginUrl}');");
+    }
+    async Task Logout()
+    {
+        ToggltPopover();
+        var loginUrl = NavigationManager.ToAbsoluteUri($"/MicrosoftIdentity/Account/SignOut");
+        await JSRuntime.InvokeVoidAsync("eval", $"window.location.replace('{loginUrl}');");
+    }
 
     void ToggltPopover()
     {
