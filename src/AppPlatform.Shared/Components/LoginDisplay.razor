@@ -2,17 +2,17 @@
 ﻿@using Microsoft.AspNetCore.Authentication
 @using Microsoft.AspNetCore.Identity
 @using AppPlatform.Core.Data
+@using Microsoft.Identity.Web
 @using Microsoft.JSInterop
 
 @inject IStringLocalizer<LoginDisplay> Localizer
 
 <AuthorizeView>
     <Authorized>
-        
-        <MudFab StartIcon="@Icons.Material.Sharp.Person" IconSize="Size.Medium" Size="Size.Small" OnClick="ToggltPopover" />
+        <MudAvatar @onclick="ToggltPopover" Class="mud-fab mud-primary-text cursor-pointer pa-1" Style="font-size: 1.1rem;">@GetInitials(context.User.FindFirst(ClaimConstants.Name)?.Value)</MudAvatar>
 
         <MudPopover Open="PopOverIsVisible" AnchorOrigin="Origin.BottomRight" TransformOrigin="Origin.TopRight">
-            <MudText Typo="Typo.subtitle2" Style="color: var(--mud-palette-text-primary);">@context.User.Identity?.Name</MudText>
+            <MudText Typo="Typo.subtitle2" Style="color: var(--mud-palette-text-primary);">@context.User.FindFirst(ClaimConstants.Name)?.Value</MudText>
                 <MudButton OnClick="Logout" Class="px-4 mr-n2" Style="height: 100%;" Variant="Variant.Text" Color="Color.Inherit" StartIcon="@Icons.Material.Sharp.Logout">@Localizer["Logga ut"]</MudButton>
         </MudPopover>
 
