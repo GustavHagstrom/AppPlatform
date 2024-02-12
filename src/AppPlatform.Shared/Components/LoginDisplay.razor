@@ -9,7 +9,7 @@
 
 <AuthorizeView>
     <Authorized>
-        <MudAvatar @onclick="ToggltPopover" Class="mud-fab mud-primary-text cursor-pointer pa-1" Style="font-size: 1.1rem;">@GetInitials(context.User.FindFirst(ClaimConstants.Name)?.Value)</MudAvatar>
+        <MudAvatar @onclick="ToggltPopover" Class="mud-fab mud-primary-text cursor-pointer pa-1 mud-ripple" Style="font-size: 1.1rem;">@GetInitials(context.User.FindFirst(ClaimConstants.Name)?.Value)</MudAvatar>
 
         <MudPopover Open="PopOverIsVisible" AnchorOrigin="Origin.BottomRight" TransformOrigin="Origin.TopRight">
             <MudText Typo="Typo.subtitle2" Style="color: var(--mud-palette-text-primary);">@context.User.FindFirst(ClaimConstants.Name)?.Value</MudText>

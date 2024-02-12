@@ -35,8 +35,8 @@
 
 @inject IEnumerable<IMainNavigationLink> MainNavigationLinks
 @inject IStringLocalizer<MainLayout> Localizer
-@inject NavigationManager NavigationManager
-@inject ILocalStorageService LocalStorageService
+@* @inject NavigationManager NavigationManager *@
+@* @inject ILocalStorageService LocalStorageService
 @code{
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
@@ -47,4 +47,4 @@
             NavigationManager.NavigateTo(redirectUrl);
         }
     }
-}
+} *@

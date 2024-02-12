@@ -1,6 +1,5 @@
 using Microsoft.EntityFrameworkCore;
 using AppPlatform.Server.Components;
-using AppPlatform.Server;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using System.Security.Claims;
 using Microsoft.Identity.Web;
@@ -56,8 +55,8 @@ builder.Services.AddMudServices(config =>
 });
 
 
-builder.AddCore();
-builder.AddModule<SettingsModule>(); //add assembly to the route aswell
+builder.Services.AddCore();
+builder.Services.AddModule<SettingsModule>(); //add assembly to the route aswell
 
 
 var app = builder.Build();

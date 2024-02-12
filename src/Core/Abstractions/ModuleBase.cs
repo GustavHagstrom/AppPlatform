@@ -4,9 +4,9 @@ using Microsoft.Extensions.Hosting;
 namespace AppPlatform.Core.Abstractions;
 public abstract class ModuleBase
 {
-    public void AddModule(IHostApplicationBuilder builder)
+    public void AddModule(IServiceCollection services)
     {
-        RegisterServices(builder.Services);
+        RegisterServices(services);
     }
     protected abstract void RegisterServices(IServiceCollection services);
 }
