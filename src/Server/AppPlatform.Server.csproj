@@ -23,7 +23,6 @@
     <ProjectReference Include="..\AppPlatform.SettingsModule\AppPlatform.SettingsModule.csproj" />
     <ProjectReference Include="..\AppPlatform.Shared\AppPlatform.Shared.csproj" />
     <ProjectReference Include="..\BidconDataAccess\AppPlatform.BidconDataAccess.csproj" />
-    <ProjectReference Include="..\Core\AppPlatform.Core.csproj" />
   </ItemGroup>
 
   <ItemGroup>

@@ -1,4 +1,4 @@
-﻿namespace AppPlatform.Core.Constants;
+﻿namespace AppPlatform.Shared.Constants;
 public static class CommonAppConstants
 {
     public const string ApplicationName = "Bidcon Companion";

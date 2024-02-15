@@ -17,7 +17,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\AppPlatform.Shared\AppPlatform.Shared.csproj" />
-    <ProjectReference Include="..\Core\AppPlatform.Core.csproj" />
   </ItemGroup>
 
   <ItemGroup>

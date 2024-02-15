@@ -1,4 +1,4 @@
-﻿using AppPlatform.Core.Services;
+﻿using AppPlatform.Shared.Services;
 
 namespace AppPlatform.Tests;
 [TestFixture]

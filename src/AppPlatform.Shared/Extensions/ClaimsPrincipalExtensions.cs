@@ -1,8 +1,8 @@
-﻿using AppPlatform.Core.Constants;
+﻿using AppPlatform.Shared.Constants;
 using Microsoft.Identity.Web;
 using System.Security.Claims;
 
-namespace AppPlatform.Core.Extensions;
+namespace AppPlatform.Shared.Extensions;
 
 public static class ClaimsPrincipalExtensions
 {

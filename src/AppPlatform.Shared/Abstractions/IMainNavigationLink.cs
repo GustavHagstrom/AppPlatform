@@ -1,4 +1,4 @@
-﻿namespace AppPlatform.Core.Abstractions;
+﻿namespace AppPlatform.Shared.Abstractions;
 public interface IMainNavigationLink
 {
     string LinkRoute { get; }

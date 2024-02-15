@@ -1,4 +1,4 @@
-﻿using AppPlatform.Core.Abstractions;
+﻿using AppPlatform.Shared.Abstractions;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace AppPlatform.BidconAccessModule;

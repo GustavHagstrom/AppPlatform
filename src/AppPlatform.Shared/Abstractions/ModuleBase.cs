@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 
-namespace AppPlatform.Core.Abstractions;
+namespace AppPlatform.Shared.Abstractions;
 public abstract class ModuleBase
 {
     public void AddModule(IServiceCollection services)

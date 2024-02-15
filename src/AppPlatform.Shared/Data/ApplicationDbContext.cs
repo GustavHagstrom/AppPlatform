@@ -3,7 +3,7 @@ using AppPlatform.Core.Enteties.EstimationView;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 
-namespace AppPlatform.Core.Data;
+namespace AppPlatform.Shared.Data;
 
 public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : DbContext(options)
 {

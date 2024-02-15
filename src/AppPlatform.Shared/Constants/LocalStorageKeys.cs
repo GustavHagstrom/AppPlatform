@@ -1,4 +1,4 @@
-﻿namespace AppPlatform.Core.Constants;
+﻿namespace AppPlatform.Shared.Constants;
 public static class LocalStorageKeys
 {
     public const string RedirectPostLoginUrl = "RedirectPostLoginUrl";

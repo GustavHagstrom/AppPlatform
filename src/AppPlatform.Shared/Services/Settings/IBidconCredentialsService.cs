@@ -1,7 +1,7 @@
 ﻿using AppPlatform.Core.Enteties;
 using System.Security.Claims;
 
-namespace AppPlatform.Core.Services.Settings;
+namespace AppPlatform.Shared.Services.Settings;
 public interface IBidconCredentialsService
 {
     Task<BidconAccessCredentials?> GetAsync(ClaimsPrincipal userClaims);

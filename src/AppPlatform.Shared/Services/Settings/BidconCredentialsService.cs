@@ -1,10 +1,10 @@
-﻿using AppPlatform.Core.Data;
-using AppPlatform.Core.Enteties;
+﻿using AppPlatform.Core.Enteties;
 using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
-using AppPlatform.Core.Extensions;
+using AppPlatform.Shared.Extensions;
+using AppPlatform.Shared.Data;
 
-namespace AppPlatform.Core.Services.Settings;
+namespace AppPlatform.Shared.Services.Settings;
 
 public class BidconCredentialsService(IDbContextFactory<ApplicationDbContext> ContextFactory) : IBidconCredentialsService
 {

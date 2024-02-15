@@ -1,4 +1,4 @@
-﻿using AppPlatform.Core.Data;
+﻿using AppPlatform.Shared.Data;
 using AppPlatform.Core.Enteties.EstimationView;
 using Microsoft.EntityFrameworkCore;
 
