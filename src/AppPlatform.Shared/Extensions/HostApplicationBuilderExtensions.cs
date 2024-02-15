@@ -1,4 +1,4 @@
-﻿using AppPlatform.Shared.Abstractions;
+﻿using AppPlatform.Shared.Authorization;
 using AppPlatform.Shared.Services;
 using AppPlatform.Shared.Services.Email;
 using AppPlatform.Shared.Services.Settings;
@@ -7,10 +7,11 @@ using Microsoft.Extensions.DependencyInjection;
 namespace AppPlatform.Shared.Extensions;
 public static class HostApplicationBuilderExtensions
 {
-    public static void AddModule<TModule>(this IServiceCollection services) where TModule : ModuleBase, new()
+    public static void AddModules(this IServiceCollection services, Action<ModuleBuilder> configure)
     {
-        var module = new TModule();
-        module.AddModule(services);
+        var moduleBuilder = new ModuleBuilder(services);
+        configure(moduleBuilder);
+        moduleBuilder.Build();
     }
     public static void AddShared(this IServiceCollection services)
     {

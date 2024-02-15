@@ -1,10 +1,16 @@
 ﻿using AppPlatform.Shared.Abstractions;
+using AppPlatform.Shared.Authorization;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace AppPlatform.SettingsModule;
-public class SettingsModule : ModuleBase
+public class SettingsModule : IModule
 {
-    protected override void RegisterServices(IServiceCollection services)
+    public void RegisterAccessIds(AccessIdBuilder accessIdBuilder)
+    {
+
+    }
+
+    public void RegisterServices(IServiceCollection services)
     {
         services.AddScoped<IMainNavigationLink, SettingsNavLink>();
     }

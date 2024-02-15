@@ -2,7 +2,7 @@
 using Microsoft.Extensions.DependencyInjection;
 
 namespace AppPlatform.BidconAccessModule;
-public class BidconAccessModule : ModuleBase
+public class BidconAccessModule : IModule
 {
     protected override void RegisterServices(IServiceCollection services)
     {

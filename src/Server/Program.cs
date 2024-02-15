@@ -56,7 +56,10 @@ builder.Services.AddMudServices(config =>
 
 
 builder.Services.AddShared();
-builder.Services.AddModule<SettingsModule>(); //add assembly to the route aswell
+builder.Services.AddModules(moduleBuilder =>
+{
+    moduleBuilder.AddModule<SettingsModule>();
+}); //add assembly to the route aswell
 
 
 var app = builder.Build();

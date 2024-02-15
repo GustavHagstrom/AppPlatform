@@ -1,5 +1,4 @@
-﻿using AppPlatform.Shared.Constants;
-using Microsoft.Identity.Web;
+﻿using Microsoft.Identity.Web;
 using System.Security.Claims;
 
 namespace AppPlatform.Shared.Extensions;
