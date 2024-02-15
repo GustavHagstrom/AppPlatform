@@ -1,5 +1,4 @@
 ﻿using AppPlatform.BidconDataAccess.Models;
-using AppPlatform.Client.Shared.Constants;
 using AppPlatform.Core.Constants;
 
 namespace AppPlatform.Server.Components.Features.Import.Services;

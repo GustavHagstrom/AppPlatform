@@ -1,6 +1,6 @@
-﻿namespace AppPlatform.Client.Shared.Constants;
+﻿namespace AppPlatform.Core.Constants;
 
 public static class HttpClientNames
 {
-    public const string BidconLink = "DesktopBridgeAddress"; 
+    public const string BidconLink = "DesktopBridgeAddress";
 }

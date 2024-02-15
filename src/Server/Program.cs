@@ -9,13 +9,13 @@ using MudBlazor;
 using AppPlatform.Core.Extensions;
 using AppPlatform.Core.Data;
 using AppPlatform.SettingsModule;
+using AppPlatform.Shared;
 
 var builder = WebApplication.CreateBuilder(args);
 
 
 builder.Services.AddRazorComponents()
-    .AddInteractiveServerComponents()
-    .AddInteractiveWebAssemblyComponents();
+    .AddInteractiveServerComponents();
 
 builder.Services.AddCascadingAuthenticationState();
 
@@ -56,6 +56,7 @@ builder.Services.AddMudServices(config =>
 
 
 builder.Services.AddCore();
+builder.Services.AddShared();
 builder.Services.AddModule<SettingsModule>(); //add assembly to the route aswell
 
 
@@ -80,7 +81,8 @@ app.UseStaticFiles();
 app.UseAntiforgery();
 
 app.MapRazorComponents<App>()
-    .AddInteractiveServerRenderMode();
+    .AddInteractiveServerRenderMode()
+    .AddAdditionalAssemblies(typeof(SettingsModule).Assembly);
 
 app.MapControllers();
 app.Run();

@@ -15,9 +15,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AppPlatform.Core", "Core\Ap
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AppPlatform.BidconAccessModule", "AppPlatform.BidconAccessModule\AppPlatform.BidconAccessModule.csproj", "{FC69BF75-C29E-428F-A86C-26692985EB98}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AppPlatform.SettingsModule", "AppPlatform.SettingsModule\AppPlatform.SettingsModule.csproj", "{026CD52E-7715-4A87-BB20-D697EDBA68D1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AppPlatform.SettingsModule", "AppPlatform.SettingsModule\AppPlatform.SettingsModule.csproj", "{026CD52E-7715-4A87-BB20-D697EDBA68D1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AppPlatform.Shared", "AppPlatform.Shared\AppPlatform.Shared.csproj", "{F30E2F32-A213-4B16-8DA3-D8ED866E0E29}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AppPlatform.Shared", "AppPlatform.Shared\AppPlatform.Shared.csproj", "{F30E2F32-A213-4B16-8DA3-D8ED866E0E29}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
