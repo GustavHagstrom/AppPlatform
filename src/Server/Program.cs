@@ -10,6 +10,8 @@ using AppPlatform.Shared.Extensions;
 using AppPlatform.Shared.Data;
 using AppPlatform.SettingsModule;
 using AppPlatform.Shared;
+using AppPlatform.Shared.Services.Authorization;
+using AppPlatform.Shared.Constants;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -56,6 +58,13 @@ builder.Services.AddMudServices(config =>
 
 
 builder.Services.AddShared();
+builder.Services.AddAuthorization(options =>
+{
+    options.AddPolicy(SharedAuthorizationPolicies.Admin, policy =>
+    {
+        policy.RequireClaim(SharedApplicationClaimTypes.AccessClaim, SharedAccessClaimValues.Admin);
+    });
+});
 builder.Services.AddModules(moduleBuilder =>
 {
     moduleBuilder.AddModule<SettingsModule>();
@@ -92,10 +101,15 @@ app.Run();
 
 async Task OnTokenValidatedFunc(TokenValidatedContext context)
 {
-    var dbContextFactory = context.HttpContext.RequestServices.GetRequiredService<IDbContextFactory<ApplicationDbContext>>();
-    var dbContext = dbContextFactory.CreateDbContext();
-    //add claims to the user
-    context.Principal?.AddIdentity(new ClaimsIdentity(new[] { new Claim("custom-claim", "custom-value") }));
-    
+    var accessClaimService = context.HttpContext.RequestServices.GetRequiredService<IAccessClaimService>();
+    if (accessClaimService is not null)
+    {
+        var claims = (await accessClaimService.GetAccessClaims(context.Principal)).ToList();
+        context.Principal?.AddIdentity(new ClaimsIdentity(claims));
+    }
+    else
+    {
+        //handle?
+    }
     await Task.CompletedTask.ConfigureAwait(false);
 }

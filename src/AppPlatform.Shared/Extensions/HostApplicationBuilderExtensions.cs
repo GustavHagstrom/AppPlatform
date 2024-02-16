@@ -1,5 +1,6 @@
 ﻿using AppPlatform.Shared.Authorization;
 using AppPlatform.Shared.Services;
+using AppPlatform.Shared.Services.Authorization;
 using AppPlatform.Shared.Services.Email;
 using AppPlatform.Shared.Services.Settings;
 using Microsoft.Extensions.DependencyInjection;
@@ -20,5 +21,6 @@ public static class HostApplicationBuilderExtensions
         services.AddTransient<IBidconCredentialsService, BidconCredentialsService>();
         services.AddSingleton<IEmailService, EmailService>();
         services.AddScoped<ILocalStorageService, LocalStorageService>();
+        services.AddTransient<IAccessClaimService, AccessClaimService>();
     }
 }

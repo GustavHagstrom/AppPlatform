@@ -1,5 +1,5 @@
 ﻿@page "/settings/bidcon"
-
+@attribute [Authorize(Policy = SharedAuthorizationPolicies.Admin)]
 
 @inject IStringLocalizer<BidconPage> Localizer
 @inject IBidconCredentialsService CredentialsService

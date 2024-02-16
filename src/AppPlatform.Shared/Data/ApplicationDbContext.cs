@@ -1,4 +1,5 @@
 ﻿using AppPlatform.Core.Enteties;
+using AppPlatform.Core.Enteties.Authorization;
 using AppPlatform.Core.Enteties.EstimationView;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
@@ -14,8 +15,18 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
     public DbSet<BidconAccessCredentials> BidconAccessCredentials { get; set; }
     public DbSet<EstimationViewTemplate> EstimationViewTemplates { get; set; }
     public DbSet<UserSettings> UserSettings { get; set; }
+    public DbSet<Role> Roles { get; set; }
+    public DbSet<RoleAccess> RoleAccess { get; set; }
+    public DbSet<UserRole> UserRoles { get; set; }
+    public DbSet<UserAccess> UserAccess { get; set; }
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
+        modelBuilder.Entity<RoleAccess>()
+            .HasKey(ra => new { ra.RoleId, ra.AccessId });
+        modelBuilder.Entity<UserAccess>()
+            .HasKey(ua => new { ua.UserId, ua.AccessId });
+        modelBuilder.Entity<UserRole>()
+            .HasKey(ur => new { ur.UserId, ur.RoleId });
     }
 }
