@@ -8,10 +8,9 @@ using MudBlazor.Services;
 using MudBlazor;
 using AppPlatform.Shared.Extensions;
 using AppPlatform.Shared.Data;
-using AppPlatform.SettingsModule;
-using AppPlatform.Shared;
 using AppPlatform.Shared.Services.Authorization;
 using AppPlatform.Shared.Constants;
+using AppPlatform.Shared.Components;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -62,12 +61,12 @@ builder.Services.AddAuthorization(options =>
 {
     options.AddPolicy(SharedAuthorizationPolicies.Admin, policy =>
     {
-        policy.RequireClaim(SharedApplicationClaimTypes.AccessClaim, SharedAccessClaimValues.Admin);
+        policy.RequireClaim(SharedApplicationClaimTypes.AccessClaim, SharedAccessClaimValues.Admin); 
     });
 });
 builder.Services.AddModules(moduleBuilder =>
 {
-    moduleBuilder.AddModule<SettingsModule>();
+
 }); //add assembly to the route aswell
 
 
@@ -93,7 +92,7 @@ app.UseAntiforgery();
 
 app.MapRazorComponents<App>()
     .AddInteractiveServerRenderMode()
-    .AddAdditionalAssemblies(typeof(SettingsModule).Assembly);
+    .AddAdditionalAssemblies(typeof(MainLayout).Assembly);
 
 app.MapControllers();
 app.Run();

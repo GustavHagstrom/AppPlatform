@@ -7,11 +7,8 @@
     <div class="border-solid border-r" style="height: 100%;">
         <MudText Class="pt-3 px-4" Typo="Typo.h6" Style="font-weight: bold;">@Localizer["Inställningar"]</MudText>
         <MudNavMenu Color="Color.Primary" Dense="false">
-            <MudNavLink Match="NavLinkMatch.All" Icon="@Icons.Material.Sharp.Settings" Href="@ModuleRoutes.Start" >
+            <MudNavLink Match="NavLinkMatch.All" Icon="@Icons.Material.Sharp.Settings" Href="@SharedRoutes.Start" >
                 <MudText Typo="Typo.subtitle1" Style="font-weight: 500;">@Localizer["Allmänt"]</MudText>
-            </MudNavLink>
-            <MudNavLink Match="NavLinkMatch.All" Icon="@CustomIcons.BidconIcon" Href="@ModuleRoutes.Bidcon">
-                <MudText Typo="Typo.subtitle1" Style="font-weight: 500;">@Localizer["Bidcon"]</MudText>
             </MudNavLink>
         </MudNavMenu>
     </div>

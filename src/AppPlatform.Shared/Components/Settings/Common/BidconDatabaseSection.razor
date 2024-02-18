@@ -1,0 +1,115 @@
+@inject IStringLocalizer<BidconDatabaseSection> Localizer
+@inject IBidconCredentialsService CredentialsService
+@inject AuthenticationStateProvider AuthenticationStateProvider
+
+<AuthorizeView Policy="@SharedAuthorizationPolicies.Admin">
+    <Authorized>
+        <SettingsSection Title="@Localizer["Anslutning till Bidcon"]">
+            <MudGrid Spacing="1" Justify="Justify.FlexStart" Class="pa-4">
+
+                <MudItem xs="12" sm="12" md="6">
+                    <MudText Typo="Typo.subtitle2" Style="color: var(--mud-palette-text-primary)">@Localizer["Senast uppdaterad:"]</MudText>
+                        <MudTextField T="string" Margin="Margin.Dense" Variant="Variant.Outlined" ReadOnly="true" Value="@Credentials.LastUpdated.ToString("yyyy-MM-dd HH:mm")" />
+                    </MudItem>
+
+                    <MudItem xs="12">
+                        <MudSwitch T="bool" Value="Credentials.UseDesktopBidconLink" Label="@Localizer["Skrivbordslänk"]" Color="Color.Primary" ValueChanged="UpdateUseDesktopBidconLink" />
+                    </MudItem>
+
+                    <MudItem xs="12">
+                        <MudSwitch T="bool" Value="!Credentials.UseDesktopBidconLink" Label="@Localizer["Direktanslutning"]" Color="Color.Primary" ValueChanged="x => UpdateUseDesktopBidconLink(!x)" />
+                    </MudItem>
+
+                    @if (!Credentials.UseDesktopBidconLink)
+                {
+                    <MudItem xs="12" sm="12" md="12">
+                        <MudSwitch T="bool" Value="Credentials.ServerAuthentication" Label="@Localizer["Autentisering"]" Color="Color.Primary" ValueChanged="UpdateServerAuthentication" />
+                    </MudItem>
+
+                    <MudItem xs="12" sm="12" md="6">
+                        <MudText Typo="Typo.subtitle2" Style="color: var(--mud-palette-text-primary)">@Localizer["Servernamn"]</MudText>
+                            <MudTextField T="string" Margin="Margin.Dense" Value="Credentials.Server" Variant="Variant.Outlined" ValueChanged="UpdateServer" />
+                        </MudItem>
+
+                    <MudItem xs="12" sm="12" md="6">
+                        <MudText Typo="Typo.subtitle2" Style="color: var(--mud-palette-text-primary)">@Localizer["Databasnamn"]</MudText>
+                            <MudTextField T="string" Margin="Margin.Dense" Value="Credentials.Database" Variant="Variant.Outlined" ValueChanged="UpdateDatabase" />
+                        </MudItem>
+
+
+
+                    @if (Credentials.ServerAuthentication)
+                    {
+                        <MudItem xs="12" sm="12" md="6">
+                            <MudText Typo="Typo.subtitle2" Style="color: var(--mud-palette-text-primary)">@Localizer["Användare"]</MudText>
+                                <MudTextField T="string" Margin="Margin.Dense" Value="Credentials.User" Variant="Variant.Outlined" ValueChanged="UpdateUser" />
+                            </MudItem>
+
+                        <MudItem xs="12" sm="12" md="6">
+                            <MudText Typo="Typo.subtitle2" Style="color: var(--mud-palette-text-primary)">@Localizer["Lösenord"]</MudText>
+                                <MudTextField T="string" Margin="Margin.Dense" Value="Credentials.Password" Variant="Variant.Outlined" ValueChanged="UpdatePassword" />
+                            </MudItem>
+                    }
+                }
+
+            </MudGrid>
+        </SettingsSection>
+    </Authorized>
+</AuthorizeView>
+
+
+@code {
+    bool IsLoading = false;
+    BidconAccessCredentials Credentials = new();
+
+    async Task UpdateUseDesktopBidconLink(bool useDesktopBidconLink) => await UpdatePropertyAsync(() => Credentials.UseDesktopBidconLink = useDesktopBidconLink);
+    async Task UpdateServerAuthentication(bool userServerAuthentication) => await UpdatePropertyAsync(() => Credentials.ServerAuthentication = userServerAuthentication);
+    async Task UpdateServer(string server) => await UpdatePropertyAsync(() => Credentials.Server = server);
+    async Task UpdateDatabase(string database) => await UpdatePropertyAsync(() => Credentials.Database = database);
+    async Task UpdateUser(string user) => await UpdatePropertyAsync(() => Credentials.User = user);
+    async Task UpdatePassword(string password) => await UpdatePropertyAsync(() => Credentials.Password = password);
+
+    async Task UpdatePropertyAsync(Action updateAction)
+    {
+        updateAction();
+        await UpsertAsync();
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        await RefreshFromBackendAsync();
+    }
+    async Task RefreshFromBackendAsync()
+    {
+        var state = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+        if (state.User.Identity?.IsAuthenticated is false)
+        {
+            return;
+        }
+        StartLoading();
+        Credentials = await CredentialsService.GetAsync(state.User) ?? new();
+        EndLoading();
+    }
+
+    async Task UpsertAsync()
+    {
+        var state = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+        if (state.User.Identity?.IsAuthenticated is false)
+        {
+            return;
+        }
+        Credentials.LastUpdated = DateTime.Now;
+        await CredentialsService.UpsertAsync(state.User, Credentials);
+    }
+
+    void StartLoading()
+    {
+        IsLoading = true;
+        StateHasChanged();
+    }
+    void EndLoading()
+    {
+        IsLoading = false;
+        StateHasChanged();
+    }
+}

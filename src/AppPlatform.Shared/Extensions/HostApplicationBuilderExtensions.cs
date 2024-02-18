@@ -1,4 +1,5 @@
-﻿using AppPlatform.Shared.Builders;
+﻿using AppPlatform.Shared.Abstractions;
+using AppPlatform.Shared.Builders;
 using AppPlatform.Shared.Services;
 using AppPlatform.Shared.Services.Authorization;
 using AppPlatform.Shared.Services.Email;
@@ -23,5 +24,6 @@ public static class HostApplicationBuilderExtensions
         services.AddSingleton<IEmailService, EmailService>();
         services.AddScoped<ILocalStorageService, LocalStorageService>();
         services.AddTransient<IAccessClaimService, AccessClaimService>();
+        services.AddSingleton<IApplicationLink, SettingsMainNavLink>();
     }
 }

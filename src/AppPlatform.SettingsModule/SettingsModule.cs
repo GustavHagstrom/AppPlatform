@@ -13,6 +13,6 @@ public class SettingsModule : IModule
 
     public void RegisterServices(IServiceCollection services)
     {
-        services.AddSingleton<IApplicationLink, SettingsMainNavLink>();
+        //services.AddSingleton<IApplicationLink, SettingsMainNavLink>();
     }
 }
