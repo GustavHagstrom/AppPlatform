@@ -1,4 +1,4 @@
-﻿using AppPlatform.Shared.Authorization;
+﻿using AppPlatform.Shared.Builders;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace AppPlatform.Shared.Abstractions;

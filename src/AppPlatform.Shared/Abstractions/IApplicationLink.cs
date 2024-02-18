@@ -1,5 +1,5 @@
 ﻿namespace AppPlatform.Shared.Abstractions;
-public interface IMainNavigationLink
+public interface IApplicationLink
 {
     string LinkRoute { get; }
     string Text { get; }

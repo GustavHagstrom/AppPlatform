@@ -1,4 +1,4 @@
-﻿namespace AppPlatform.Shared.Authorization;
+﻿namespace AppPlatform.Shared.Builders;
 public class AccessIdBuilder
 {
     private readonly HashSet<string> _accessIds = new();

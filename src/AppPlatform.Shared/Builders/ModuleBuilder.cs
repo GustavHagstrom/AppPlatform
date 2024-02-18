@@ -1,7 +1,8 @@
 ﻿using AppPlatform.Shared.Abstractions;
+using AppPlatform.Shared.Services;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace AppPlatform.Shared.Authorization;
+namespace AppPlatform.Shared.Builders;
 public class ModuleBuilder(IServiceCollection Services)
 {
     private readonly AccessIdBuilder _accessIdBuilder = new();
@@ -15,6 +16,7 @@ public class ModuleBuilder(IServiceCollection Services)
     }
     internal void Build()
     {
-        Services.AddSingleton(new AccessIdContainer(_accessIdBuilder.Build()));
+        Services.AddSingleton(new AccessIdContainerService(_accessIdBuilder.Build()));
+
     }
 }

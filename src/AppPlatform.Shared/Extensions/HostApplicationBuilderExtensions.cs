@@ -1,4 +1,4 @@
-﻿using AppPlatform.Shared.Authorization;
+﻿using AppPlatform.Shared.Builders;
 using AppPlatform.Shared.Services;
 using AppPlatform.Shared.Services.Authorization;
 using AppPlatform.Shared.Services.Email;
@@ -8,6 +8,7 @@ using Microsoft.Extensions.DependencyInjection;
 namespace AppPlatform.Shared.Extensions;
 public static class HostApplicationBuilderExtensions
 {
+
     public static void AddModules(this IServiceCollection services, Action<ModuleBuilder> configure)
     {
         var moduleBuilder = new ModuleBuilder(services);

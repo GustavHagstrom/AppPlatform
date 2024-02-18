@@ -3,7 +3,7 @@ using Microsoft.Extensions.Localization;
 using MudBlazor;
 
 namespace AppPlatform.SettingsModule;
-internal class SettingsNavLink(IStringLocalizer<SettingsNavLink> localizer) : IMainNavigationLink
+internal class SettingsMainNavLink(IStringLocalizer<SettingsMainNavLink> localizer) : IApplicationLink
 {
     public string LinkRoute => ModuleRoutes.Start;
 
