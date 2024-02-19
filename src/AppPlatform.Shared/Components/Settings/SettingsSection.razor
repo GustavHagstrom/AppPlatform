@@ -5,11 +5,36 @@
 <div class="py-2">
     <MudText Typo="Typo.subtitle1" Style="font-weight: bold;">@Title</MudText>
     <div class="pt-2" style="min-width: 300px; max-width: 600px; display: flex; flex-direction: column; gap: 8px;">
-        @ChildContent
+        <CascadingValue Value="this">
+            @ChildContent
+        </CascadingValue>
     </div>
 </div>
 @code {
+    [CascadingParameter] public SettingsPageBase? SettingsPageBase { get; set; }
     [Parameter] public RenderFragment? ChildContent { get; set; }
     [Parameter] public string Title { get; set; } = string.Empty;
     [Parameter] public bool DividerOnTop { get; set; } = false;
+    [Parameter] public Func<Task>? LoadDataAsync { get; set; }
+    public bool IsLoading { get; set; } = false;
+    public Action? IsLoadingChanged { get; set; }
+
+    protected override void OnInitialized()
+    {
+        SettingsPageBase?.RegisterSettingsSection(this);
+    }
+    protected override async Task OnInitializedAsync()
+    {
+        if(LoadDataAsync is not null)
+        {
+            SetIsLoading(true);
+            await LoadDataAsync.Invoke();
+            SetIsLoading(false);
+        }
+    }
+    void SetIsLoading(bool isLoading)
+    {
+        IsLoading = isLoading;
+        IsLoadingChanged?.Invoke();
+    }
 }

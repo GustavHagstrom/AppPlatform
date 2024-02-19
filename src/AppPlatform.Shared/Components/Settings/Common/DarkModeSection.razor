@@ -1,18 +1,11 @@
 @inject IStringLocalizer<DarkModeSection> Localizer
 
-
-
 <SettingsSection Title="@Localizer["Utseende"]">
     <MudSwitch T="bool?" Value="ThemeManager?.IsDarkMode" ValueChanged="SetDarkMode" Color="Color.Primary" Label="@Localizer["Mörkt tema"]" />
 </SettingsSection>
 
-
-
-
 @code {
     [CascadingParameter] public CascadingThemeManager? ThemeManager { get; set; }
-
-    bool Loading = false;
 
     async Task SetDarkMode(bool? value)
     {

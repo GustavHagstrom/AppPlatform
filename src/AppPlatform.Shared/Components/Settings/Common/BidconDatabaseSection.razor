@@ -4,7 +4,7 @@
 
 <AuthorizeView Policy="@SharedAuthorizationPolicies.Admin">
     <Authorized>
-        <SettingsSection Title="@Localizer["Anslutning till Bidcon"]">
+        <SettingsSection Title="@Localizer["Anslutning till Bidcon"]" LoadDataAsync="LoadDataAsync">
             <MudGrid Spacing="1" Justify="Justify.FlexStart" Class="pa-4">
 
                 <MudItem xs="12" sm="12" md="6">
@@ -59,7 +59,6 @@
 
 
 @code {
-    bool IsLoading = false;
     BidconAccessCredentials Credentials = new();
 
     async Task UpdateUseDesktopBidconLink(bool useDesktopBidconLink) => await UpdatePropertyAsync(() => Credentials.UseDesktopBidconLink = useDesktopBidconLink);
@@ -74,23 +73,15 @@
         updateAction();
         await UpsertAsync();
     }
-
-    protected override async Task OnInitializedAsync()
-    {
-        await RefreshFromBackendAsync();
-    }
-    async Task RefreshFromBackendAsync()
+    async Task LoadDataAsync()
     {
         var state = await AuthenticationStateProvider.GetAuthenticationStateAsync();
         if (state.User.Identity?.IsAuthenticated is false)
         {
             return;
         }
-        StartLoading();
         Credentials = await CredentialsService.GetAsync(state.User) ?? new();
-        EndLoading();
     }
-
     async Task UpsertAsync()
     {
         var state = await AuthenticationStateProvider.GetAuthenticationStateAsync();
@@ -100,16 +91,5 @@
         }
         Credentials.LastUpdated = DateTime.Now;
         await CredentialsService.UpsertAsync(state.User, Credentials);
-    }
-
-    void StartLoading()
-    {
-        IsLoading = true;
-        StateHasChanged();
-    }
-    void EndLoading()
-    {
-        IsLoading = false;
-        StateHasChanged();
     }
 }
