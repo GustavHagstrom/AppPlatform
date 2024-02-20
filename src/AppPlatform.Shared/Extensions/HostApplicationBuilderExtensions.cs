@@ -1,5 +1,6 @@
 ﻿using AppPlatform.Shared.Abstractions;
 using AppPlatform.Shared.Builders;
+using AppPlatform.Shared.Constants;
 using AppPlatform.Shared.Services;
 using AppPlatform.Shared.Services.Authorization;
 using AppPlatform.Shared.Services.Email;
@@ -16,6 +17,12 @@ public static class HostApplicationBuilderExtensions
         configure(moduleBuilder);
         moduleBuilder.Build();
     }
+    public static void AddApplicationLinks(this IServiceCollection services, Action<ApplicationLinkBuilder> configure)
+    {
+        var applicationLinkBuilder = new ApplicationLinkBuilder(services);
+        configure(applicationLinkBuilder);
+        applicationLinkBuilder.Build();
+    }
     public static void AddShared(this IServiceCollection services)
     {
         services.AddLocalization();
@@ -24,6 +31,7 @@ public static class HostApplicationBuilderExtensions
         services.AddSingleton<IEmailService, EmailService>();
         services.AddScoped<ILocalStorageService, LocalStorageService>();
         services.AddTransient<IAccessClaimService, AccessClaimService>();
-        services.AddSingleton<IApplicationLink, SettingsMainNavLink>();
+        services.AddSingleton<IApplicationLinkService, ApplicationLinkService>();
+        services.AddKeyedSingleton<IApplicationLink, SettingsMainNavLink>(SharedApplicationLinkKeys.MainLayoutLink);
     }
 }

@@ -1,5 +1,5 @@
 ﻿namespace AppPlatform.Shared.Services;
-public class AccessIdContainerService
+public class AccessIdContainerService : IAccessIdContainerService
 {
     public AccessIdContainerService(IReadOnlyCollection<string> accessIds)
     {

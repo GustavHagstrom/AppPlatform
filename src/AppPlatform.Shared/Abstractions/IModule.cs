@@ -6,4 +6,5 @@ public interface IModule
 {
     void RegisterServices(IServiceCollection services);
     void RegisterAccessIds(AccessIdBuilder accessIdBuilder);
+    void RegisterApplicationLinks(ApplicationLinkBuilder applicationLinkBuilder);
 }

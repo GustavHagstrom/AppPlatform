@@ -21,7 +21,7 @@
             <MudNavMenu Color="Color.Primary" Dense="false">
                 <MudNavLink Match="NavLinkMatch.All" Icon="@Icons.Material.Sharp.Dashboard" Href="" />
                 @* <MudNavLink Match="NavLinkMatch.Prefix" Icon="@CustomIcons.BidconIcon" Href="@ApplicationRoutes.Import" /> *@
-                @foreach (var link in MainNavigationLinks)
+                @foreach (var link in ApplicationLinkService.MainLayoutLinks)
                 {
                     <MudNavLink Match="NavLinkMatch.Prefix" Icon="@link.Icon" Href="@link.LinkRoute" />
                 }
@@ -34,19 +34,5 @@
     </MudMainContent>
 </MudLayout>
 
-
-@inject IEnumerable<IApplicationLink> MainNavigationLinks
 @inject IStringLocalizer<MainLayout> Localizer
-@* @inject NavigationManager NavigationManager *@
-@* @inject ILocalStorageService LocalStorageService
-@code{
-    protected override async Task OnAfterRenderAsync(bool firstRender)
-    {
-        var redirectUrl = await LocalStorageService.GetItemAsync(LocalStorageKeys.RedirectPostLoginUrl);
-        if (!string.IsNullOrEmpty(redirectUrl))
-        {
-            await LocalStorageService.RemoveItemAsync(LocalStorageKeys.RedirectPostLoginUrl);
-            NavigationManager.NavigateTo(redirectUrl);
-        }
-    }
-} *@
+@inject IApplicationLinkService ApplicationLinkService
