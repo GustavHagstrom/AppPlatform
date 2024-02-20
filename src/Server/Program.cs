@@ -13,6 +13,7 @@ using AppPlatform.Shared.Constants;
 using AppPlatform.Shared.Components;
 using AppPlatform.ViewSettingsModule;
 using Microsoft.AspNetCore.Builder;
+using AppPlatform.UserRightSettingsModule;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -63,6 +64,7 @@ builder.Services.RegisterSharedServices();
 builder.Services.AddModules(moduleBuilder =>
 {
     moduleBuilder.AddModule<ViewSettingsModule>();
+    moduleBuilder.AddModule<UserRightSettingsModule>();
 }); //add assembly to the route aswell
 
 
@@ -88,7 +90,9 @@ app.UseAntiforgery();
 
 app.MapRazorComponents<App>()
     .AddInteractiveServerRenderMode()
-    .AddAdditionalAssemblies(typeof(MainLayout).Assembly, typeof(ViewSettingsModule).Assembly);
+    .AddAdditionalAssemblies(typeof(MainLayout).Assembly, 
+    typeof(ViewSettingsModule).Assembly,
+    typeof(UserRightSettingsModule).Assembly);
 
 app.MapControllers();
 app.Run();

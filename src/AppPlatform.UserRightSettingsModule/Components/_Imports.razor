@@ -1,7 +1,6 @@
-﻿@layout SettingsLayout
-@attribute [Authorize(policy: AuthorizationConstants.Policy)]
-
+﻿@attribute [Authorize(Policy = Constants.AuthorizationConstants.Policy)]
 @using Microsoft.AspNetCore.Authorization
 @using Microsoft.AspNetCore.Components.Web
 @using AppPlatform.Shared.Components.Settings
+@using MudBlazor
 @using Microsoft.Extensions.Localization

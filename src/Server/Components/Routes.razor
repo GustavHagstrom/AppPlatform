@@ -1,7 +1,13 @@
 ﻿@using AppPlatform.ViewSettingsModule
+@using AppPlatform.UserRightSettingsModule
 <StateManager>
     <Router AppAssembly="@typeof(Program).Assembly"
-            AdditionalAssemblies="@(new[]{typeof(MainLayout).Assembly, typeof(ViewSettingsModule).Assembly})">
+            AdditionalAssemblies="@(new[] 
+{ 
+    typeof(MainLayout).Assembly, 
+    typeof(ViewSettingsModule).Assembly,
+    typeof(UserRightSettingsModule).Assembly
+})">
         <Found Context="routeData">
             <AuthorizeRouteView RouteData="@routeData" DefaultLayout="@typeof(MainLayout)">
                 <NotAuthorized>
