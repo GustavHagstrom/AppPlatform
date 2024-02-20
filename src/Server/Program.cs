@@ -58,14 +58,8 @@ builder.Services.AddMudServices(config =>
 });
 
 
-builder.Services.AddShared();
-builder.Services.AddAuthorization(options =>
-{
-    options.AddPolicy(SharedAuthorizationPolicies.Admin, policy =>
-    {
-        policy.RequireClaim(SharedApplicationClaimTypes.AccessClaim, SharedAccessClaimValues.Admin); 
-    });
-});
+builder.Services.RegisterSharedServices();
+
 builder.Services.AddModules(moduleBuilder =>
 {
     moduleBuilder.AddModule<ViewSettingsModule>();

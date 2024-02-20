@@ -5,6 +5,6 @@ namespace AppPlatform.Shared.Abstractions;
 public interface IModule
 {
     void RegisterServices(IServiceCollection services);
-    void RegisterAccessIds(AccessIdBuilder accessIdBuilder);
+    void RegisterAccessIds(AccessClaimInfoBuilder accessIdBuilder);
     void RegisterApplicationLinks(LinkBuilder applicationLinkBuilder);
 }

@@ -6,9 +6,9 @@ using Microsoft.Extensions.DependencyInjection;
 namespace AppPlatform.ViewSettingsModule;
 public class ViewSettingsModule : IModule
 {
-    public void RegisterAccessIds(AccessIdBuilder builder)
+    public void RegisterAccessIds(AccessClaimInfoBuilder builder)
     {
-        builder.AddAccessId(AuthorizationConstants.AccessClaimValue);
+        builder.AddAccessClaimInfo<ViewSettingsClaimInfo>();
     }
 
     public void RegisterApplicationLinks(LinkBuilder builder)

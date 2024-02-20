@@ -2,7 +2,7 @@
 @inject IBidconCredentialsService CredentialsService
 @inject AuthenticationStateProvider AuthenticationStateProvider
 
-<AuthorizeView Policy="@SharedAuthorizationPolicies.Admin">
+<AuthorizeView Policy="@SharedAuthorizationPolicies.BidconConnection">
     <Authorized>
         <SettingsSection Title="@Localizer["Anslutning till Bidcon"]" LoadDataAsync="LoadDataAsync">
             <MudGrid Spacing="1" Justify="Justify.FlexStart" Class="pa-4">
