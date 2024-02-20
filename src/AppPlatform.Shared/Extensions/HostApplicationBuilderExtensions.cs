@@ -17,11 +17,10 @@ public static class HostApplicationBuilderExtensions
         configure(moduleBuilder);
         moduleBuilder.Build();
     }
-    public static void AddApplicationLinks(this IServiceCollection services, Action<ApplicationLinkBuilder> configure)
+    public static void AddApplicationLinks(this IServiceCollection services, Action<LinkBuilder> configure)
     {
-        var applicationLinkBuilder = new ApplicationLinkBuilder(services);
+        var applicationLinkBuilder = new LinkBuilder(services);
         configure(applicationLinkBuilder);
-        applicationLinkBuilder.Build();
     }
     public static void AddShared(this IServiceCollection services)
     {

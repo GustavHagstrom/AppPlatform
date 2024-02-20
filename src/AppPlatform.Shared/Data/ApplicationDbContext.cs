@@ -23,9 +23,9 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
     {
         base.OnModelCreating(modelBuilder);
         modelBuilder.Entity<RoleAccess>()
-            .HasKey(ra => new { ra.RoleId, ra.AccessId });
+            .HasKey(ra => new { ra.RoleId, ra.AccessClaimValue });
         modelBuilder.Entity<UserAccess>()
-            .HasKey(ua => new { ua.UserId, ua.AccessId });
+            .HasKey(ua => new { ua.UserId, ua.AccessClaimValue });
         modelBuilder.Entity<UserRole>()
             .HasKey(ur => new { ur.UserId, ur.RoleId });
     }

@@ -6,7 +6,7 @@ namespace AppPlatform.Shared.Builders;
 public class ModuleBuilder(IServiceCollection Services)
 {
     private readonly AccessIdBuilder _accessIdBuilder = new();
-    private readonly ApplicationLinkBuilder _applicationLinkBuilder = new(Services);
+    private readonly LinkBuilder _applicationLinkBuilder = new(Services);
 
     public ModuleBuilder AddModule<T>() where T : IModule, new()
     {
@@ -20,6 +20,5 @@ public class ModuleBuilder(IServiceCollection Services)
     {
         var accessIdContainerImplementation = new AccessIdContainerService(_accessIdBuilder.Build());
         Services.AddSingleton<IAccessIdContainerService>(accessIdContainerImplementation);
-        _applicationLinkBuilder.Build();
     }
 }

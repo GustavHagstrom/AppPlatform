@@ -29,8 +29,8 @@ public class AccessClaimService(IDbContextFactory<ApplicationDbContext> DbContex
         var values = userRoles
             .Select(ur => ur.Role)
             .SelectMany(r => r.RoleAccesses)
-            .Select(ra => ra.AccessId)
-            .Concat(userAccesses.Select(ua => ua.AccessId));
+            .Select(ra => ra.AccessClaimValue)
+            .Concat(userAccesses.Select(ua => ua.AccessClaimValue));
 
         HashSet<string> claimValues = new(values);
         return claimValues.Select(claimValue => new AccessClaim(claimValue));

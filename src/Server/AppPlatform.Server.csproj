@@ -33,6 +33,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\AppPlatform.Shared\AppPlatform.Shared.csproj" />
+    <ProjectReference Include="..\AppPlatform.ViewsSettingsModule\AppPlatform.ViewSettingsModule.csproj" />
     <ProjectReference Include="..\BidconDataAccess\AppPlatform.BidconDataAccess.csproj" />
   </ItemGroup>
 

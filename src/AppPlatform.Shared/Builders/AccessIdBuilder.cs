@@ -5,7 +5,7 @@ public class AccessIdBuilder
 
     public AccessIdBuilder AddAccessId(string accessId)
     {
-        if (!_accessIds.Contains(accessId))
+        if (_accessIds.Contains(accessId))
         {
             throw new InvalidOperationException($"AccessId {accessId} already exists");
         }

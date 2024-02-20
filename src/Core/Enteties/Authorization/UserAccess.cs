@@ -6,5 +6,5 @@ public class UserAccess : IUserEntety
 {
     [StringLength(50)]
     public string UserId { get; set; } = string.Empty;
-    public string AccessId { get; set; } = string.Empty;
+    public string AccessClaimValue { get; set; } = string.Empty;
 }
