@@ -1,22 +1,31 @@
-﻿<div style="height: calc(var(--mud-appbar-height) - var(--mud-appbar-height)/4);">
-    <MudText Typo="Typo.h6" Style="font-weight: bold;">@Title</MudText>
-</div>
-    <div class="relative" style="height: calc(100% - var(--mud-appbar-height) + var(--mud-appbar-height)/4);">
+﻿<div class="py-3 px-4">
+    @if(Title is not null)
+    {
+        <div style="height: calc(var(--mud-appbar-height) - var(--mud-appbar-height)/4);">
+            <MudText Typo="Typo.h6" Style="font-weight: bold;">@Title</MudText>
+        </div>
+    }
+    
+    <div class="relative" style="@ContentStyle">
         <MudOverlay DarkBackground="true" Visible="SettingSections.Any(x => x.IsLoading)" Absolute="true">
-        <MudProgressCircular Size="Size.Large" Color="Color.Primary" Indeterminate="true" />
-    </MudOverlay>
-    <div style="display: flex; height: 100%">
-        <div style="display: flex; flex-direction: column; padding-top: 8px;">
-            <CascadingValue Value="this">
-                @ChildContent
-            </CascadingValue>
+            <MudProgressCircular Size="Size.Large" Color="Color.Primary" Indeterminate="true" />
+        </MudOverlay>
+        <div style="display: flex; height: 100%">
+            <div style="display: flex; flex-direction: column; padding-top: 8px;">
+                <CascadingValue Value="this">
+                    @ChildContent
+                </CascadingValue>
+            </div>
         </div>
     </div>
 </div>
+
 @code {
     [Parameter] public RenderFragment? ChildContent { get; set; }
-    [Parameter] public string Title { get; set; } = string.Empty;
+    [Parameter] public string? Title { get; set; }
     List<SettingsSection> SettingSections { get; set; } = new();
+
+    string ContentStyle => Title is not null ? "height: calc(100% - var(--mud-appbar-height) + var(--mud-appbar-height)/4);" : "height: 100%";
 
     public void RegisterSettingsSection(SettingsSection section)
     {

@@ -2,6 +2,15 @@
 @layout SettingsLayout
 @inject IStringLocalizer<SettingsPage> Localizer
 
-<SettingsPageBase Title="@Localizer["Rättigheter"]">
-    UserRightSettings
-</SettingsPageBase>
+<MudTabs Border="true" Elevation="0">
+    <MudTabPanel Text="@Localizer["Användare"]" Icon="@Icons.Material.Sharp.People" >
+        <SettingsPageBase>
+            Användare
+        </SettingsPageBase>
+    </MudTabPanel>
+    <MudTabPanel Text="@Localizer["Roller"]" Icon="@Icons.Material.Sharp.Shield">
+        <SettingsPageBase>
+            Roller
+        </SettingsPageBase>
+    </MudTabPanel>
+</MudTabs>

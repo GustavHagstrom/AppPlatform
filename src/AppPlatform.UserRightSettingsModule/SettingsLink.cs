@@ -9,5 +9,5 @@ internal class SettingsLink(IStringLocalizer<SettingsLink> Localizer) : IApplica
 
     public string Text => Localizer["Rättigheter"];
 
-    public string Icon => Icons.Material.Sharp.Security;
+    public string Icon => Icons.Material.Sharp.AdminPanelSettings;
 }
