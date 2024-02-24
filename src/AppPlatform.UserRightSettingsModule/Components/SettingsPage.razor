@@ -1,4 +1,5 @@
 @page "/Settings/UserRightSettings"
+@using AppPlatform.Shared.Services.MicrosoftGraph
 @using Microsoft.Graph.Models
 @layout SettingsLayout
 @inject IStringLocalizer<SettingsPage> Localizer
@@ -8,8 +9,15 @@
         <SettingsPageBase>
             @foreach (var user in Users)
             {
-                <div>@user.DisplayName</div>
-                <img src="data:image/png;base64, @user.PhotoBase64" alt="User photo" />
+                <div>@user.User.DisplayName</div>
+                @if (user.PhotoBase64 is not null)
+                {
+                    <img src="data:image/png;base64, @user.PhotoBase64" alt="User photo" />
+                }
+                else
+                {
+                    <div>No photo</div>
+                }
             }
         </SettingsPageBase>
     </MudTabPanel>
@@ -21,60 +29,58 @@
 </MudTabs>
 
 
-@inject Microsoft.Graph.GraphServiceClient GraphServiceClient
+@* @inject Microsoft.Graph.GraphServiceClient GraphServiceClient *@
+@inject IMicrosoftGraphUserAccess MicrosoftGraphUserAccess
 
 @code{
-    List<UserPhotoInfo> Users { get; set; } = new();
-    class UserPhotoInfo
-    {
-        public string? DisplayName { get; set; }
-        public string? PhotoBase64 { get; set; }
-    }
+    List<UserWithPhoto> Users { get; set; } = new();
+ 
     protected override async Task OnInitializedAsync()
     {
-        var users = await GraphServiceClient.Users.GetAsync();;
-        if (users?.Value is not null)
-        {
-            foreach (var user in users.Value)
-            {
-                var stream = await GetPhotoStreamAsync(user.Id);
-                var bytes = ReadStream(stream);
-                var photo = bytes is not null ? Convert.ToBase64String(bytes) : null;
-                Users.Add(new UserPhotoInfo{ DisplayName = user.DisplayName, PhotoBase64 = photo });
-            }
-        }
+        Users.AddRange(await MicrosoftGraphUserAccess.GetUsersWithPhotoAsync());
+        // var users = await GraphServiceClient.Users.GetAsync();;
+        // if (users?.Value is not null)
+        // {
+        //     foreach (var user in users.Value)
+        //     {
+        //         var stream = await GetPhotoStreamAsync(user.Id);
+        //         var bytes = ReadStream(stream);
+        //         var photo = bytes is not null ? Convert.ToBase64String(bytes) : null;
+        //         Users.Add(new UserPhotoInfo{ DisplayName = user.DisplayName, PhotoBase64 = photo });
+        //     }
+        // }
     }
-    async Task<Stream?> GetPhotoStreamAsync(string? userId)
-    {
-        try
-        {
-            return await GraphServiceClient.Users[userId].Photo.Content.GetAsync();
-        }
-        catch (Exception)
-        {
-            return null;
-        }
-    }
-    byte[]? ReadStream(Stream? input)
-    {
-        if (input is null) return null;
-        try
-        {
-            byte[] buffer = new byte[16 * 1024];
-            using (MemoryStream ms = new MemoryStream())
-            {
-                int read;
-                while ((read = input.Read(buffer, 0, buffer.Length)) > 0)
-                {
-                    ms.Write(buffer, 0, read);
-                }
-                return ms.ToArray();
-            }
-        }
-        catch (Exception)
-        {
-            return null;
-        }
+    // async Task<Stream?> GetPhotoStreamAsync(string? userId)
+    // {
+    //     try
+    //     {
+    //         return await GraphServiceClient.Users[userId].Photo.Content.GetAsync();
+    //     }
+    //     catch (Exception)
+    //     {
+    //         return null;
+    //     }
+    // }
+    // byte[]? ReadStream(Stream? input)
+    // {
+    //     if (input is null) return null;
+    //     try
+    //     {
+    //         byte[] buffer = new byte[16 * 1024];
+    //         using (MemoryStream ms = new MemoryStream())
+    //         {
+    //             int read;
+    //             while ((read = input.Read(buffer, 0, buffer.Length)) > 0)
+    //             {
+    //                 ms.Write(buffer, 0, read);
+    //             }
+    //             return ms.ToArray();
+    //         }
+    //     }
+    //     catch (Exception)
+    //     {
+    //         return null;
+    //     }
         
-    }
+    // }
 }

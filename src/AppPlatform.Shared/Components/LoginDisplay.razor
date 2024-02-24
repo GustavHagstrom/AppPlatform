@@ -1,4 +1,5 @@
-﻿@using Microsoft.AspNetCore.Antiforgery
+﻿@using AppPlatform.Shared.Services.MicrosoftGraph
+@using Microsoft.AspNetCore.Antiforgery
 ﻿@using Microsoft.AspNetCore.Authentication
 @using Microsoft.AspNetCore.Identity
 @using AppPlatform.Shared.Data
@@ -9,7 +10,21 @@
 
 <AuthorizeView>
     <Authorized>
-        <MudAvatar @onclick="ToggltPopover" Class="mud-fab mud-primary-text cursor-pointer pa-1 mud-ripple" Style="font-size: 1.1rem;">@GetInitials(context.User.FindFirst(ClaimConstants.Name)?.Value)</MudAvatar>
+
+        <MudAvatar @onclick="ToggltPopover" Class="mud-fab mud-primary-text cursor-pointer mud-ripple" Style="font-size: 1.1rem;">
+
+            @if(UserWithPhoto?.PhotoBase64 is not null)
+            {
+                <MudImage Class="pa-n2" Src="@($"data:image/png;base64, {UserWithPhoto.PhotoBase64}")" Alt="User photo" />
+            }
+            else
+            {
+                <div class="pa-1">
+                    @GetInitials(context.User.FindFirst(ClaimConstants.Name)?.Value)
+                </div>
+                
+            }
+        </MudAvatar>
 
         <MudPopover Open="PopOverIsVisible" AnchorOrigin="Origin.BottomRight" TransformOrigin="Origin.TopRight">
             <MudText Typo="Typo.subtitle2" Style="color: var(--mud-palette-text-primary);">@context.User.FindFirst(ClaimConstants.Name)?.Value</MudText>
@@ -28,12 +43,41 @@
 @inject NavigationManager NavigationManager
 @inject IJSRuntime JSRuntime
 @inject ILocalStorageService LocalStorageService
+@inject IMicrosoftGraphUserAccess MicrosoftGraphUserAccess
+@inject AuthenticationStateProvider AuthenticationStateProvider
+
+
     @code{
 
     [SupplyParameterFromQuery] private string? ReturnUrl { get; set; }
 
-    private bool PopOverIsVisible { get; set; } = false;
+    bool PopOverIsVisible { get; set; } = false;
+    UserWithPhoto? UserWithPhoto { get; set; }
 
+    protected override async Task OnInitializedAsync()
+    {
+        await SetUserWithPhotoAsync();
+    }
+    async Task SetUserWithPhotoAsync()
+    {
+        try
+        {
+            var state = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+            if (state.User.Identity is not null && state.User.Identity.IsAuthenticated)
+            {
+                UserWithPhoto = await MicrosoftGraphUserAccess.GetMeWithPhotoAsync();
+            }
+            else
+            {
+                UserWithPhoto = null;
+            }
+            // StateHasChanged();
+        }
+        catch (Exception)
+        {
+            throw;
+        }
+    }
     async Task Login()
     {
         await LocalStorageService.SetItemAsync(LocalStorageKeys.RedirectPostLoginUrl, NavigationManager.Uri);
@@ -63,4 +107,5 @@
         }
         return initials;
     }
+    
 }

@@ -5,6 +5,7 @@ using AppPlatform.Shared.Models;
 using AppPlatform.Shared.Services;
 using AppPlatform.Shared.Services.Authorization;
 using AppPlatform.Shared.Services.Email;
+using AppPlatform.Shared.Services.MicrosoftGraph;
 using AppPlatform.Shared.Services.Settings;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Graph;
@@ -50,6 +51,7 @@ public static class HostApplicationBuilderExtensions
         services.AddAccessClaimInfo<BidconConnectionClaimInfo>();
         services.AddTransient<IAuthenticationProvider, GraphClientAuthProvider>();
         services.AddScoped(sp => new GraphServiceClient(sp.GetRequiredService<IAuthenticationProvider>()));
+        services.AddScoped<IMicrosoftGraphUserAccess, GraphClientUserAccess>();
 
         services.AddAuthorization(configure =>
         {
