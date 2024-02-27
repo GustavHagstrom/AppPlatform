@@ -4,6 +4,7 @@ internal static class Constants
     public static class ModuleRoutes
     {
         public const string SettingsBasePage = "/Settings/UserRightSettings";
+        public const string UserAccessSettings = "/Settings/UserRightSettings/UserAccess";
     }
     public static class AuthorizationConstants
     {

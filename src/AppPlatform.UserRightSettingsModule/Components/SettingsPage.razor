@@ -1,24 +1,34 @@
 @page "/Settings/UserRightSettings"
-@using AppPlatform.Shared.Services.MicrosoftGraph
-@using Microsoft.Graph.Models
 @layout SettingsLayout
 @inject IStringLocalizer<SettingsPage> Localizer
 
 <MudTabs Border="true" Elevation="0">
     <MudTabPanel Text="@Localizer["Användare"]" Icon="@Icons.Material.Sharp.People" >
         <SettingsPageBase>
-            @foreach (var user in Users)
-            {
-                <div>@user.User.DisplayName</div>
-                @if (user.PhotoBase64 is not null)
+            <MudList Clickable="true" >
+                @foreach (var user in Users)
                 {
-                    <img src="data:image/png;base64, @user.PhotoBase64" alt="User photo" />
+                    <MudListItem OnClick="() => EditUserAccess(user)">
+                        <div class="d-flex" style="align-items: center; ">
+                            <MudAvatar>
+                                @if(user.PhotoBase64 != null)
+                                {
+                                    <MudImage Src="@($"data:image/png;base64, {user.PhotoBase64}")" Alt="User photo" />
+                                }
+                                else
+                                {
+                                    <div class="pa-0">
+                                        @user.User.DisplayName?.First()
+                                    </div>
+                                }
+                            </MudAvatar>
+                            <MudText Class="pl-2" Typo="Typo.subtitle2">@user.User.DisplayName</MudText>
+                        </div>
+                        
+                    </MudListItem>
                 }
-                else
-                {
-                    <div>No photo</div>
-                }
-            }
+            </MudList>
+           
         </SettingsPageBase>
     </MudTabPanel>
     <MudTabPanel Text="@Localizer["Roller"]" Icon="@Icons.Material.Sharp.Shield">
@@ -29,58 +39,19 @@
 </MudTabs>
 
 
-@* @inject Microsoft.Graph.GraphServiceClient GraphServiceClient *@
 @inject IMicrosoftGraphUserAccess MicrosoftGraphUserAccess
+@inject IUserAccessService UserAccessService
+@inject NavigationManager NavigationManager
 
 @code{
     List<UserWithPhoto> Users { get; set; } = new();
- 
+
     protected override async Task OnInitializedAsync()
     {
         Users.AddRange(await MicrosoftGraphUserAccess.GetUsersWithPhotoAsync());
-        // var users = await GraphServiceClient.Users.GetAsync();;
-        // if (users?.Value is not null)
-        // {
-        //     foreach (var user in users.Value)
-        //     {
-        //         var stream = await GetPhotoStreamAsync(user.Id);
-        //         var bytes = ReadStream(stream);
-        //         var photo = bytes is not null ? Convert.ToBase64String(bytes) : null;
-        //         Users.Add(new UserPhotoInfo{ DisplayName = user.DisplayName, PhotoBase64 = photo });
-        //     }
-        // }
     }
-    // async Task<Stream?> GetPhotoStreamAsync(string? userId)
-    // {
-    //     try
-    //     {
-    //         return await GraphServiceClient.Users[userId].Photo.Content.GetAsync();
-    //     }
-    //     catch (Exception)
-    //     {
-    //         return null;
-    //     }
-    // }
-    // byte[]? ReadStream(Stream? input)
-    // {
-    //     if (input is null) return null;
-    //     try
-    //     {
-    //         byte[] buffer = new byte[16 * 1024];
-    //         using (MemoryStream ms = new MemoryStream())
-    //         {
-    //             int read;
-    //             while ((read = input.Read(buffer, 0, buffer.Length)) > 0)
-    //             {
-    //                 ms.Write(buffer, 0, read);
-    //             }
-    //             return ms.ToArray();
-    //         }
-    //     }
-    //     catch (Exception)
-    //     {
-    //         return null;
-    //     }
-        
-    // }
+    void EditUserAccess(UserWithPhoto user)
+    {
+        NavigationManager.NavigateTo($"{Constants.ModuleRoutes.UserAccessSettings}?Id={user.User.Id}");
+    }
 }

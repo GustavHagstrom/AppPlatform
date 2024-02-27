@@ -11,13 +11,18 @@ public class AccessClaimService(IDbContextFactory<ApplicationDbContext> DbContex
     {
         //ArgumentNullException.ThrowIfNull(userClaims); //Bad?? Maybe not necessary
         var userId = userClaims?.GetUserId();
-        var tenantId = userClaims?.GetTenantId();
-        if (userId == null || tenantId == null)
+        if (userId == null)
         {
-            logger.LogWarning("User or tenant id is null");
+            logger.LogWarning("User id is null");
             return Enumerable.Empty<AccessClaim>();
         }
 
+        return await GetAccessClaims(userId);
+
+    }
+
+    public async Task<IEnumerable<AccessClaim>> GetAccessClaims(string userId)
+    {
         using var context = DbContextFactory.CreateDbContext();
         var userRoles = await context.UserRoles
             .Include(ur => ur.Role)
@@ -28,12 +33,12 @@ public class AccessClaimService(IDbContextFactory<ApplicationDbContext> DbContex
 
         var values = userRoles
             .Select(ur => ur.Role)
-            .SelectMany(r => r.RoleAccesses)
+            .Where(r => r is not null)
+            .SelectMany(r => r!.RoleAccesses)
             .Select(ra => ra.AccessClaimValue)
             .Concat(userAccesses.Select(ua => ua.AccessClaimValue));
 
         HashSet<string> claimValues = new(values);
         return claimValues.Select(claimValue => new AccessClaim(claimValue));
-
     }
 }

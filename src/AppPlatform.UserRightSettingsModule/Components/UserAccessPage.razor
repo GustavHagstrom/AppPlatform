@@ -1,0 +1,40 @@
+@page "/Settings/UserRightSettings/UserAccess/"
+@using AppPlatform.Shared.Abstractions
+@layout SettingsLayout
+
+
+@if(IsLoading)
+{
+    <MudProgressCircular />
+}
+else
+{
+    @Id
+    <MudList>
+
+        @foreach (var claim in ClaimInfos)
+        {
+            <MudListItem>
+                <MudText Typo="Typo.subtitle1">@claim.Name</MudText>
+            </MudListItem>
+        }
+    </MudList>
+}
+
+@inject IUserAccessService AccessClaimService
+@code{
+    [SupplyParameterFromQuery] public string? Id { get; set; }
+    List<IAccessClaimInfo> ClaimInfos { get; set; } = new();
+    bool IsLoading { get; set; } = true;
+
+    protected override async Task OnInitializedAsync()
+    {
+        if (Id != null)
+        {
+            ClaimInfos.AddRange(await AccessClaimService.GetAccessClaims(Id));
+
+        }
+        IsLoading = false;
+        StateHasChanged();
+    }
+}
