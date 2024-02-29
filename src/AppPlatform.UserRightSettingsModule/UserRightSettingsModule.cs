@@ -9,7 +9,7 @@ public class UserRightSettingsModule : IModule
 {
     public void RegisterServices(IServiceCollection services)
     {
-        services.AddScoped<IUserAccessService, UserAccessService>();
+        services.AddScoped<IAccessService, AccessService>();
         services.AddAuthorization(configure =>
         {
             configure.AddPolicy(Constants.AuthorizationConstants.Policy, policy =>
@@ -27,6 +27,7 @@ public class UserRightSettingsModule : IModule
 
     public void RegisterApplicationLinks(LinkBuilder applicationLinkBuilder)
     {
-        applicationLinkBuilder.AddSettingsPageLink<SettingsLink>();
+        applicationLinkBuilder.AddSettingsPageLink<UserSettingsLink>();
+        applicationLinkBuilder.AddSettingsPageLink<RoleSettingsLink>();
     }
 }

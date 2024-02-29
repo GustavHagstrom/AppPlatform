@@ -3,11 +3,12 @@ using Microsoft.Extensions.Localization;
 using MudBlazor;
 
 namespace AppPlatform.UserRightSettingsModule;
-internal class SettingsLink(IStringLocalizer<SettingsLink> Localizer) : IApplicationLink
+internal class RoleSettingsLink(IStringLocalizer<UserSettingsLink> Localizer) : IApplicationLink
 {
-    public string LinkRoute => Constants.ModuleRoutes.SettingsBasePage;
 
-    public string Text => Localizer["Rättigheter"];
+    public string Text => Localizer["Roller"];
 
     public string Icon => Icons.Material.Sharp.AdminPanelSettings;
+
+    public string LinkRoute => Constants.ModuleRoutes.RoleSettings;
 }

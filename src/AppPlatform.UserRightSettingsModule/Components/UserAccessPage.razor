@@ -1,40 +1,49 @@
-@page "/Settings/UserRightSettings/UserAccess/"
-@using AppPlatform.Shared.Abstractions
+@page "/Settings/UserAccess"
 @layout SettingsLayout
+@inject IStringLocalizer<UserAccessPage> Localizer
 
 
-@if(IsLoading)
-{
-    <MudProgressCircular />
-}
-else
-{
-    @Id
-    <MudList>
-
-        @foreach (var claim in ClaimInfos)
+<SettingsPageBase Title="@Localizer["Användare"]">
+    <MudList Clickable="true" >
+        @foreach (var user in Users)
         {
-            <MudListItem>
-                <MudText Typo="Typo.subtitle1">@claim.Name</MudText>
+            <MudListItem OnClick="() => EditUserAccess(user)">
+                <div class="d-flex" style="align-items: center; ">
+                    <MudAvatar Class="mud-fab">
+                        @if(user.PhotoBase64 != null)
+                        {
+                            <MudImage Src="@($"data:image/png;base64, {user.PhotoBase64}")" Alt="User photo" />
+                        }
+                        else
+                        {
+                            <div class="pa-0">
+                                @user.User.DisplayName?.First()
+                            </div>
+                        }
+                    </MudAvatar>
+                    <MudText Class="pl-2" Typo="Typo.subtitle2">@user.User.DisplayName</MudText>
+                </div>
+                        
             </MudListItem>
         }
     </MudList>
-}
+           
+</SettingsPageBase>
 
-@inject IUserAccessService AccessClaimService
+
+
+@inject IMicrosoftGraphUserAccess MicrosoftGraphUserAccess
+@inject NavigationManager NavigationManager
+
 @code{
-    [SupplyParameterFromQuery] public string? Id { get; set; }
-    List<IAccessClaimInfo> ClaimInfos { get; set; } = new();
-    bool IsLoading { get; set; } = true;
+    List<UserWithPhoto> Users { get; set; } = new();
 
     protected override async Task OnInitializedAsync()
     {
-        if (Id != null)
-        {
-            ClaimInfos.AddRange(await AccessClaimService.GetAccessClaims(Id));
-
-        }
-        IsLoading = false;
-        StateHasChanged();
+        Users.AddRange(await MicrosoftGraphUserAccess.GetUsersWithPhotoAsync());
+    }
+    void EditUserAccess(UserWithPhoto user)
+    {
+        NavigationManager.NavigateTo($"{Constants.ModuleRoutes.UserAccessSettings}?Id={user.User.Id}");
     }
 }

@@ -8,5 +8,5 @@ internal class ViewSettingsClaimInfo(IStringLocalizer<ViewSettingsClaimInfo> Loc
 
     public string Name => Localizer["Vy inställningar"];
 
-    public string Description => Localizer["Rättighet att skapa, ändra och ta bort kalkylvyer."];
+    public string Description => Localizer["Skapa, ändra och ta bort kalkylvyer."];
 }

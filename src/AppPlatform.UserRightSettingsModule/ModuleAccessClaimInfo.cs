@@ -8,5 +8,5 @@ internal class ModuleAccessClaimInfo(IStringLocalizer<ModuleAccessClaimInfo> Loc
 
     public string Name => Localizer["Rättigheter"];
 
-    public string Description => Localizer["Rättighet att skapa, ändra och ta bort användarrättigheter."];
+    public string Description => Localizer["Skapa, ändra och ta bort användarrättigheter och roller."];
 }

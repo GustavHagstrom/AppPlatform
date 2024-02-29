@@ -9,5 +9,5 @@ internal class BidconConnectionClaimInfo(IStringLocalizer<BidconConnectionClaimI
 
     public string Name => Localizer["Bidconanslutning"];
 
-    public string Description => Localizer["Rättigheter att ändra inställningar för anslutningen mot Bidcons databas.."];
+    public string Description => Localizer["Ändra inställningar för anslutningen mot Bidcons databas."];
 }

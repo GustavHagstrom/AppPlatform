@@ -13,12 +13,22 @@ internal class HttpClientUserAccess : IMicrosoftGraphUserAccess
         throw new NotImplementedException();
     }
 
+    public Task<User?> GetUserAsync(string id)
+    {
+        throw new NotImplementedException();
+    }
+
     public Task<IEnumerable<User>> GetUsersAsync()
     {
         throw new NotImplementedException();
     }
 
     public Task<IEnumerable<UserWithPhoto>> GetUsersWithPhotoAsync()
+    {
+        throw new NotImplementedException();
+    }
+
+    public Task<UserWithPhoto?> GetUserWithPhotoAsync(string id)
     {
         throw new NotImplementedException();
     }

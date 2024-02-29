@@ -10,7 +10,7 @@ internal class GraphClientUserAccess(GraphServiceClient graphServiceClient) : IM
     }
     public async Task<UserWithPhoto?> GetMeWithPhotoAsync()
     {
-        var user = await graphServiceClient.Me.GetAsync();
+        var user = await GetMeAsync();
         if (user is not null)
         {
             return await GetUserPhotoAsync(user);
@@ -22,13 +22,12 @@ internal class GraphClientUserAccess(GraphServiceClient graphServiceClient) : IM
         var users = await graphServiceClient.Users.GetAsync();
         return users?.Value ?? Enumerable.Empty<User>();
     }
-
     public async Task<IEnumerable<UserWithPhoto>> GetUsersWithPhotoAsync()
     {
-        var users = await graphServiceClient.Users.GetAsync();
-        if (users?.Value is not null)
+        var users = await GetUsersAsync();
+        if (users is not null)
         {
-            var tasks = users.Value.Select(async user =>
+            var tasks = users.Select(async user =>
             {
                 return await GetUserPhotoAsync(user);
             });
@@ -37,6 +36,20 @@ internal class GraphClientUserAccess(GraphServiceClient graphServiceClient) : IM
 
         return Enumerable.Empty<UserWithPhoto>();
     }
+    public async Task<User?> GetUserAsync(string id)
+    {
+        return await graphServiceClient.Users[id].GetAsync();
+    }
+    public async Task<UserWithPhoto?> GetUserWithPhotoAsync(string id)
+    {
+        var user = await GetUserAsync(id);
+        if (user is not null)
+        {
+            return await GetUserPhotoAsync(user);
+        }
+        return null;
+    }
+
 
     async Task<UserWithPhoto> GetUserPhotoAsync(User user)
     {
@@ -45,7 +58,6 @@ internal class GraphClientUserAccess(GraphServiceClient graphServiceClient) : IM
         var photo = bytes is not null ? Convert.ToBase64String(bytes) : null;
         return new UserWithPhoto { User = user, PhotoBase64 = photo };
     }
-
     async Task<Stream?> GetPhotoStreamAsync(string? userId)
     {
         try
@@ -79,4 +91,6 @@ internal class GraphClientUserAccess(GraphServiceClient graphServiceClient) : IM
         }
 
     }
+
+    
 }
