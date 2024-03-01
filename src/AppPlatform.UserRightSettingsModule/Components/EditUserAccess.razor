@@ -1,30 +1,13 @@
-@page "/Settings/UserAccess/Edit/"
 @using AppPlatform.Core.Enteties.Authorization
 @using AppPlatform.Shared.Abstractions
 @using AppPlatform.Shared.Services
 @layout SettingsLayout
 @inject IStringLocalizer<EditUserAccessPage> Localizer
-<SettingsPageBase>
-    @if (User is not null)
-    {
-        <div class="d-flex pb-6" style="align-items: center; ">
-            <MudAvatar Class="mud-fab">
-                @if (User.PhotoBase64 != null)
-                {
-                    <MudImage Src="@($"data:image/png;base64, {User.PhotoBase64}")" Alt="User photo" />
-                }
-                else
-                {
-                    <div class="pa-0">
-                        @User.User.DisplayName?.First()
-                    </div>
-                }
-            </MudAvatar>
-            <MudText Class="pl-2" Typo="Typo.subtitle2">@User.User.DisplayName</MudText>
-            </div>
-    }
-    <SettingsSection Title="@Localizer["Rättigheter"]" LoadDataAsync="LoadDataAsync">
 
+    <SettingsSection Title="@Localizer["Rättigheter"]" LoadDataAsync="LoadDataAsync">
+        <MudOverlay DarkBackground="true" Visible="IsLoading" Absolute="true">
+            <MudProgressCircular Size="Size.Large" Color="Color.Primary" Indeterminate="true" />
+        </MudOverlay>
         @foreach (var claimInfo in AccessClaimInfoContainer.AccessClaimInfos)
         {
             <MudCheckBox T="bool" Value="@Access.Any(x => x.AccessClaimValue == claimInfo.Value)" Label="@claimInfo.Description" 
@@ -32,27 +15,34 @@
         }
     </SettingsSection>
 
-</SettingsPageBase>
-
-
-
 @inject IAccessService AccessService
-@inject IMicrosoftGraphUserAccess MicrosoftGraphUserAccess
 @inject IAccessClaimInfoContainer AccessClaimInfoContainer
 @code{
-    [SupplyParameterFromQuery] public string? Id { get; set; }
+
     UserWithPhoto? User { get; set; }
     List<UserAccess> Access { get; set; } = new();
+    bool IsLoading { get; set; } = false;
 
+    public async Task SetUserAsync(UserWithPhoto? user)
+    {
+        User = user;
+        await LoadDataAsync();
+    }
 
     async Task LoadDataAsync()
     {
-        await Task.Delay(1000);
-        if (Id != null)
+        SetIsLoading(true);
+        Access.Clear();
+        if (User?.User.Id is not null)
         {
-            User = await MicrosoftGraphUserAccess.GetUserWithPhotoAsync(Id);
-            Access.AddRange(await AccessService.GetUserAccessClaimValuesAsync(Id));
+            Access.AddRange(await AccessService.GetUserAccessClaimValuesAsync(User.User.Id));
         }
+        SetIsLoading(false);
+    }
+    void SetIsLoading(bool isLoading)
+    {
+        IsLoading = isLoading;
+        StateHasChanged();
     }
     async Task UserAccessCheckBoxClick(string accessClaimValue, bool isChecked)
     {
@@ -67,11 +57,11 @@
     }
     async Task CreateUserAccess(string accessClaimValue)
     {
-        if (Id != null)
+        if (User?.User.Id is not null)
         {
             var userAccess = new UserAccess
             {
-                UserId = Id,
+                    UserId = User.User.Id,
                 AccessClaimValue = accessClaimValue
             };
             await AccessService.CreateUserAccessAsync(userAccess);

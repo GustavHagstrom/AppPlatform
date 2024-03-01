@@ -3,31 +3,35 @@
 @inject IStringLocalizer<UserAccessPage> Localizer
 
 
-<SettingsPageBase Title="@Localizer["Användare"]">
-    <MudList Clickable="true" >
-        @foreach (var user in Users)
-        {
-            <MudListItem OnClick="() => EditUserAccess(user)">
-                <div class="d-flex" style="align-items: center; ">
-                    <MudAvatar Class="mud-fab">
-                        @if(user.PhotoBase64 != null)
-                        {
-                            <MudImage Src="@($"data:image/png;base64, {user.PhotoBase64}")" Alt="User photo" />
-                        }
-                        else
-                        {
-                            <div class="pa-0">
-                                @user.User.DisplayName?.First()
-                            </div>
-                        }
-                    </MudAvatar>
-                    <MudText Class="pl-2" Typo="Typo.subtitle2">@user.User.DisplayName</MudText>
-                </div>
-                        
-            </MudListItem>
-        }
-    </MudList>
-           
+<SettingsPageBase>
+    <SettingsSection Title="@Localizer["Användare"]">
+        <MudSelect T="UserWithPhoto" Variant="Variant.Outlined" InputClass="d-flex" Value="SelectedUser" 
+        ValueChanged="(user) => SelectUserAsync(user)" 
+        AnchorOrigin="Origin.BottomLeft" TransformOrigin="Origin.TopLeft">
+            @foreach (var user in UsersIterator)
+            {
+                <MudSelectItem Value="@user" Label="@user.User.DisplayName">
+                    <div class="d-flex" style="align-items: center; ">
+                        <MudAvatar Class="mud-fab">
+                            @if (user.PhotoBase64 != null)
+                            {
+                                <MudImage Src="@($"data:image/png;base64, {user.PhotoBase64}")" Alt="User photo" />
+                            }
+                            else
+                            {
+                                <div class="pa-0">
+                                    @user.User.DisplayName?.First()
+                                </div>
+                            }
+                        </MudAvatar>
+                        <MudText Class="pl-2" Typo="Typo.subtitle2">@user.User.DisplayName</MudText>
+                        </div>
+                    </MudSelectItem>
+            }
+        </MudSelect>
+    </SettingsSection>
+    
+    <EditUserAccess @ref="EditUserAccessComponent"/>
 </SettingsPageBase>
 
 
@@ -36,14 +40,27 @@
 @inject NavigationManager NavigationManager
 
 @code{
+    UserWithPhoto? SelectedUser { get; set; }
     List<UserWithPhoto> Users { get; set; } = new();
+    EditUserAccess? EditUserAccessComponent { get; set; }
+    IEnumerable<UserWithPhoto> UsersIterator => Users.OrderBy(x => x.User.DisplayName);
 
     protected override async Task OnInitializedAsync()
     {
         Users.AddRange(await MicrosoftGraphUserAccess.GetUsersWithPhotoAsync());
+        await SelectUserAsync(UsersIterator.FirstOrDefault());
+        StateHasChanged();
     }
     void EditUserAccess(UserWithPhoto user)
     {
         NavigationManager.NavigateTo($"{Constants.ModuleRoutes.UserAccessSettings}?Id={user.User.Id}");
+    }
+    async Task SelectUserAsync(UserWithPhoto? userWithPhoto)
+    {
+        SelectedUser = userWithPhoto;
+        if (EditUserAccessComponent is not null)
+        {
+            await EditUserAccessComponent.SetUserAsync(userWithPhoto);
+        }
     }
 }
