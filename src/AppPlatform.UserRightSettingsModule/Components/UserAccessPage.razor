@@ -4,26 +4,12 @@
 
 
 <SettingsPageBase>
-    <SettingsSection Title="@Localizer["Användare"]">
-        <MudList Clickable="true">
+    <SettingsSection Title="@Localizer["Användare"]" LoadDataAsync="LoadDataAsync">
+        <MudList Clickable="true" Style="min-height: 300px;">
             @foreach (var user in UsersIterator)
             {
                 <MudListItem OnClick="() => EditUserAccess(user)">
-                    <div class="d-flex" style="align-items: center; ">
-                        <MudAvatar Class="mud-fab">
-                            @if (user.PhotoBase64 != null)
-                            {
-                                <MudImage Src="@($"data:image/png;base64, {user.PhotoBase64}")" Alt="User photo" />
-                            }
-                            else
-                            {
-                                <div class="pa-0">
-                                    @user.User.DisplayName?.First()
-                                </div>
-                            }
-                        </MudAvatar>
-                        <MudText Class="pl-2" Typo="Typo.subtitle2">@user.User.DisplayName</MudText>
-                    </div>
+                    <UserAvatar User="user"/>
                 </MudListItem>
             }
         </MudList>
@@ -40,8 +26,9 @@
     List<UserWithPhoto> Users { get; set; } = new();
     IEnumerable<UserWithPhoto> UsersIterator => Users.OrderBy(x => x.User.DisplayName);
 
-    protected override async Task OnInitializedAsync()
+    async Task LoadDataAsync()
     {
+        Users.Clear();
         Users.AddRange(await MicrosoftGraphUserAccess.GetUsersWithPhotoAsync());
         StateHasChanged();
     }

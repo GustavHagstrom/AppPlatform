@@ -10,12 +10,12 @@
 
 
 <MudLayout Style="height: 100vh">
-    <MudAppBar Elevation="3" Dense="true" DisableGutters="true" Class="px-2">
-        <MudIcon Icon="@CustomIcons.BidconHub" Color="Color.Primary" Class="mr-2" Size="Size.Large" />
+    <MudAppBar Elevation="3" Dense="true" DisableGutters="true">
+        <MudIcon Icon="@CustomIcons.BidconHub" Color="Color.Primary" Class="mx-2" Size="Size.Large" />
         <MudText Typo="Typo.h5" Class="ml-0 pr-4" Style="font-weight: bold;">@CommonAppConstants.ApplicationName</MudText>
-            <MudSpacer />
-            <LoginDisplay />
-        </MudAppBar>
+        <MudSpacer />
+        <LoginDisplay />
+    </MudAppBar>
 
         <MudDrawer Open="false" ClipMode="DrawerClipMode.Always" DisableOverlay="true" Variant="DrawerVariant.Mini" Elevation="5">
             <MudNavMenu Color="Color.Primary" Dense="false">

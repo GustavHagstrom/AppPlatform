@@ -4,30 +4,12 @@
 @using AppPlatform.Shared.Abstractions
 @using AppPlatform.Shared.Services
 @layout SettingsLayout
-@inject IStringLocalizer<EditUserAccess> Localizer
+@inject IStringLocalizer<EditUserAccessPage> Localizer
 
 <SettingsPageBase>
 
-    
     <SettingsSection Title="@Localizer["Användare"]">
-        @if (User is not null)
-        {
-            <div class="d-flex" style="align-items: center; ">
-                <MudAvatar Class="mud-fab">
-                    @if (User.PhotoBase64 != null)
-                    {
-                        <MudImage Src="@($"data:image/png;base64, {User.PhotoBase64}")" Alt="User photo" />
-                    }
-                    else
-                    {
-                        <div class="pa-0">
-                            @User.User.DisplayName?.First()
-                        </div>
-                    }
-                </MudAvatar>
-                <MudText Class="pl-2" Typo="Typo.subtitle2">@User.User.DisplayName</MudText>
-            </div>
-        }
+        <UserAvatar User="User"/>
     </SettingsSection>
 
     <SettingsSection Title="@Localizer["Rättigheter"]" LoadDataAsync="LoadDataAsync">
