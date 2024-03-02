@@ -5,12 +5,10 @@
 
 <SettingsPageBase>
     <SettingsSection Title="@Localizer["Användare"]">
-        <MudSelect T="UserWithPhoto" Variant="Variant.Outlined" InputClass="d-flex" Value="SelectedUser" 
-        ValueChanged="(user) => SelectUserAsync(user)" 
-        AnchorOrigin="Origin.BottomLeft" TransformOrigin="Origin.TopLeft">
+        <MudList Clickable="true">
             @foreach (var user in UsersIterator)
             {
-                <MudSelectItem Value="@user" Label="@user.User.DisplayName">
+                <MudListItem OnClick="() => EditUserAccess(user)">
                     <div class="d-flex" style="align-items: center; ">
                         <MudAvatar Class="mud-fab">
                             @if (user.PhotoBase64 != null)
@@ -25,13 +23,11 @@
                             }
                         </MudAvatar>
                         <MudText Class="pl-2" Typo="Typo.subtitle2">@user.User.DisplayName</MudText>
-                        </div>
-                    </MudSelectItem>
+                    </div>
+                </MudListItem>
             }
-        </MudSelect>
+        </MudList>
     </SettingsSection>
-    
-    <EditUserAccess @ref="EditUserAccessComponent"/>
 </SettingsPageBase>
 
 
@@ -42,25 +38,15 @@
 @code{
     UserWithPhoto? SelectedUser { get; set; }
     List<UserWithPhoto> Users { get; set; } = new();
-    EditUserAccess? EditUserAccessComponent { get; set; }
     IEnumerable<UserWithPhoto> UsersIterator => Users.OrderBy(x => x.User.DisplayName);
 
     protected override async Task OnInitializedAsync()
     {
         Users.AddRange(await MicrosoftGraphUserAccess.GetUsersWithPhotoAsync());
-        await SelectUserAsync(UsersIterator.FirstOrDefault());
         StateHasChanged();
     }
     void EditUserAccess(UserWithPhoto user)
     {
-        NavigationManager.NavigateTo($"{Constants.ModuleRoutes.UserAccessSettings}?Id={user.User.Id}");
-    }
-    async Task SelectUserAsync(UserWithPhoto? userWithPhoto)
-    {
-        SelectedUser = userWithPhoto;
-        if (EditUserAccessComponent is not null)
-        {
-            await EditUserAccessComponent.SetUserAsync(userWithPhoto);
-        }
+        NavigationManager.NavigateTo($"{Constants.ModuleRoutes.UserAccessSettings}/{user.User.Id}");
     }
 }

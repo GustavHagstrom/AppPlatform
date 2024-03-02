@@ -1,8 +1,34 @@
+@page "/Settings/UserAccess/Edit/{UserId}"
+
 @using AppPlatform.Core.Enteties.Authorization
 @using AppPlatform.Shared.Abstractions
 @using AppPlatform.Shared.Services
 @layout SettingsLayout
-@inject IStringLocalizer<EditUserAccessPage> Localizer
+@inject IStringLocalizer<EditUserAccess> Localizer
+
+<SettingsPageBase>
+
+    
+    <SettingsSection Title="@Localizer["Användare"]">
+        @if (User is not null)
+        {
+            <div class="d-flex" style="align-items: center; ">
+                <MudAvatar Class="mud-fab">
+                    @if (User.PhotoBase64 != null)
+                    {
+                        <MudImage Src="@($"data:image/png;base64, {User.PhotoBase64}")" Alt="User photo" />
+                    }
+                    else
+                    {
+                        <div class="pa-0">
+                            @User.User.DisplayName?.First()
+                        </div>
+                    }
+                </MudAvatar>
+                <MudText Class="pl-2" Typo="Typo.subtitle2">@User.User.DisplayName</MudText>
+            </div>
+        }
+    </SettingsSection>
 
     <SettingsSection Title="@Localizer["Rättigheter"]" LoadDataAsync="LoadDataAsync">
         <MudOverlay DarkBackground="true" Visible="IsLoading" Absolute="true">
@@ -14,28 +40,26 @@
                          ValueChanged="value => UserAccessCheckBoxClick(claimInfo.Value, value)"/>
         }
     </SettingsSection>
+</SettingsPageBase>
 
 @inject IAccessService AccessService
 @inject IAccessClaimInfoContainer AccessClaimInfoContainer
-@code{
+@inject IMicrosoftGraphUserAccess MicrosoftGraphUserAccess
 
+@code{
+    [Parameter] public string? UserId { get; set; }
     UserWithPhoto? User { get; set; }
     List<UserAccess> Access { get; set; } = new();
     bool IsLoading { get; set; } = false;
-
-    public async Task SetUserAsync(UserWithPhoto? user)
-    {
-        User = user;
-        await LoadDataAsync();
-    }
 
     async Task LoadDataAsync()
     {
         SetIsLoading(true);
         Access.Clear();
-        if (User?.User.Id is not null)
+        if (UserId is not null)
         {
-            Access.AddRange(await AccessService.GetUserAccessClaimValuesAsync(User.User.Id));
+            Access.AddRange(await AccessService.GetUserAccessClaimValuesAsync(UserId));
+            User = await MicrosoftGraphUserAccess.GetUserWithPhotoAsync(UserId);
         }
         SetIsLoading(false);
     }
