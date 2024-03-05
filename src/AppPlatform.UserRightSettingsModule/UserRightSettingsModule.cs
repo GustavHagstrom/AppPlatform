@@ -10,6 +10,7 @@ public class UserRightSettingsModule : IModule
     public void RegisterServices(IServiceCollection services)
     {
         services.AddScoped<IAccessService, AccessService>();
+        services.AddScoped<IRoleService, RoleService>();
         services.AddAuthorization(configure =>
         {
             configure.AddPolicy(Constants.AuthorizationConstants.Policy, policy =>

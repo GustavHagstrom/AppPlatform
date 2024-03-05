@@ -1,6 +1,8 @@
 ﻿using AppPlatform.Core.Enteties.Authorization;
 using AppPlatform.Shared.Data;
+using AppPlatform.Shared.Extensions;
 using Microsoft.EntityFrameworkCore;
+using System.Security.Claims;
 
 namespace AppPlatform.UserRightSettingsModule.Services;
 internal class AccessService : IAccessService
@@ -47,6 +49,24 @@ internal class AccessService : IAccessService
             .Where(ra => ra.RoleId == roleId)
             .ToListAsync();
         return roleAccesses ?? new();
+    }
+
+    public Task<Role?> GetRoleAsync(string roleId)
+    {
+        using var context = _dbContextFactory.CreateDbContext();
+        return context.Roles.FirstOrDefaultAsync(x => x.Id == roleId);
+    }
+
+    public async Task<IEnumerable<Role>> GetRolesAsync(ClaimsPrincipal user)
+    {
+        var tenantId = user.GetTenantId();
+        if(tenantId == null)
+        {
+            throw new ArgumentNullException(nameof(tenantId));
+        }
+        using var context = _dbContextFactory.CreateDbContext();
+        var roles = await context.Roles.Where(x => x.TenantId == tenantId).ToListAsync();
+        return roles;
     }
 
     public async Task<IEnumerable<UserAccess>> GetUserAccessClaimValuesAsync(string userId)

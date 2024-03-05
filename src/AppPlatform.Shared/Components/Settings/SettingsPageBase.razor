@@ -1,4 +1,7 @@
-﻿<div class="py-3 px-4">
+﻿<div class="py-3 px-4 relative" style="height: 100%">
+    <MudOverlay DarkBackground="true" Visible="IsLoading" Absolute="true">
+        <MudProgressCircular Size="Size.Large" Color="Color.Primary" Indeterminate="true" />
+    </MudOverlay>
     @if(Title is not null)
     {
         <div style="height: calc(var(--mud-appbar-height) - var(--mud-appbar-height)/4);">
@@ -7,9 +10,6 @@
     }
     
     <div class="relative" style="@ContentStyle">
-        <MudOverlay DarkBackground="true" Visible="IsLoading" Absolute="true">
-            <MudProgressCircular Size="Size.Large" Color="Color.Primary" Indeterminate="true" />
-        </MudOverlay>
         <div style="display: flex; height: 100%">
             <div style="display: flex; flex-direction: column; padding-top: 8px;">
                 <CascadingValue Value="this">

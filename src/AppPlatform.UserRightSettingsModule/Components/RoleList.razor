@@ -1,0 +1,36 @@
+@inject IStringLocalizer<RoleList> Localizer
+
+<MudSimpleTable Hover="true" Dense="true" Bordered="false">
+    <thead>
+        <tr>
+            <th>@Localizer["Namn"]</th>
+            <th>@Localizer["Beskrivning"]</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var role in RolesIterator)
+        {
+            <tr @onclick="() => EditRoleAccess(role)" style="cursor: pointer;">
+                <td>
+                    <MudText Typo="Typo.body2">@role.Name</MudText>
+                </td>
+                <td>
+                    <MudText Typo="Typo.body2">@role.Description</MudText>
+                </td>
+            </tr>
+        }
+    </tbody>
+</MudSimpleTable>
+
+@inject IRoleService RoleService
+@inject NavigationManager NavigationManager
+@code {
+    [Parameter] public List<Role> Roles { get; set; } = new();
+    IEnumerable<Role> RolesIterator => Roles.OrderBy(x => x.Name);
+
+
+    void EditRoleAccess(Role role)
+    {
+        NavigationManager.NavigateTo($"{Constants.ModuleRoutes.RoleAccessEdit}/{role.Id}");
+    }
+}

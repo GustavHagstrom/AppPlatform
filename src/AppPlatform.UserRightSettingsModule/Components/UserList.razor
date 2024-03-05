@@ -1,0 +1,28 @@
+@inject IStringLocalizer<UserList> Localizer
+
+
+<MudSimpleTable Hover="true" Dense="true" Bordered="false">
+    <tbody>
+        @foreach (var user in UsersIterator)
+        {
+            <tr @onclick="() => EditUserAccess(user)" style="cursor: pointer;">
+                <td>
+                    <UserAvatar User="user"/>
+                </td>
+            </tr>
+        }
+    </tbody>
+</MudSimpleTable>
+
+@inject NavigationManager NavigationManager
+
+@code {
+    UserWithPhoto? SelectedUser { get; set; }
+    [Parameter] public List<UserWithPhoto> Users { get; set; } = new();
+    IEnumerable<UserWithPhoto> UsersIterator => Users.OrderBy(x => x.User.DisplayName);
+
+    void EditUserAccess(UserWithPhoto user)
+    {
+        NavigationManager.NavigateTo($"{Constants.ModuleRoutes.UserAccessEdit}/{user.User.Id}");
+    }
+}

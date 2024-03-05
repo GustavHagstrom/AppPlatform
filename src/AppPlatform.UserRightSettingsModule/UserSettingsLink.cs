@@ -5,7 +5,7 @@ using MudBlazor;
 namespace AppPlatform.UserRightSettingsModule;
 internal class UserSettingsLink(IStringLocalizer<UserSettingsLink> Localizer) : IApplicationLink
 {
-    public string LinkRoute => Constants.ModuleRoutes.SettingsBasePage;
+    public string LinkRoute => Constants.ModuleRoutes.UserListPage;
 
     public string Text => Localizer["Användare"];
 

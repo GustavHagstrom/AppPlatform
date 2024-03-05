@@ -1,0 +1,25 @@
+@page "/Settings/Roles"
+@using Microsoft.AspNetCore.Components.Authorization
+@layout SettingsLayout
+@inject IStringLocalizer<RoleListPage> Localizer
+
+<SettingsPageBase>
+    <SettingsSection Title="@Localizer["Roller"]" LoadDataAsync="LoadDataAsync">
+        <RoleList Roles="Roles"/>
+    </SettingsSection>
+</SettingsPageBase>
+
+@inject IRoleService RoleService
+@inject NavigationManager NavigationManager
+@inject AuthenticationStateProvider AuthenticationStateProvider
+@code{
+    List<Role> Roles { get; set; } = new();
+
+    async Task LoadDataAsync()
+    {
+        Roles.Clear();
+        var state = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+        Roles.AddRange(await RoleService.GetRolesAsync(state.User));
+        StateHasChanged();
+    }
+}

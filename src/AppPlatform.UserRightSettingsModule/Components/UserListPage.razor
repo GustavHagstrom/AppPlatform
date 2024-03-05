@@ -1,0 +1,30 @@
+@page "/Settings/Users"
+@layout SettingsLayout
+@inject IStringLocalizer<UserListPage> Localizer
+
+
+<SettingsPageBase>
+    <SettingsSection Title="@Localizer["Användare"]" LoadDataAsync="LoadDataAsync">
+        <UserList Users="Users"/>
+    </SettingsSection>
+</SettingsPageBase>
+
+
+
+@inject IMicrosoftGraphUserAccess MicrosoftGraphUserAccess
+@inject NavigationManager NavigationManager
+
+@code{
+    List<UserWithPhoto> Users { get; set; } = new();
+
+    async Task LoadDataAsync()
+    {
+        var users = await MicrosoftGraphUserAccess.GetUsersWithPhotoAsync();
+        Users = users.ToList();
+        StateHasChanged();
+    }
+    void EditUserAccess(UserWithPhoto user)
+    {
+        NavigationManager.NavigateTo($"{Constants.ModuleRoutes.UserAccessEdit}/{user.User.Id}");
+    }
+}

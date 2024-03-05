@@ -1,8 +1,4 @@
-@page "/Settings/UserAccess/Edit/{UserId}"
-
-@using AppPlatform.Core.Enteties.Authorization
-@using AppPlatform.Shared.Abstractions
-@using AppPlatform.Shared.Services
+@page "/Settings/Users/Edit/{UserId}"
 @layout SettingsLayout
 @inject IStringLocalizer<EditUserAccessPage> Localizer
 
@@ -12,7 +8,11 @@
         <UserAvatar User="User"/>
     </SettingsSection>
 
-    <SettingsSection Title="@Localizer["Rättigheter"]" LoadDataAsync="LoadDataAsync">
+    <SettingsSection Title="@Localizer["Roller"]">
+        <RoleList Roles="Roles" />
+    </SettingsSection>
+
+    <SettingsSection Title="@Localizer["Rättigheter"]" LoadDataAsync="LoadUserDataAsync">
         <MudOverlay DarkBackground="true" Visible="IsLoading" Absolute="true">
             <MudProgressCircular Size="Size.Large" Color="Color.Primary" Indeterminate="true" />
         </MudOverlay>
@@ -25,6 +25,7 @@
 </SettingsPageBase>
 
 @inject IAccessService AccessService
+@inject IRoleService RoleService
 @inject IAccessClaimInfoContainer AccessClaimInfoContainer
 @inject IMicrosoftGraphUserAccess MicrosoftGraphUserAccess
 
@@ -32,9 +33,10 @@
     [Parameter] public string? UserId { get; set; }
     UserWithPhoto? User { get; set; }
     List<UserAccess> Access { get; set; } = new();
+    List<Role> Roles { get; set; } = new();
     bool IsLoading { get; set; } = false;
 
-    async Task LoadDataAsync()
+    async Task LoadUserDataAsync()
     {
         SetIsLoading(true);
         Access.Clear();
@@ -42,6 +44,7 @@
         {
             Access.AddRange(await AccessService.GetUserAccessClaimValuesAsync(UserId));
             User = await MicrosoftGraphUserAccess.GetUserWithPhotoAsync(UserId);
+            Roles = await RoleService.GetRolesForUserAsync(UserId);
         }
         SetIsLoading(false);
     }

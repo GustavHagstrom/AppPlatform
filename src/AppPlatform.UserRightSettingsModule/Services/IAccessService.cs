@@ -1,4 +1,5 @@
 ﻿using AppPlatform.Core.Enteties.Authorization;
+using System.Security.Claims;
 
 namespace AppPlatform.UserRightSettingsModule.Services;
 internal interface IAccessService
