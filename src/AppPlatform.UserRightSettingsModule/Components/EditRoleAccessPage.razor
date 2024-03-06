@@ -22,11 +22,7 @@
         <MudOverlay DarkBackground="true" Visible="IsLoading" Absolute="true">
             <MudProgressCircular Size="Size.Large" Color="Color.Primary" Indeterminate="true" />
         </MudOverlay>
-        @foreach (var claimInfo in AccessClaimInfoContainer.AccessClaimInfos)
-        {
-            <MudCheckBox T="bool" Value="@Access.Any(x => x.AccessClaimValue == claimInfo.Value)" Label="@claimInfo.Description"
-                         ValueChanged="value => RoleAccessCheckBoxClick(claimInfo.Value, value)" />
-        }
+        <AccessClaimValuePicker AccessClaimValues="Access.Select(x => x.AccessClaimValue)" CheckChanged="RoleAccessCheckBoxClick"/>
     </SettingsSection>
 </SettingsPageBase>
 
@@ -36,9 +32,6 @@
 @inject IAccessClaimInfoContainer AccessClaimInfoContainer
 @inject AuthenticationStateProvider AuthenticationStateProvider
 @inject IMicrosoftGraphUserAccess MicrosoftGraphUserAccess
-
-
-    
 
 @code{
     [Parameter] public string? RoleId { get; set; }
@@ -92,15 +85,15 @@
         IsLoading = isLoading;
         StateHasChanged();
     }
-    async Task RoleAccessCheckBoxClick(string accessClaimValue, bool isChecked)
+    async Task RoleAccessCheckBoxClick(AccessClaimInfoCheckedModel checkedModel)
     {
-        if (isChecked)
+        if (checkedModel.IsChecked)
         {
-            await CreateRoleAccess(accessClaimValue);
+            await CreateRoleAccess(checkedModel.AccessClaimInfo.Value);
         }
         else
         {
-            await DeleteRoleAccess(accessClaimValue);
+            await DeleteRoleAccess(checkedModel.AccessClaimInfo.Value);
         }
     }
     async Task CreateRoleAccess(string accessClaimValue)

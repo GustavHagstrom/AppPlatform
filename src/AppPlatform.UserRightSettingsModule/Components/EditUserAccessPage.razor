@@ -16,11 +16,7 @@
         <MudOverlay DarkBackground="true" Visible="IsLoading" Absolute="true">
             <MudProgressCircular Size="Size.Large" Color="Color.Primary" Indeterminate="true" />
         </MudOverlay>
-        @foreach (var claimInfo in AccessClaimInfoContainer.AccessClaimInfos)
-        {
-            <MudCheckBox T="bool" Value="@Access.Any(x => x.AccessClaimValue == claimInfo.Value)" Label="@claimInfo.Description" 
-                         ValueChanged="value => UserAccessCheckBoxClick(claimInfo.Value, value)"/>
-        }
+        <AccessClaimValuePicker AccessClaimValues="Access.Select(x => x.AccessClaimValue)" CheckChanged="UserAccessCheckBoxClick" />
     </SettingsSection>
 </SettingsPageBase>
 
@@ -53,17 +49,18 @@
         IsLoading = isLoading;
         StateHasChanged();
     }
-    async Task UserAccessCheckBoxClick(string accessClaimValue, bool isChecked)
+    async Task UserAccessCheckBoxClick(AccessClaimInfoCheckedModel checkedModel)
     {
-        if (isChecked)
+        if (checkedModel.IsChecked)
         {
-            await CreateUserAccess(accessClaimValue);
+            await CreateUserAccess(checkedModel.AccessClaimInfo.Value);
         }
         else
         {
-            await DeleteUserAccess(accessClaimValue);
+            await DeleteUserAccess(checkedModel.AccessClaimInfo.Value);
         }
     }
+
     async Task CreateUserAccess(string accessClaimValue)
     {
         if (User?.User.Id is not null)

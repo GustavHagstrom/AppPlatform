@@ -5,6 +5,10 @@
 
 <SettingsPageBase>
     <SettingsSection Title="@Localizer["Roller"]" LoadDataAsync="LoadDataAsync">
+        <div>
+            <MudButton Variant="Variant.Outlined" Color="Color.Primary" OnClick="CreateNewRole">@Localizer["Skapa ny roll"]</MudButton>
+        </div>
+        
         <RoleList Roles="Roles"/>
     </SettingsSection>
 </SettingsPageBase>
@@ -12,6 +16,8 @@
 @inject IRoleService RoleService
 @inject NavigationManager NavigationManager
 @inject AuthenticationStateProvider AuthenticationStateProvider
+@inject IDialogService DialogService
+
 @code{
     List<Role> Roles { get; set; } = new();
 
@@ -21,5 +27,19 @@
         var state = await AuthenticationStateProvider.GetAuthenticationStateAsync();
         Roles.AddRange(await RoleService.GetRolesAsync(state.User));
         StateHasChanged();
+    }
+    async Task CreateNewRole()
+    {
+        var parameters = new DialogParameters<StringInputDialog> { { x => x.InputLabel, Localizer["Namn"] } };
+        var options = new DialogOptions { NoHeader = false };
+        var dialog = await DialogService.ShowAsync<StringInputDialog>(Localizer["Ny roll"], parameters, options);
+        var result = await dialog.Result;
+        if (result?.Canceled == false && result.Data is string input and not null)
+        {
+            var state = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+            var role = new Role { Name = input };
+            await RoleService.UpsertRoleAsync(state.User, role);
+            NavigationManager.NavigateTo($"{Constants.ModuleRoutes.RoleAccessEdit}/{role.Id}");
+        }
     }
 }

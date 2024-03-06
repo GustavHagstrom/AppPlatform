@@ -1,0 +1,30 @@
+<MudSimpleTable Dense="true" Bordered="false">
+    <tbody>
+        @foreach (var claimInfo in AccessClaimInfoContainer.AccessClaimInfos)
+        {
+            <tr>
+                <td>
+                    <MudCheckBox T="bool" 
+                                 Dense="true" 
+                                 Value="@AccessClaimValues.Any(x => x == claimInfo.Value)" 
+                                 Label="@claimInfo.Description"
+                                 ValueChanged="x => OnCheckChanged(claimInfo, x)" />
+                </td>
+            </tr>
+            
+        }
+    </tbody>
+</MudSimpleTable>
+
+@inject IAccessClaimInfoContainer AccessClaimInfoContainer
+
+@code{
+    [Parameter] public IEnumerable<string> AccessClaimValues { get; set; } = new List<string>();
+    [Parameter] public EventCallback<AccessClaimInfoCheckedModel> CheckChanged { get; set; }
+
+    Task OnCheckChanged(IAccessClaimInfo info, bool isChecked)
+    {
+        return CheckChanged.InvokeAsync(new (info, isChecked));
+    }
+
+}
