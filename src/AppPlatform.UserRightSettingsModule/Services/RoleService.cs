@@ -62,7 +62,7 @@ internal class RoleService : IRoleService
         return context.Roles.Where(x => x.TenantId == tenantId).ToListAsync();
     }
 
-    public async Task<List<Role>> GetRolesForUserAsync(string userId)
+    public async Task<List<Role>> GetUserRolesForUserAsync(string userId)
     {
         using var context = _dbContextFactory.CreateDbContext();
         var result = await context.UserRoles.Include(x => x.Role)
@@ -78,5 +78,38 @@ internal class RoleService : IRoleService
     {
         using var context = _dbContextFactory.CreateDbContext();
         return context.UserRoles.Where(x => x.RoleId == roleId).ToListAsync();
+    }
+
+    public Task CreateUserRole(ClaimsPrincipal userClaims, Role role)
+    {
+        using var context = _dbContextFactory.CreateDbContext();
+        var userId = userClaims.GetUserId();
+        if (userId == null)
+        {
+            throw new ArgumentNullException(nameof(userId));
+        }
+        var userRole = new UserRole
+        {
+            RoleId = role.Id,
+            UserId = userId
+        };
+        context.UserRoles.Add(userRole);
+        return context.SaveChangesAsync();
+    }
+
+    public Task DeleteUserRole(ClaimsPrincipal userClaims, Role role)
+    {
+        using var context = _dbContextFactory.CreateDbContext();
+        var userId = userClaims.GetUserId();
+        if (userId == null)
+        {
+            throw new ArgumentNullException(nameof(userId));
+        }
+        var userRole = context.UserRoles.FirstOrDefault(x => x.RoleId == role.Id && x.UserId == userId);
+        if (userRole != null)
+        {
+            context.UserRoles.Remove(userRole);
+        }
+        return context.SaveChangesAsync();
     }
 }

@@ -1,13 +1,20 @@
 @page "/Settings/Roles"
+
 @using Microsoft.AspNetCore.Components.Authorization
 @layout SettingsLayout
 @inject IStringLocalizer<RoleListPage> Localizer
 
 <SettingsPageBase>
-    <SettingsSection Title="@Localizer["Roller"]" LoadDataAsync="LoadDataAsync">
-        <div>
-            <MudButton Variant="Variant.Outlined" Color="Color.Primary" OnClick="CreateNewRole">@Localizer["Skapa ny roll"]</MudButton>
+ 
+    <SettingsSection>
+        <div class="d-flex">
+            @* <MudButton Variant="Variant.Outlined" Color="Color.Primary" OnClick="CreateNewRole">@Localizer["Skapa ny roll"]</MudButton> *@
+            <MudIconButton Variant="Variant.Outlined" Color="Color.Primary" Icon="@Icons.Material.Sharp.Add" OnClick="CreateNewRole" />
         </div>
+    </SettingsSection>
+    
+    <SettingsSection Title="@Localizer["Roller"]" LoadDataAsync="LoadDataAsync">
+        
         
         <RoleList Roles="Roles"/>
     </SettingsSection>

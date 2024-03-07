@@ -6,16 +6,17 @@
 
 
 <SettingsPageBase>
+    <SettingsSection>
+        <div class="d-flex">
+            @* <MudButton Variant="Variant.Outlined" Color="Color.Error" OnClick="Delete">@Localizer["Ta bort roll"]</MudButton> *@
+            <MudIconButton Variant="Variant.Outlined" Color="Color.Error" Icon="@Icons.Material.Sharp.Delete" OnClick="Delete" />
+        </div>
+    </SettingsSection>
 
     <SettingsSection Title="@Localizer["Roll"]">
         <MudTextField T="string" Variant="Variant.Outlined" Value="Role?.Name" ValueChanged="SetName" Label="@Localizer["Namn"]"/>
         <MudTextField T="string" Variant="Variant.Outlined" Value="Role?.Description" ValueChanged="SetDescription" 
                       Label="@Localizer["Beskrivning"]" Lines="3"/>
-    </SettingsSection>
-
-    <SettingsSection Title="@Localizer["Användare"]">
-        <UserList Users="Users"/>
-
     </SettingsSection>
 
     <SettingsSection Title="@Localizer["Rättigheter"]" LoadDataAsync="LoadRoleDataAsync">
@@ -24,6 +25,11 @@
         </MudOverlay>
         <AccessClaimValuePicker AccessClaimValues="Access.Select(x => x.AccessClaimValue)" CheckChanged="RoleAccessCheckBoxClick"/>
     </SettingsSection>
+    
+    <SettingsSection Title="@Localizer["Användare"]">
+        <UserList Users="Users" />
+    </SettingsSection>
+
 </SettingsPageBase>
 
 
@@ -32,8 +38,10 @@
 @inject IAccessClaimInfoContainer AccessClaimInfoContainer
 @inject AuthenticationStateProvider AuthenticationStateProvider
 @inject IMicrosoftGraphUserAccess MicrosoftGraphUserAccess
+@inject IDialogService DialogService
+@inject NavigationManager NavigationManager
 
-@code{
+    @code{
     [Parameter] public string? RoleId { get; set; }
     Role? Role { get; set; }
     List<RoleAccess> Access { get; set; } = new();
@@ -42,7 +50,23 @@
     List<UserWithPhoto> Users { get; set; } = new();
 
 
-
+    async Task Delete()
+    {
+        if (Role is not null)
+        {
+            var parameters = new DialogParameters<YesNoDialog> { 
+                { x => x.Info, Localizer["Är du säker på att du vill ta bort rollen?"] },
+                { x => x.YesButtonColor, Color.Error }
+            };
+            var dialog = await DialogService.ShowAsync<YesNoDialog>(Localizer["Bekräfta borttagning"], parameters);
+            var result = await dialog.Result;
+            if (result?.Data is true)
+            {
+                await RoleService.DeleteRoleAsync(Role);
+                NavigationManager.NavigateTo(Constants.ModuleRoutes.RoleListPage);
+            }
+        }
+    }
     async Task<ClaimsPrincipal?> GetClaimsPrincipalAsync()
     {
         var state = await AuthenticationStateProvider.GetAuthenticationStateAsync();
@@ -51,7 +75,7 @@
     async Task SetName(string value)
     {
         var userClaims = await GetClaimsPrincipalAsync();
-        if (Role?.Id is not null && userClaims is not null)
+        if (Role is not null && userClaims is not null)
         {
             Role.Name = value;
             await RoleService.UpsertRoleAsync(userClaims, Role);
@@ -60,7 +84,7 @@
     async Task SetDescription(string value)
     {
         var userClaims = await GetClaimsPrincipalAsync();
-        if (Role?.Id is not null && userClaims is not null)
+        if (Role is not null && userClaims is not null)
         {
             Role.Description = value;
             await RoleService.UpsertRoleAsync(userClaims, Role);
@@ -85,15 +109,15 @@
         IsLoading = isLoading;
         StateHasChanged();
     }
-    async Task RoleAccessCheckBoxClick(AccessClaimInfoCheckedModel checkedModel)
+    async Task RoleAccessCheckBoxClick(CheckChangedRecord<IAccessClaimInfo> checkedRecord)
     {
-        if (checkedModel.IsChecked)
+        if (checkedRecord.IsChecked)
         {
-            await CreateRoleAccess(checkedModel.AccessClaimInfo.Value);
+            await CreateRoleAccess(checkedRecord.Data.Value);
         }
         else
         {
-            await DeleteRoleAccess(checkedModel.AccessClaimInfo.Value);
+            await DeleteRoleAccess(checkedRecord.Data.Value);
         }
     }
     async Task CreateRoleAccess(string accessClaimValue)

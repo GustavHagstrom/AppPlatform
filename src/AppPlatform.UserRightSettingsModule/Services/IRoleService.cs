@@ -8,6 +8,8 @@ internal interface IRoleService
     Task<List<Role>> GetRolesAsync(ClaimsPrincipal user);
     Task UpsertRoleAsync(ClaimsPrincipal userClaims, Role role);
     Task DeleteRoleAsync(Role role);
-    Task<List<Role>> GetRolesForUserAsync(string userId);
+    Task<List<Role>> GetUserRolesForUserAsync(string userId);
     Task<List<UserRole>> GetUserRolesForRoleAsync(string roleId);
+    Task CreateUserRole(ClaimsPrincipal userClaims, Role role);
+    Task DeleteUserRole(ClaimsPrincipal userClaims, Role role);
 }

@@ -1,4 +1,5 @@
 @page "/Settings/Users/Edit/{UserId}"
+@using Microsoft.AspNetCore.Components.Authorization
 @layout SettingsLayout
 @inject IStringLocalizer<EditUserAccessPage> Localizer
 
@@ -9,7 +10,7 @@
     </SettingsSection>
 
     <SettingsSection Title="@Localizer["Roller"]">
-        <RoleList Roles="Roles" />
+        <RolePicker CheckedRoles="Roles" CheckChanged="RolesChanged" />
     </SettingsSection>
 
     <SettingsSection Title="@Localizer["Rättigheter"]" LoadDataAsync="LoadUserDataAsync">
@@ -24,6 +25,7 @@
 @inject IRoleService RoleService
 @inject IAccessClaimInfoContainer AccessClaimInfoContainer
 @inject IMicrosoftGraphUserAccess MicrosoftGraphUserAccess
+@inject AuthenticationStateProvider AuthenticationStateProvider
 
 @code{
     [Parameter] public string? UserId { get; set; }
@@ -40,7 +42,7 @@
         {
             Access.AddRange(await AccessService.GetUserAccessClaimValuesAsync(UserId));
             User = await MicrosoftGraphUserAccess.GetUserWithPhotoAsync(UserId);
-            Roles = await RoleService.GetRolesForUserAsync(UserId);
+            Roles = await RoleService.GetUserRolesForUserAsync(UserId);
         }
         SetIsLoading(false);
     }
@@ -49,15 +51,15 @@
         IsLoading = isLoading;
         StateHasChanged();
     }
-    async Task UserAccessCheckBoxClick(AccessClaimInfoCheckedModel checkedModel)
+    async Task UserAccessCheckBoxClick(CheckChangedRecord<IAccessClaimInfo> checkedRecord)
     {
-        if (checkedModel.IsChecked)
+        if (checkedRecord.IsChecked)
         {
-            await CreateUserAccess(checkedModel.AccessClaimInfo.Value);
+            await CreateUserAccess(checkedRecord.Data.Value);
         }
         else
         {
-            await DeleteUserAccess(checkedModel.AccessClaimInfo.Value);
+            await DeleteUserAccess(checkedRecord.Data.Value);
         }
     }
 
@@ -81,6 +83,21 @@
         {
             await AccessService.DeleteUserAccessAsync(userAccess);
             Access.Remove(userAccess);
+        }
+    }
+    async Task RolesChanged(CheckChangedRecord<Role> checkedRecord)
+    {
+        var state = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+        if (state is null) return;
+        if (checkedRecord.IsChecked)
+        {
+            await RoleService.CreateUserRole(state.User, checkedRecord.Data);
+            Roles.Add(checkedRecord.Data);
+        }
+        else
+        {
+            await RoleService.DeleteUserRole(state.User, checkedRecord.Data);
+            Roles.Remove(Roles.First(x => x.Id == checkedRecord.Data.Id));
         }
     }
 }

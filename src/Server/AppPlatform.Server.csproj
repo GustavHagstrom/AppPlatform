@@ -39,6 +39,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Components\Shared\Dialogs\" />
     <Folder Include="Migrations\" />
   </ItemGroup>
 

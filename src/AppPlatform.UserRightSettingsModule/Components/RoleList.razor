@@ -3,7 +3,7 @@
 <MudSimpleTable Hover="true" Dense="true" Bordered="false">
     <thead>
         <tr>
-            <th>@Localizer["Namn"]</th>
+            <th class="pl-2">@Localizer["Namn"]</th>
             <th>@Localizer["Beskrivning"]</th>
         </tr>
     </thead>
@@ -11,7 +11,7 @@
         @foreach (var role in RolesIterator)
         {
             <tr @onclick="() => EditRoleAccess(role)" style="cursor: pointer;">
-                <td>
+                <td class="pl-2">
                     <MudText Typo="Typo.body2">@role.Name</MudText>
                 </td>
                 <td>

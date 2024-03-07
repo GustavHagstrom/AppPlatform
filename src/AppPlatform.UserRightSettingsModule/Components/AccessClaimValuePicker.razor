@@ -3,7 +3,7 @@
         @foreach (var claimInfo in AccessClaimInfoContainer.AccessClaimInfos)
         {
             <tr>
-                <td>
+                <td class="pl-2">
                     <MudCheckBox T="bool" 
                                  Dense="true" 
                                  Value="@AccessClaimValues.Any(x => x == claimInfo.Value)" 
@@ -20,7 +20,7 @@
 
 @code{
     [Parameter] public IEnumerable<string> AccessClaimValues { get; set; } = new List<string>();
-    [Parameter] public EventCallback<AccessClaimInfoCheckedModel> CheckChanged { get; set; }
+    [Parameter] public EventCallback<CheckChangedRecord<IAccessClaimInfo>> CheckChanged { get; set; }
 
     Task OnCheckChanged(IAccessClaimInfo info, bool isChecked)
     {

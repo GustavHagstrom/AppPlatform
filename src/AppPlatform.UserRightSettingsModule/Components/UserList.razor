@@ -6,7 +6,7 @@
         @foreach (var user in UsersIterator)
         {
             <tr @onclick="() => EditUserAccess(user)" style="cursor: pointer;">
-                <td>
+                <td class="pl-2">
                     <UserAvatar User="user"/>
                 </td>
             </tr>

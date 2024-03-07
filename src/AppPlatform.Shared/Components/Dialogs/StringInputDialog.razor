@@ -2,7 +2,7 @@
 
 <MudDialog>
     <DialogContent>
-        <MudTextField T="string" @bind-Value="Input" Label="@InputLabel" Variant="Variant.Outlined" Validation="@((Func<string, string?>)ValidateInput)" />
+        <MudTextField @ref="InputField" T="string" @bind-Value="Input" Label="@InputLabel" Variant="Variant.Outlined" Validation="@((Func<string, string?>)ValidateInput)" />
     </DialogContent>
     <DialogActions>
         <MudButton OnClick="Cancel" Variant="Variant.Filled" Color="Color.Error">
@@ -20,13 +20,15 @@
     [Parameter] public string InputLabel { get; set; } = string.Empty;
 
     string Input { get; set; } = string.Empty;
+    MudTextField<string>? InputField { get; set; }
 
     void Cancel()
     {
         MudDialog?.Cancel();
     }
-    void Ok()
+    async Task Ok()
     {
+        await InputField!.Validate();
         if (ValidateInput(Input) is null)
         {
             MudDialog?.Close(DialogResult.Ok(Input));
