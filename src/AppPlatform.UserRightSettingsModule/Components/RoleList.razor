@@ -1,12 +1,12 @@
 @inject IStringLocalizer<RoleList> Localizer
 
 <MudSimpleTable Hover="true" Dense="true" Bordered="false">
-    <thead>
+@*     <thead>
         <tr>
             <th class="pl-2">@Localizer["Namn"]</th>
             <th>@Localizer["Beskrivning"]</th>
         </tr>
-    </thead>
+    </thead> *@
     <tbody>
         @foreach (var role in RolesIterator)
         {

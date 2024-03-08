@@ -1,7 +1,7 @@
 @using Microsoft.AspNetCore.Components.Authorization
 @inject IStringLocalizer<RolePicker> Localizer
 <MudSimpleTable Dense="true" Bordered="false">
-    <thead>
+   @*  <thead>
         <tr>
             <th class="pl-2">
                 @Localizer["Aktiv"]
@@ -13,7 +13,7 @@
                 @Localizer["Beskrivning"]
             </th>
         </tr>
-    </thead>
+    </thead> *@
     <tbody>
         @foreach (var role in AllRoles)
         {

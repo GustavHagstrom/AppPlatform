@@ -14,7 +14,7 @@
         {
             <MudText Class="pr-2" Typo="Typo.subtitle2">@User.User.DisplayName</MudText>
         }
-        <MudAvatar Class="avatar-style">
+        <MudAvatar Size="Size" Class="avatar-style">
             @if (User.PhotoBase64 != null)
             {
                 <MudImage Src="@($"data:image/png;base64, {User.PhotoBase64}")" Alt="User photo" />
@@ -41,6 +41,7 @@
 @code{
     [Parameter] public UserWithPhoto? User { get; set; }
     [Parameter] public UserAvatarTextPosition TextPosition { get; set; } = UserAvatarTextPosition.Right;
+    [Parameter] public Size Size { get; set; } = Size.Medium;
 
     public enum UserAvatarTextPosition
     {
