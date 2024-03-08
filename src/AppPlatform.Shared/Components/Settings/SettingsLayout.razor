@@ -1,8 +1,7 @@
 ﻿@using MudBlazor.Services
 @inherits LayoutComponentBase
 @layout MainLayout
-@implements IBrowserViewportObserver
-@implements IAsyncDisposable
+
 @inject IStringLocalizer<SettingsLayout> Localizer
 @inject IApplicationLinkService ApplicationLinkService
 @inject IBrowserViewportService BrowserViewportService
@@ -16,31 +15,30 @@
                         <MudText Typo="Typo.subtitle1" Style="font-weight: 500;">@Localizer["Allmänt"]</MudText>
                     </MudNavLink>
                     @foreach (var link in ApplicationLinkService.SettingsPageLinks)
-                {
-                    <MudNavLink Match="NavLinkMatch.Prefix" Icon="@link.Icon" Href="@link.LinkRoute">
-                        <MudText Typo="Typo.subtitle1" Style="font-weight: 500;">@link.Text</MudText>
+                    {
+                        <MudNavLink Match="NavLinkMatch.Prefix" Icon="@link.Icon" Href="@link.LinkRoute">
+                            <MudText Typo="Typo.subtitle1" Style="font-weight: 500;">@link.Text</MudText>
                         </MudNavLink>
-                }
-            </MudNavMenu>
-        </div>
+                    }
+                </MudNavMenu>
+            </div>
         <div class="flex-grow-1" style="height: 100%">
             @Body
         </div>
     </div>
 </MudHidden>
+
 <MudHidden Breakpoint="Breakpoint.MdAndUp">
     <style>
         .nav-item-block a {
             display: block !important;
         }
     </style>
-    <div style="height: 100%; width: 100%; display: block" class="nav-item-block">
+    <div style="height: 100%; width: 100%; display: block">
         <div class="border-solid border-b d-flex" style="height: calc(var(--mud-appbar-height) - var(--mud-appbar-height)/3);">
-          @*   <div class="d-flex align-center">
-                <MudText Class="px-4" Typo="Typo.h6" Style="font-weight: bold; text-align: center;">@Localizer["Inställningar"]</MudText>
-            </div> *@
+
             
-            <MudNavMenu Color="Color.Primary" Dense="false" Class="d-flex">
+            <MudNavMenu Color="Color.Primary" Dense="false" Class="d-flex nav-item-block">
                 <MudNavLink Match="NavLinkMatch.All" Icon="@Icons.Material.Sharp.Settings" Href="@SharedRoutes.Start"/>
                 @foreach (var link in ApplicationLinkService.SettingsPageLinks)
                 {
@@ -53,46 +51,3 @@
         </div>
     </div>
 </MudHidden>
-@code{
-    bool open = true;
-    List<Breakpoint> _breakpointHistory = new();
-    Breakpoint _start;
-    Guid IBrowserViewportObserver.Id { get; } = Guid.NewGuid();
-    // ResizeOptions IBrowserViewportObserver.ResizeOptions { get; } = new()
-    // {
-    //     ReportRate = 250,
-    //     NotifyOnBreakpointOnly = true
-    // };
-
-    void toggleDrawer()
-    {
-        open = !open;
-        StateHasChanged();
-    }
-    protected override async Task OnAfterRenderAsync(bool firstRender)
-    {
-        if (firstRender)
-        {
-            await BrowserViewportService.SubscribeAsync(this, fireImmediately: true);
-        }
-
-        await base.OnAfterRenderAsync(firstRender);
-    }
-
-    public async ValueTask DisposeAsync() => await BrowserViewportService.UnsubscribeAsync(this);
-    Task IBrowserViewportObserver.NotifyBrowserViewportChangeAsync(BrowserViewportEventArgs browserViewportEventArgs)
-    {
-        if (browserViewportEventArgs.IsImmediate)
-        {
-            _start = browserViewportEventArgs.Breakpoint;
-        }
-        else
-        {
-            _breakpointHistory.Add(browserViewportEventArgs.Breakpoint);
-        }
-
-        return InvokeAsync(StateHasChanged);
-    }
-}
-
-

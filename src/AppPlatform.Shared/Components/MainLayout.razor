@@ -12,27 +12,58 @@
 <MudLayout Style="height: 100vh">
     <MudAppBar Elevation="3" Dense="true" DisableGutters="true">
         <MudIcon Icon="@CustomIcons.BidconHub" Color="Color.Primary" Class="mx-2" Size="Size.Large" />
-        <MudText Typo="Typo.h5" Class="ml-0 pr-4" Style="font-weight: bold;">@CommonAppConstants.ApplicationName</MudText>
+        <MudHidden Breakpoint="Breakpoint.SmAndDown">
+            <MudText Typo="Typo.h5" Class="ml-0 pr-4" Style="font-weight: bold;">@CommonAppConstants.ApplicationName</MudText>
+        </MudHidden>
         <MudSpacer />
         <LoginDisplay />
     </MudAppBar>
 
-        <MudDrawer Open="false" ClipMode="DrawerClipMode.Always" DisableOverlay="true" Variant="DrawerVariant.Mini" Elevation="5">
-            <MudNavMenu Color="Color.Primary" Dense="false">
-                <MudNavLink Match="NavLinkMatch.All" Icon="@Icons.Material.Sharp.Dashboard" Href="" />
-                @* <MudNavLink Match="NavLinkMatch.Prefix" Icon="@CustomIcons.BidconIcon" Href="@ApplicationRoutes.Import" /> *@
-                @foreach (var link in ApplicationLinkService.MainLayoutLinks)
-                {
-                    <MudNavLink Match="NavLinkMatch.Prefix" Icon="@link.Icon" Href="@link.LinkRoute" />
-                }
-                @* <MudNavLink Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Sharp.Settings" Href="@ApplicationRoutes.Settings.Common" /> *@
-            </MudNavMenu>
-        </MudDrawer>
+    <MudMainContent Style="height: 100%;">
 
-        <MudMainContent Style="height: 100%;">
-            @Body
+        <MudHidden Breakpoint="Breakpoint.SmAndDown">
+            <div style="height: 100%; display: flex;">
+                <MudPaper Elevation="5" Style="width: 56px; height: 100%;">
+                    <MudNavMenu Color="Color.Primary" Dense="false">
+                        <MudNavLink Match="NavLinkMatch.All" Icon="@Icons.Material.Sharp.Dashboard" Href="" />
+                        @foreach (var link in ApplicationLinkService.MainLayoutLinks)
+                        {
+                            <MudNavLink Match="NavLinkMatch.Prefix" Icon="@link.Icon" Href="@link.LinkRoute" />
+                        }
+                    </MudNavMenu>
+                </MudPaper>
+                <div style="width: calc(100% - 56px); height: 100%">
+                    @Body
+                </div>
+            </div>
+        </MudHidden>
+
+        <MudHidden Breakpoint="Breakpoint.MdAndUp">
+            <style>
+                .nav-item-block a {
+                    display: block !important;
+                }
+            </style>
+            <div style="height: 100%;">
+                <MudPaper Elevation="3" Class="d-flex" Style="height: calc(var(--mud-appbar-height) - var(--mud-appbar-height)/3);">
+                    <MudNavMenu Color="Color.Primary" Dense="false" Class="d-flex nav-item-block">
+                        <MudNavLink Match="NavLinkMatch.All" Icon="@Icons.Material.Sharp.Dashboard" Href="" />
+                        @foreach (var link in ApplicationLinkService.MainLayoutLinks)
+                        {
+                            <MudNavLink Match="NavLinkMatch.Prefix" Icon="@link.Icon" Href="@link.LinkRoute" />
+                        }
+                    </MudNavMenu>
+                </MudPaper>
+                <div style="height: calc(100% - var(--mud-appbar-height) + var(--mud-appbar-height)/3);">
+                    @Body
+                </div>
+            </div>
+        </MudHidden>
+
+        
     </MudMainContent>
 </MudLayout>
 
 @inject IStringLocalizer<MainLayout> Localizer
 @inject IApplicationLinkService ApplicationLinkService
+
