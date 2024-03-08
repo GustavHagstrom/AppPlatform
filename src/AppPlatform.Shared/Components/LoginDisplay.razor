@@ -5,13 +5,14 @@
 @using AppPlatform.Shared.Data
 @using Microsoft.Identity.Web
 @using Microsoft.JSInterop
-
+@implements IBrowserViewportObserver
+@implements IAsyncDisposable
 @inject IStringLocalizer<LoginDisplay> Localizer
 
 <AuthorizeView>
     <Authorized>
         <MudButton Style="height: 100%" OnClick=" ToggltPopover">
-            <UserAvatar User="UserWithPhoto" TextPosition="UserAvatar.UserAvatarTextPosition.Left"/>
+            <UserAvatar User="UserWithPhoto" ShowText="!IsSmOrDown" TextPosition="UserAvatar.UserAvatarTextPosition.Left" />
         </MudButton>
         
 
@@ -34,7 +35,7 @@
 @inject ILocalStorageService LocalStorageService
 @inject IMicrosoftGraphUserAccess MicrosoftGraphUserAccess
 @inject AuthenticationStateProvider AuthenticationStateProvider
-
+@inject IBrowserViewportService BrowserViewportService
 
     @code{
 
@@ -42,6 +43,7 @@
 
     bool PopOverIsVisible { get; set; } = false;
     UserWithPhoto? UserWithPhoto { get; set; }
+    bool IsSmOrDown => _breakPoint == Breakpoint.Sm || _breakPoint == Breakpoint.Xs;
 
     protected override async Task OnInitializedAsync()
     {
@@ -96,5 +98,26 @@
         }
         return initials;
     }
-    
+    private Breakpoint _breakPoint;
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            await BrowserViewportService.SubscribeAsync(this, fireImmediately: true);
+        }
+
+        await base.OnAfterRenderAsync(firstRender);
+    }
+
+    public async ValueTask DisposeAsync() => await BrowserViewportService.UnsubscribeAsync(this);
+
+    Guid IBrowserViewportObserver.Id { get; } = Guid.NewGuid();
+
+    Task IBrowserViewportObserver.NotifyBrowserViewportChangeAsync(BrowserViewportEventArgs browserViewportEventArgs)
+    {
+        _breakPoint = browserViewportEventArgs.Breakpoint;
+
+        return InvokeAsync(StateHasChanged);
+    }
 }

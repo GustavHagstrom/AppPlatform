@@ -10,7 +10,7 @@
     
     @if (User is not null)
     {
-        @if (TextPosition == UserAvatarTextPosition.Left)
+        @if (ShowText  && TextPosition == UserAvatarTextPosition.Left)
         {
             <MudText Class="pr-2" Typo="Typo.subtitle2">@User.User.DisplayName</MudText>
         }
@@ -26,7 +26,7 @@
                 </div>
             }
         </MudAvatar>
-        @if(TextPosition == UserAvatarTextPosition.Right)
+        @if (ShowText && TextPosition == UserAvatarTextPosition.Right)
         {
             <MudText Class="pl-2" Typo="Typo.subtitle2">@User.User.DisplayName</MudText>
         }
@@ -42,6 +42,7 @@
     [Parameter] public UserWithPhoto? User { get; set; }
     [Parameter] public UserAvatarTextPosition TextPosition { get; set; } = UserAvatarTextPosition.Right;
     [Parameter] public Size Size { get; set; } = Size.Medium;
+    [Parameter] public bool ShowText { get; set; } = true;
 
     public enum UserAvatarTextPosition
     {
