@@ -1,14 +1,14 @@
 @page "/Settings/Roles/Edit/{RoleId}"
 @using System.Security.Claims
+@using AppPlatform.UserRightSettingsModule.Components.User
 @using Microsoft.AspNetCore.Components.Authorization
 @inject IStringLocalizer<EditRoleAccessPage> Localizer
 @layout SettingsLayout
 
 
-<SettingsPageBase>
+<SettingsPageBase IsLoading="IsLoading">
     <SettingsSection>
         <div class="d-flex">
-            @* <MudButton Variant="Variant.Outlined" Color="Color.Error" OnClick="Delete">@Localizer["Ta bort roll"]</MudButton> *@
             <MudIconButton Variant="Variant.Outlined" Color="Color.Error" Icon="@Icons.Material.Sharp.Delete" OnClick="Delete" />
         </div>
     </SettingsSection>
@@ -20,13 +20,17 @@
     </SettingsSection>
 
     <SettingsSection Title="@Localizer["Rättigheter"]" LoadDataAsync="LoadRoleDataAsync">
-        <MudOverlay DarkBackground="true" Visible="IsLoading" Absolute="true">
+       @*  <MudOverlay DarkBackground="true" Visible="IsLoading" Absolute="true">
             <MudProgressCircular Size="Size.Large" Color="Color.Primary" Indeterminate="true" />
-        </MudOverlay>
+        </MudOverlay> *@
         <AccessClaimValuePicker AccessClaimValues="Access.Select(x => x.AccessClaimValue)" CheckChanged="RoleAccessCheckBoxClick"/>
     </SettingsSection>
     
     <SettingsSection Title="@Localizer["Användare"]">
+        <div class="d-flex">
+            <MudIconButton Variant="Variant.Outlined" Color="Color.Primary" Icon="@Icons.Material.Sharp.Edit" OnClick="EditUserList" />
+        </div>
+        
         <UserList Users="Users" />
     </SettingsSection>
 
@@ -49,7 +53,15 @@
     ClaimsPrincipal? UserClaims { get; set; }
     List<UserWithPhoto> Users { get; set; } = new();
 
-
+    async Task EditUserList()
+    {
+        var parameters = new DialogParameters<UserPickerDialog> { { x => x.RoleId, RoleId } };
+        var dialog = DialogService.Show<UserPickerDialog>(Localizer["Välj användare"], parameters);
+        var result = await dialog.Result;
+        
+        await LoadRoleDataAsync();
+        
+    }
     async Task Delete()
     {
         if (Role is not null)

@@ -2,6 +2,7 @@
 using AppPlatform.Shared.Data;
 using AppPlatform.Shared.Extensions;
 using Microsoft.EntityFrameworkCore;
+using System.Data;
 using System.Security.Claims;
 
 namespace AppPlatform.UserRightSettingsModule.Services;
@@ -82,7 +83,6 @@ internal class RoleService : IRoleService
 
     public Task CreateUserRole(ClaimsPrincipal userClaims, Role role)
     {
-        using var context = _dbContextFactory.CreateDbContext();
         var userId = userClaims.GetUserId();
         if (userId == null)
         {
@@ -93,22 +93,35 @@ internal class RoleService : IRoleService
             RoleId = role.Id,
             UserId = userId
         };
+        return CreateUserRole(userRole);
+    }
+    public Task CreateUserRole(UserRole userRole)
+    {
+        using var context = _dbContextFactory.CreateDbContext();
         context.UserRoles.Add(userRole);
         return context.SaveChangesAsync();
     }
-
     public Task DeleteUserRole(ClaimsPrincipal userClaims, Role role)
     {
-        using var context = _dbContextFactory.CreateDbContext();
         var userId = userClaims.GetUserId();
         if (userId == null)
         {
             throw new ArgumentNullException(nameof(userId));
         }
-        var userRole = context.UserRoles.FirstOrDefault(x => x.RoleId == role.Id && x.UserId == userId);
-        if (userRole != null)
+        var userRole = new UserRole
         {
-            context.UserRoles.Remove(userRole);
+            RoleId = role.Id,
+            UserId = userId
+        };
+        return DeleteUserRole(userRole);
+    }
+    public Task DeleteUserRole(UserRole userRole)
+    {
+        using var context = _dbContextFactory.CreateDbContext();
+        var existingUserRole = context.UserRoles.FirstOrDefault(x => x.RoleId == userRole.RoleId && x.UserId == userRole.UserId);
+        if (existingUserRole != null)
+        {
+            context.UserRoles.Remove(existingUserRole);
         }
         return context.SaveChangesAsync();
     }
