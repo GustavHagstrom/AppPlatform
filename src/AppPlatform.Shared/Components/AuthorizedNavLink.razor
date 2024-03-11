@@ -1,0 +1,27 @@
+@using AppPlatform.Shared.Abstractions
+
+@if(ApplicationLink is not null)
+{
+    if (ApplicationLink.AuthPolicy is not null)
+    {
+        <AuthorizeView Policy="@ApplicationLink.AuthPolicy">
+            <Authorized>
+                <MudNavLink Match="NavLinkMatch.Prefix" Icon="@ApplicationLink.Icon" Href="@ApplicationLink.LinkRoute" >
+                    @ChildContent
+                </MudNavLink>
+            </Authorized>
+        </AuthorizeView>
+    }
+    else
+    {
+        <MudNavLink Match="NavLinkMatch.Prefix" Icon="@ApplicationLink.Icon" Href="@ApplicationLink.LinkRoute" >
+            @ChildContent
+        </MudNavLink>
+    }
+}
+
+
+@code{
+    [Parameter] public IApplicationLink? ApplicationLink { get; set; }
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+}

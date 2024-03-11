@@ -11,4 +11,6 @@ internal class SettingsMainNavLink(IStringLocalizer<SettingsMainNavLink> localiz
     public string Text => localizer["Inställningar"];
 
     public string Icon => Icons.Material.Sharp.Settings;
+
+    public string? AuthPolicy => null;
 }

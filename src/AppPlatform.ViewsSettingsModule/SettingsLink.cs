@@ -10,4 +10,6 @@ internal class SettingsLink(IStringLocalizer<SettingsLink> Localizer) : IApplica
     public string Text => Localizer["Kalkylvyer"];
 
     public string Icon => Icons.Material.Sharp.Pageview;
+
+    public string? AuthPolicy => null;
 }

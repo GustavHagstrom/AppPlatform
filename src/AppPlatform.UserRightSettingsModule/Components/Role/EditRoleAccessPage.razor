@@ -20,9 +20,6 @@
     </SettingsSection>
 
     <SettingsSection Title="@Localizer["Rättigheter"]" LoadDataAsync="LoadRoleDataAsync">
-       @*  <MudOverlay DarkBackground="true" Visible="IsLoading" Absolute="true">
-            <MudProgressCircular Size="Size.Large" Color="Color.Primary" Indeterminate="true" />
-        </MudOverlay> *@
         <AccessClaimValuePicker AccessClaimValues="Access.Select(x => x.AccessClaimValue)" CheckChanged="RoleAccessCheckBoxClick"/>
     </SettingsSection>
     

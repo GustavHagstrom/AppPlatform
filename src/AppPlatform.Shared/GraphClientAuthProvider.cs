@@ -4,6 +4,11 @@ using Microsoft.Kiota.Abstractions;
 using Microsoft.Kiota.Abstractions.Authentication;
 
 namespace AppPlatform.Shared;
+/// <summary>
+/// Consumed by MSAL
+/// </summary>
+/// <param name="tokenAcquisition"></param>
+/// <param name="configuration"></param>
 internal class GraphClientAuthProvider(ITokenAcquisition tokenAcquisition, IConfiguration configuration) : IAuthenticationProvider
 {
     public async Task AuthenticateRequestAsync(RequestInformation request, Dictionary<string, object>? additionalAuthenticationContext = null, CancellationToken cancellationToken = default)

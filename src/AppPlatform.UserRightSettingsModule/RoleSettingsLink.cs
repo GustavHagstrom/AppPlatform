@@ -11,4 +11,6 @@ internal class RoleSettingsLink(IStringLocalizer<UserSettingsLink> Localizer) : 
     public string Icon => Icons.Material.Sharp.AdminPanelSettings;
 
     public string LinkRoute => Constants.ModuleRoutes.RoleListPage;
+
+    public string? AuthPolicy => Constants.AuthorizationConstants.Policy;
 }

@@ -10,4 +10,6 @@ internal class UserSettingsLink(IStringLocalizer<UserSettingsLink> Localizer) : 
     public string Text => Localizer["Användare"];
 
     public string Icon => Icons.Material.Sharp.People;
+
+    public string? AuthPolicy => Constants.AuthorizationConstants.Policy;
 }

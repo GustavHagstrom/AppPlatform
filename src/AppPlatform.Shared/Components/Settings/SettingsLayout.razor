@@ -16,9 +16,9 @@
                     </MudNavLink>
                     @foreach (var link in ApplicationLinkService.SettingsPageLinks)
                     {
-                        <MudNavLink Match="NavLinkMatch.Prefix" Icon="@link.Icon" Href="@link.LinkRoute">
+                        <AuthorizedNavLink ApplicationLink="@link">
                             <MudText Typo="Typo.subtitle1" Style="font-weight: 500;">@link.Text</MudText>
-                        </MudNavLink>
+                        </AuthorizedNavLink>
                     }
                 </MudNavMenu>
             </div>
@@ -42,7 +42,8 @@
                 <MudNavLink Match="NavLinkMatch.All" Icon="@Icons.Material.Sharp.Settings" Href="@SharedRoutes.Start"/>
                 @foreach (var link in ApplicationLinkService.SettingsPageLinks)
                 {
-                    <MudNavLink Match="NavLinkMatch.Prefix" Icon="@link.Icon" Href="@link.LinkRoute" />
+                    <AuthorizedNavLink ApplicationLink="@link" />
+                   @*  <MudNavLink Match="NavLinkMatch.Prefix" Icon="@link.Icon" Href="@link.LinkRoute" /> *@
                 }
             </MudNavMenu>
         </div>

@@ -4,4 +4,5 @@ public interface IApplicationLink
     string LinkRoute { get; }
     string Text { get; }
     string Icon { get; }
+    string? AuthPolicy { get; }
 }
