@@ -1,21 +1,18 @@
 @inject IStringLocalizer<RoleList> Localizer
 
-<MudSimpleTable Hover="true" Dense="true" Bordered="false">
-@*     <thead>
-        <tr>
-            <th class="pl-2">@Localizer["Namn"]</th>
-            <th>@Localizer["Beskrivning"]</th>
-        </tr>
-    </thead> *@
+<MudSimpleTable Hover="false" Dense="true" Bordered="false">
     <tbody>
         @foreach (var role in RolesIterator)
         {
-            <tr @onclick="() => EditRoleAccess(role)" style="cursor: pointer;">
+            <tr>
                 <td class="pl-2">
                     <MudText Typo="Typo.body2">@role.Name</MudText>
                 </td>
                 <td>
                     <MudText Typo="Typo.body2">@role.Description</MudText>
+                </td>
+                <td>
+                    <MudIconButton Icon="@Icons.Material.Sharp.Edit" Color="Color.Primary" OnClick="() => EditRoleAccess(role)" Size="Size.Small" />
                 </td>
             </tr>
         }

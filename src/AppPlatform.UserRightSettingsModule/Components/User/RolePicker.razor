@@ -1,19 +1,6 @@
 @using Microsoft.AspNetCore.Components.Authorization
 @inject IStringLocalizer<RolePicker> Localizer
 <MudSimpleTable Dense="true" Bordered="false">
-   @*  <thead>
-        <tr>
-            <th class="pl-2">
-                @Localizer["Aktiv"]
-            </th>
-            <th>
-                @Localizer["Namn"]
-            </th>
-            <th>
-                @Localizer["Beskrivning"]
-            </th>
-        </tr>
-    </thead> *@
     <tbody>
         @foreach (var role in AllRoles)
         {
@@ -30,6 +17,9 @@
                 <td>
                     @role.Description
                 </td>
+                <td>
+                    <MudIconButton Icon="@Icons.Material.Sharp.Edit" Color="Color.Primary" OnClick="() => EditRoleAccess(role)" Size="Size.Small" />
+                </td>
             </tr>
 
         }
@@ -38,7 +28,7 @@
 
 @inject IRoleService RoleService
 @inject AuthenticationStateProvider AuthenticationStateProvider
-
+@inject NavigationManager NavigationManager
 @code {
     [Parameter] public List<Role> CheckedRoles { get; set; } = new List<Role>();
     [Parameter] public EventCallback<CheckChangedRecord<Role>> CheckChanged { get; set; }
@@ -54,5 +44,9 @@
     {
         await CheckChanged.InvokeAsync(new(role, value));
         StateHasChanged();
+    }
+    void EditRoleAccess(Role role)
+    {
+        NavigationManager.NavigateTo($"{Constants.ModuleRoutes.RoleAccessEdit}/{role.Id}");
     }
 }
