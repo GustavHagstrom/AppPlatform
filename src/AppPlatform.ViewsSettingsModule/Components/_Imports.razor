@@ -1,7 +1,8 @@
 ﻿@layout SettingsLayout
-@attribute [Authorize(policy: AuthorizationConstants.Policy)]
+@attribute [Authorize(policy: Constants.Authorization.Policy)]
 
 @using Microsoft.AspNetCore.Authorization
 @using Microsoft.AspNetCore.Components.Web
 @using AppPlatform.Shared.Components.Settings
 @using Microsoft.Extensions.Localization
+@using AppPlatform.Core.Enteties.EstimationView

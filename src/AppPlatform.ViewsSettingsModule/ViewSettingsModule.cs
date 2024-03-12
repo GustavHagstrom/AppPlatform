@@ -20,10 +20,10 @@ public class ViewSettingsModule : IModule
     {
         services.AddAuthorization(configure =>
         {
-            configure.AddPolicy(AuthorizationConstants.Policy, policy =>
+            configure.AddPolicy(Constants.Authorization.Policy, policy =>
             {
                 policy.RequireAuthenticatedUser();
-                policy.RequireClaim(SharedApplicationClaimTypes.AccessClaim, AuthorizationConstants.AccessClaimValue);
+                policy.RequireClaim(SharedApplicationClaimTypes.AccessClaim, Constants.Authorization.AccessClaimValue);
             });
         });
     }

@@ -1,0 +1,34 @@
+@page "/Settings/ViewSettings/Edit/{ViewId}"
+@layout SettingsLayout
+@inject IStringLocalizer<EditViewPage> Localizer
+
+<SettingsPageBase Title="@Localizer["Redigera vy"]">
+    <SettingsSection>
+        
+    </SettingsSection>
+</SettingsPageBase>
+
+
+@code{
+    [Parameter] public string? ViewId { get; set; }
+
+    bool IsLoading { get; set; } = false;
+    EstimationViewTemplate? View { get; set; }
+
+    Task LoadDataAsync()
+    {
+
+        if (ViewId is not null)
+        {
+            SetLoading(true);
+            //View = await _viewService.GetViewAsync(ViewId);
+            SetLoading(false);
+        }
+        return Task.CompletedTask;
+    }
+    void SetLoading(bool isLoading)
+    {
+        IsLoading = isLoading;
+        StateHasChanged();
+    }
+}
