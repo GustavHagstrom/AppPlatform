@@ -11,5 +11,5 @@ internal class SettingsLink(IStringLocalizer<SettingsLink> Localizer) : IApplica
 
     public string Icon => Icons.Material.Sharp.Pageview;
 
-    public string? AuthPolicy => null;
+    public string? AuthPolicy => Constants.Authorization.Policy;
 }
