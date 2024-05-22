@@ -5,7 +5,7 @@ using AppPlatform.Core.Enums.BidconAccess;
 namespace AppPlatform.Server.EstimationProcessing.Services;
 public class EstimationBuilderService : IEstimationBuilderService
 {
-    private readonly Dictionary<int, Func<BidconDataAccess.Models.EstimationSheet, BidconDataAccess.Models.EstimationBatch, ISheetItem?, ICollection<Models.ATA>, ISheetItem>> _createSheetItemFunctionMap;
+    private readonly Dictionary<int, Func<BidconDataAccess.Models.EstimationSheet, BidconDataAccess.Models.EstimationBatch, ISheetItem?, ICollection<ATA>, ISheetItem>> _createSheetItemFunctionMap;
     private readonly ILayerdItemCalculator _layerdItemCalculator = new LayerdItemCalculator();
 
     public EstimationBuilderService()
@@ -59,7 +59,7 @@ public class EstimationBuilderService : IEstimationBuilderService
         return roots;
     }
 
-    private IEnumerable<Models.ATA> CreateATAs(BidconDataAccess.Models.EstimationBatch batch)
+    private IEnumerable<ATA> CreateATAs(BidconDataAccess.Models.EstimationBatch batch)
     {
         foreach (var item in batch.ATAs)
         {
@@ -88,7 +88,7 @@ public class EstimationBuilderService : IEstimationBuilderService
         }
     }
 
-    private static ISheetItem CreateGroup(BidconDataAccess.Models.EstimationSheet result, BidconDataAccess.Models.EstimationBatch batch, ISheetItem? parent, ICollection<Models.ATA> atas)
+    private ISheetItem CreateGroup(BidconDataAccess.Models.EstimationSheet result, BidconDataAccess.Models.EstimationBatch batch, ISheetItem? parent, ICollection<ATA> atas)
     {
         var group = new Group
         {
@@ -99,7 +99,7 @@ public class EstimationBuilderService : IEstimationBuilderService
         parent?.Children.Add(group);
         return group;
     }
-    private static ISheetItem CreatePart(BidconDataAccess.Models.EstimationSheet result, BidconDataAccess.Models.EstimationBatch batch, ISheetItem? parent, ICollection<Models.ATA> atas)
+    private ISheetItem CreatePart(BidconDataAccess.Models.EstimationSheet result, BidconDataAccess.Models.EstimationBatch batch, ISheetItem? parent, ICollection<ATA> atas)
     {
         var item = new Part
         {
@@ -111,7 +111,7 @@ public class EstimationBuilderService : IEstimationBuilderService
         parent?.Children.Add(item);
         return item;
     }
-    private ISheetItem CreateLayered(BidconDataAccess.Models.EstimationSheet result, BidconDataAccess.Models.EstimationBatch batch, ISheetItem? parent, ICollection<Models.ATA> atas)
+    private ISheetItem CreateLayered(BidconDataAccess.Models.EstimationSheet result, BidconDataAccess.Models.EstimationBatch batch, ISheetItem? parent, ICollection<ATA> atas)
     {
         Dictionary<int, double?> resourceCosts = _layerdItemCalculator.CalculateUnitCosts(result, batch);
         Models.ATA? ata = atas.FirstOrDefault(x => x.PMATANum == result.PMATANum);
@@ -131,7 +131,7 @@ public class EstimationBuilderService : IEstimationBuilderService
         parent?.Children.Add(item);
         return item;
     }
-    private ISheetItem CreateQuantity(BidconDataAccess.Models.EstimationSheet result, BidconDataAccess.Models.EstimationBatch batch, ISheetItem? parent, ICollection<Models.ATA> atas)
+    private ISheetItem CreateQuantity(BidconDataAccess.Models.EstimationSheet result, BidconDataAccess.Models.EstimationBatch batch, ISheetItem? parent, ICollection<ATA> atas)
     {
         var item = new QuantityItem
         {
@@ -143,7 +143,7 @@ public class EstimationBuilderService : IEstimationBuilderService
         parent?.Children.Add(item);
         return item;
     }
-    private ISheetItem CreateLockedStage(BidconDataAccess.Models.EstimationSheet result, BidconDataAccess.Models.EstimationBatch batch, ISheetItem? parent, ICollection<Models.ATA> atas)
+    private ISheetItem CreateLockedStage(BidconDataAccess.Models.EstimationSheet result, BidconDataAccess.Models.EstimationBatch batch, ISheetItem? parent, ICollection<ATA> atas)
     {
         var item = new LockedStage
         {
@@ -154,7 +154,7 @@ public class EstimationBuilderService : IEstimationBuilderService
         parent?.Children.Add(item);
         return item;
     }
-    private ISheetItem CreateText(BidconDataAccess.Models.EstimationSheet result, BidconDataAccess.Models.EstimationBatch batch, ISheetItem? parent, ICollection<Models.ATA> atas)
+    private ISheetItem CreateText(BidconDataAccess.Models.EstimationSheet result, BidconDataAccess.Models.EstimationBatch batch, ISheetItem? parent, ICollection<ATA> atas)
     {
         var item = new Text
         {

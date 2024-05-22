@@ -23,5 +23,6 @@ public class BidconAccessCredentials  : ITenantEntety
     public int DesktopPort { get; set; }
     public DateTime LastUpdated { get; set; }
     [Key]
-    public string TenantId { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+    [StringLength(50)]
+    public string TenantId { get; set; } = string.Empty;
 }

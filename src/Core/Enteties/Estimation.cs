@@ -7,5 +7,6 @@ public class Estimation : ITenantEntety
 {
     [StringLength(450)]
     public string Id { get; set; } = Guid.NewGuid().ToString();
-    public string TenantId { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+    [StringLength(50)]
+    public string TenantId { get; set; } = string.Empty;
 }
