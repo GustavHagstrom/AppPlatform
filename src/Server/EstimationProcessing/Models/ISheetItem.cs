@@ -4,6 +4,7 @@ public interface ISheetItem
 {
     string Description { get; set; }
     ISheetItem? Parent { get; }
+    int Position { get; }
     double? Quantity { get; set; }
     List<ISheetItem> Children { get; }
     string? Unit { get; }
@@ -15,7 +16,7 @@ public interface ISheetItem
     {
         get
         {
-            return new[] { this }.Concat(Children.SelectMany(x => x.AllInOrder));
+            return new[] { this }.Concat(Children.SelectMany(x => x.AllInOrder).OrderBy(x => x.Position));
         }
     }
 }

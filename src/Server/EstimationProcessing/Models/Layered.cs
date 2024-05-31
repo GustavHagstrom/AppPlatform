@@ -5,6 +5,7 @@ public class Layered : ISheetItem
 
     public required string Description { get; set; }
     public ISheetItem? Parent { get; set; }
+    public int Position { get; set; }
     public double? Quantity { get => _quantity * (Parent is null || Parent is not Part ? 1 : Parent.Quantity); set => _quantity = value; }
     public List<ISheetItem> Children { get; } = new();
     public string? Unit { get; set; }

@@ -14,6 +14,9 @@ public class Group : ISheetItem
     public double? TotalCost => Children?.Sum(x => x.TotalCost);
     public double? UnitAskingPrice => null;
     public double? TotalAskingPrice => Children?.Sum(x => x.TotalAskingPrice);
+
+    public int Position { get; set; }
+
     public override string ToString()
     {
         return $"{Description}";

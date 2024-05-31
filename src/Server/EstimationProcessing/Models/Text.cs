@@ -3,6 +3,7 @@ public class Text : ISheetItem
 {
     public required string Description { get; set; }
     public ISheetItem? Parent { get; set; }
+    public int Position { get; set; }
     public double? Quantity
     {
         get { return null; }

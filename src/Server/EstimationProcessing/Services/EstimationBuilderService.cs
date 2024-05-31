@@ -94,6 +94,7 @@ public class EstimationBuilderService : IEstimationBuilderService
         {
             Description = result.Description,
             Parent = parent,
+            Position = result.Position,
             Quantity = result.Quantity,
         };
         parent?.Children.Add(group);
@@ -105,6 +106,7 @@ public class EstimationBuilderService : IEstimationBuilderService
         {
             Description = result.Description,
             Parent = parent,
+            Position = result.Position,
             Quantity = result.Quantity,
             Unit = result.Unit,
         };
@@ -119,6 +121,7 @@ public class EstimationBuilderService : IEstimationBuilderService
         {
             Description = result.Description,
             Parent = parent,
+            Position = result.Position,
             Quantity = result.Quantity,
             Unit = result.Unit,
             ResourceUnitCosts = resourceCosts,
@@ -137,6 +140,7 @@ public class EstimationBuilderService : IEstimationBuilderService
         {
             Description = result.Description,
             Parent = parent,
+            Position = result.Position,
             Quantity = result.Quantity,
             Unit = result.Unit,
         };
@@ -149,6 +153,7 @@ public class EstimationBuilderService : IEstimationBuilderService
         {
             Description = result.Description,
             Parent = parent,
+            Position = result.Position,
             Quantity = result.Quantity,
         };
         parent?.Children.Add(item);
@@ -160,6 +165,7 @@ public class EstimationBuilderService : IEstimationBuilderService
         {
             Description = result.Description,
             Parent = parent,
+            Position = result.Position,
             Quantity = result.Quantity,
         };
         parent?.Children.Add(item);

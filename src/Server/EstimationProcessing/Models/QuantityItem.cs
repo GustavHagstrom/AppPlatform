@@ -3,6 +3,7 @@ public class QuantityItem : ISheetItem
 {
     public required string Description { get; set; }
     public ISheetItem? Parent { get; set; }
+    public int Position { get; set; }
     public double? Quantity { get; set; }
     public List<ISheetItem> Children { get; } = new();
     public string? Unit { get; set; }
