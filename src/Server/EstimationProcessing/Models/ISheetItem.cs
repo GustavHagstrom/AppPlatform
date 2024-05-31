@@ -15,14 +15,7 @@ public interface ISheetItem
     {
         get
         {
-            yield return this;
-            foreach (var child in Children)
-            {
-                foreach (var subChild in child.AllInOrder)
-                {
-                    yield return subChild;
-                }
-            }
+            return new[] { this }.Concat(Children.SelectMany(x => x.AllInOrder));
         }
     }
 }
