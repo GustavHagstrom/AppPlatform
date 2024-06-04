@@ -1,5 +1,6 @@
 ﻿using AppPlatform.Core.Enteties;
 using AppPlatform.Core.Enteties.Authorization;
+using AppPlatform.Core.Enteties.EstimationEnteties;
 using AppPlatform.Core.Enteties.EstimationView;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
@@ -28,5 +29,17 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
             .HasKey(ua => new { ua.UserId, ua.AccessClaimValue });
         modelBuilder.Entity<UserRole>()
             .HasKey(ur => new { ur.UserId, ur.RoleId });
+
+        modelBuilder.Entity<Estimation>()
+            .HasOne(e => e.NetSheet)
+            .WithOne(si => si.Estimation)
+            .HasForeignKey<Estimation>(e => e.NetSheetId)
+            .OnDelete(DeleteBehavior.Cascade);
+        modelBuilder.Entity<SheetItem>()
+            .HasMany(si => si.Children)
+            .WithOne(si => si.Parent)
+            .HasForeignKey(si => si.ParentId)
+            .OnDelete(DeleteBehavior.Cascade);
+
     }
 }
