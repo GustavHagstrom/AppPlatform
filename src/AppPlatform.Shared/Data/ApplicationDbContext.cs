@@ -40,6 +40,5 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
             .WithOne(si => si.Parent)
             .HasForeignKey(si => si.ParentId)
             .OnDelete(DeleteBehavior.Cascade);
-
     }
 }
