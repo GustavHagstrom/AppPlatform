@@ -6,7 +6,9 @@
 { 
     typeof(MainLayout).Assembly, 
     typeof(ViewSettingsModule).Assembly,
-    typeof(UserRightSettingsModule).Assembly
+    typeof(UserRightSettingsModule).Assembly,
+    typeof(BidconBrowserModule.BidconBrowserModule).Assembly
+
 })">
         <Found Context="routeData">
             <AuthorizeRouteView RouteData="@routeData" DefaultLayout="@typeof(MainLayout)">

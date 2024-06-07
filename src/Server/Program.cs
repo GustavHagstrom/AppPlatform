@@ -14,6 +14,7 @@ using AppPlatform.Shared.Components;
 using AppPlatform.ViewSettingsModule;
 using Microsoft.AspNetCore.Builder;
 using AppPlatform.UserRightSettingsModule;
+using AppPlatform.BidconBrowserModule;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -59,14 +60,16 @@ builder.Services.AddMudServices(config =>
 });
 
 
-builder.Services.RegisterSharedServices();
+
 
 builder.Services.AddModules(moduleBuilder =>
 {
     moduleBuilder.AddModule<ViewSettingsModule>();
     moduleBuilder.AddModule<UserRightSettingsModule>();
+    moduleBuilder.AddModule<BidconBrowserModule>();
 }); //add assembly to the route aswell
 
+builder.Services.RegisterSharedServices();
 
 var app = builder.Build();
 
@@ -92,7 +95,8 @@ app.MapRazorComponents<App>()
     .AddInteractiveServerRenderMode()
     .AddAdditionalAssemblies(typeof(MainLayout).Assembly, 
     typeof(ViewSettingsModule).Assembly,
-    typeof(UserRightSettingsModule).Assembly);
+    typeof(UserRightSettingsModule).Assembly,
+    typeof(BidconBrowserModule).Assembly);
 
 app.MapControllers();
 app.Run();
