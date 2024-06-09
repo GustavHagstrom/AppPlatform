@@ -28,6 +28,18 @@
     <ProjectReference Include="..\Core\AppPlatform.Core.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <UpToDateCheckInput Remove="components\PageSetupWithNavigation.razor" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <_ContentIncludedByDefault Remove="components\PageSetupWithNavigation.razor" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="Components\PageSetupWithNavigation.razor" />
+  </ItemGroup>
+
 
 
 </Project>
