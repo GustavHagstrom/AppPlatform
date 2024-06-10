@@ -1,3 +1,70 @@
 @page "/bidcon-browser"
+@using MudBlazor.Services
+@implements IAsyncDisposable
 
-Hey
+@inject IStringLocalizer<BrowserPage> Localizer
+@inject IBrowserViewportService BrowserViewportService
+
+<PageSetupWithNavigation>
+        <NavigationContent>
+
+        <MudStack Spacing="0" Row="IsSmAndDown">
+            <MudButton OnClick="() => ActiveTab = 1" Variant="Variant.Text" StartIcon="@Icons.Material.Sharp.Search" Class="px-4 justify-start">@Localizer["Sök"]</MudButton>
+            <MudButton OnClick="() => ActiveTab = 2" Variant="Variant.Text" StartIcon="@Icons.Material.Sharp.Folder" Class="px-3 justify-start">@Localizer["Utforska"]</MudButton>
+            <MudBadge Content="NumberOfSelectedEstimations" Color="Color.Primary" Overlap="true" >
+                <MudButton OnClick="() => ActiveTab = 3" Variant="Variant.Text" StartIcon="@Icons.Material.Sharp.CheckBox" Style="width: 100%; height: 100%" Class="px-3 justify-start">@Localizer["Valda"]</MudButton>
+            </MudBadge>
+        </MudStack>
+        
+        </NavigationContent>
+        <ChildContent>
+             @if(ActiveTab == 1)
+            {
+                <div>1</div>
+                @* <EstimationList ItemTree="ItemTree" IsRefreshing="IsRefreshing" Height="calc(100% - 38px)" /> *@
+            }
+            @if (ActiveTab == 2)
+            {
+                <div>2</div>
+                @* <EstimationExplorer ItemTree="ItemTree" IsRefreshing="IsRefreshing" Height="calc(100% - 38px)" /> *@
+            }
+            @if (ActiveTab == 3)
+            {
+                <div>3</div>
+                @* <EstimationSelectionList ItemTree="ItemTree" IsRefreshing="IsRefreshing" Height="calc(100% - 38px)" /> *@
+            }
+        </ChildContent>
+    </PageSetupWithNavigation>
+
+
+
+@code{
+    int ActiveTab = 1;
+    int NumberOfSelectedEstimations = 3;
+    Guid ObserverId = Guid.NewGuid();
+    bool IsSmAndDown => CurrentBreakPoint == Breakpoint.Xs || CurrentBreakPoint == Breakpoint.Sm;
+
+    private List<Breakpoint> _breakpointHistory = new();
+    Breakpoint CurrentBreakPoint;
+    Breakpoint LastBreakPoint;
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            await BrowserViewportService.SubscribeAsync(ObserverId, (args) =>
+            {
+                LastBreakPoint = CurrentBreakPoint;
+                CurrentBreakPoint = args.Breakpoint;
+                if(LastBreakPoint != CurrentBreakPoint)
+                {
+                    StateHasChanged();
+                }
+            });
+        }
+
+        await base.OnAfterRenderAsync(firstRender);
+    }
+
+    public async ValueTask DisposeAsync() => await BrowserViewportService.UnsubscribeAsync(ObserverId);
+}

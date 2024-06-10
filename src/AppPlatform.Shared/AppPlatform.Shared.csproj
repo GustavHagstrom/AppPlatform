@@ -21,10 +21,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="wwwroot\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\Core\AppPlatform.Core.csproj" />
   </ItemGroup>
 
@@ -38,6 +34,10 @@
 
   <ItemGroup>
     <None Include="Components\PageSetupWithNavigation.razor" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="wwwroot\" />
   </ItemGroup>
 
 
