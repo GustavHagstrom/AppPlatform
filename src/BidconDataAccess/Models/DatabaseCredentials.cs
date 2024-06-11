@@ -1,4 +1,4 @@
-﻿namespace AppPlatform.BidconDataAccess.Models;
+﻿namespace AppPlatform.BidconDatabaseAccess.Models;
 
 public record DatabaseCredentials(
     string Server,

@@ -1,6 +1,6 @@
 ﻿using System.Security.Claims;
 
-namespace AppPlatform.BidconDataAccess;
+namespace AppPlatform.BidconDatabaseAccess;
 
 public interface IConnectionstringService
 {

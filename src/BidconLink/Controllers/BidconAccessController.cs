@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using AppPlatform.BidconDataAccess;
-using AppPlatform.BidconDataAccess.Models;
+using AppPlatform.BidconDatabaseAccess;
+using AppPlatform.BidconDatabaseAccess.Models;
 
 namespace AppPlatform.BidconLink.Controllers;
 

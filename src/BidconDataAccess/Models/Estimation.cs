@@ -1,4 +1,4 @@
-﻿namespace AppPlatform.BidconDataAccess.Models;
+﻿namespace AppPlatform.BidconDatabaseAccess.Models;
 public class Estimation
 {
     public Guid EstimationID { get; set; }

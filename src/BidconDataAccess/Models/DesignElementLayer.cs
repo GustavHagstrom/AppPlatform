@@ -1,4 +1,4 @@
-﻿namespace AppPlatform.BidconDataAccess.Models;
+﻿namespace AppPlatform.BidconDatabaseAccess.Models;
 public class DesignElementLayer
 {
     public required string Id { get; set; }

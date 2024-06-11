@@ -1,3 +1,3 @@
-﻿namespace AppPlatform.BidconDataAccess.Models;
+﻿namespace AppPlatform.BidconDatabaseAccess.Models;
 
 public record EstimationRequestBatchesModel(IEnumerable<string> EstimationIds);

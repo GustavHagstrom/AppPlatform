@@ -1,4 +1,4 @@
-﻿using AppPlatform.BidconDataAccess.Models;
+﻿using AppPlatform.BidconDatabaseAccess.Models;
 using AppPlatform.Server.EstimationProcessing.Models;
 
 namespace AppPlatform.Server.EstimationProcessing.Services;
@@ -45,7 +45,7 @@ public class FolderService : IFolderService
             Name = folder.Name,
         };
     }
-    private EstimationInfo CreateEstimationInfo(BidconDataAccess.Models.Estimation estimation)
+    private EstimationInfo CreateEstimationInfo(BidconDatabaseAccess.Models.Estimation estimation)
     {
         return new EstimationInfo
         {

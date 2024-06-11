@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 
-namespace AppPlatform.BidconDataAccess;
+namespace AppPlatform.BidconDatabaseAccess;
 
 public static class ServiceExtensions
 {

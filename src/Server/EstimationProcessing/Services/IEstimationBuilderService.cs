@@ -3,5 +3,5 @@
 namespace AppPlatform.Server.EstimationProcessing.Services;
 public interface IEstimationBuilderService
 {
-    Estimation Build(BidconDataAccess.Models.EstimationBatch batch);
+    Estimation Build(BidconDatabaseAccess.Models.EstimationBatch batch);
 }

@@ -1,10 +1,10 @@
-﻿using AppPlatform.BidconDataAccess.Models;
+﻿using AppPlatform.BidconDatabaseAccess.Models;
 using Dapper;
 using Microsoft.Data.SqlClient;
 using System.Data;
 using System.Security.Claims;
 
-namespace AppPlatform.BidconDataAccess;
+namespace AppPlatform.BidconDatabaseAccess;
 public class EstimationQueryService : IEstimationQueryService
 {
     private readonly IConnectionstringService _connectionStringBuilder;

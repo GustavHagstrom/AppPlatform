@@ -1,4 +1,4 @@
-﻿using AppPlatform.BidconDataAccess.Models;
+﻿using AppPlatform.BidconDatabaseAccess.Models;
 
 namespace AppPlatform.Server.Components.Features.Import.Services;
 public interface IBidconLinkService
