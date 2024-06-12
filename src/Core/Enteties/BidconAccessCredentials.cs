@@ -21,7 +21,6 @@ public class BidconAccessCredentials  : ITenantEntety
     public bool ServerAuthentication { get; set; }
     public bool UseDesktopBidconLink { get; set; }
     public int DesktopPort { get; set; }
-    public DateTime LastUpdated { get; set; }
     [Key]
     [StringLength(50)]
     public string TenantId { get; set; } = string.Empty;

@@ -21,6 +21,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\BidconDataAccess\AppPlatform.BidconDatabaseAccess.csproj" />
     <ProjectReference Include="..\Core\AppPlatform.Core.csproj" />
   </ItemGroup>
 
