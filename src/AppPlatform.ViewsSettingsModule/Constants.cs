@@ -8,7 +8,7 @@ internal static class Constants
     }
     internal static class Routes
     {
-        public const string SettingsBasePage = "/Settings/ViewSettings";
-        public const string SettingsPage = "/Settings/ViewSettings/Edit";
+        public const string ViewListPage = "/Settings/ViewSettings";
+        public const string ViewEditPage = "/Settings/ViewSettings/Edit";
     }
 }

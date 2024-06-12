@@ -1,4 +1,3 @@
-
 <MudSimpleTable Hover="false" Dense="true" Bordered="false">
     <tbody>
         @foreach (var view in Views)
@@ -8,12 +7,18 @@
                     <MudText>@view.Name</MudText>
                 </td>
                 <td>
-                    <MudIconButton Icon="@Icons.Material.Sharp.Edit" Color="Color.Primary" Size="Size.Small"/>
+                    <MudIconButton Icon="@Icons.Material.Sharp.Edit" Color="Color.Primary" Size="Size.Small" OnClick="() => EditView(view)"/>
                 </td>
             </tr>
         }
     </tbody>
 </MudSimpleTable>
+@inject NavigationManager NavigationManager
 @code{
     [Parameter] public List<View> Views { get; set; } = new();
+
+    void EditView(View view)
+    {
+        NavigationManager.NavigateTo($"{Constants.Routes.ViewEditPage}/{view.Id}");
+    }
 }

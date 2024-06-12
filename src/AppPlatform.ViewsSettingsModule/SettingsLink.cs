@@ -5,9 +5,9 @@ using MudBlazor;
 namespace AppPlatform.ViewSettingsModule;
 internal class SettingsLink(IStringLocalizer<SettingsLink> Localizer) : IApplicationLink
 {
-    public string LinkRoute => Constants.Routes.SettingsBasePage;
+    public string LinkRoute => Constants.Routes.ViewListPage;
 
-    public string Text => Localizer["Vyer"];
+    public string Text => Localizer["Kalkylvyer"];
 
     public string Icon => Icons.Material.Sharp.Pageview;
 

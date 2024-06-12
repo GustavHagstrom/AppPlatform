@@ -1,23 +1,50 @@
 @page "/Settings/ViewSettings"
 @using AppPlatform.ViewSettingsModule.Services
+@using Microsoft.AspNetCore.Components.Authorization
 @layout SettingsLayout
 @inject IStringLocalizer<ViewSettingsPage> Localizer
 
-<SettingsPageBase>
-    <ViewList/>
+<SettingsPageBase IsLoading="IsLoading" >
+    <SettingsSection>
+        <div class="d-flex">
+            @* <MudButton Variant="Variant.Outlined" Color="Color.Primary" OnClick="CreateNewRole">@Localizer["Skapa ny roll"]</MudButton> *@
+            <MudIconButton Variant="Variant.Outlined" Color="Color.Primary" Icon="@Icons.Material.Sharp.Add" OnClick="CreateNewViewAsync" />
+        </div>
+    </SettingsSection>
+    <SettingsSection LoadDataAsync="LoadViewsAsync">
+        <ViewList Views="Views" />
+    </SettingsSection>
+    
 </SettingsPageBase>
 
 @inject IViewService ViewService
+@inject AuthenticationStateProvider AuthenticationStateProvider
 @code{
+    bool IsLoading { get; set; } = false;
     List<View> Views { get; set; } = new();
 
-    protected override async Task OnInitializedAsync()
-    {
-        await ViewService.LoadViews();
-    }
+    // protected override Task OnInitializedAsync()
+    // {
+    //     return LoadViewsAsync();
+    // }
     async Task LoadViewsAsync()
     {
+        var state = await AuthenticationStateProvider.GetAuthenticationStateAsync();
         Views.Clear();
-
+        SetLoading(true);
+        var views = await ViewService.GetViewListAsync(state.User);
+        Views.AddRange(views);
+        SetLoading(false);
+    }
+    void SetLoading(bool isLoading)
+    {
+        IsLoading = isLoading;
+        StateHasChanged();
+    }
+    async Task CreateNewViewAsync()
+    {
+        var state = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+        await ViewService.UpsertAsync(state.User, new View { Name = Guid.NewGuid().ToString() });
+        await LoadViewsAsync();
     }
 }
