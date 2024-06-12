@@ -1,57 +1,58 @@
 @page "/bidcon-browser"
+@using Microsoft.AspNetCore.Components.Authorization
 @using MudBlazor.Services
 @implements IAsyncDisposable
 
 @inject IStringLocalizer<BrowserPage> Localizer
 @inject IBrowserViewportService BrowserViewportService
-<div class="relative" style="height: 100%">
-    <MudOverlay Absolute="true" DarkBackground="true" Visible="IsLoading">
-        <MudProgressCircular Size="Size.Large" Indeterminate="true" Color="Color.Primary" />
-    </MudOverlay>
+
+
     
-    <PageSetupWithNavigation>
-        <NavigationContent>
+<PageSetupWithNavigation>
+    <NavigationContent>
 
-            <MudStack Spacing="0" Row="IsSmAndDown">
-                <MudButton OnClick="() => ActiveTab = 1" Variant="Variant.Text" StartIcon="@Icons.Material.Sharp.Search" Class="px-4 justify-start" Style="@TabPanelButtonColorStyle(1)">@Localizer["Sök"]</MudButton>
-                <MudButton OnClick="() => ActiveTab = 2" Variant="Variant.Text" StartIcon="@Icons.Material.Sharp.Folder" Class="px-3 justify-start" Style="@TabPanelButtonColorStyle(2)">@Localizer["Utforska"]</MudButton>
-                <MudButton OnClick="() => ActiveTab = 3" Variant="Variant.Text" StartIcon="@Icons.Material.Sharp.CheckBox" Class="px-3 justify-start" Style="@TabPanelButtonColorStyle(3)">@($"{Localizer["Valda"]} ({NumberOfSelectedEstimations})")</MudButton>
-                @*     <MudBadge Content="NumberOfSelectedEstimations" Color="Color.Primary" Overlap="true">
-                    <MudButton OnClick="() => ActiveTab = 3" Variant="Variant.Text" StartIcon="@Icons.Material.Sharp.CheckBox" Style="width: 100%; height: 100%" Class="px-3 justify-start">@Localizer["Valda"]</MudButton>
-                </MudBadge> *@
+        <MudStack Spacing="0" Row="IsSmAndDown">
+            <MudButton OnClick="() => ActiveTab = 1" Variant="Variant.Text" StartIcon="@Icons.Material.Sharp.Search" Class="px-4 justify-start" Style="@TabPanelButtonColorStyle(1)">@Localizer["Sök"]</MudButton>
+            <MudButton OnClick="() => ActiveTab = 2" Variant="Variant.Text" StartIcon="@Icons.Material.Sharp.Folder" Class="px-3 justify-start" Style="@TabPanelButtonColorStyle(2)">@Localizer["Utforska"]</MudButton>
+            <MudButton OnClick="() => ActiveTab = 3" Variant="Variant.Text" StartIcon="@Icons.Material.Sharp.CheckBox" Class="px-3 justify-start" Style="@TabPanelButtonColorStyle(3)">@($"{Localizer["Valda"]}{NumberOfSelectedEstimations}")</MudButton>
+            @*     <MudBadge Content="NumberOfSelectedEstimations" Color="Color.Primary" Overlap="true">
+                <MudButton OnClick="() => ActiveTab = 3" Variant="Variant.Text" StartIcon="@Icons.Material.Sharp.CheckBox" Style="width: 100%; height: 100%" Class="px-3 justify-start">@Localizer["Valda"]</MudButton>
+            </MudBadge> *@
                 
-            </MudStack>
+        </MudStack>
 
-        </NavigationContent>
-        <ChildContent>
-            <MudToolBar Dense="true" DisableGutters="true" Class="border-b border-solid">
+    </NavigationContent>
+    <ChildContent>
+        <MudToolBar Dense="true" DisableGutters="true" Class="border-b border-solid">
 
-                <MudIconButton Icon="@Icons.Material.Sharp.Refresh" Style="height: 40px; width: 40px;" />
-                <MudIconButton Icon="@Icons.Material.Sharp.Download" Style="height: 40px; width: 40px;" />
+            <MudIconButton Icon="@Icons.Material.Sharp.Refresh" Style="height: 40px; width: 40px;" OnClick="LoadData"/>
+            <MudIconButton Icon="@Icons.Material.Sharp.Download" Style="height: 40px; width: 40px;" />
 
-            </MudToolBar>
-            @if (ActiveTab == 1)
-            {
-                <EstimationList ItemTree="ItemTree" IsRefreshing="IsLoading" Height="calc(100% - 38px)" />
-            }
-            @if (ActiveTab == 2)
-            {
-                <EstimationExplorer ItemTree="ItemTree" IsRefreshing="IsLoading" Height="calc(100% - 38px)" />
-            }
-            @if (ActiveTab == 3)
-            {
-                <EstimationSelectionList ItemTree="ItemTree" IsRefreshing="IsLoading" Height="calc(100% - 38px)" />
-            }
-        </ChildContent>
-    </PageSetupWithNavigation>
-</div>
-
+        </MudToolBar>
+        @if (ActiveTab == 1)
+        {
+            <EstimationList ItemTree="ItemTree" IsRefreshing="IsLoading" Height="calc(100% - 48px)" />
+        }
+        @if (ActiveTab == 2)
+        {
+            <EstimationExplorer ItemTree="ItemTree" IsRefreshing="IsLoading" Height="calc(100% - 48px)" />
+        }
+        @if (ActiveTab == 3)
+        {
+            <EstimationSelectionList ItemTree="ItemTree" IsRefreshing="IsLoading" Height="calc(100% - 48px)" />
+        }
+    </ChildContent>
+</PageSetupWithNavigation>
 
 
+
+@inject IBidconBrowserAccesService BidconBrowserAccesService
+@inject AuthenticationStateProvider AuthenticationStateProvider
 
 @code{
     int ActiveTab = 1;
-    int NumberOfSelectedEstimations = 3;
+    string? NumberOfSelectedEstimations => EstimationCount == 0 || EstimationCount is null ? string.Empty : $" ({EstimationCount})";
+    int? EstimationCount => ItemTree?.SelectedEstimations().Count();
     Guid ObserverId = Guid.NewGuid();
     bool IsSmAndDown => CurrentBreakPoint == Breakpoint.Xs || CurrentBreakPoint == Breakpoint.Sm;
     bool IsLoading = false;
@@ -61,6 +62,25 @@
 
     Breakpoint CurrentBreakPoint;
     Breakpoint LastBreakPoint;
+
+    protected override Task OnInitializedAsync()
+    {
+        return LoadData();
+    }
+
+    async Task LoadData()
+    {
+        var state = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+        if(state.User.Identity?.IsAuthenticated == true)
+        {
+            IsLoading = true;
+            StateHasChanged();
+            ItemTree = await BidconBrowserAccesService.GetTreeItemRootAsync(state.User);
+            ItemTree.SelectionChanged = StateHasChanged;
+            IsLoading = false;
+            StateHasChanged();
+        }
+    }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {

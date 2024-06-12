@@ -27,6 +27,7 @@ public class BidconCredentialsService(IDbContextFactory<ApplicationDbContext> Co
         {
             return;
         }
+        credentials.TenantId = tenantId;
         var dbContext = ContextFactory.CreateDbContext();
         var existingCredentials = await dbContext.BidconAccessCredentials
             .FirstOrDefaultAsync(x => x.TenantId == tenantId);
@@ -34,7 +35,6 @@ public class BidconCredentialsService(IDbContextFactory<ApplicationDbContext> Co
         {
             // Insert a new record if it doesn't exist
 
-            credentials.LastUpdated = DateTime.UtcNow;
             dbContext.BidconAccessCredentials.Add(credentials);
         }
         else
@@ -46,7 +46,7 @@ public class BidconCredentialsService(IDbContextFactory<ApplicationDbContext> Co
             existingCredentials.User = credentials.User;
             existingCredentials.Password = credentials.Password;
             existingCredentials.ServerAuthentication = credentials.ServerAuthentication;
-            existingCredentials.LastUpdated = DateTime.Now;
+            existingCredentials.UseDesktopBidconLink = credentials.UseDesktopBidconLink;
         }
         await dbContext.SaveChangesAsync();
         

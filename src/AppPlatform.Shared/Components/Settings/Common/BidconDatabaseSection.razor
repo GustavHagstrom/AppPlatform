@@ -7,51 +7,48 @@
         <SettingsSection Title="@Localizer["Anslutning till Bidcon"]" LoadDataAsync="LoadDataAsync">
             <MudGrid Spacing="1" Justify="Justify.FlexStart" Class="pa-4">
 
-                <MudItem xs="12" sm="12" md="6">
-                    <MudText Typo="Typo.subtitle2" Style="color: var(--mud-palette-text-primary)">@Localizer["Senast uppdaterad:"]</MudText>
-                        <MudTextField T="string" Margin="Margin.Dense" Variant="Variant.Outlined" ReadOnly="true" Value="@Credentials.LastUpdated.ToString("yyyy-MM-dd HH:mm")" />
-                    </MudItem>
+                
+                 
 
                     <MudItem xs="12">
                         <MudSwitch T="bool" Value="Credentials.UseDesktopBidconLink" Label="@Localizer["Skrivbordslänk"]" Color="Color.Primary" ValueChanged="UpdateUseDesktopBidconLink" />
                     </MudItem>
 
                     <MudItem xs="12">
-                        <MudSwitch T="bool" Value="!Credentials.UseDesktopBidconLink" Label="@Localizer["Direktanslutning"]" Color="Color.Primary" ValueChanged="x => UpdateUseDesktopBidconLink(!x)" />
+                    <MudSwitch T="bool" Value="!Credentials.UseDesktopBidconLink" Label="@Localizer["Direktanslutning"]" Color="Color.Primary" ValueChanged="x => UpdateUseDesktopBidconLink(!x)" />
                     </MudItem>
 
                     @if (!Credentials.UseDesktopBidconLink)
-                {
-                    <MudItem xs="12" sm="12" md="12">
-                        <MudSwitch T="bool" Value="Credentials.ServerAuthentication" Label="@Localizer["Autentisering"]" Color="Color.Primary" ValueChanged="UpdateServerAuthentication" />
-                    </MudItem>
+                    {
+                        <MudItem xs="12" sm="12" md="12">
+                            <MudSwitch T="bool" Value="Credentials.ServerAuthentication" Label="@Localizer["Autentisering"]" Color="Color.Primary" ValueChanged="UpdateServerAuthentication" />
+                        </MudItem>
 
-                    <MudItem xs="12" sm="12" md="6">
-                        <MudText Typo="Typo.subtitle2" Style="color: var(--mud-palette-text-primary)">@Localizer["Servernamn"]</MudText>
+                        <MudItem xs="12" sm="12" md="6">
+                            <MudText Typo="Typo.subtitle2" Style="color: var(--mud-palette-text-primary)">@Localizer["Servernamn"]</MudText>
                             <MudTextField T="string" Margin="Margin.Dense" Value="Credentials.Server" Variant="Variant.Outlined" ValueChanged="UpdateServer" />
                         </MudItem>
 
-                    <MudItem xs="12" sm="12" md="6">
-                        <MudText Typo="Typo.subtitle2" Style="color: var(--mud-palette-text-primary)">@Localizer["Databasnamn"]</MudText>
+                        <MudItem xs="12" sm="12" md="6">
+                            <MudText Typo="Typo.subtitle2" Style="color: var(--mud-palette-text-primary)">@Localizer["Databasnamn"]</MudText>
                             <MudTextField T="string" Margin="Margin.Dense" Value="Credentials.Database" Variant="Variant.Outlined" ValueChanged="UpdateDatabase" />
                         </MudItem>
 
 
 
-                    @if (Credentials.ServerAuthentication)
-                    {
-                        <MudItem xs="12" sm="12" md="6">
-                            <MudText Typo="Typo.subtitle2" Style="color: var(--mud-palette-text-primary)">@Localizer["Användare"]</MudText>
+                        @if (Credentials.ServerAuthentication)
+                        {
+                            <MudItem xs="12" sm="12" md="6">
+                                <MudText Typo="Typo.subtitle2" Style="color: var(--mud-palette-text-primary)">@Localizer["Användare"]</MudText>
                                 <MudTextField T="string" Margin="Margin.Dense" Value="Credentials.User" Variant="Variant.Outlined" ValueChanged="UpdateUser" />
                             </MudItem>
 
-                        <MudItem xs="12" sm="12" md="6">
-                            <MudText Typo="Typo.subtitle2" Style="color: var(--mud-palette-text-primary)">@Localizer["Lösenord"]</MudText>
+                            <MudItem xs="12" sm="12" md="6">
+                                <MudText Typo="Typo.subtitle2" Style="color: var(--mud-palette-text-primary)">@Localizer["Lösenord"]</MudText>
                                 <MudTextField T="string" Margin="Margin.Dense" Value="Credentials.Password" Variant="Variant.Outlined" ValueChanged="UpdatePassword" />
                             </MudItem>
+                        }
                     }
-                }
-
             </MudGrid>
         </SettingsSection>
     </Authorized>
@@ -89,7 +86,6 @@
         {
             return;
         }
-        Credentials.LastUpdated = DateTime.Now;
         await CredentialsService.UpsertAsync(state.User, Credentials);
     }
 }

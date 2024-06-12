@@ -1,4 +1,5 @@
-﻿using AppPlatform.Shared.Abstractions;
+﻿using AppPlatform.BidconBrowserModule.Services;
+using AppPlatform.Shared.Abstractions;
 using AppPlatform.Shared.Builders;
 using AppPlatform.Shared.Constants;
 using Microsoft.Extensions.DependencyInjection;
@@ -18,6 +19,7 @@ public class BidconBrowserModule : IModule
 
     public void RegisterServices(IServiceCollection services)
     {
+        services.AddScoped<IBidconBrowserAccesService, BidconBrowserAccesService>();
         services.AddAuthorization(configure =>
         {
             configure.AddPolicy(Constants.Authorization.Policy, policy =>
