@@ -14,7 +14,7 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
             c => c.ToList());
 
     public DbSet<BidconAccessCredentials> BidconAccessCredentials { get; set; }
-    public DbSet<EstimationViewTemplate> EstimationViewTemplates { get; set; }
+    public DbSet<View> EstimationViewTemplates { get; set; }
     public DbSet<UserSettings> UserSettings { get; set; }
     public DbSet<Role> Roles { get; set; }
     public DbSet<RoleAccess> RoleAccess { get; set; }

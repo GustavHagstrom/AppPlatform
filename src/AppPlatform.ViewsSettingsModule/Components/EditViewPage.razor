@@ -13,7 +13,7 @@
     [Parameter] public string? ViewId { get; set; }
 
     bool IsLoading { get; set; } = false;
-    EstimationViewTemplate? View { get; set; }
+    View? View { get; set; }
 
     Task LoadDataAsync()
     {

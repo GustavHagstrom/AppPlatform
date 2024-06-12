@@ -2,18 +2,18 @@
 
 namespace AppPlatform.Core.Enteties.EstimationView;
 
-public class DataSectionTemplate : IEstimationViewEntity
+public class DataSection : IViewEntity
 {
-    [StringLength(450)]
+    [StringLength(50)]
     public string Id { get; set; } = Guid.NewGuid().ToString();
     public int Order { get; set; }
     public List<DataColumn> Columns { get; set; } = new();
     public int RowCount { get; set; }
-    public List<CellTemplate> Cells { get; set; } = new();
+    public List<DataCell> Cells { get; set; } = new();
 
 
 
-    [StringLength(450)]
+    [StringLength(50)]
     public string EstimationViewTemplateId { get; set; } = string.Empty;
-    public EstimationViewTemplate? EstimationView { get; set; }
+    public View? EstimationView { get; set; }
 }

@@ -3,9 +3,9 @@ using System.ComponentModel.DataAnnotations;
 
 namespace AppPlatform.Core.Enteties.EstimationView;
 
-public class CellFormat : IEstimationViewEntity
+public class CellFormat : IViewEntity
 {
-    [StringLength(450)]
+    [StringLength(50)]
     public string Id { get; set; } = Guid.NewGuid().ToString();
     [StringLength(50)]
     public required string FontFamily { get; set; }
@@ -27,10 +27,10 @@ public class CellFormat : IEstimationViewEntity
 
 
 
-    [StringLength(450)]
+    [StringLength(50)]
     public string? SheetColumnId { get; set; } = string.Empty;
     public SheetColumn? SheetColumn { get; set; }
-    [StringLength(450)]
-    public string? CellTemplateId { get; set; } = string.Empty;
-    public CellTemplate? CellTemplate { get; set; }
+    [StringLength(50)]
+    public string? CellId { get; set; } = string.Empty;
+    public DataCell? Cell { get; set; }
 }

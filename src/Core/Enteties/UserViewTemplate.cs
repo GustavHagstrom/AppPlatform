@@ -11,6 +11,6 @@ public class UserViewTemplate : IUserEntety
 
     [StringLength(450)]
     public string EstimationViewTemplateId { get; set; } = string.Empty;
-    public EstimationViewTemplate? EstimationViewTemplate { get; set; }
+    public View? EstimationViewTemplate { get; set; }
     public string UserId { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
 }

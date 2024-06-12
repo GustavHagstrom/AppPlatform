@@ -1,4 +1,6 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using AppPlatform.Core.Enums.BidconAccess;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace AppPlatform.Core.Enteties.EstimationEnteties;
 
@@ -14,7 +16,7 @@ public class SheetItem
     public string? ParentId { get; set; }
     public SheetItem? Parent { get; set; }
     public int Position { get; set; }
-    public int RowType { get; set; }
+    public int Type { get; set; }
     public double? Quantity { get; set; }
     public List<SheetItem> Children { get; set; } = new List<SheetItem>();
     public string Remark { get; set; } = string.Empty;
@@ -24,12 +26,21 @@ public class SheetItem
     /// Is null for all RowTypes but LayerdItems
     /// </summary>
     public double? LayerItemUnitCost { get; set; }
+    /// <summary>
+    /// Is null for all RowTypes but LayerdItems
+    /// </summary>
+    public double? LayerItemUnitAskingPrice { get; set; }
 
-    //Costs other than base Layeritem costs should be calculated in the frontend
-    //public double? UnitCost { get; set; }
-    //public double? TotalCost => UnitCost * Quantity;
-    //public double? UnitAskingPrice { get; set; }
-    //public double? TotalAskingPrice => UnitAskingPrice * Quantity;
+
+    [NotMapped]
+    public double? UnitCost => Type == (int)RowType.LayeredItem ? LayerItemUnitCost : Children.Sum(x => x.TotalCost);
+    [NotMapped]
+    public double? TotalCost => UnitCost * (Quantity is null ? 1 : Quantity);
+    [NotMapped]
+    public double? UnitAskingPrice => Type == (int)RowType.LayeredItem ? LayerItemUnitAskingPrice : Children.Sum(x => x.TotalAskingPrice);
+    [NotMapped]
+    public double? TotalAskingPrice => UnitAskingPrice * (Quantity is null ? 1 : Quantity);
+
     public IEnumerable<SheetItem> AllInOrder
     {
         get

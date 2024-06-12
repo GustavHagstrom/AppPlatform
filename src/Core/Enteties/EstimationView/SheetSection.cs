@@ -3,9 +3,9 @@ using System.ComponentModel.DataAnnotations;
 
 namespace AppPlatform.Core.Enteties.EstimationView;
 
-public class SheetSectionTemplate : IEstimationViewEntity
+public class SheetSection : IViewEntity
 {
-    [StringLength(450)]
+    [StringLength(50)]
     public string Id { get; set; } = Guid.NewGuid().ToString();
     public int Order { get; set; }
     public SheetType SheetType { get; set; }
@@ -14,6 +14,6 @@ public class SheetSectionTemplate : IEstimationViewEntity
 
     public List<SheetColumn> Columns { get; set; } = new();
     [StringLength(450)]
-    public string EstimationViewTemplateId { get; set; } = string.Empty;
-    public EstimationViewTemplate? EstimationViewTemplate { get; set; }
+    public string ViewTemplateId { get; set; } = string.Empty;
+    public View? ViewTemplate { get; set; }
 }
