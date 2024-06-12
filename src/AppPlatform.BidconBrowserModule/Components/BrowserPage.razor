@@ -11,14 +11,10 @@
 <PageSetupWithNavigation>
     <NavigationContent>
 
-        <MudStack Spacing="0" Row="IsSmAndDown">
+        <MudStack Spacing="0" Row="IsSmAndDown" Style="min-width: 150px;">
             <MudButton OnClick="() => ActiveTab = 1" Variant="Variant.Text" StartIcon="@Icons.Material.Sharp.Search" Class="px-4 justify-start" Style="@TabPanelButtonColorStyle(1)">@Localizer["Sök"]</MudButton>
             <MudButton OnClick="() => ActiveTab = 2" Variant="Variant.Text" StartIcon="@Icons.Material.Sharp.Folder" Class="px-3 justify-start" Style="@TabPanelButtonColorStyle(2)">@Localizer["Utforska"]</MudButton>
             <MudButton OnClick="() => ActiveTab = 3" Variant="Variant.Text" StartIcon="@Icons.Material.Sharp.CheckBox" Class="px-3 justify-start" Style="@TabPanelButtonColorStyle(3)">@($"{Localizer["Valda"]}{NumberOfSelectedEstimations}")</MudButton>
-            @*     <MudBadge Content="NumberOfSelectedEstimations" Color="Color.Primary" Overlap="true">
-                <MudButton OnClick="() => ActiveTab = 3" Variant="Variant.Text" StartIcon="@Icons.Material.Sharp.CheckBox" Style="width: 100%; height: 100%" Class="px-3 justify-start">@Localizer["Valda"]</MudButton>
-            </MudBadge> *@
-                
         </MudStack>
 
     </NavigationContent>
@@ -76,7 +72,7 @@
             IsLoading = true;
             StateHasChanged();
             ItemTree = await BidconBrowserAccesService.GetTreeItemRootAsync(state.User);
-            ItemTree.SelectionChanged = StateHasChanged;
+             ItemTree.SelectionChanged = StateHasChanged;
             IsLoading = false;
             StateHasChanged();
         }

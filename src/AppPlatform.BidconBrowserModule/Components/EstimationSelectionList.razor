@@ -20,7 +20,7 @@
                         <tr class="d-flex">
                             <td class="d-flex flex-grow-1">
                                 <MudCheckBox @bind-Value="context.IsSelected" @key="context"/>
-                                <MudIcon Icon="@Icons.Material.Sharp.Article" Color="@Color.Tertiary" Class="align-self-center ml-3" />
+                                <MudIcon Icon="@Icons.Material.Sharp.Article" Style="color: var(--mud-palette-warning-lighten)" Class="align-self-center ml-3" />
                                 <MudText Class="align-self-center ml-2">@context.Name</MudText>
                             </td>
                         </tr>

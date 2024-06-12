@@ -38,13 +38,16 @@ internal class BidconBrowserAccesService(IEstimationQueryService DbQueryService,
         };
         map.Add(root.FolderNum, root);
 
-        foreach (var folder in batch.Folders.OrderBy(x => x.FolderNum))
+        foreach (var folder in batch.Folders)
         {
             var newFolder = CreateDbFolder(folder);
             map.Add(folder.FolderNum, newFolder);
+        }
+        foreach (var folder in map.Values)
+        {
             if (map.ContainsKey(folder.ParentNum))
             {
-                map[folder.ParentNum].SubFolders.Add(newFolder);
+                map[folder.ParentNum].SubFolders.Add(folder);
             }
         }
         foreach (var estimation in batch.Estimations)
