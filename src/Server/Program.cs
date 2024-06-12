@@ -15,6 +15,10 @@ using AppPlatform.ViewSettingsModule;
 using Microsoft.AspNetCore.Builder;
 using AppPlatform.UserRightSettingsModule;
 using AppPlatform.BidconBrowserModule;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Diagnostics;
+using Microsoft.AspNetCore.Http.Extensions;
+using Microsoft.Identity.Client;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -72,7 +76,6 @@ builder.Services.AddModules(moduleBuilder =>
 builder.Services.RegisterSharedServices();
 
 var app = builder.Build();
-
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
@@ -90,6 +93,20 @@ app.UseHttpsRedirection();
 
 app.UseStaticFiles();
 app.UseAntiforgery();
+
+app.UseExceptionHandler(new ExceptionHandlerOptions
+{
+    ExceptionHandler = async ctx => {
+        var feature = await Task.FromResult(ctx.Features.Get<IExceptionHandlerFeature>());
+        if (feature?.Error is MsalUiRequiredException
+            or { InnerException: MsalUiRequiredException }
+            or { InnerException.InnerException: MsalUiRequiredException })
+        {
+            ctx.Response.Cookies.Delete($"{CookieAuthenticationDefaults.CookiePrefix}{CookieAuthenticationDefaults.AuthenticationScheme}");
+            ctx.Response.Redirect(ctx.Request.GetEncodedPathAndQuery());
+        }
+    }
+});
 
 app.MapRazorComponents<App>()
     .AddInteractiveServerRenderMode()

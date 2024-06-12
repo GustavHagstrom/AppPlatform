@@ -1,6 +1,19 @@
-hej
 
-
+<MudSimpleTable Hover="false" Dense="true" Bordered="false">
+    <tbody>
+        @foreach (var view in Views)
+        {
+            <tr>
+                <td class="pl-2">
+                    <MudText>@view.Name</MudText>
+                </td>
+                <td>
+                    <MudIconButton Icon="@Icons.Material.Sharp.Edit" Color="Color.Primary" Size="Size.Small"/>
+                </td>
+            </tr>
+        }
+    </tbody>
+</MudSimpleTable>
 @code{
     [Parameter] public List<View> Views { get; set; } = new();
 }

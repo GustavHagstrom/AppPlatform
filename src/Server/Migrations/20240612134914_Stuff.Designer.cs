@@ -3,6 +3,7 @@ using System;
 using AppPlatform.Shared.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AppPlatform.Server.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240612134914_Stuff")]
+    partial class Stuff
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "8.0.6");
@@ -335,7 +338,7 @@ namespace AppPlatform.Server.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("DataSectionId")
+                    b.Property<string>("DataSectionTemplateId")
                         .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("TEXT");
@@ -348,7 +351,7 @@ namespace AppPlatform.Server.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("DataSectionId");
+                    b.HasIndex("DataSectionTemplateId");
 
                     b.ToTable("DataColumn");
                 });
@@ -360,6 +363,9 @@ namespace AppPlatform.Server.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<string>("EstimationViewId")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("EstimationViewTemplateId")
                         .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("TEXT");
@@ -501,7 +507,7 @@ namespace AppPlatform.Server.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Views");
+                    b.ToTable("EstimationViewTemplates");
                 });
 
             modelBuilder.Entity("AppPlatform.Core.Enteties.UserSettings", b =>
@@ -586,22 +592,20 @@ namespace AppPlatform.Server.Migrations
 
             modelBuilder.Entity("AppPlatform.Core.Enteties.EstimationView.DataColumn", b =>
                 {
-                    b.HasOne("AppPlatform.Core.Enteties.EstimationView.DataSection", "DataSection")
+                    b.HasOne("AppPlatform.Core.Enteties.EstimationView.DataSection", "DataSectionTemplate")
                         .WithMany("Columns")
-                        .HasForeignKey("DataSectionId")
+                        .HasForeignKey("DataSectionTemplateId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("DataSection");
+                    b.Navigation("DataSectionTemplate");
                 });
 
             modelBuilder.Entity("AppPlatform.Core.Enteties.EstimationView.DataSection", b =>
                 {
                     b.HasOne("AppPlatform.Core.Enteties.EstimationView.View", "EstimationView")
                         .WithMany("DataSections")
-                        .HasForeignKey("EstimationViewId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("EstimationViewId");
 
                     b.Navigation("EstimationView");
                 });

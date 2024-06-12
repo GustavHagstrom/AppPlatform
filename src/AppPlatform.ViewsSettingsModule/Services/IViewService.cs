@@ -9,5 +9,5 @@ internal interface IViewService
     Task UpdateAsync(View view);
     Task DeleteAsync(View view);
     Task CreateAsync(ClaimsPrincipal userClaims, View view);
-
+    Task<List<View>> GetViewListAsync(ClaimsPrincipal UserClaims);
 }

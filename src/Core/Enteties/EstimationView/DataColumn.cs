@@ -9,6 +9,6 @@ public class DataColumn : IViewEntity
     public int WidthPercent { get; set; }
 
     [StringLength(50)]
-    public string DataSectionTemplateId { get; set; } = string.Empty;
-    public DataSection? DataSectionTemplate { get; set; }
+    public string DataSectionId { get; set; } = string.Empty;
+    public DataSection? DataSection { get; set; }
 }

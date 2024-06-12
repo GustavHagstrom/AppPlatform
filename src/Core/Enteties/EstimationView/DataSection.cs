@@ -14,6 +14,6 @@ public class DataSection : IViewEntity
 
 
     [StringLength(50)]
-    public string EstimationViewTemplateId { get; set; } = string.Empty;
+    public string EstimationViewId { get; set; } = string.Empty;
     public View? EstimationView { get; set; }
 }

@@ -1,7 +1,23 @@
 @page "/Settings/ViewSettings"
+@using AppPlatform.ViewSettingsModule.Services
 @layout SettingsLayout
 @inject IStringLocalizer<ViewSettingsPage> Localizer
 
-<SettingsPageBase Title="@Localizer["Kalkylvyer"]">
+<SettingsPageBase>
     <ViewList/>
 </SettingsPageBase>
+
+@inject IViewService ViewService
+@code{
+    List<View> Views { get; set; } = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        await ViewService.LoadViews();
+    }
+    async Task LoadViewsAsync()
+    {
+        Views.Clear();
+
+    }
+}

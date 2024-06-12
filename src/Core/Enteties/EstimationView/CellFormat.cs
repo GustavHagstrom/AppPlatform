@@ -27,10 +27,10 @@ public class CellFormat : IViewEntity
 
 
 
-    [StringLength(50)]
-    public string? SheetColumnId { get; set; } = string.Empty;
-    public SheetColumn? SheetColumn { get; set; }
-    [StringLength(50)]
-    public string? CellId { get; set; } = string.Empty;
-    public DataCell? Cell { get; set; }
+    //[StringLength(50)]
+    //public string? SheetColumnId { get; set; } = string.Empty;
+    //public SheetColumn? SheetColumn { get; set; }
+    //[StringLength(50)]
+    //public string? DataCellId { get; set; } = string.Empty;
+    //public DataCell? DataCell { get; set; }
 }

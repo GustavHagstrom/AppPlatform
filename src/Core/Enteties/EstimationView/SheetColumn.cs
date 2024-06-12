@@ -10,8 +10,11 @@ public class SheetColumn : IViewEntity
     public int Order { get; set; }
     public int WidthPercent { get; set; }
     public SheetColumnType ColumnType { get; set; }
-    public required CellFormat CellFormat { get; set; }
+    [StringLength(50)]
+    public string CellFormatId { get; set; } = string.Empty;
+    public CellFormat? CellFormat { get; set; }
     [StringLength(50)]
     public string SheetSectionTemplateId { get; set; } = string.Empty;
     public SheetSection? SheetSectionTemplate { get; set; }
+
 }
