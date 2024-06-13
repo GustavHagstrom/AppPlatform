@@ -1,34 +1,63 @@
 @page "/Settings/ViewSettings/Edit/{ViewId}"
+@using AppPlatform.Shared.Components.Dialogs
+@using AppPlatform.ViewSettingsModule.Services
+@using Microsoft.AspNetCore.Components.Authorization
 @layout SettingsLayout
 @inject IStringLocalizer<EditViewPage> Localizer
 
-<SettingsPageBase Title="@Localizer["Redigera vy"]">
+<SettingsPageBase>
     <SettingsSection>
-        
+        <div class="d-flex">
+            <MudIconButton Variant="Variant.Outlined" Color="Color.Error" Icon="@Icons.Material.Sharp.Delete" OnClick="Delete" />
+        </div>
+    </SettingsSection>
+    <SettingsSection LoadDataAsync="LoadDataAsync">
+        @View?.Name
     </SettingsSection>
 </SettingsPageBase>
 
-
+@inject IViewService _viewService
+@inject AuthenticationStateProvider AuthenticationStateProvider
+@inject IDialogService DialogService
+@inject NavigationManager NavigationManager
 @code{
     [Parameter] public string? ViewId { get; set; }
 
     bool IsLoading { get; set; } = false;
     View? View { get; set; }
 
-    Task LoadDataAsync()
+    async Task LoadDataAsync()
     {
 
         if (ViewId is not null)
         {
             SetLoading(true);
-            //View = await _viewService.GetViewAsync(ViewId);
+            var state = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+            View = await _viewService.GetAsync(state.User, ViewId);
             SetLoading(false);
         }
-        return Task.CompletedTask;
     }
     void SetLoading(bool isLoading)
     {
         IsLoading = isLoading;
         StateHasChanged();
+    }
+    async Task Delete()
+    {
+        if (View is not null)
+        {
+            var parameters = new DialogParameters<YesNoDialog> {
+                { x => x.Info, Localizer["Är du säker på att du vill ta bort vyn?"] },
+                { x => x.YesButtonColor, Color.Error }
+            };
+            var dialog = await DialogService.ShowAsync<YesNoDialog>(Localizer["Bekräfta borttagning"], parameters);
+            var result = await dialog.Result;
+            if (result?.Data is true)
+            {
+                var state = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+                await _viewService.DeleteAsync(state.User, View);
+                NavigationManager.NavigateTo(Constants.Routes.ViewListPage);
+            }
+        }
     }
 }

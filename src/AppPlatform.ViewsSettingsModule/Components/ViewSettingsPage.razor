@@ -1,4 +1,5 @@
 @page "/Settings/ViewSettings"
+@using AppPlatform.Shared.Components.Dialogs
 @using AppPlatform.ViewSettingsModule.Services
 @using Microsoft.AspNetCore.Components.Authorization
 @layout SettingsLayout
@@ -7,7 +8,6 @@
 <SettingsPageBase IsLoading="IsLoading" >
     <SettingsSection>
         <div class="d-flex">
-            @* <MudButton Variant="Variant.Outlined" Color="Color.Primary" OnClick="CreateNewRole">@Localizer["Skapa ny roll"]</MudButton> *@
             <MudIconButton Variant="Variant.Outlined" Color="Color.Primary" Icon="@Icons.Material.Sharp.Add" OnClick="CreateNewViewAsync" />
         </div>
     </SettingsSection>
@@ -19,14 +19,12 @@
 
 @inject IViewService ViewService
 @inject AuthenticationStateProvider AuthenticationStateProvider
+@inject IDialogService DialogService
+@inject NavigationManager NavigationManager
 @code{
     bool IsLoading { get; set; } = false;
     List<View> Views { get; set; } = new();
 
-    // protected override Task OnInitializedAsync()
-    // {
-    //     return LoadViewsAsync();
-    // }
     async Task LoadViewsAsync()
     {
         var state = await AuthenticationStateProvider.GetAuthenticationStateAsync();
@@ -43,8 +41,16 @@
     }
     async Task CreateNewViewAsync()
     {
-        var state = await AuthenticationStateProvider.GetAuthenticationStateAsync();
-        await ViewService.UpsertAsync(state.User, new View { Name = Guid.NewGuid().ToString() });
-        await LoadViewsAsync();
+        var parameters = new DialogParameters<StringInputDialog> { { x => x.InputLabel, Localizer["Namn"] } };
+        var options = new DialogOptions { NoHeader = false };
+        var dialog = await DialogService.ShowAsync<StringInputDialog>(Localizer["Ny vy"], parameters, options);
+        var result = await dialog.Result;
+        if (result?.Canceled == false && result.Data is string input and not null)
+        {
+            var state = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+            var view = new View { Name = input };
+            await ViewService.UpsertAsync(state.User, view);
+            NavigationManager.NavigateTo($"{Constants.Routes.ViewEditPage}/{view.Id}");
+        }
     }
 }

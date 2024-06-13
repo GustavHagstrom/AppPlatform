@@ -7,7 +7,9 @@
                     <MudText>@view.Name</MudText>
                 </td>
                 <td>
-                    <MudIconButton Icon="@Icons.Material.Sharp.Edit" Color="Color.Primary" Size="Size.Small" OnClick="() => EditView(view)"/>
+                    <div style="display: flex; justify-content: flex-end;">
+                        <MudIconButton Icon="@Icons.Material.Sharp.Edit" Color="Color.Primary" Size="Size.Small" OnClick="() => EditView(view)"/>
+                    </div>
                 </td>
             </tr>
         }

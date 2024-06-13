@@ -31,19 +31,25 @@ internal class ViewService(IDbContextFactory<ApplicationDbContext> dbContextFact
         }
     }
 
-    public Task DeleteAsync(View view)
+    public async Task DeleteAsync(ClaimsPrincipal userClaims, View view)
     {
-        throw new NotImplementedException();
+        var dbContext = await dbContextFactory.CreateDbContextAsync();
+        var tenantId = userClaims.GetTenantId();
+        var viewToDelete = await dbContext.Views.FirstOrDefaultAsync(x => x.Id == view.Id && x.TenantId == tenantId);
+        if (viewToDelete is null)
+        {
+            throw new Exception("View not found");
+        }
+        dbContext.Views.Remove(viewToDelete);
+        await dbContext.SaveChangesAsync();
     }
 
-    public Task GetAllAsync(ClaimsPrincipal userClaims)
+    public async Task<View?> GetAsync(ClaimsPrincipal userClaims, string viewId)
     {
-        throw new NotImplementedException();
-    }
-
-    public Task GetAsync(string viewId)
-    {
-        throw new NotImplementedException();
+        var dbContext = await dbContextFactory.CreateDbContextAsync();
+        var tenantId = userClaims.GetTenantId();
+        var view = await dbContext.Views.FirstOrDefaultAsync(x => x.Id == viewId && x.TenantId == tenantId);
+        return view;
     }
 
     public async Task<List<View>> GetViewListAsync(ClaimsPrincipal UserClaims)

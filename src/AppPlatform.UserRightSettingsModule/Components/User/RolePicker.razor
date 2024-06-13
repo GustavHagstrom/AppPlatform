@@ -17,8 +17,11 @@
                 <td>
                     @role.Description
                 </td>
-                <td>
-                    <MudIconButton Icon="@Icons.Material.Sharp.Edit" Color="Color.Primary" OnClick="() => EditRoleAccess(role)" Size="Size.Small" />
+                <td >
+                    <div style="display: flex; justify-content: flex-end;">
+                        <MudIconButton Icon="@Icons.Material.Sharp.Edit" Color="Color.Primary" OnClick="() => EditRoleAccess(role)" Size="Size.Small" />
+                    </div>
+                    
                 </td>
             </tr>
 

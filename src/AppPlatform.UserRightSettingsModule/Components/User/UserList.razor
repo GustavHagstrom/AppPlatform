@@ -10,7 +10,9 @@
                     <UserAvatar Size="Size.Small" User="user"/>
                 </td>
                 <td>
-                    <MudIconButton Icon="@Icons.Material.Sharp.Edit" Color="Color.Primary" OnClick="() => EditUserAccess(user)" Size="Size.Small"/>
+                    <div style="display: flex; justify-content: flex-end;">
+                        <MudIconButton Icon="@Icons.Material.Sharp.Edit" Color="Color.Primary" OnClick="() => EditUserAccess(user)" Size="Size.Small"/>
+                    </div>
                 </td>
             </tr>
         }

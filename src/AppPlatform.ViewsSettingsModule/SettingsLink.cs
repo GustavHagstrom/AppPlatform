@@ -7,7 +7,7 @@ internal class SettingsLink(IStringLocalizer<SettingsLink> Localizer) : IApplica
 {
     public string LinkRoute => Constants.Routes.ViewListPage;
 
-    public string Text => Localizer["Kalkylvyer"];
+    public string Text => Localizer["Vyer"];
 
     public string Icon => Icons.Material.Sharp.Pageview;
 
