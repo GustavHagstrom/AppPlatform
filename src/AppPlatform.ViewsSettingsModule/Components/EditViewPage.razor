@@ -5,16 +5,21 @@
 @layout SettingsLayout
 @inject IStringLocalizer<EditViewPage> Localizer
 
-<SettingsPageBase>
-    <SettingsSection>
-        <div class="d-flex">
-            <MudIconButton Variant="Variant.Outlined" Color="Color.Error" Icon="@Icons.Material.Sharp.Delete" OnClick="Delete" />
-        </div>
-    </SettingsSection>
-    <SettingsSection LoadDataAsync="LoadDataAsync">
-        @View?.Name
-    </SettingsSection>
-</SettingsPageBase>
+<MudToolBar Class="border-b border-solid px-4" DisableGutters="true">
+    <div class="d-flex gap-2">
+        <MudIconButton Variant="Variant.Outlined" Color="Color.Error" Icon="@Icons.Material.Sharp.Delete" OnClick="Delete" />
+        <MudIconButton Variant="Variant.Outlined" Color="Color.Success" Icon="@Icons.Material.Sharp.Save" />
+    </div>
+</MudToolBar>
+
+
+<div style="height: calc(100%-64px)">
+    <SettingsPageBase>
+        <SettingsSection LoadDataAsync="LoadDataAsync">
+            <MudTextField T="string" Variant="Variant.Outlined" Value="View?.Name" ValueChanged="SetName" Label="@Localizer["Namn"]" />
+        </SettingsSection>
+    </SettingsPageBase>
+</div>
 
 @inject IViewService _viewService
 @inject AuthenticationStateProvider AuthenticationStateProvider
@@ -35,6 +40,15 @@
             var state = await AuthenticationStateProvider.GetAuthenticationStateAsync();
             View = await _viewService.GetAsync(state.User, ViewId);
             SetLoading(false);
+        }
+    }
+    async Task SetName(string name)
+    {
+        if (View is not null)
+        {
+            View.Name = name;
+            var state = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+            await _viewService.UpsertAsync(state.User, View);
         }
     }
     void SetLoading(bool isLoading)
