@@ -6,6 +6,10 @@
     <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Content Remove="components\ViewPresenter.razor" />
+  </ItemGroup>
+
 
   <ItemGroup>
     <SupportedPlatform Include="browser" />
@@ -31,14 +35,20 @@
 
   <ItemGroup>
     <_ContentIncludedByDefault Remove="components\PageSetupWithNavigation.razor" />
+    <_ContentIncludedByDefault Remove="components\ViewPresenter.razor" />
   </ItemGroup>
 
   <ItemGroup>
     <None Include="Components\PageSetupWithNavigation.razor" />
+    <None Include="Components\View\ViewPresenter.razor" />
   </ItemGroup>
 
   <ItemGroup>
     <Folder Include="wwwroot\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <UpToDateCheckInput Remove="components\ViewPresenter.razor" />
   </ItemGroup>
 
 

@@ -1,24 +1,28 @@
 @page "/Settings/ViewSettings/Edit/{ViewId}"
+@using AppPlatform.Core.Enteties.EstimationEnteties
+@using AppPlatform.Core.Enums.BidconAccess
 @using AppPlatform.Shared.Components.Dialogs
 @using AppPlatform.ViewSettingsModule.Services
 @using Microsoft.AspNetCore.Components.Authorization
+@using AppPlatform.Shared.Components.View
 @layout SettingsLayout
 @inject IStringLocalizer<EditViewPage> Localizer
 
-<MudToolBar Class="border-b border-solid px-4" DisableGutters="true">
-    <div class="d-flex gap-2">
-        <MudIconButton Variant="Variant.Outlined" Color="Color.Error" Icon="@Icons.Material.Sharp.Delete" OnClick="Delete" />
-        <MudIconButton Variant="Variant.Outlined" Color="Color.Success" Icon="@Icons.Material.Sharp.Save" />
-    </div>
-</MudToolBar>
+<div class="relative" style="height: 100%">
+    <MudOverlay DarkBackground="true" Visible="IsLoading" Absolute="true">
+        <MudProgressCircular Size="Size.Large" Color="Color.Primary" Indeterminate="true" />
+    </MudOverlay>
 
-
-<div style="height: calc(100%-64px)">
-    <SettingsPageBase>
-        <SettingsSection LoadDataAsync="LoadDataAsync">
+    <ViewPresenter EditMode="true" View="View" Estimation="SampleEstimation()" >
+        <ExtraToolbarActions>
+            <MudIconButton Variant="Variant.Outlined" Color="Color.Error" Icon="@Icons.Material.Sharp.Delete" OnClick="Delete" />
+            <MudIconButton Variant="Variant.Outlined" Color="Color.Success" Icon="@Icons.Material.Sharp.Save" />
+        </ExtraToolbarActions>
+        <SpaceAboveSheet>
             <MudTextField T="string" Variant="Variant.Outlined" Value="View?.Name" ValueChanged="SetName" Label="@Localizer["Namn"]" />
-        </SettingsSection>
-    </SettingsPageBase>
+        </SpaceAboveSheet>
+    </ViewPresenter>
+
 </div>
 
 @inject IViewService _viewService
@@ -31,9 +35,13 @@
     bool IsLoading { get; set; } = false;
     View? View { get; set; }
 
+    protected override Task OnInitializedAsync()
+    {
+        return LoadDataAsync();
+    }
+
     async Task LoadDataAsync()
     {
-
         if (ViewId is not null)
         {
             SetLoading(true);
@@ -73,5 +81,48 @@
                 NavigationManager.NavigateTo(Constants.Routes.ViewListPage);
             }
         }
+    }
+    Estimation SampleEstimation()
+    {
+        return new Estimation
+            {
+                BidconId = "123",
+                ConfirmationOfficer = "Test",
+                Customer = "Test",
+                Description = "Test",
+                HandlingOfficer = "Test",
+                Name = "Test",
+                Place = "Test",
+                NetSheet = new SheetItem
+                {
+                    Description = "Root",
+                    Type = (int)RowType.Group,
+                    Children = new List<SheetItem>
+                    {
+                        new SheetItem
+                        {
+                            Description = "Group",
+                            Type = (int)RowType.Group,
+                            Children = new List<SheetItem>
+                            {
+                                new SheetItem
+                                {
+                                    Description = "Part",
+                                    Type = (int)RowType.Part,
+                                    Children = new List<SheetItem>
+                                    {
+                                        new SheetItem
+                                        {
+                                            Description = "Post",
+                                            Type = (int)RowType.LayeredItem,
+
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            };
     }
 }

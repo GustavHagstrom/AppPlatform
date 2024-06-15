@@ -2,7 +2,7 @@
 
 namespace AppPlatform.Core.Enteties.EstimationView;
 
-public class DataSection : IViewEntity
+public class DataSection : IViewEntity, ISection
 {
     [StringLength(50)]
     public string Id { get; set; } = Guid.NewGuid().ToString();

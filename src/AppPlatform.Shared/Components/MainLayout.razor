@@ -28,7 +28,7 @@
                         <MudNavLink Match="NavLinkMatch.All" Icon="@Icons.Material.Sharp.Dashboard" Href="" />
                         @foreach (var link in ApplicationLinkService.MainLayoutLinks)
                         {
-                            <MudNavLink Match="NavLinkMatch.Prefix" Icon="@link.Icon" Href="@link.LinkRoute" />
+                            <AuthorizedNavLink ApplicationLink="@link" />
                         }
                     </MudNavMenu>
                 </MudPaper>

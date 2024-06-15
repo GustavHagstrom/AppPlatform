@@ -1,0 +1,58 @@
+
+
+<MudToolBar Class="border-b border-solid px-4" DisableGutters="true">
+    <div class="d-flex gap-2">
+        @ExtraToolbarActions
+    </div>
+</MudToolBar>
+
+<div class="pa-4" style="height: calc(100%-64px); display: flex;">
+    <div class="gap-4" style="display: flex; flex-direction: column;">
+        @SpaceAboveSheet
+        <MudPaper Square="true" MinHeight="100px" MinWidth="100px">
+
+            <HeaderOrFooterPresenter HeaderOrFooter="View?.Header" Estimation="Estimation"/>
+
+            @foreach (var section in SectionsInOrder())
+            {
+                if (section is SheetSection sheetSection)
+                {
+                    <SheetSectionPresenter Section="sheetSection" Estimation="Estimation" />
+                }
+                else if (section is DataSection dataSection)
+                {
+                    <DataSectionPresenter Section="dataSection" Estimation="Estimation" />
+                }
+                else
+                {
+                    throw new NotImplementedException();
+                }
+            }
+
+            <HeaderOrFooterPresenter HeaderOrFooter="View?.Footer" Estimation="Estimation" />
+        </MudPaper>
+    </div>
+    
+</div>
+
+
+
+@code{
+    [Parameter] public View? View { get; set; }
+    [Parameter] public Estimation? Estimation { get; set; }
+    [Parameter] public bool EditMode { get; set; } = false;
+    [Parameter] public RenderFragment? ExtraToolbarActions { get; set; }
+    [Parameter] public RenderFragment? SpaceAboveSheet { get; set; }
+
+    IEnumerable<ISection> SectionsInOrder()
+    {
+        List<ISection> sections = new();
+        if(View is null)
+        {
+            return Array.Empty<ISection>();
+        }
+        sections.AddRange(View.SheetSections);
+        sections.AddRange(View.DataSections);
+        return sections.OrderBy(x => x.Order);
+    }
+}
