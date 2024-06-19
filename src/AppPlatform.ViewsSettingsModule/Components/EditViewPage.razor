@@ -15,8 +15,13 @@
 
     <ViewPresenter EditMode="true" View="View" Estimation="SampleEstimation()" >
         <ExtraEditModeToolbarActions>
-            <MudIconButton Variant="Variant.Outlined" Color="Color.Error" Icon="@Icons.Material.Sharp.Delete" OnClick="Delete" />
-            <MudIconButton Variant="Variant.Outlined" Color="Color.Success" Icon="@Icons.Material.Sharp.Save" />
+            <ToolbarSection Title="@Localizer["Vy"]">
+                <div style="display: flex; flex-direction: column; gap: 8px;">
+                    <MudIconButton Variant="Variant.Outlined" Color="Color.Success" Icon="@Icons.Material.Sharp.Save" />
+                    <MudIconButton Variant="Variant.Outlined" Color="Color.Error" Icon="@Icons.Material.Sharp.Delete" OnClick="Delete" />
+                </div>
+            </ToolbarSection>
+            
         </ExtraEditModeToolbarActions>
         <SpaceAboveSheetEditMode>
             <MudTextField T="string" Variant="Variant.Outlined" Value="View?.Name" ValueChanged="SetName" Label="@Localizer["Namn"]" />

@@ -1,13 +1,25 @@
-@* <div class="d-flex gap-2 px-2">
-    <MudMenu Icon="@Icons.Material.Sharp.Add" Variant="Variant.Outlined" IconColor="Color.Primary">
-        <MudMenuItem>@Localizer["Datasektion"]</MudMenuItem>
-        <MudMenuItem>@Localizer["Tabellsektion"]</MudMenuItem>
-    </MudMenu>
-</div> *@
-<MudMenu Icon="@Icons.Material.Sharp.Add" Variant="Variant.Outlined" IconColor="Color.Primary">
-    <MudMenuItem OnClick="AddDataSection">@Localizer["Datasektion"]</MudMenuItem>
-    <MudMenuItem OnClick="AddSheetSection">@Localizer["Tabellsektion"]</MudMenuItem>
-</MudMenu>
+
+<ToolbarSection Title="@Localizer["Allmänt - Sektion"]">
+    <div class="d-flex flex-column gap-2">
+        <div>
+            <MudMenu Dense="true" AnchorOrigin="Origin.BottomLeft" TransformOrigin="Origin.TopLeft">
+                <ActivatorContent>
+                    <MudButton StartIcon="@Icons.Material.Sharp.Add" Variant="Variant.Outlined" Color="Color.Primary" Dense="true">@Localizer["Ny sektion"]</MudButton>
+                </ActivatorContent>
+                <ChildContent>
+                    <MudMenuItem OnClick="AddDataSection">@Localizer["Datasektion"]</MudMenuItem>
+                    <MudMenuItem OnClick="AddSheetSection">@Localizer["Tabellsektion"]</MudMenuItem>
+                </ChildContent>
+            </MudMenu>
+        </div>
+        
+        <div>
+            <MudButton StartIcon="@Icons.Material.Sharp.Delete" Variant="Variant.Outlined" Color="Color.Error" Disabled="ViewPresenter?.SelectedSection is null">@Localizer["Ta bort sektion"]</MudButton>
+        </div>
+    </div>
+    
+</ToolbarSection>
+
 @inject IStringLocalizer<EditActions> Localizer
 @code{
     [CascadingParameter] public ViewPresenter? ViewPresenter { get; set; }
@@ -21,5 +33,21 @@
     {
         ViewPresenter?.View?.AddEmpryDataSection();
         ViewPresenter?.NotifyStateChanged();
+    }
+    void DeleteSection()
+    {
+        if(ViewPresenter?.SelectedSection is null)
+        {
+            return;
+        }
+        else if(ViewPresenter?.SelectedSection is SheetSection sheetSection)
+        {
+            ViewPresenter.View?.SheetSections.Remove(sheetSection);
+        }
+        else if(ViewPresenter?.SelectedSection is DataSection dataSection)
+        {
+            ViewPresenter.View?.DataSections.Remove(dataSection);
+        }
+        ViewPresenter?.SetSelectedSection(null);
     }
 }
