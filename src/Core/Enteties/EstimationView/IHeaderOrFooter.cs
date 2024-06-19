@@ -6,5 +6,5 @@ public interface IHeaderOrFooter
     View? EstimationViewTemplate { get; set; }
     string EstimationViewTemplateId { get; set; }
     string Id { get; set; }
-    string Value { get; set; }
+    string Formula { get; set; }
 }

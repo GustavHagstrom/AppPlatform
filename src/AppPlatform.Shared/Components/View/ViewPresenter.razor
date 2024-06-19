@@ -1,14 +1,22 @@
 
+@if(EditMode)
+{
+    <MudToolBar Class="border-b border-solid px-4" DisableGutters="true">
+        <div class="d-flex gap-2">
+            @ExtraEditModeToolbarActions
+        </div>
+        <EditActions/>
+    </MudToolBar>
+}
 
-<MudToolBar Class="border-b border-solid px-4" DisableGutters="true">
-    <div class="d-flex gap-2">
-        @ExtraToolbarActions
-    </div>
-</MudToolBar>
 
 <div class="pa-4" style="height: calc(100%-64px); display: flex;">
     <div class="gap-4" style="display: flex; flex-direction: column;">
-        @SpaceAboveSheet
+        @if(EditMode)
+        {
+            @SpaceAboveSheetEditMode
+        }
+        
         <MudPaper Square="true" MinHeight="100px" MinWidth="100px">
 
             <HeaderOrFooterPresenter HeaderOrFooter="View?.Header" Estimation="Estimation"/>
@@ -41,8 +49,8 @@
     [Parameter] public View? View { get; set; }
     [Parameter] public Estimation? Estimation { get; set; }
     [Parameter] public bool EditMode { get; set; } = false;
-    [Parameter] public RenderFragment? ExtraToolbarActions { get; set; }
-    [Parameter] public RenderFragment? SpaceAboveSheet { get; set; }
+    [Parameter] public RenderFragment? ExtraEditModeToolbarActions { get; set; }
+    [Parameter] public RenderFragment? SpaceAboveSheetEditMode { get; set; }
 
     IEnumerable<ISection> SectionsInOrder()
     {

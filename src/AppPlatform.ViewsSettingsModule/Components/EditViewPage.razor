@@ -14,13 +14,13 @@
     </MudOverlay>
 
     <ViewPresenter EditMode="true" View="View" Estimation="SampleEstimation()" >
-        <ExtraToolbarActions>
+        <ExtraEditModeToolbarActions>
             <MudIconButton Variant="Variant.Outlined" Color="Color.Error" Icon="@Icons.Material.Sharp.Delete" OnClick="Delete" />
             <MudIconButton Variant="Variant.Outlined" Color="Color.Success" Icon="@Icons.Material.Sharp.Save" />
-        </ExtraToolbarActions>
-        <SpaceAboveSheet>
+        </ExtraEditModeToolbarActions>
+        <SpaceAboveSheetEditMode>
             <MudTextField T="string" Variant="Variant.Outlined" Value="View?.Name" ValueChanged="SetName" Label="@Localizer["Namn"]" />
-        </SpaceAboveSheet>
+        </SpaceAboveSheetEditMode>
     </ViewPresenter>
 
 </div>

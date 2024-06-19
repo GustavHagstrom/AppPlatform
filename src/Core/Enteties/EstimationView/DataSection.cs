@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace AppPlatform.Core.Enteties.EstimationView;
 
@@ -9,6 +10,8 @@ public class DataSection : IViewEntity, ISection
     public int Order { get; set; }
     public List<DataColumn> Columns { get; set; } = new();
     public int RowCount { get; set; }
+    [NotMapped]
+    public int ColumnCount => Columns.Count;
     public List<DataCell> Cells { get; set; } = new();
 
 

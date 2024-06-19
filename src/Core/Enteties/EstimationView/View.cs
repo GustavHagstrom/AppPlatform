@@ -10,8 +10,8 @@ public class View : IViewEntity, ITenantEntety
     public string Name { get; set; } = string.Empty;
     public List<DataSection> DataSections { get; set; } = new();
     public List<SheetSection> SheetSections { get; set; } = new();
-    public Footer? Footer { get; set; } = new Footer { Value = string.Empty };
-    public Header? Header { get; set; } = new Header { Value = string.Empty };
+    public Footer? Footer { get; set; } = new Footer { Formula = string.Empty };
+    public Header? Header { get; set; } = new Header { Formula = string.Empty };
     [StringLength(50)]
     public string TenantId { get; set; } = string.Empty;
 }

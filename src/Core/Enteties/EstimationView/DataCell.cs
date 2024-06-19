@@ -7,8 +7,8 @@ public class DataCell : IViewEntity
     public string Id { get; set; } = Guid.NewGuid().ToString();
     public int Row { get; set; }
     public int Column { get; set; }
-    [StringLength(50)]
-    public string Value { get; set; } = string.Empty;
+    [StringLength(500)]
+    public string Formula { get; set; } = string.Empty;
     [StringLength(50)]
     public string DataSectionId { get; set; } = string.Empty;
     public DataSection? DataSection { get; set; }
