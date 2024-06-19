@@ -1,5 +1,25 @@
-
-
+@* <div class="d-flex gap-2 px-2">
+    <MudMenu Icon="@Icons.Material.Sharp.Add" Variant="Variant.Outlined" IconColor="Color.Primary">
+        <MudMenuItem>@Localizer["Datasektion"]</MudMenuItem>
+        <MudMenuItem>@Localizer["Tabellsektion"]</MudMenuItem>
+    </MudMenu>
+</div> *@
+<MudMenu Icon="@Icons.Material.Sharp.Add" Variant="Variant.Outlined" IconColor="Color.Primary">
+    <MudMenuItem OnClick="AddDataSection">@Localizer["Datasektion"]</MudMenuItem>
+    <MudMenuItem OnClick="AddSheetSection">@Localizer["Tabellsektion"]</MudMenuItem>
+</MudMenu>
+@inject IStringLocalizer<EditActions> Localizer
 @code{
+    [CascadingParameter] public ViewPresenter? ViewPresenter { get; set; }
 
+    void AddDataSection()
+    {
+        ViewPresenter?.View?.AddEmpryDataSection();
+        ViewPresenter?.NotifyStateChanged();
+    }
+    void AddSheetSection()
+    {
+        ViewPresenter?.View?.AddEmpryDataSection();
+        ViewPresenter?.NotifyStateChanged();
+    }
 }

@@ -10,8 +10,23 @@ public class View : IViewEntity, ITenantEntety
     public string Name { get; set; } = string.Empty;
     public List<DataSection> DataSections { get; set; } = new();
     public List<SheetSection> SheetSections { get; set; } = new();
-    public Footer? Footer { get; set; } = new Footer { Formula = string.Empty };
-    public Header? Header { get; set; } = new Header { Formula = string.Empty };
     [StringLength(50)]
     public string TenantId { get; set; } = string.Empty;
+
+    public void AddEmpryDataSection()
+    {
+        DataSections.Add(new DataSection
+        {
+            ViewId = Id,
+            View = this
+        });
+    }
+    public void AddEmptySheetSection()
+    {
+        SheetSections.Add(new SheetSection
+        {
+            ViewId = Id,
+            View = this
+        });
+    }
 }

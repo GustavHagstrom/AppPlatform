@@ -12,11 +12,13 @@ public class DataSection : IViewEntity, ISection
     public int RowCount { get; set; }
     [NotMapped]
     public int ColumnCount => Columns.Count;
+    public bool IsFooter { get; set; } = false;
+    public bool IsHeader { get; set; } = false;
     public List<DataCell> Cells { get; set; } = new();
 
 
 
     [StringLength(50)]
-    public string EstimationViewId { get; set; } = string.Empty;
-    public View? EstimationView { get; set; }
+    public string ViewId { get; set; } = string.Empty;
+    public View? View { get; set; }
 }

@@ -14,6 +14,6 @@ public class SheetSection : IViewEntity, ISection
 
     public List<SheetColumn> Columns { get; set; } = new();
     [StringLength(450)]
-    public string ViewTemplateId { get; set; } = string.Empty;
-    public View? ViewTemplate { get; set; }
+    public string ViewId { get; set; } = string.Empty;
+    public View? View { get; set; }
 }
