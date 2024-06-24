@@ -1,31 +1,4 @@
-
-<ToolbarSection Title="@Localizer["Sektion"]">
-    <div class="d-flex gap-2">
-        <div class="d-flex flex-column gap-2">
-           @*  <div> *@
-                <MudMenu Dense="true" AnchorOrigin="Origin.BottomLeft" TransformOrigin="Origin.TopLeft">
-                    <ActivatorContent>
-                        <MudIconButton Variant="Variant.Outlined" Color="Color.Primary" Icon="@Icons.Material.Sharp.Add" />
-                    </ActivatorContent>
-                    <ChildContent>
-                        <MudMenuItem OnClick="AddDataSection">@Localizer["Datasektion"]</MudMenuItem>
-                        <MudMenuItem OnClick="AddSheetSection">@Localizer["Tabellsektion"]</MudMenuItem>
-                    </ChildContent>
-                </MudMenu>
-                <MudIconButton Variant="Variant.Outlined" Color="Color.Error" Icon="@Icons.Material.Sharp.Delete" Disabled="ViewPresenter?.SelectedSection is null" />
-            @* </div> *@
-
-            @* <div>
-                <MudButton StartIcon="@Icons.Material.Sharp.Delete" Variant="Variant.Outlined" Color="Color.Error" Disabled="ViewPresenter?.SelectedSection is null" />
-            </div> *@
-
-        </div>
-        
-    </div>
-    
-    
-
-</ToolbarSection>
+@inject IStringLocalizer<FormatEditor> Localizer
 
 <ToolbarSection Title="@Localizer["Format"]">
     <div class="d-flex gap-2">
@@ -62,7 +35,7 @@
                         <MudMenuItem Icon="@Icons.Material.Sharp.BorderLeft"/>
                         <MudMenuItem Icon="@Icons.Material.Sharp.BorderRight"/>
                         <MudMenuItem Icon="@Icons.Material.Sharp.BorderClear" />
-                        <MudMenuItem Icon="@Icons.Material.Sharp.BorderAll" />
+                   @*      <MudMenuItem Icon="@Icons.Material.Sharp.BorderAll" /> *@
                         <MudMenuItem Icon="@Icons.Material.Sharp.BorderOuter" />
                     </ChildContent>
                 </MudMenu>
@@ -100,37 +73,137 @@
     </div>
     
 </ToolbarSection>
-@* <ToolbarSection Title="@Localizer["Sektion"]"/>
-<ToolbarSection Title="@Localizer["Sektion"]" /> *@
 
-@inject IStringLocalizer<EditActions> Localizer
 @code{
-    [CascadingParameter] public ViewPresenter? ViewPresenter { get; set; }
+    [Parameter] public CellFormat? CellFormat { get; set; }
+    [Parameter] public EventCallback<CellFormat> CellFormatChanged { get; set; }
 
-    void AddDataSection()
+    enum Border
     {
-        ViewPresenter?.View?.AddEmpryDataSection();
-        ViewPresenter?.NotifyStateChanged();
+        None,
+        Bottom,
+        Top,
+        Left,
+        Right,
+        All,
+        Outer
     }
-    void AddSheetSection()
+
+    Task SetFontFamlity(string font)
     {
-        ViewPresenter?.View?.AddEmpryDataSection();
-        ViewPresenter?.NotifyStateChanged();
+        if (CellFormat is not null)
+        {
+            CellFormat.FontFamily = font;
+            return CellFormatChanged.InvokeAsync(CellFormat);
+        }
+        return Task.CompletedTask;
     }
-    void DeleteSection()
+    Task SetFontSize(int size)
     {
-        if(ViewPresenter?.SelectedSection is null)
+        if (CellFormat is not null)
         {
-            return;
+            CellFormat.FontSize = size;
+            return CellFormatChanged.InvokeAsync(CellFormat);
         }
-        else if(ViewPresenter?.SelectedSection is SheetSection sheetSection)
-        {
-            ViewPresenter.View?.SheetSections.Remove(sheetSection);
-        }
-        else if(ViewPresenter?.SelectedSection is DataSection dataSection)
-        {
-            ViewPresenter.View?.DataSections.Remove(dataSection);
-        }
-        ViewPresenter?.SetSelectedSection(null);
+        return Task.CompletedTask;
     }
+    Task SetIsBold(bool isbold)
+    {
+        if (CellFormat is not null)
+        {
+            CellFormat.Bold = isbold;
+            return CellFormatChanged.InvokeAsync(CellFormat);
+        }
+        return Task.CompletedTask;
+    }
+    Task SetIsItalic(bool isItalic)
+    {
+        if (CellFormat is not null)
+        {
+            CellFormat.Italic = isItalic;
+            return CellFormatChanged.InvokeAsync(CellFormat);
+        }
+        return Task.CompletedTask;
+    }
+    Task SetIsUnderlined(bool isUnderlined)
+    {
+        if (CellFormat is not null)
+        {
+            CellFormat.Underline = isUnderlined;
+            return CellFormatChanged.InvokeAsync(CellFormat);
+        }
+        return Task.CompletedTask;
+    }
+    Task SetBorder(Border border)
+    {
+        if (CellFormat is not null)
+        {
+            Action action = border switch
+            {
+                Border.None => () =>
+                {
+                    CellFormat.BorderBottom = false;
+                    CellFormat.BorderTop = false;
+                    CellFormat.BorderLeft = false;
+                    CellFormat.BorderRight = false;
+                },
+                Border.Bottom => () =>
+                {
+                    CellFormat.BorderBottom = true;
+                    CellFormat.BorderTop = false;
+                    CellFormat.BorderLeft = false;
+                    CellFormat.BorderRight = false;
+                }
+                ,
+                Border.Top => () =>
+                {
+                    CellFormat.BorderBottom = false;
+                    CellFormat.BorderTop = true;
+                    CellFormat.BorderLeft = false;
+                    CellFormat.BorderRight = false;
+                },
+                Border.Left => () =>
+                {
+                    CellFormat.BorderBottom = false;
+                    CellFormat.BorderTop = false;
+                    CellFormat.BorderLeft = true;
+                    CellFormat.BorderRight = false;
+                },
+                Border.Right => () =>
+                {
+                    CellFormat.BorderBottom = false;
+                    CellFormat.BorderTop = false;
+                    CellFormat.BorderLeft = false;
+                    CellFormat.BorderRight = true;
+                },
+                Border.All => () =>
+                {
+                    CellFormat.BorderBottom = true;
+                    CellFormat.BorderTop = true;
+                    CellFormat.BorderLeft = true;
+                    CellFormat.BorderRight = true;
+                },
+                Border.Outer => () =>
+                {
+                    CellFormat.BorderBottom = true;
+                    CellFormat.BorderTop = true;
+                    CellFormat.BorderLeft = true;
+                    CellFormat.BorderRight = true;
+
+                },
+                _ => () =>
+                {
+                    CellFormat.BorderBottom = false;
+                    CellFormat.BorderTop = false;
+                    CellFormat.BorderLeft = false;
+                    CellFormat.BorderRight = false;
+                },
+            };
+            action.Invoke();
+            return CellFormatChanged.InvokeAsync(CellFormat);
+        }
+        return Task.CompletedTask;
+    }
+    
+    
 }

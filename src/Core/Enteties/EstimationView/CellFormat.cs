@@ -8,7 +8,7 @@ public class CellFormat : IViewEntity
     [StringLength(50)]
     public string Id { get; set; } = Guid.NewGuid().ToString();
     [StringLength(50)]
-    public required string FontFamily { get; set; }
+    public string FontFamily { get; set; } = string.Empty;
     public int FontSize { get; set; }
     public bool Bold { get; set; }
     public bool Italic { get; set; }
