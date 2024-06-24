@@ -1,29 +1,104 @@
 
-<ToolbarSection Title="@Localizer["Allmänt - Sektion"]">
-    <div class="d-flex flex-column gap-2">
-        <div>
-            <MudMenu Dense="true" AnchorOrigin="Origin.BottomLeft" TransformOrigin="Origin.TopLeft">
-                <ActivatorContent>
-                    <MudButton StartIcon="@Icons.Material.Sharp.Add" Variant="Variant.Outlined" Color="Color.Primary" Dense="true">@Localizer["Ny sektion"]</MudButton>
-                </ActivatorContent>
-                <ChildContent>
-                    <MudMenuItem OnClick="AddDataSection">@Localizer["Datasektion"]</MudMenuItem>
-                    <MudMenuItem OnClick="AddSheetSection">@Localizer["Tabellsektion"]</MudMenuItem>
-                </ChildContent>
-            </MudMenu>
+<ToolbarSection Title="@Localizer["Sektion"]">
+    <div class="d-flex gap-2">
+        <div class="d-flex flex-column gap-2">
+           @*  <div> *@
+                <MudMenu Dense="true" AnchorOrigin="Origin.BottomLeft" TransformOrigin="Origin.TopLeft">
+                    <ActivatorContent>
+                        <MudIconButton Variant="Variant.Outlined" Color="Color.Primary" Icon="@Icons.Material.Sharp.Add" />
+                    </ActivatorContent>
+                    <ChildContent>
+                        <MudMenuItem OnClick="AddDataSection">@Localizer["Datasektion"]</MudMenuItem>
+                        <MudMenuItem OnClick="AddSheetSection">@Localizer["Tabellsektion"]</MudMenuItem>
+                    </ChildContent>
+                </MudMenu>
+                <MudIconButton Variant="Variant.Outlined" Color="Color.Error" Icon="@Icons.Material.Sharp.Delete" Disabled="ViewPresenter?.SelectedSection is null" />
+            @* </div> *@
+
+            @* <div>
+                <MudButton StartIcon="@Icons.Material.Sharp.Delete" Variant="Variant.Outlined" Color="Color.Error" Disabled="ViewPresenter?.SelectedSection is null" />
+            </div> *@
+
         </div>
         
-        <div>
-            <MudButton StartIcon="@Icons.Material.Sharp.Delete" Variant="Variant.Outlined" Color="Color.Error" Disabled="ViewPresenter?.SelectedSection is null">@Localizer["Ta bort sektion"]</MudButton>
+    </div>
+    
+    
+
+</ToolbarSection>
+
+<ToolbarSection Title="@Localizer["Format"]">
+    <div class="d-flex gap-2">
+        <div class="d-flex flex-column gap-2">
+            <div class="d-flex gap-2">
+
+            </div>
+            <div class="d-flex gap-2">
+
+            </div>
+        </div>
+        <div class="d-flex flex-column gap-2">
+            <style>
+                .NoMarginPls > div {
+                    margin: 0!important;
+                }
+            </style>
+            <div class="d-flex gap-2 NoMarginPls">
+                <MudTextField T="string" Margin="Margin.Dense" Variant="Variant.Outlined" Placeholder="@Localizer["Teckensnitt"]" Style="width: 200px; height: 36px;"/>
+                <MudTextField T="string" Margin="Margin.Dense" Variant="Variant.Outlined" Adornment="Adornment.None" AdornmentIcon="@Icons.Material.Sharp.FormatSize" Style="width: 55px; ; height: 36px;" />
+            </div>
+            <div class="d-flex gap-2">
+                <MudIconButton Variant="Variant.Outlined" Icon="@Icons.Material.Sharp.FormatBold" Style="background-color: var(--mud-palette-action-disabled-background)" />
+                <MudIconButton Variant="Variant.Outlined" Icon="@Icons.Material.Sharp.FormatItalic" />
+                <MudIconButton Variant="Variant.Outlined" Icon="@Icons.Material.Sharp.FormatUnderlined" />
+                <MudSpacer/>
+                <MudMenu Dense="true" AnchorOrigin="Origin.BottomLeft" TransformOrigin="Origin.TopLeft">
+                    <ActivatorContent>
+                        <MudIconButton Variant="Variant.Outlined" Color="Color.Primary" Icon="@Icons.Material.Sharp.BorderBottom" />
+                    </ActivatorContent>
+                    <ChildContent>
+                        <MudMenuItem Icon="@Icons.Material.Sharp.BorderBottom"/>
+                        <MudMenuItem Icon="@Icons.Material.Sharp.BorderTop"/>
+                        <MudMenuItem Icon="@Icons.Material.Sharp.BorderLeft"/>
+                        <MudMenuItem Icon="@Icons.Material.Sharp.BorderRight"/>
+                        <MudMenuItem Icon="@Icons.Material.Sharp.BorderClear" />
+                        <MudMenuItem Icon="@Icons.Material.Sharp.BorderAll" />
+                        <MudMenuItem Icon="@Icons.Material.Sharp.BorderOuter" />
+                    </ChildContent>
+                </MudMenu>
+                <MudMenu >
+                    <ActivatorContent>
+                        <MudIconButton Variant="Variant.Filled" Color="Color.Primary" Icon="@Icons.Material.Sharp.FormatColorFill" />
+                    </ActivatorContent>
+                    <ChildContent>
+                        <MudColorPicker DisableToolbar="true" DisableColorField="false" DisableModeSwitch="true" DisablePreview="false" DisableAlpha="true" PickerVariant="PickerVariant.Static" />
+                    </ChildContent>
+                </MudMenu>
+                <MudMenu>
+                    <ActivatorContent>
+                        <MudIconButton Variant="Variant.Filled" Color="Color.Primary" Icon="@Icons.Material.Sharp.FormatColorText" />
+                    </ActivatorContent>
+                    <ChildContent>
+                        <MudColorPicker DisableToolbar="true" DisableColorField="false" DisableModeSwitch="true" DisablePreview="false" DisableAlpha="true" PickerVariant="PickerVariant.Static" />
+                    </ChildContent>
+                </MudMenu>
+                
+            </div>
+        </div>
+        <div class="d-flex flex-column gap-2">
+            <div class="d-flex gap-2">
+                <MudIconButton Variant="Variant.Outlined" Icon="@Icons.Material.Sharp.VerticalAlignTop" />
+                <MudIconButton Variant="Variant.Outlined" Icon="@Icons.Material.Sharp.VerticalAlignCenter" />
+                <MudIconButton Variant="Variant.Outlined" Icon="@Icons.Material.Sharp.VerticalAlignBottom" />
+            </div>
+            <div class="d-flex gap-2">
+                <MudIconButton Variant="Variant.Outlined" Icon="@Icons.Material.Sharp.FormatAlignLeft" />
+                <MudIconButton Variant="Variant.Outlined" Icon="@Icons.Material.Sharp.FormatAlignCenter" />
+                <MudIconButton Variant="Variant.Outlined" Icon="@Icons.Material.Sharp.FormatAlignRight" />
+            </div>
         </div>
     </div>
     
-</ToolbarSection>
-<ToolbarSection Title="@Localizer["Sektion"]">
-
-</ToolbarSection>
-<ToolbarSection Title="@Localizer["Format"]">
-
 </ToolbarSection>
 @* <ToolbarSection Title="@Localizer["Sektion"]"/>
 <ToolbarSection Title="@Localizer["Sektion"]" /> *@
