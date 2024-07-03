@@ -15,6 +15,8 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
 
     public DbSet<BidconAccessCredentials> BidconAccessCredentials { get; set; }
     public DbSet<View> Views { get; set; }
+    public DbSet<UserView> UserViews { get; set; }
+    public DbSet<RoleView> RoleViews { get; set; }
     public DbSet<UserSettings> UserSettings { get; set; }
     public DbSet<Role> Roles { get; set; }
     public DbSet<RoleAccess> RoleAccess { get; set; }
@@ -29,6 +31,11 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
             .HasKey(ua => new { ua.UserId, ua.AccessClaimValue });
         modelBuilder.Entity<UserRole>()
             .HasKey(ur => new { ur.UserId, ur.RoleId });
+        modelBuilder.Entity<RoleView>()
+            .HasKey(rv => new { rv.RoleId, rv.ViewId });
+        modelBuilder.Entity<UserView>()
+            .HasKey(uv => new { uv.UserId, uv.ViewId });
+
 
         modelBuilder.Entity<Estimation>()
             .HasOne(e => e.NetSheet)

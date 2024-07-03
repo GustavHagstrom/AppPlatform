@@ -22,7 +22,6 @@
 @inject NavigationManager NavigationManager
 
 @code {
-    UserWithPhoto? SelectedUser { get; set; }
     [Parameter] public List<UserWithPhoto> Users { get; set; } = new();
     IEnumerable<UserWithPhoto> UsersIterator => Users.OrderBy(x => x.User.DisplayName);
 

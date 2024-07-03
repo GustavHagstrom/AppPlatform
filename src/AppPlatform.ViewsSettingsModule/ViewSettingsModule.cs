@@ -20,6 +20,8 @@ public class ViewSettingsModule : IModule
     public void RegisterServices(IServiceCollection services)
     {
         services.AddScoped<IViewService, ViewService>();
+        services.AddScoped<IRoleViewService, RoleViewService>();
+        services.AddScoped<IUserViewService, UserViewService>();
         services.AddAuthorization(configure =>
         {
             configure.AddPolicy(Constants.Authorization.Policy, policy =>

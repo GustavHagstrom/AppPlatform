@@ -23,7 +23,7 @@
 
         <MudHidden Breakpoint="Breakpoint.SmAndDown">
             <div style="height: 100%; display: flex;">
-                <MudPaper Elevation="5" Style="width: 56px; height: 100%;">
+                <MudPaper Elevation="5" Style="width: 56px; height: 100%; position: relative; z-index: 1000;">
                     <MudNavMenu Color="Color.Primary" Dense="false">
                         <MudNavLink Match="NavLinkMatch.All" Icon="@Icons.Material.Sharp.Dashboard" Href="" />
                         @foreach (var link in ApplicationLinkService.MainLayoutLinks)
@@ -32,7 +32,7 @@
                         }
                     </MudNavMenu>
                 </MudPaper>
-                <div style="width: calc(100% - 56px); height: 100%">
+                <div style="width: calc(100% - 56px); height: 100%; overflow: auto;">
                     @Body
                 </div>
             </div>
@@ -45,7 +45,7 @@
                 }
             </style>
             <div style="height: 100%;">
-                <MudPaper Elevation="3" Class="d-flex" Style="height: calc(var(--mud-appbar-height) - var(--mud-appbar-height)/3);">
+                <MudPaper Elevation="3" Class="d-flex" Style="height: calc(var(--mud-appbar-height) - var(--mud-appbar-height)/3); position: relative; z-index: 1000;">
                     <MudNavMenu Color="Color.Primary" Dense="false" Class="d-flex nav-item-block">
                         <MudNavLink Match="NavLinkMatch.All" Icon="@Icons.Material.Sharp.Dashboard" Href="" />
                         @foreach (var link in ApplicationLinkService.MainLayoutLinks)
@@ -54,7 +54,7 @@
                         }
                     </MudNavMenu>
                 </MudPaper>
-                <div style="height: calc(100% - var(--mud-appbar-height) + var(--mud-appbar-height)/3);">
+                <div style="height: calc(100% - var(--mud-appbar-height) + var(--mud-appbar-height)/3); width: 100%; overflow: auto;">
                     @Body
                 </div>
             </div>

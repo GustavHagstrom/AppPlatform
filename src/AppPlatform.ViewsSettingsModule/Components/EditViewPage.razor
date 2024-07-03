@@ -1,32 +1,67 @@
 @page "/Settings/ViewSettings/Edit/{ViewId}"
 @using AppPlatform.Core.Enteties.EstimationEnteties
 @using AppPlatform.Core.Enums.BidconAccess
+@using AppPlatform.Shared.Components
 @using AppPlatform.Shared.Components.Dialogs
 @using AppPlatform.ViewSettingsModule.Services
 @using Microsoft.AspNetCore.Components.Authorization
 @using AppPlatform.Shared.Components.View
+
 @layout SettingsLayout
 @inject IStringLocalizer<EditViewPage> Localizer
+@implements IAsyncDisposable
+
+
 
 <div class="relative" style="height: 100%">
     <MudOverlay DarkBackground="true" Visible="IsLoading" Absolute="true">
         <MudProgressCircular Size="Size.Large" Color="Color.Primary" Indeterminate="true" />
     </MudOverlay>
 
-    <ViewPresenter EditMode="true" View="View" Estimation="SampleEstimation()" >
-        <ExtraEditModeToolbarActions>
-            <ToolbarSection Title="@Localizer["Vy"]">
-                <div style="display: flex; flex-direction: column; gap: 8px;">
+    <PageSetupWithNavigation MobileBreakpoint="Breakpoint.MdAndDown" DesktopBreakpoint="Breakpoint.LgAndUp">
+        <NavigationContent>
+
+            <MudStack Spacing="0" Row="IsMdAndDown" Style="min-width: 150px;">
+                <MudButton OnClick="() => ActiveTab = TabType.Format" Variant="Variant.Text" StartIcon="@Icons.Material.Sharp.FormatColorText" Class="px-4 justify-start" Style="@TabPanelButtonColorStyle(TabType.Format)">@Localizer["Format"]</MudButton>
+                <MudButton OnClick="() => ActiveTab = TabType.Common" Variant="Variant.Text" StartIcon="@Icons.Material.Sharp.Settings" Class="px-3 justify-start" Style="@TabPanelButtonColorStyle(TabType.Common)">@Localizer["Allmänt"]</MudButton>
+                <MudButton OnClick="() => ActiveTab = TabType.Tags" Variant="Variant.Text" StartIcon="@Icons.Material.Sharp.Tag" Class="px-3 justify-start" Style="@TabPanelButtonColorStyle(TabType.Tags)">@Localizer["Taggar"]</MudButton>
+                <MudButton OnClick="() => ActiveTab = TabType.Rights" Variant="Variant.Text" StartIcon="@Icons.Material.Sharp.AdminPanelSettings" Class="px-3 justify-start" Style="@TabPanelButtonColorStyle(TabType.Rights)">@Localizer["Rättigheter"]</MudButton>
+            </MudStack>
+
+        </NavigationContent>
+        <ChildContent>
+            <div class="relative" style="height: 100%">
+                <MudOverlay DarkBackground="true" Visible="true" Absolute="true">
+                    <MudProgressCircular Size="Size.Large" Color="Color.Primary" Indeterminate="true" />
+                </MudOverlay>
+                <MudToolBar Dense="true" DisableGutters="true" Class="border-b border-solid d-flex gap-2 px-2">
+
                     <MudIconButton Variant="Variant.Outlined" Color="Color.Success" Icon="@Icons.Material.Sharp.Save" />
                     <MudIconButton Variant="Variant.Outlined" Color="Color.Error" Icon="@Icons.Material.Sharp.Delete" OnClick="Delete" />
-                </div>
-            </ToolbarSection>
-            
-        </ExtraEditModeToolbarActions>
-        <SpaceAboveSheetEditMode>
-            <MudTextField T="string" Variant="Variant.Outlined" Value="View?.Name" ValueChanged="SetName" Label="@Localizer["Namn"]" />
-        </SpaceAboveSheetEditMode>
-    </ViewPresenter>
+
+                </MudToolBar>
+                <CascadingValue Value="this">
+                    @switch (ActiveTab)
+                    {
+                        case TabType.Format:
+                            <ViewPresenter EditMode="true" View="View" Estimation="SampleEstimation()" />
+                            break;
+                        case TabType.Common:
+                            <MudTextField T="string" Variant="Variant.Outlined" Value="View?.Name" ValueChanged="SetName" Label="@Localizer["Namn"]" />
+                            break;
+                        case TabType.Tags:
+                            <p>Taggar....</p>
+                            break;
+                        case TabType.Rights:
+                            <ViewRights View="View" />
+                            break;
+                    }
+                </CascadingValue>
+                
+
+            </div>
+        </ChildContent>
+    </PageSetupWithNavigation>
 
 </div>
 
@@ -34,16 +69,52 @@
 @inject AuthenticationStateProvider AuthenticationStateProvider
 @inject IDialogService DialogService
 @inject NavigationManager NavigationManager
+@inject IBrowserViewportService BrowserViewportService
+
 @code{
     [Parameter] public string? ViewId { get; set; }
 
+    enum TabType
+    {
+        Format,
+        Common,
+        Tags,
+        Rights,
+
+    }
+
+
     bool IsLoading { get; set; } = false;
     View? View { get; set; }
+    TabType ActiveTab = TabType.Format;
+    Guid ObserverId = Guid.NewGuid();
+    Breakpoint CurrentBreakPoint;
+    Breakpoint LastBreakPoint;
+    bool IsMdAndDown => CurrentBreakPoint == Breakpoint.Xs || CurrentBreakPoint == Breakpoint.Sm || CurrentBreakPoint == Breakpoint.Md;
+    string TabPanelButtonColorStyle(TabType tab) => ActiveTab == tab ? "background-color: var(--mud-palette-primary-hover); color: var(--mud-palette-primary);" : "";
 
     protected override Task OnInitializedAsync()
     {
         return LoadDataAsync();
     }
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            await BrowserViewportService.SubscribeAsync(ObserverId, (args) =>
+            {
+                LastBreakPoint = CurrentBreakPoint;
+                CurrentBreakPoint = args.Breakpoint;
+                if (LastBreakPoint != CurrentBreakPoint)
+                {
+                    StateHasChanged();
+                }
+            });
+        }
+
+        await base.OnAfterRenderAsync(firstRender);
+    }
+    public async ValueTask DisposeAsync() => await BrowserViewportService.UnsubscribeAsync(ObserverId);
 
     async Task LoadDataAsync()
     {
@@ -64,7 +135,7 @@
             await _viewService.UpsertAsync(state.User, View);
         }
     }
-    void SetLoading(bool isLoading)
+    public void SetLoading(bool isLoading)
     {
         IsLoading = isLoading;
         StateHasChanged();
@@ -131,3 +202,8 @@
             };
     }
 }
+
+
+
+
+
