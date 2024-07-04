@@ -7,39 +7,39 @@
 @using Microsoft.AspNetCore.Components.Authorization
 @using AppPlatform.Shared.Components.View
 
-@layout SettingsLayout
+@layout MainLayout
 @inject IStringLocalizer<EditViewPage> Localizer
 @implements IAsyncDisposable
 
 
 
 <div class="relative" style="height: 100%">
-    <MudOverlay DarkBackground="true" Visible="IsLoading" Absolute="true">
-        <MudProgressCircular Size="Size.Large" Color="Color.Primary" Indeterminate="true" />
-    </MudOverlay>
 
     <PageSetupWithNavigation MobileBreakpoint="Breakpoint.MdAndDown" DesktopBreakpoint="Breakpoint.LgAndUp">
         <NavigationContent>
 
             <MudStack Spacing="0" Row="IsMdAndDown" Style="min-width: 150px;">
-                <MudButton OnClick="() => ActiveTab = TabType.Format" Variant="Variant.Text" StartIcon="@Icons.Material.Sharp.FormatColorText" Class="px-4 justify-start" Style="@TabPanelButtonColorStyle(TabType.Format)">@Localizer["Format"]</MudButton>
-                <MudButton OnClick="() => ActiveTab = TabType.Common" Variant="Variant.Text" StartIcon="@Icons.Material.Sharp.Settings" Class="px-3 justify-start" Style="@TabPanelButtonColorStyle(TabType.Common)">@Localizer["Allmänt"]</MudButton>
-                <MudButton OnClick="() => ActiveTab = TabType.Tags" Variant="Variant.Text" StartIcon="@Icons.Material.Sharp.Tag" Class="px-3 justify-start" Style="@TabPanelButtonColorStyle(TabType.Tags)">@Localizer["Taggar"]</MudButton>
-                <MudButton OnClick="() => ActiveTab = TabType.Rights" Variant="Variant.Text" StartIcon="@Icons.Material.Sharp.AdminPanelSettings" Class="px-3 justify-start" Style="@TabPanelButtonColorStyle(TabType.Rights)">@Localizer["Rättigheter"]</MudButton>
+                <MudButton OnClick="() => ActiveTab = TabType.Common" Variant="Variant.Text" Icon="@Icons.Material.Sharp.Settings" Class="px-3 justify-start" Style="@TabPanelButtonColorStyle(TabType.Common)">@Localizer["Allmänt"]</MudButton>
+                <MudButton OnClick="() => ActiveTab = TabType.Format" Variant="Variant.Text" Icon="@Icons.Material.Sharp.FormatColorText" Class="px-4 justify-start" Style="@TabPanelButtonColorStyle(TabType.Format)">@Localizer["Format"]</MudButton>
+                
+                <MudButton OnClick="() => ActiveTab = TabType.Tags" Variant="Variant.Text" Icon="@Icons.Material.Sharp.Tag" Class="px-3 justify-start" Style="@TabPanelButtonColorStyle(TabType.Tags)">@Localizer["Taggar"]</MudButton>
+                <MudButton OnClick="() => ActiveTab = TabType.Rights" Variant="Variant.Text" Icon="@Icons.Material.Sharp.AdminPanelSettings" Class="px-3 justify-start" Style="@TabPanelButtonColorStyle(TabType.Rights)">@Localizer["Rättigheter"]</MudButton>
             </MudStack>
 
         </NavigationContent>
+
         <ChildContent>
             <div class="relative" style="height: 100%">
-                <MudOverlay DarkBackground="true" Visible="true" Absolute="true">
+                <MudOverlay DarkBackground="true" Visible="IsLoading" Absolute="true">
                     <MudProgressCircular Size="Size.Large" Color="Color.Primary" Indeterminate="true" />
                 </MudOverlay>
-                <MudToolBar Dense="true" DisableGutters="true" Class="border-b border-solid d-flex gap-2 px-2">
+             @*    <MudToolBar Dense="true" DisableGutters="true" Class="border-b border-solid d-flex gap-2 px-2">
 
                     <MudIconButton Variant="Variant.Outlined" Color="Color.Success" Icon="@Icons.Material.Sharp.Save" />
                     <MudIconButton Variant="Variant.Outlined" Color="Color.Error" Icon="@Icons.Material.Sharp.Delete" OnClick="Delete" />
 
-                </MudToolBar>
+                </MudToolBar> *@
+
                 <CascadingValue Value="this">
                     @switch (ActiveTab)
                     {
@@ -47,7 +47,16 @@
                             <ViewPresenter EditMode="true" View="View" Estimation="SampleEstimation()" />
                             break;
                         case TabType.Common:
-                            <MudTextField T="string" Variant="Variant.Outlined" Value="View?.Name" ValueChanged="SetName" Label="@Localizer["Namn"]" />
+                            <div class="pa-2">
+                                <SettingsSection>
+                                    <div class="d-flex gap-2">
+                                        <MudButton Variant="Variant.Outlined" Color="Color.Success" StartIcon="@Icons.Material.Sharp.Save">@Localizer["Spara"]</MudButton>
+                                        <MudButton Variant="Variant.Outlined" Color="Color.Error" StartIcon="@Icons.Material.Sharp.Delete" OnClick="Delete">@Localizer["Ta bort"]</MudButton>
+                                    </div>
+                                    <MudTextField T="string" Variant="Variant.Outlined" Value="View?.Name" ValueChanged="SetName" Label="@Localizer["Namn"]" Margin="Margin.Dense"/>
+                                </SettingsSection>
+                            </div>
+                            
                             break;
                         case TabType.Tags:
                             <p>Taggar....</p>
@@ -61,6 +70,7 @@
 
             </div>
         </ChildContent>
+
     </PageSetupWithNavigation>
 
 </div>
@@ -86,7 +96,7 @@
 
     bool IsLoading { get; set; } = false;
     View? View { get; set; }
-    TabType ActiveTab = TabType.Format;
+    TabType ActiveTab = TabType.Common;
     Guid ObserverId = Guid.NewGuid();
     Breakpoint CurrentBreakPoint;
     Breakpoint LastBreakPoint;

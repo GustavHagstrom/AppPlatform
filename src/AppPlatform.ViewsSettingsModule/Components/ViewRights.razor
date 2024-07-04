@@ -4,8 +4,7 @@
 @using Microsoft.AspNetCore.Components.Authorization
 @inject IStringLocalizer<ViewRights> Localizer
 
-<div class="pa-2">
-    <SettingsSection/>
+<div class="pa-4">
     <SettingsSection Title="@Localizer["Roller"]">
         <RolePicker AllRoles="AllRoles" PickedRoleIds="PickedRoleIds" PickChanged="OnRolePickChanged" />
     </SettingsSection>
@@ -19,10 +18,10 @@
 @inject IUserViewService UserViewService
 @inject IRoleViewService RoleViewService
 @code{
+
     [Parameter] public View? View { get; set; }
     [CascadingParameter] public EditViewPage? EditViewPage { get; set; }
     bool IsLoading { get; set; } = false;
-
 
     List<Role> AllRoles { get; set; } = new List<Role>();
     List<string> PickedRoleIds { get; set; } = new List<string>();
@@ -45,7 +44,7 @@
         PickedRoleIds = (await RoleViewService.GetPickedRoleIdsAsync(state.User, View)).ToList();
         AllUsers = (await MicrosoftGraphUserAccess.GetUsersWithPhotoAsync()).ToList();
         PickedUserIds = (await UserViewService.GetPickedUserIdsAsync(state.User, View)).ToList();
-        EditViewPage.SetLoading(true);
+        EditViewPage.SetLoading(false);
     }
     async Task OnRolePickChanged(PickChangedRecord<Role> record)
     {
@@ -65,7 +64,7 @@
             await RoleViewService.UnpickAsync(state.User, View, new string[] { record.Data.Id });
             PickedRoleIds.Remove(record.Data.Id);
         }
-        EditViewPage.SetLoading(true);
+        EditViewPage.SetLoading(false);
     }
     async Task OnUserPickChanged(PickChangedRecord<UserWithPhoto> record)
     {
@@ -85,13 +84,8 @@
             await UserViewService.UnpickAsync(state.User, View, new string[] { record.Data.User.Id });
             PickedUserIds.Remove(record.Data.User.Id);
         }
-        EditViewPage.SetLoading(true);
+        EditViewPage.SetLoading(false);
         
     }
-    // void SetLoading(bool value)
-    // {
-    //     IsLoading = value;
-    //     StateHasChanged();
-    // }
 
 }

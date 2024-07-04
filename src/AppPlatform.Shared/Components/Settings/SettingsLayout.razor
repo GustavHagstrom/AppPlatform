@@ -15,6 +15,7 @@
                 <MudHidden Breakpoint="Breakpoint.SmAndDown">
                     <MudText Typo="Typo.subtitle1" Style="font-weight: 500;">@Localizer["Allmänt"]</MudText>
                 </MudHidden>
+            @* <MudText Typo="Typo.subtitle1" Style="font-weight: 500;">@Localizer["Allmänt"]</MudText> *@
             </MudNavLink>
 
             @foreach (var link in ApplicationLinkService.SettingsPageLinks)
@@ -23,6 +24,7 @@
                     <MudHidden Breakpoint="Breakpoint.SmAndDown">
                         <MudText Typo="Typo.subtitle1" Style="font-weight: 500;">@link.Text</MudText>
                     </MudHidden>
+                @* <MudText Typo="Typo.subtitle1" Style="font-weight: 500;">@link.Text</MudText> *@
                 </AuthorizedNavLink>
             }
 

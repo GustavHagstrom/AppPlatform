@@ -6,7 +6,6 @@
     {
         <MudToolBar Class="border-b border-solid" DisableGutters="true" Style="height: 128px;">
             <div class="d-flex" style="height: 100%; width: 100%;">
-                @ExtraEditModeToolbarActions
                 <EditActions />
             </div>
             
@@ -16,10 +15,6 @@
 
     <div class="pa-4" style="height: calc(100%-128px); display: flex;">
         <div class="gap-4" style="display: flex; flex-direction: column;">
-            @if(EditMode)
-            {
-                @SpaceAboveSheetEditMode
-            }
         
             <MudPaper Square="true" MinHeight="100px" MinWidth="100px">
 
@@ -52,8 +47,6 @@
     [Parameter] public View? View { get; set; }
     [Parameter] public Estimation? Estimation { get; set; }
     [Parameter] public bool EditMode { get; set; } = false;
-    [Parameter] public RenderFragment? ExtraEditModeToolbarActions { get; set; }
-    [Parameter] public RenderFragment? SpaceAboveSheetEditMode { get; set; }
 
     public ISection? SelectedSection { get; private set; } = null;
     public object? SelectedSectionItem { get; private set; } = null;
