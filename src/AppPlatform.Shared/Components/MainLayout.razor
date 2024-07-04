@@ -9,19 +9,40 @@
 <PageTitle>@($"{CommonAppConstants.ApplicationName} {CommonAppConstants.ApplicationVersion}")</PageTitle>
 
 
+
 <MudLayout Style="height: 100vh">
     <MudAppBar Elevation="3" Dense="true" DisableGutters="true">
-        <MudIcon Icon="@CustomIcons.BidconHub" Color="Color.Primary" Class="mx-2" Size="Size.Large" />
+
+        <style>
+            .nav-item-block > a {
+                display: block !important;
+            }
+        </style>
+        <AppNavLink Href="" Match="NavLinkMatch.All">
+            <MudIcon Icon="@CustomIcons.BidconHub" Class="mx-2" Size="Size.Large" />
+        </AppNavLink>
+        <AppNavLink Href="" Match="NavLinkMatch.Prefix">
+            <MudIcon Icon="@CustomIcons.BidconHub" Class="mx-2" Size="Size.Large" />
+        </AppNavLink>
+
+        <MudNavMenu Color="Color.Primary" Dense="false" Class="d-flex nav-item-block" Style="height: 100%;">
+            <MudNavLink Match="NavLinkMatch.All" Icon="@Icons.Material.Sharp.Dashboard" Href=""/>
+            @foreach (var link in ApplicationLinkService.MainLayoutLinks)
+            {
+                <AuthorizedNavLink ApplicationLink="@link" />
+            }
+        </MudNavMenu>
+       @*  <MudIcon Icon="@CustomIcons.BidconHub" Color="Color.Primary" Class="mx-2" Size="Size.Large" />
         <MudHidden Breakpoint="Breakpoint.SmAndDown">
             <MudText Typo="Typo.h5" Class="ml-0 pr-4" Style="font-weight: bold;">@CommonAppConstants.ApplicationName</MudText>
-        </MudHidden>
+        </MudHidden> *@
         <MudSpacer />
         <LoginDisplay />
     </MudAppBar>
 
     <MudMainContent Style="height: 100%;">
-
-        <MudHidden Breakpoint="Breakpoint.SmAndDown">
+        @Body
+       @*  <MudHidden Breakpoint="Breakpoint.SmAndDown">
             <div style="height: 100%; display: flex;">
                 <MudPaper Elevation="5" Style="width: 56px; height: 100%; position: relative; z-index: 1000;">
                     <MudNavMenu Color="Color.Primary" Dense="false">
@@ -36,9 +57,9 @@
                     @Body
                 </div>
             </div>
-        </MudHidden>
+        </MudHidden> *@
 
-        <MudHidden Breakpoint="Breakpoint.MdAndUp">
+    @*     <MudHidden Breakpoint="Breakpoint.MdAndUp">
             <style>
                 .nav-item-block > a {
                     display: block !important;
@@ -58,7 +79,7 @@
                     @Body
                 </div>
             </div>
-        </MudHidden>
+        </MudHidden> *@
 
         
     </MudMainContent>

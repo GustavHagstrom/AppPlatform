@@ -34,22 +34,28 @@
   </ItemGroup>
 
   <ItemGroup>
+    <_ContentIncludedByDefault Remove="components\AppNavLink.razor" />
     <_ContentIncludedByDefault Remove="components\PageSetupWithNavigation.razor" />
     <_ContentIncludedByDefault Remove="components\ViewPresenter.razor" />
   </ItemGroup>
 
   <ItemGroup>
+    <None Include="Components\AppNavLink.razor" />
     <None Include="Components\PageSetupWithNavigation.razor" />
     <None Include="Components\View\Edit\FormatEditor.razor" />
     <None Include="Components\View\ViewPresenter.razor" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="wwwroot\" />
+    <UpToDateCheckInput Remove="components\ViewPresenter.razor" />
   </ItemGroup>
 
   <ItemGroup>
-    <UpToDateCheckInput Remove="components\ViewPresenter.razor" />
+    <UpToDateCheckInput Remove="components\AppNavLink.razor" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="wwwroot\" />
   </ItemGroup>
 
 
