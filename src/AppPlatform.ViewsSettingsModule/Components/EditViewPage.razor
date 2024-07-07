@@ -15,30 +15,34 @@
 
 <div class="relative" style="height: 100%">
 
-    <PageSetupWithNavigation MobileBreakpoint="Breakpoint.MdAndDown" DesktopBreakpoint="Breakpoint.LgAndUp">
+    <PageSetupWithNavigation MobileBreakpoint="Breakpoint.SmAndDown" DesktopBreakpoint="Breakpoint.MdAndUp">
         <NavigationContent>
 
-            <MudStack Spacing="0" Row="IsMdAndDown" Style="min-width: 150px;">
-                <MudButton OnClick="() => ActiveTab = TabType.Common" Variant="Variant.Text" Icon="@Icons.Material.Sharp.Settings" Class="px-3 justify-start" Style="@TabPanelButtonColorStyle(TabType.Common)">@Localizer["Allmänt"]</MudButton>
-                <MudButton OnClick="() => ActiveTab = TabType.Format" Variant="Variant.Text" Icon="@Icons.Material.Sharp.FormatColorText" Class="px-4 justify-start" Style="@TabPanelButtonColorStyle(TabType.Format)">@Localizer["Format"]</MudButton>
-                
-                <MudButton OnClick="() => ActiveTab = TabType.Tags" Variant="Variant.Text" Icon="@Icons.Material.Sharp.Tag" Class="px-3 justify-start" Style="@TabPanelButtonColorStyle(TabType.Tags)">@Localizer["Taggar"]</MudButton>
-                <MudButton OnClick="() => ActiveTab = TabType.Rights" Variant="Variant.Text" Icon="@Icons.Material.Sharp.AdminPanelSettings" Class="px-3 justify-start" Style="@TabPanelButtonColorStyle(TabType.Rights)">@Localizer["Rättigheter"]</MudButton>
-            </MudStack>
+            <div class="@($"d-flex {(IsSmAndDown ? "flex-row" : "flex-column")}")" style="min-width: 150px; max-width: 100%; overflow-x: auto; overflow-y: hidden;">
+
+                <div class="@TabHeaderClass(TabType.Common)" @onclick="() => ActiveTab = TabType.Common">
+                    <MudText Inline="true" Class="pl-0" Style="font-weight: 500;">@Localizer["Allmänt"]</MudText>
+                </div>
+                <div class="@TabHeaderClass(TabType.Format)" @onclick="() => ActiveTab = TabType.Format">
+                    <MudText Inline="true" Class="pl-0" Style="font-weight: 500;">@Localizer["Format"]</MudText>
+                </div>
+                <div class="@TabHeaderClass(TabType.Tags)" @onclick="() => ActiveTab = TabType.Tags">
+                    <MudText Inline="true" Class="pl-0" Style="font-weight: 500;">@Localizer["Taggar"]</MudText>
+                </div>
+                <div class="@TabHeaderClass(TabType.Rights)" @onclick="() => ActiveTab = TabType.Rights">
+                    <MudText Inline="true" Class="pl-0" Style="font-weight: 500;">@Localizer["Rättigheter"]</MudText>
+                </div>
+
+            </div>
 
         </NavigationContent>
 
         <ChildContent>
             <div class="relative" style="height: 100%">
+
                 <MudOverlay DarkBackground="true" Visible="IsLoading" Absolute="true">
                     <MudProgressCircular Size="Size.Large" Color="Color.Primary" Indeterminate="true" />
                 </MudOverlay>
-             @*    <MudToolBar Dense="true" DisableGutters="true" Class="border-b border-solid d-flex gap-2 px-2">
-
-                    <MudIconButton Variant="Variant.Outlined" Color="Color.Success" Icon="@Icons.Material.Sharp.Save" />
-                    <MudIconButton Variant="Variant.Outlined" Color="Color.Error" Icon="@Icons.Material.Sharp.Delete" OnClick="Delete" />
-
-                </MudToolBar> *@
 
                 <CascadingValue Value="this">
                     @switch (ActiveTab)
@@ -93,14 +97,16 @@
 
     }
 
+    string TabHeaderBaseClass => "App-Nav-Link mud-ripple d-flex align-center px-4 py-2 cursor-pointer flex-shrink-0";
 
+    string TabHeaderClass(TabType tabType) => ActiveTab == tabType ? $"{TabHeaderBaseClass} App-Nav-Link-Active" : TabHeaderBaseClass;
     bool IsLoading { get; set; } = false;
     View? View { get; set; }
     TabType ActiveTab = TabType.Common;
     Guid ObserverId = Guid.NewGuid();
     Breakpoint CurrentBreakPoint;
     Breakpoint LastBreakPoint;
-    bool IsMdAndDown => CurrentBreakPoint == Breakpoint.Xs || CurrentBreakPoint == Breakpoint.Sm || CurrentBreakPoint == Breakpoint.Md;
+    bool IsSmAndDown => CurrentBreakPoint == Breakpoint.Xs || CurrentBreakPoint == Breakpoint.Sm;// || CurrentBreakPoint == Breakpoint.Md;
     string TabPanelButtonColorStyle(TabType tab) => ActiveTab == tab ? "background-color: var(--mud-palette-primary-hover); color: var(--mud-palette-primary);" : "";
 
     protected override Task OnInitializedAsync()
