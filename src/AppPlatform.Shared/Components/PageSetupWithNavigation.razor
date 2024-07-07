@@ -2,9 +2,9 @@
 <MudHidden Breakpoint="MobileBreakpoint">
     <div style="height: 100%; max-width: 100%; display: flex">
         <div class="border-solid border-r" style="height: 100%;">
-            <MudNavMenu Color="Color.Primary" Dense="false" Class="">
+          @*   <MudNavMenu Color="Color.Primary" Dense="false" Class=""> *@
                 @NavigationContent
-            </MudNavMenu>
+          @*   </MudNavMenu> *@
         </div>
         <div class="flex-grow-1" style="height: 100%; overflow: auto;">
             @ChildContent
@@ -13,16 +13,11 @@
 </MudHidden>
 
 <MudHidden Breakpoint="DesktopBreakpoint">
-    <style>
-        .nav-item-block a {
-            display: block !important;
-        }
-    </style>
     <div style="height: 100%; width: 100%; display: block">
         <div class="border-solid border-b d-flex" style="height: calc(var(--mud-appbar-height) - var(--mud-appbar-height)/3);">
-            <MudNavMenu Color="Color.Primary" Dense="false" Class="d-flex nav-item-block">
+            @* <MudNavMenu Color="Color.Primary" Dense="false" Class="d-flex nav-item-block"> *@
                 @NavigationContent
-            </MudNavMenu>
+           @*  </MudNavMenu> *@
         </div>
         <div class="flex-grow-1" style="height: calc(100% - var(--mud-appbar-height) + var(--mud-appbar-height)/3); overflow: auto;">
             @ChildContent

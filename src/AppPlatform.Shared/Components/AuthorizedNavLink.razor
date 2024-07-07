@@ -1,14 +1,14 @@
 @using AppPlatform.Shared.Abstractions
 
-@if(ApplicationLink is not null)
+@* @if(ApplicationLink is not null)
 {
     if (ApplicationLink.AuthPolicy is not null)
     {
         <AuthorizeView Policy="@ApplicationLink.AuthPolicy">
             <Authorized>
-                <MudNavLink Match="NavLinkMatch.Prefix" Icon="@ApplicationLink.Icon" Href="@ApplicationLink.LinkRoute" >
+                <AppNavLink Match="NavLinkMatch.Prefix" Icon="@ApplicationLink.Icon" Href="@ApplicationLink.LinkRoute" >
                     @ChildContent
-                </MudNavLink>
+                </AppNavLink>
             </Authorized>
         </AuthorizeView>
     }
@@ -18,11 +18,30 @@
             @ChildContent
         </MudNavLink>
     }
+} *@
+
+@if(Policy is not null)
+{
+    <AuthorizeView Policy="@Policy">
+        <Authorized>
+            <AppNavLink Match="@Match" Href="@Href" Style="@Style" Class="@Class">
+                @ChildContent
+            </AppNavLink>
+        </Authorized>
+    </AuthorizeView>
+}
+else
+{
+    <AppNavLink Match="@Match" Href="@Href" Style="@Style" Class="@Class">
+        @ChildContent
+    </AppNavLink>
 }
 
 
 @code{
-    [Parameter] public IApplicationLink? ApplicationLink { get; set; }
+    [Parameter] public string? Policy { get; set; }
+    [Parameter] public string? Href { get; set; }
+    // [Parameter] public IApplicationLink? ApplicationLink { get; set; }
     [Parameter] public RenderFragment? ChildContent { get; set; }
     [Parameter] public string Class { get; set; } = string.Empty;
     [Parameter] public string Style { get; set; } = string.Empty;

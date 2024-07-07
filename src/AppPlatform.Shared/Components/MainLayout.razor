@@ -1,5 +1,4 @@
-﻿@using AppPlatform.Shared.Components.View
-@using AppPlatform.Shared.Constants
+﻿@using AppPlatform.Shared.Constants
 @using AppPlatform.Shared.Abstractions
 
 @inherits LayoutComponentBase
@@ -14,76 +13,30 @@
 <MudLayout Style="height: 100vh">
     <MudAppBar Elevation="3" Dense="true" DisableGutters="true">
 
-        <style>
-            .nav-item-block > a {
-                display: block !important;
-            }
-        </style>
-        <AppNavLink Href="" Style="height: 100%;" Class="d-flex align-center" Match="NavLinkMatch.All">
-                <MudIcon Icon="@CustomIcons.BidconHub" Class="mx-2" Size="Size.Medium" />
-                <MudText Inline="true" Class="pr-2">hej</MudText>
-        </AppNavLink>
-        <AppNavLink Href="" Match="NavLinkMatch.Prefix">
-            <MudIcon Icon="@CustomIcons.BidconHub" Class="mx-2" Size="Size.Large" />
+
+
+        <AppNavLink Href="" Match="NavLinkMatch.All" Style="height: 100%;" Class="d-flex align-center px-4">
+            <MudIcon Icon="@Icons.Material.Sharp.Dashboard" Size="Size.Medium" />
+            <MudHidden Breakpoint="Breakpoint.SmAndDown">
+                <MudText Inline="true" Class="pl-2">@Localizer["Start"]</MudText>
+            </MudHidden>
         </AppNavLink>
 
-        <MudNavMenu Color="Color.Primary" Dense="false" Class="d-flex nav-item-block" Style="height: 100%;">
-            <MudNavLink Match="NavLinkMatch.All" Icon="@Icons.Material.Sharp.Dashboard" Href=""/>
-            @foreach (var link in ApplicationLinkService.MainLayoutLinks)
-            {
-                <AuthorizedNavLink ApplicationLink="@link" />
-            }
-        </MudNavMenu>
-       @*  <MudIcon Icon="@CustomIcons.BidconHub" Color="Color.Primary" Class="mx-2" Size="Size.Large" />
-        <MudHidden Breakpoint="Breakpoint.SmAndDown">
-            <MudText Typo="Typo.h5" Class="ml-0 pr-4" Style="font-weight: bold;">@CommonAppConstants.ApplicationName</MudText>
-        </MudHidden> *@
+        @foreach (var link in ApplicationLinkService.MainLayoutLinks)
+        {
+            <AuthorizedNavLink Href="@link.LinkRoute" Policy="@link.AuthPolicy" Match="NavLinkMatch.Prefix" Style="height: 100%;" Class="d-flex align-center px-4">
+                <MudIcon Icon="@link.Icon" Size="Size.Medium" />
+                <MudHidden Breakpoint="Breakpoint.SmAndDown">
+                    <MudText Inline="true" Class="pl-2">@link.Text</MudText>
+                </MudHidden>
+            </AuthorizedNavLink>
+        }
         <MudSpacer />
         <LoginDisplay />
     </MudAppBar>
 
     <MudMainContent Style="height: 100%;">
         @Body
-       @*  <MudHidden Breakpoint="Breakpoint.SmAndDown">
-            <div style="height: 100%; display: flex;">
-                <MudPaper Elevation="5" Style="width: 56px; height: 100%; position: relative; z-index: 1000;">
-                    <MudNavMenu Color="Color.Primary" Dense="false">
-                        <MudNavLink Match="NavLinkMatch.All" Icon="@Icons.Material.Sharp.Dashboard" Href="" />
-                        @foreach (var link in ApplicationLinkService.MainLayoutLinks)
-                        {
-                            <AuthorizedNavLink ApplicationLink="@link" />
-                        }
-                    </MudNavMenu>
-                </MudPaper>
-                <div style="width: calc(100% - 56px); height: 100%; overflow: auto;">
-                    @Body
-                </div>
-            </div>
-        </MudHidden> *@
-
-    @*     <MudHidden Breakpoint="Breakpoint.MdAndUp">
-            <style>
-                .nav-item-block > a {
-                    display: block !important;
-                }
-            </style>
-            <div style="height: 100%;">
-                <MudPaper Elevation="3" Class="d-flex" Style="height: calc(var(--mud-appbar-height) - var(--mud-appbar-height)/3); position: relative; z-index: 1000;">
-                    <MudNavMenu Color="Color.Primary" Dense="false" Class="d-flex nav-item-block">
-                        <MudNavLink Match="NavLinkMatch.All" Icon="@Icons.Material.Sharp.Dashboard" Href="" />
-                        @foreach (var link in ApplicationLinkService.MainLayoutLinks)
-                        {
-                            <AuthorizedNavLink ApplicationLink="@link" />
-                        }
-                    </MudNavMenu>
-                </MudPaper>
-                <div style="height: calc(100% - var(--mud-appbar-height) + var(--mud-appbar-height)/3); width: 100%; overflow: auto;">
-                    @Body
-                </div>
-            </div>
-        </MudHidden> *@
-
-        
     </MudMainContent>
 </MudLayout>
 

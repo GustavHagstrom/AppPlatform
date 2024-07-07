@@ -4,29 +4,26 @@
 
 @inject IStringLocalizer<SettingsLayout> Localizer
 @inject IApplicationLinkService ApplicationLinkService
-<PageSetupWithNavigation>
+<PageSetupWithNavigation MobileBreakpoint="Breakpoint.SmAndDown" DesktopBreakpoint="Breakpoint.LgAndUp">
     <NavigationContent>
 
-    @*         <MudHidden Breakpoint="Breakpoint.SmAndDown">
-                <MudText Class="pt-3 px-4" Typo="Typo.h6" Style="font-weight: bold;">@Localizer["Inställningar"]</MudText>
-            </MudHidden> *@
+        <AppNavLink Href="@SharedRoutes.Start" Match="NavLinkMatch.All" Class="d-flex align-center pa-4">
+            <MudIcon Icon="@Icons.Material.Sharp.Settings" Size="Size.Medium" />
+            <MudHidden Breakpoint="Breakpoint.SmAndDown">
+                <MudText Inline="true" Class="pl-2">@Localizer["Allmänt"]</MudText>
+            </MudHidden>
+        </AppNavLink> 
 
-            <MudNavLink Match="NavLinkMatch.All" Icon="@Icons.Material.Sharp.Settings" Href="@SharedRoutes.Start">
+        @foreach (var link in ApplicationLinkService.SettingsPageLinks)
+        {
+
+            <AuthorizedNavLink Href="@link.LinkRoute" Policy="@link.AuthPolicy" Match="NavLinkMatch.Prefix" Class="d-flex align-center pa-4">
+                <MudIcon Icon="@link.Icon"Size="Size.Medium" />
                 <MudHidden Breakpoint="Breakpoint.SmAndDown">
-                    <MudText Typo="Typo.subtitle1" Style="font-weight: 500;">@Localizer["Allmänt"]</MudText>
+                    <MudText Inline="true" Class="pl-2">@link.Text</MudText>
                 </MudHidden>
-            @* <MudText Typo="Typo.subtitle1" Style="font-weight: 500;">@Localizer["Allmänt"]</MudText> *@
-            </MudNavLink>
-
-            @foreach (var link in ApplicationLinkService.SettingsPageLinks)
-            {
-                <AuthorizedNavLink ApplicationLink="@link">
-                    <MudHidden Breakpoint="Breakpoint.SmAndDown">
-                        <MudText Typo="Typo.subtitle1" Style="font-weight: 500;">@link.Text</MudText>
-                    </MudHidden>
-                @* <MudText Typo="Typo.subtitle1" Style="font-weight: 500;">@link.Text</MudText> *@
-                </AuthorizedNavLink>
-            }
+            </AuthorizedNavLink>
+        }
 
     </NavigationContent>
     <ChildContent>
