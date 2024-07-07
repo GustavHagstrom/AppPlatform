@@ -1,0 +1,26 @@
+@using MudBlazor.Utilities
+
+@* <div class="AppLink">
+    <NavLink class="AppLink" ActiveClass="Active" href="@Href" Match="Match">
+        @ChildContent
+    </NavLink>
+</div> *@
+@* <a class="AppLink">
+    @ChildContent
+</a> *@
+
+<NavLink class="@_navLinkClass" ActiveClass="App-Nav-Link-Active" style="@Style" href="@Href" Match="Match">
+    @ChildContent
+</NavLink>
+
+
+@code{
+    [Parameter] public string Class { get; set; } = string.Empty;
+    [Parameter] public string Style { get; set; } = string.Empty;
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+    [Parameter] public NavLinkMatch Match { get; set; } = NavLinkMatch.Prefix;
+    [Parameter] public string Href { get; set; } = string.Empty;
+
+    string _navLinkClass => $"App-Nav-Link {Class}";
+   
+}

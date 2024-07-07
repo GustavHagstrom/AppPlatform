@@ -1,0 +1,21 @@
+﻿.App-Nav-Link {
+    transition: background-color 250ms 
+                cubic-bezier(0.4, 0, 0.2, 1) 0ms, box-shadow 250ms 
+                cubic-bezier(0.4, 0, 0.2, 1) 0ms, border 250ms 
+                cubic-bezier(0.4, 0, 0.2, 1) 0ms, padding 250ms 
+                cubic-bezier(0.4, 0, 0.2, 1) 0ms; 
+}
+
+..App-Nav-Link:hover {
+    background-color: var(--mud-palette-action-default-hover);
+}
+
+.App-Nav-Link-Active {
+    color: var(--mud-palette-primary);
+    background-color: var(--mud-palette-primary-hover);
+}
+
+    .App-Nav-Link-Active:hover {
+        color: var(--mud-palette-primary);
+        background-color: rgba(var(--mud-palette-primary-rgb), 0.12);
+    }

@@ -41,6 +41,7 @@
   <ItemGroup>
     <Folder Include="Components\Shared\Dialogs\" />
     <Folder Include="Migrations\" />
+    <Folder Include="wwwroot\css\Components\" />
   </ItemGroup>
 
   <ItemGroup>
