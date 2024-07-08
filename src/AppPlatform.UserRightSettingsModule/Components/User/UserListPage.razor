@@ -5,7 +5,11 @@
 
 <SettingsPageBase>
     <SettingsSection Title="@Localizer["Användare"]" LoadDataAsync="LoadDataAsync">
-        <UserList Users="Users"/>
+        <AppPlatform.Shared.Components.Rights.UserPicker AllUsers="Users" EnablePicking="false">
+            <ExtraTdContent>
+                <MudIconButton Icon="@Icons.Material.Sharp.Edit" Color="Color.Primary" OnClick="() => EditUserAccess(context)" Size="Size.Small" />
+            </ExtraTdContent>
+        </AppPlatform.Shared.Components.Rights.UserPicker>
     </SettingsSection>
 </SettingsPageBase>
 

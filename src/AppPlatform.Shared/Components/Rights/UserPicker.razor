@@ -1,23 +1,36 @@
 @using AppPlatform.Shared.Services.MicrosoftGraph
 @inject IStringLocalizer<UserPicker> Localizer
 
+@if (EnablePicking)
+{
+    <MudSwitch T="bool" @bind-Value="ShowOnlyPicked" Label="@Localizer["Visa endast valda"]" Color="Color.Primary" />
+}
 
-<MudSwitch T="bool" @bind-Value="ShowOnlyPicked" Label="@Localizer["Visa endast valda"]" Color="Color.Primary" />
 <MudTextField T="string" Variant="Variant.Outlined" @bind-Value="Filter" Label="@Localizer["Sök"]" Margin="Margin.Dense" Immediate="true" />
 <MudSimpleTable Hover="false" Dense="true" Bordered="false">
     <tbody>
         @foreach (var user in UsersIterator)
         {
             <tr>
-                <td class="pl-2" >
+                @if (EnablePicking)
+                {
+                    <td class="pl-2" >
                     <MudCheckBox T="bool"
                                  Dense="true"
                                  Value="@PickedUserIds.Any(x => x == user.User.Id)"
                                  ValueChanged="x => OnPickChanged(user, x)" />
-                </td>
+                    </td>
+                }
+                
                 <td class="pl-2" style="width: 100%;">
                     <UserAvatar Size="Size.Small" User="user"/>
                 </td>
+                @if(ExtraTdContent is not null)
+                {
+                    <td class="pl-2">
+                        @ExtraTdContent.Invoke(user)
+                    </td>
+                }
             </tr>
         }
     </tbody>
@@ -25,9 +38,11 @@
 
 
 @code {
+    [Parameter] public bool EnablePicking { get; set; } = true;
     [Parameter] public List<string> PickedUserIds { get; set; } = new List<string>();
     [Parameter] public List<UserWithPhoto> AllUsers { get; set; } = new List<UserWithPhoto>();
     [Parameter] public EventCallback<PickChangedRecord<UserWithPhoto>> PickChanged { get; set; }
+    [Parameter] public RenderFragment<UserWithPhoto>? ExtraTdContent { get; set; }
 
     bool ShowOnlyPicked { get; set; } = false;
     string Filter { get; set; } = string.Empty;

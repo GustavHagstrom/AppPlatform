@@ -1,5 +1,6 @@
 @page "/Settings/Roles/Edit/{RoleId}"
 @using System.Security.Claims
+@using AppPlatform.Shared.Components.Rights
 @using AppPlatform.UserRightSettingsModule.Components.User
 @using Microsoft.AspNetCore.Components.Authorization
 @inject IStringLocalizer<EditRoleAccessPage> Localizer
@@ -24,11 +25,13 @@
     </SettingsSection>
     
     <SettingsSection Title="@Localizer["Användare"]">
-        <div class="d-flex">
-            <MudIconButton Variant="Variant.Outlined" Color="Color.Primary" Icon="@Icons.Material.Sharp.Edit" OnClick="EditUserList" />
-        </div>
-        
-        <UserList Users="Users" />
+        <UserPicker AllUsers="AllUsers" PickedUserIds="PickedUserIds" PickChanged="OnUserPickChanged">
+            <ExtraTdContent>
+                <div style="display: flex; justify-content: flex-end;">
+                    <MudIconButton Icon="@Icons.Material.Sharp.Edit" Color="Color.Primary" OnClick="() => EditUser(context)" Size="Size.Small" />
+                </div>
+            </ExtraTdContent>
+        </UserPicker>
     </SettingsSection>
 
 </SettingsPageBase>
@@ -42,22 +45,36 @@
 @inject IDialogService DialogService
 @inject NavigationManager NavigationManager
 
-    @code{
+@code{
     [Parameter] public string? RoleId { get; set; }
     Role? Role { get; set; }
     List<RoleAccess> Access { get; set; } = new();
     bool IsLoading { get; set; } = false;
     ClaimsPrincipal? UserClaims { get; set; }
-    List<UserWithPhoto> Users { get; set; } = new();
+    List<UserWithPhoto> AllUsers { get; set; } = new();
+    List<string> PickedUserIds { get; set; } = new();
 
-    async Task EditUserList()
+    async Task OnUserPickChanged(PickChangedRecord<UserWithPhoto> record)
     {
-        var parameters = new DialogParameters<UserPickerDialog> { { x => x.RoleId, RoleId } };
-        var dialog = DialogService.Show<UserPickerDialog>(Localizer["Välj användare"], parameters);
-        var result = await dialog.Result;
-        
-        await LoadRoleDataAsync();
-        
+        var userRole = new UserRole
+        {
+            RoleId = RoleId!,
+            UserId = record.Data.User.Id!
+        };
+        if (record.IsPicked)
+        {
+            await RoleService.CreateUserRole(userRole);
+            PickedUserIds.Add(record.Data.User.Id!);
+        }
+        else
+        {
+            await RoleService.DeleteUserRole(userRole);
+            PickedUserIds.Remove(record.Data.User.Id!);
+        }
+    }
+    void EditUser(UserWithPhoto user)
+    {
+        NavigationManager.NavigateTo($"{Constants.ModuleRoutes.UserAccessEdit}/{user.User.Id}");
     }
     async Task Delete()
     {
@@ -76,27 +93,22 @@
             }
         }
     }
-    async Task<ClaimsPrincipal?> GetClaimsPrincipalAsync()
-    {
-        var state = await AuthenticationStateProvider.GetAuthenticationStateAsync();
-        return state.User;
-    }
     async Task SetName(string value)
     {
-        var userClaims = await GetClaimsPrincipalAsync();
-        if (Role is not null && userClaims is not null)
+        var state = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+        if (Role is not null && state.User is not null)
         {
             Role.Name = value;
-            await RoleService.UpsertRoleAsync(userClaims, Role);
+            await RoleService.UpsertRoleAsync(state.User, Role);
         }
     }
     async Task SetDescription(string value)
     {
-        var userClaims = await GetClaimsPrincipalAsync();
-        if (Role is not null && userClaims is not null)
+        var state = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+        if (Role is not null && state.User is not null)
         {
             Role.Description = value;
-            await RoleService.UpsertRoleAsync(userClaims, Role);
+            await RoleService.UpsertRoleAsync(state.User, Role);
         }
     }
     async Task LoadRoleDataAsync()
@@ -109,7 +121,8 @@
             Role = await RoleService.GetRoleAsync(RoleId);
             var users = await MicrosoftGraphUserAccess.GetUsersWithPhotoAsync();
             var userRoles = await RoleService.GetUserRolesForRoleAsync(RoleId);
-            Users = users.Where(u => userRoles.Any(ur => ur.UserId == u.User.Id)).ToList();
+            AllUsers = users.ToList();
+            PickedUserIds = users.Where(u => userRoles.Any(ur => ur.UserId == u.User.Id)).Select(x => x.User.Id!).ToList();
         }
         SetIsLoading(false);
     }
