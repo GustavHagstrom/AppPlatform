@@ -3,7 +3,7 @@
 <ToolbarSection Title="@Localizer["Sektion"]">
     <div class="d-flex gap-2">
         <div class="d-flex flex-column gap-2">
-            @*  <div> *@
+
             <MudMenu Dense="true" AnchorOrigin="Origin.BottomLeft" TransformOrigin="Origin.TopLeft">
                 <ActivatorContent>
                     <MudIconButton Variant="Variant.Outlined" Color="Color.Primary" Icon="@Icons.Material.Sharp.Add" />
@@ -14,11 +14,7 @@
                 </ChildContent>
             </MudMenu>
             <MudIconButton Variant="Variant.Outlined" Color="Color.Error" Icon="@Icons.Material.Sharp.Delete" Disabled="ViewPresenter?.SelectedSection is null" />
-            @* </div> *@
 
-            @* <div>
-            <MudButton StartIcon="@Icons.Material.Sharp.Delete" Variant="Variant.Outlined" Color="Color.Error" Disabled="ViewPresenter?.SelectedSection is null" />
-            </div> *@
 
         </div>
 

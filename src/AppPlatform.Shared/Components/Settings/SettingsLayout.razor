@@ -4,7 +4,7 @@
 
 @inject IStringLocalizer<SettingsLayout> Localizer
 @inject IApplicationLinkService ApplicationLinkService
-<PageSetupWithNavigation MobileBreakpoint="Breakpoint.SmAndDown" DesktopBreakpoint="Breakpoint.MdAndUp">
+<PageSetupWithNavigation WhenToHideMobileView="Breakpoint.MdAndUp" WhenToHideDesktopView="Breakpoint.SmAndDown">
     <NavigationContent>
 
         <AppNavLink Href="@SharedRoutes.Start" Match="NavLinkMatch.All" Class="d-flex align-center px-4 py-2">

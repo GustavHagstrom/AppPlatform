@@ -15,10 +15,10 @@
 
 <div class="relative" style="height: 100%">
 
-    <PageSetupWithNavigation MobileBreakpoint="Breakpoint.SmAndDown" DesktopBreakpoint="Breakpoint.MdAndUp">
+    <PageSetupWithNavigation WhenToHideMobileView="Breakpoint.None" WhenToHideDesktopView="Breakpoint.Always">
         <NavigationContent>
 
-            <div class="@($"d-flex {(IsSmAndDown ? "flex-row" : "flex-column")}")" style="min-width: 150px; max-width: 100%; overflow-x: auto; overflow-y: hidden;">
+            <div class="@($"d-flex {(IsSmAndDown ? "flex-row" : "flex-row")}")" style="min-width: 150px; max-width: 100%; overflow-x: auto; overflow-y: hidden;">
 
                 <div class="@TabHeaderClass(TabType.Common)" @onclick="() => ActiveTab = TabType.Common">
                     <MudText Inline="true" Class="pl-0" Style="font-weight: 500;">@Localizer["Allmänt"]</MudText>
