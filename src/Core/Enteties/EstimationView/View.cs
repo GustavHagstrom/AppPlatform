@@ -13,7 +13,7 @@ public class View : IViewEntity, ITenantEntety
     [StringLength(50)]
     public string TenantId { get; set; } = string.Empty;
 
-    public void AddEmpryDataSection()
+    public void AddEmptyDataSection()
     {
         DataSections.Add(new DataSection
         {

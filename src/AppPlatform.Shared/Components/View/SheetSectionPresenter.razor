@@ -1,8 +1,16 @@
-<div>
-    @Estimation?.Description
-</div>
+<div class="border border-solid">
+    <h6>SekctionEdit</h6>
+    @if (Section is not null && Estimation is not null && View is not null)
+    {
+        @foreach (var item in Estimation.NetSheet!.AllInOrder)
+        {
+            <h6>@item.Description</h6>
+        }
+    }</div>
 @code {
-    [Parameter] public SheetSection? Section { get; set; }
+    [Parameter, EditorRequired] public SheetSection? Section { get; set; }
     [Parameter] public bool EditMode { get; set; } = false;
-    [Parameter] public Estimation? Estimation { get; set; }
+    [Parameter, EditorRequired] public Estimation? Estimation { get; set; }
+    [Parameter, EditorRequired] public View? View { get; set; }
+
 }
