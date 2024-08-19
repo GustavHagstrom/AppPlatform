@@ -8,7 +8,7 @@ public class SheetColumn : IViewEntity
     [StringLength(50)]
     public string Id { get; set; } = Guid.NewGuid().ToString();
     public int Order { get; set; }
-    public int WidthPercent { get; set; }
+    public int Width { get; set; } = 10;
     public SheetColumnType ColumnType { get; set; }
     [StringLength(50)]
     public string CellFormatId { get; set; } = string.Empty;

@@ -111,7 +111,7 @@
     {
         if (CellFormat is not null)
         {
-            CellFormat.Bold = isbold;
+            CellFormat.IsBold = isbold;
             return CellFormatChanged.InvokeAsync(CellFormat);
         }
         return Task.CompletedTask;
@@ -120,7 +120,7 @@
     {
         if (CellFormat is not null)
         {
-            CellFormat.Italic = isItalic;
+            CellFormat.IsItalic = isItalic;
             return CellFormatChanged.InvokeAsync(CellFormat);
         }
         return Task.CompletedTask;
@@ -129,7 +129,7 @@
     {
         if (CellFormat is not null)
         {
-            CellFormat.Underline = isUnderlined;
+            CellFormat.IsUnderline = isUnderlined;
             return CellFormatChanged.InvokeAsync(CellFormat);
         }
         return Task.CompletedTask;
@@ -142,61 +142,61 @@
             {
                 Border.None => () =>
                 {
-                    CellFormat.BorderBottom = false;
-                    CellFormat.BorderTop = false;
-                    CellFormat.BorderLeft = false;
-                    CellFormat.BorderRight = false;
+                    CellFormat.HasBorderBottom = false;
+                    CellFormat.HasBorderTop = false;
+                    CellFormat.HasBorderLeft = false;
+                    CellFormat.HasBorderRight = false;
                 },
                 Border.Bottom => () =>
                 {
-                    CellFormat.BorderBottom = true;
-                    CellFormat.BorderTop = false;
-                    CellFormat.BorderLeft = false;
-                    CellFormat.BorderRight = false;
+                    CellFormat.HasBorderBottom = true;
+                    CellFormat.HasBorderTop = false;
+                    CellFormat.HasBorderLeft = false;
+                    CellFormat.HasBorderRight = false;
                 }
                 ,
                 Border.Top => () =>
                 {
-                    CellFormat.BorderBottom = false;
-                    CellFormat.BorderTop = true;
-                    CellFormat.BorderLeft = false;
-                    CellFormat.BorderRight = false;
+                    CellFormat.HasBorderBottom = false;
+                    CellFormat.HasBorderTop = true;
+                    CellFormat.HasBorderLeft = false;
+                    CellFormat.HasBorderRight = false;
                 },
                 Border.Left => () =>
                 {
-                    CellFormat.BorderBottom = false;
-                    CellFormat.BorderTop = false;
-                    CellFormat.BorderLeft = true;
-                    CellFormat.BorderRight = false;
+                    CellFormat.HasBorderBottom = false;
+                    CellFormat.HasBorderTop = false;
+                    CellFormat.HasBorderLeft = true;
+                    CellFormat.HasBorderRight = false;
                 },
                 Border.Right => () =>
                 {
-                    CellFormat.BorderBottom = false;
-                    CellFormat.BorderTop = false;
-                    CellFormat.BorderLeft = false;
-                    CellFormat.BorderRight = true;
+                    CellFormat.HasBorderBottom = false;
+                    CellFormat.HasBorderTop = false;
+                    CellFormat.HasBorderLeft = false;
+                    CellFormat.HasBorderRight = true;
                 },
                 Border.All => () =>
                 {
-                    CellFormat.BorderBottom = true;
-                    CellFormat.BorderTop = true;
-                    CellFormat.BorderLeft = true;
-                    CellFormat.BorderRight = true;
+                    CellFormat.HasBorderBottom = true;
+                    CellFormat.HasBorderTop = true;
+                    CellFormat.HasBorderLeft = true;
+                    CellFormat.HasBorderRight = true;
                 },
                 Border.Outer => () =>
                 {
-                    CellFormat.BorderBottom = true;
-                    CellFormat.BorderTop = true;
-                    CellFormat.BorderLeft = true;
-                    CellFormat.BorderRight = true;
+                    CellFormat.HasBorderBottom = true;
+                    CellFormat.HasBorderTop = true;
+                    CellFormat.HasBorderLeft = true;
+                    CellFormat.HasBorderRight = true;
 
                 },
                 _ => () =>
                 {
-                    CellFormat.BorderBottom = false;
-                    CellFormat.BorderTop = false;
-                    CellFormat.BorderLeft = false;
-                    CellFormat.BorderRight = false;
+                    CellFormat.HasBorderBottom = false;
+                    CellFormat.HasBorderTop = false;
+                    CellFormat.HasBorderLeft = false;
+                    CellFormat.HasBorderRight = false;
                 },
             };
             action.Invoke();

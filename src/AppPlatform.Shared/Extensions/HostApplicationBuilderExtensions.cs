@@ -8,6 +8,7 @@ using AppPlatform.Shared.Services.Authorization;
 using AppPlatform.Shared.Services.Email;
 using AppPlatform.Shared.Services.MicrosoftGraph;
 using AppPlatform.Shared.Services.Settings;
+using AppPlatform.Shared.Services.Views;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Graph;
 using Microsoft.Kiota.Abstractions.Authentication;
@@ -54,6 +55,7 @@ public static class HostApplicationBuilderExtensions
         services.AddScoped(sp => new GraphServiceClient(sp.GetRequiredService<IAuthenticationProvider>()));
         services.AddScoped<IMicrosoftGraphUserAccess, GraphClientUserAccess>();
         services.UseBidconDataAccess<BidconDatabaseConnectionsStringService>();
+        services.AddTransient<IViewClassService, ViewClassService>();
 
         services.AddAuthorization(configure =>
         {

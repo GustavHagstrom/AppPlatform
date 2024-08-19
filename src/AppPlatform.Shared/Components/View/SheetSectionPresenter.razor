@@ -1,16 +1,87 @@
-<div class="border border-solid">
-    <h6>SekctionEdit</h6>
-    @if (Section is not null && Estimation is not null && View is not null)
-    {
-        @foreach (var item in Estimation.NetSheet!.AllInOrder)
+@using AppPlatform.Core.Enums.ViewTemplate
+@using AppPlatform.Shared.Services.Views
+@inject IViewClassService ViewClassService
+@inject IStringLocalizer<SheetSectionPresenter> Localizer
+
+
+@if (Section is not null && Estimation is not null && View is not null)
+{
+    <style>
+        @foreach (var column in Section.Columns)
         {
-            <h6>@item.Description</h6>
+            var a = 1;
+            if(column.CellFormat is not null)
+            {
+                @ViewClassService.CreateSheetColumnClass(column.ColumnType.ToString(), column, Section.Columns.Sum(x => x.Width));    
+            }
         }
-    }</div>
+    </style>
+
+
+    @* Should be like this: *@
+    @* <style>
+    @foreach (var className in dynamicClasses)
+    {
+        .@className {
+            /* Your dynamic styles here */
+        }
+    }
+</style> *@
+
+    <MudSimpleTable Hover="false" Dense="true" Bordered="false">
+        <tbody>
+            <tr>
+                @foreach (var column in Section.Columns.OrderBy(x => x.Order))
+                {
+                    <th>@GetColumnName(column.ColumnType)</th>
+                }
+            </tr>
+          @*   @foreach (var item in Estimation.NetSheet!.AllInOrder)
+            {
+                <tr>
+                    @foreach (var column in Section.Columns.OrderBy(x => x.Order))
+                    {
+                        <td class="@column.ColumnType.ToString()")">@GetColumnDataFromItem(column.ColumnType, item)</td>
+                    }
+                </tr>
+                    
+            } *@
+        </tbody>
+    </MudSimpleTable>
+}
+
 @code {
     [Parameter, EditorRequired] public SheetSection? Section { get; set; }
     [Parameter] public bool EditMode { get; set; } = false;
     [Parameter, EditorRequired] public Estimation? Estimation { get; set; }
     [Parameter, EditorRequired] public View? View { get; set; }
 
+    string? GetColumnDataFromItem(SheetColumnType type, SheetItem item)
+    {
+        return type switch
+        {
+            SheetColumnType.Description => item.Description,
+            SheetColumnType.Quantity => item.Quantity.ToString(),
+            SheetColumnType.Unit => item.Unit,
+            SheetColumnType.UnitCost => item.UnitCost.ToString(),
+            SheetColumnType.TotalCost => item.TotalCost.ToString(),
+            SheetColumnType.UnitAskingPrice => item.UnitAskingPrice.ToString(),
+            SheetColumnType.TotalAskingPrice => item.TotalAskingPrice.ToString(),
+            _ => throw new NotImplementedException()
+        };
+    }
+    string? GetColumnName(SheetColumnType type)
+    {
+        return type switch
+        {
+            SheetColumnType.Description => Localizer["Benämning"],
+            SheetColumnType.Quantity => Localizer["Mängd"],
+            SheetColumnType.Unit => Localizer["Enhet"],
+            SheetColumnType.UnitCost => Localizer["Enhetskostnad"],
+            SheetColumnType.TotalCost => Localizer["Total kostnad"],
+            SheetColumnType.UnitAskingPrice => Localizer["Enhetspris kund"],
+            SheetColumnType.TotalAskingPrice => Localizer["Total kundpris"],
+            _ => throw new NotImplementedException()
+        };
+    }
 }

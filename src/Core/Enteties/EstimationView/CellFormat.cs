@@ -9,21 +9,25 @@ public class CellFormat : IViewEntity
     public string Id { get; set; } = Guid.NewGuid().ToString();
     [StringLength(50)]
     public string FontFamily { get; set; } = string.Empty;
-    public int FontSize { get; set; }
-    public bool Bold { get; set; }
-    public bool Italic { get; set; }
-    public bool Underline { get; set; }
-    public Align Align { get; set; }
-    public Justify Justify { get; set; }
-    public TextFormatType FormatType { get; set; }
-    public bool ThoasandsSeparator { get; set; }
-    public int DecimalCount { get; set; }
-    public bool IncludeTimeOfDay { get; set; }
-    public bool BorderLeft { get; set; }
-    public bool BorderTop { get; set; }
-    public bool BorderRight { get; set; }
-    public bool BorderBottom { get; set; }
-    public BorderStyle BorderStyle { get; set; }
+    [StringLength(50)]
+    public string? BackgroundColor { get; set; }
+    [StringLength(50)]
+    public string? TextColor { get; set; }
+    public int FontSize { get; set; } = 12;
+    public bool IsBold { get; set; } = false;
+    public bool IsItalic { get; set; } = false;
+    public bool IsUnderline { get; set; } = false;
+    public Align Align { get; set; } = Align.Left;
+    public Justify Justify { get; set; } = Justify.Bottom;
+    public TextFormatType FormatType { get; set; } = TextFormatType.Text;
+    public bool HasThoasandsSeparator { get; set; } = true;
+    public int DecimalCount { get; set; } = 2;
+    public bool DoesIncludeTimeOfDay { get; set; } = false;
+    public bool HasBorderLeft { get; set; } = false;
+    public bool HasBorderTop { get; set; } = false;
+    public bool HasBorderRight { get; set; } = false;
+    public bool HasBorderBottom { get; set; } = false;
+    public BorderStyle BorderStyle { get; set; } = BorderStyle.Solid;
 
 
 
