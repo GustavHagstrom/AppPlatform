@@ -1,5 +1,6 @@
 ﻿using AppPlatform.Core.Enteties.EstimationView;
 using AppPlatform.Core.Enums.ViewTemplate;
+using System.Globalization;
 
 namespace AppPlatform.Shared.Services.Views;
 public class ViewClassService : IViewClassService
@@ -10,26 +11,27 @@ public class ViewClassService : IViewClassService
     /// <param name="name"></param>
     /// <param name="format"></param>
     /// <returns></returns>
-    public string CreateCellFormatClass(string name, CellFormat format)
+    public string CreateCellFormatStyles(string name, CellFormat format)
     {
-        var classString = $".{name} {{";
-        AddCellFormatStyles(classString, format);
-        classString += "}";
+        //var classString = $".{name} {{";
+        string classString = CreateCellFormatStyles(format);
+        //classString += "}";
         return classString;
     }
-    public string CreateSheetColumnClass(string name, SheetColumn column, int allColumnsWidthSum)
+    public string CreateSheetColumnStyles(string name, SheetColumn column, int allColumnsWidthSum)
     {
-        var classString = $".{name} {{";
-        classString += $"width: {(double)column.Width / allColumnsWidthSum}%;";
-        AddCellFormatStyles(classString, column.CellFormat ?? new CellFormat()); 
-        classString += "}";
+        //var classString = $".{name} {{";
+        var classString = $"width: {((double)column.Width / allColumnsWidthSum * 100).ToString(CultureInfo.InvariantCulture)}% !important;\n";
+        classString += CreateCellFormatStyles(column.CellFormat ?? new CellFormat()); 
+      /*  classString += "}"*/;
         return classString;
     }
-    private void AddCellFormatStyles(string classString, CellFormat format)
+    private string CreateCellFormatStyles(CellFormat format)
     {
-        AddColorStyles(classString, format);
-        AddTextStyles(classString, format);
-        AddBorderStyles(classString, format);
+        var classString = string.Empty;
+        classString += CreateColorStyles(format);
+        classString +=  CreateTextStyles(format);
+        classString += CreateBorderStyles(format);
 
         //if (    format.Padding is not null)
         //{
@@ -39,60 +41,66 @@ public class ViewClassService : IViewClassService
         //{
         //    classString += $"margin: {format.Margin};";
         //}
+        return classString;
     }
 
-    private void AddBorderStyles(string classString, CellFormat format)
+    private string CreateBorderStyles(CellFormat format)
     {
+        string classString = string.Empty;
         string borderStyle = GetBorderStyle(format.BorderStyle);
         if (format.HasBorderLeft)
         {
-            classString += $"border-left: 1px {borderStyle} black;";
+            classString += $"border-left: 1px {borderStyle} black !important;\n";
         }
         if (format.HasBorderTop)
         {
-            classString += $"border-top: 1px {borderStyle} black;";
+            classString += $"border-top: 1px {borderStyle} black !important;\n";
         }
         if (format.HasBorderRight)
         {
-            classString += $"border-right: 1px {borderStyle} black;";
+            classString += $"border-right: 1px {borderStyle} black !important;\n";
         }
         if (format.HasBorderBottom)
         {
-            classString += $"border-bottom: 1px {borderStyle} black;";
+            classString += $"border-bottom: 1px {borderStyle} black !important;\n";
         }
+        return classString;
     }
 
-    private void AddTextStyles(string classString, CellFormat format)
+    private string CreateTextStyles(CellFormat format)
     {
-        classString += $"font-size: {format.FontSize};";
-        classString += $"font-family: {format.FontFamily};";
-        classString += $"text-align: {GetAlign(format.Align)};";
-        classString += $"justify-content: {GetJustify(format.Justify)};";
+        var classString = $"font-size: {format.FontSize}px !important;\n";
+        classString += $"font-family: {format.FontFamily} !important;\n";
+        classString += $"text-align: {GetAlign(format.Align)} !important;\n";
+        classString += $"justify-content: {GetJustify(format.Justify)} !important;\n";
 
         if (format.IsBold)
         {
-            classString += $"font-weight: 600;";
+            classString += $"font-weight: 600 !important;\n";
         }
         if (format.IsItalic)
         {
-            classString += $"font-style: italic;";
+            classString += $"font-style: italic !important;\n";
         }
         if (format.IsUnderline)
         {
-            classString += $"text-decoration: underline;";
+            classString += $"text-decoration: underline !important;\n";
         }
+        return classString;
     }
 
-    private void AddColorStyles(string classString, CellFormat format)
+    private string CreateColorStyles(CellFormat format)
     {
+        string classString = string.Empty;
         if (format.BackgroundColor is not null)
         {
-            classString += $"background-color: {format.BackgroundColor};";
+            classString += $"background-color: {format.BackgroundColor} !important;\n";
         }
         if (format.TextColor is not null)
         {
-            classString += $"color: {format.TextColor};";
+            classString += $"color: {format.TextColor} !important;\n";
         }
+        return classString;
     }
     private string GetAlign(Align align)
     {
@@ -108,10 +116,10 @@ public class ViewClassService : IViewClassService
     {
         return justify switch
         {
-            Justify.Top => "top",
+            Justify.Top => "start",
             Justify.Center => "center",
-            Justify.Bottom => "bottom",
-            _ => "bottom"
+            Justify.Bottom => "end",
+            _ => "end"
         };
     }
     private string GetBorderStyle(BorderStyle style)

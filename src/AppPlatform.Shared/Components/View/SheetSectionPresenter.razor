@@ -1,32 +1,24 @@
 @using AppPlatform.Core.Enums.ViewTemplate
 @using AppPlatform.Shared.Services.Views
+@using System.Globalization
 @inject IViewClassService ViewClassService
 @inject IStringLocalizer<SheetSectionPresenter> Localizer
 
 
 @if (Section is not null && Estimation is not null && View is not null)
 {
+    TypeToClassNameMap = new();
     <style>
         @foreach (var column in Section.Columns)
         {
-            var a = 1;
-            if(column.CellFormat is not null)
-            {
-                @ViewClassService.CreateSheetColumnClass(column.ColumnType.ToString(), column, Section.Columns.Sum(x => x.Width));    
-            }
+            TypeToClassNameMap.Add(column.ColumnType, "c" + Guid.NewGuid().ToString());
+            <text>
+                @($".{TypeToClassNameMap[column.ColumnType]} {{")
+                    @ViewClassService.CreateSheetColumnStyles(column.ColumnType.ToString(), column, Section.Columns.Sum(x => x.Width))
+                @("}")
+            </text>
         }
     </style>
-
-
-    @* Should be like this: *@
-    @* <style>
-    @foreach (var className in dynamicClasses)
-    {
-        .@className {
-            /* Your dynamic styles here */
-        }
-    }
-</style> *@
 
     <MudSimpleTable Hover="false" Dense="true" Bordered="false">
         <tbody>
@@ -36,16 +28,14 @@
                     <th>@GetColumnName(column.ColumnType)</th>
                 }
             </tr>
-          @*   @foreach (var item in Estimation.NetSheet!.AllInOrder)
-            {
+            <MudVirtualize T="SheetItem" Items="Estimation.NetSheet!.AllInOrder.Skip(1).ToList()">
                 <tr>
                     @foreach (var column in Section.Columns.OrderBy(x => x.Order))
                     {
-                        <td class="@column.ColumnType.ToString()")">@GetColumnDataFromItem(column.ColumnType, item)</td>
+                        <td class="@TypeToClassNameMap[column.ColumnType]">@GetColumnDataFromItem(column.ColumnType, context)</td>
                     }
                 </tr>
-                    
-            } *@
+            </MudVirtualize>
         </tbody>
     </MudSimpleTable>
 }
@@ -56,6 +46,8 @@
     [Parameter, EditorRequired] public Estimation? Estimation { get; set; }
     [Parameter, EditorRequired] public View? View { get; set; }
 
+    Dictionary<SheetColumnType, string> TypeToClassNameMap { get; set; } = new();
+
     string? GetColumnDataFromItem(SheetColumnType type, SheetItem item)
     {
         return type switch
@@ -63,10 +55,10 @@
             SheetColumnType.Description => item.Description,
             SheetColumnType.Quantity => item.Quantity.ToString(),
             SheetColumnType.Unit => item.Unit,
-            SheetColumnType.UnitCost => item.UnitCost.ToString(),
-            SheetColumnType.TotalCost => item.TotalCost.ToString(),
-            SheetColumnType.UnitAskingPrice => item.UnitAskingPrice.ToString(),
-            SheetColumnType.TotalAskingPrice => item.TotalAskingPrice.ToString(),
+            SheetColumnType.UnitCost => item.UnitCost is null ? string.Empty : ((double)item.UnitCost).ToString("F1", CultureInfo.InvariantCulture),
+            SheetColumnType.TotalCost => item.TotalCost is null ? string.Empty : ((double)item.TotalCost).ToString("F1", CultureInfo.InvariantCulture),
+            SheetColumnType.UnitAskingPrice => item.UnitAskingPrice is null ? string.Empty : ((double)item.UnitAskingPrice).ToString("F1", CultureInfo.InvariantCulture),
+            SheetColumnType.TotalAskingPrice => item.TotalAskingPrice is null ? string.Empty : ((double)item.TotalAskingPrice).ToString("F1", CultureInfo.InvariantCulture),
             _ => throw new NotImplementedException()
         };
     }

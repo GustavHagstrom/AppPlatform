@@ -201,13 +201,18 @@
                                 {
                                     Description = "Part",
                                     Type = (int)RowType.Part,
+                                    Quantity = 2,
+                                    Unit = "st",
                                     Children = new List<SheetItem>
                                     {
                                         new SheetItem
                                         {
                                             Description = "Post",
                                             Type = (int)RowType.LayeredItem,
-
+                                            Quantity = 10,
+                                            Unit = "st",
+                                            LayerItemUnitCost = 100.55,
+                                            LayerItemUnitAskingPrice = 200.1,
                                         }
                                     }
                                 }
