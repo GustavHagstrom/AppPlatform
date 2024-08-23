@@ -3,21 +3,12 @@ using System.ComponentModel.DataAnnotations;
 
 namespace AppPlatform.Core.Enteties.EstimationView;
 
-public class SheetColumn : IViewEntity, IFormat
+public class DataCellFormat : IViewEntity, IFormat
 {
     [StringLength(50)]
     public string Id { get; set; } = Guid.NewGuid().ToString();
-    public int Order { get; set; }
-    public int Width { get; set; } = 10;
-    public bool IsVisible { get; set; } = true;
-    public SheetColumnType ColumnType { get; set; }
-    //[StringLength(50)]
-    //public string CellFormatId { get; set; } = string.Empty;
-    //public DataCellFormat? CellFormat { get; set; }
-
     [StringLength(50)]
-    public string SheetSectionTemplateId { get; set; } = string.Empty;
-    public SheetSection? SheetSectionTemplate { get; set; }
+    public string FontFamily { get; set; } = string.Empty;
     [StringLength(50)]
     public string? BackgroundColor { get; set; }
     [StringLength(50)]
@@ -38,4 +29,12 @@ public class SheetColumn : IViewEntity, IFormat
     public bool HasBorderBottom { get; set; } = false;
     public BorderStyle BorderStyle { get; set; } = BorderStyle.Solid;
 
+
+
+    //[StringLength(50)]
+    //public string? SheetColumnId { get; set; } = string.Empty;
+    //public SheetColumn? SheetColumn { get; set; }
+    //[StringLength(50)]
+    //public string? DataCellId { get; set; } = string.Empty;
+    //public DataCell? DataCell { get; set; }
 }

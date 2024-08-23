@@ -14,5 +14,5 @@ public class DataCell : IViewEntity
     public DataSection? DataSection { get; set; }
     [StringLength(50)]
     public string CellFormatId { get; set; } = string.Empty;
-    public CellFormat? CellFormat { get; set; }
+    public DataCellFormat? CellFormat { get; set; }
 }

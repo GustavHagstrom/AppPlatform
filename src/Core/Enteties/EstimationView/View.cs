@@ -11,6 +11,8 @@ public class View : IViewEntity, ITenantEntety
     public List<DataSection> DataSections { get; set; } = new();
     public List<SheetSection> SheetSections { get; set; } = new();
     [StringLength(50)]
+    public string FontFamily { get; set; } = string.Empty;
+    [StringLength(50)]
     public string TenantId { get; set; } = string.Empty;
 
     public void AddEmptyDataSection()

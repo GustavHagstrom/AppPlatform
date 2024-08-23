@@ -21,6 +21,12 @@ public class SheetSection : IViewEntity, ISection
         new SheetColumn { Order = 6, Width = 10, ColumnType = SheetColumnType.UnitAskingPrice },
         new SheetColumn { Order = 7, Width = 10, ColumnType = SheetColumnType.TotalAskingPrice },
     };
+    public List<SheetRowFormat> RowFormats { get; set; } = new()
+    {
+        new SheetRowFormat { RowType = SheetRowType.Group },
+        new SheetRowFormat { RowType = SheetRowType.Part },
+        new SheetRowFormat { RowType = SheetRowType.Post },
+    };
     [StringLength(450)]
     public string ViewId { get; set; } = string.Empty;
     public View? View { get; set; }

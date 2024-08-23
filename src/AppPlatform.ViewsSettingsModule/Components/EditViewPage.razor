@@ -188,19 +188,19 @@
                 NetSheet = new SheetItem
                 {
                     Description = "Root",
-                    Type = (int)RowType.Group,
+                    RowType = (int)RowType.Group,
                     Children = new List<SheetItem>
                     {
                         new SheetItem
                         {
                             Description = "Group",
-                            Type = (int)RowType.Group,
+                            RowType = (int)RowType.Group,
                             Children = new List<SheetItem>
                             {
                                 new SheetItem
                                 {
                                     Description = "Part",
-                                    Type = (int)RowType.Part,
+                                    RowType = (int)RowType.Part,
                                     Quantity = 2,
                                     Unit = "st",
                                     Children = new List<SheetItem>
@@ -208,7 +208,7 @@
                                         new SheetItem
                                         {
                                             Description = "Post",
-                                            Type = (int)RowType.LayeredItem,
+                                            RowType = (int)RowType.LayeredItem,
                                             Quantity = 10,
                                             Unit = "st",
                                             LayerItemUnitCost = 100.55,

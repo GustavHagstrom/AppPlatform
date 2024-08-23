@@ -3,30 +3,17 @@ using AppPlatform.Core.Enums.ViewTemplate;
 using System.Globalization;
 
 namespace AppPlatform.Shared.Services.Views;
-public class ViewClassService : IViewClassService
+public class ViewStyleService : IViewStyleService
 {
-    /// <summary>
-    /// Create a class for a cell format
-    /// </summary>
-    /// <param name="name"></param>
-    /// <param name="format"></param>
-    /// <returns></returns>
-    public string CreateCellFormatStyles(string name, CellFormat format)
+    public string CreateSheetColumnStyles(SheetColumn column, int allColumnsWidthSum)
     {
         //var classString = $".{name} {{";
-        string classString = CreateCellFormatStyles(format);
-        //classString += "}";
-        return classString;
-    }
-    public string CreateSheetColumnStyles(string name, SheetColumn column, int allColumnsWidthSum)
-    {
-        //var classString = $".{name} {{";
-        var classString = $"width: {((double)column.Width / allColumnsWidthSum * 100).ToString(CultureInfo.InvariantCulture)}% !important;\n";
-        classString += CreateCellFormatStyles(column.CellFormat ?? new CellFormat()); 
+        var classString = $"width: {((double)column.Width / allColumnsWidthSum * 100).ToString(CultureInfo.InvariantCulture)}%;\n";
+        classString += CreateFormatStyles(column); 
       /*  classString += "}"*/;
         return classString;
     }
-    private string CreateCellFormatStyles(CellFormat format)
+    public string CreateFormatStyles(IFormat format)
     {
         var classString = string.Empty;
         classString += CreateColorStyles(format);
@@ -44,61 +31,61 @@ public class ViewClassService : IViewClassService
         return classString;
     }
 
-    private string CreateBorderStyles(CellFormat format)
+    private string CreateBorderStyles(IFormat format)
     {
         string classString = string.Empty;
         string borderStyle = GetBorderStyle(format.BorderStyle);
         if (format.HasBorderLeft)
         {
-            classString += $"border-left: 1px {borderStyle} black !important;\n";
+            classString += $"border-left: 1px {borderStyle} black;\n";
         }
         if (format.HasBorderTop)
         {
-            classString += $"border-top: 1px {borderStyle} black !important;\n";
+            classString += $"border-top: 1px {borderStyle} black;\n";
         }
         if (format.HasBorderRight)
         {
-            classString += $"border-right: 1px {borderStyle} black !important;\n";
+            classString += $"border-right: 1px {borderStyle} black;\n";
         }
         if (format.HasBorderBottom)
         {
-            classString += $"border-bottom: 1px {borderStyle} black !important;\n";
+            classString += $"border-bottom: 1px {borderStyle} black;\n";
         }
         return classString;
     }
 
-    private string CreateTextStyles(CellFormat format)
+    private string CreateTextStyles(IFormat format)
     {
-        var classString = $"font-size: {format.FontSize}px !important;\n";
-        classString += $"font-family: {format.FontFamily} !important;\n";
-        classString += $"text-align: {GetAlign(format.Align)} !important;\n";
-        classString += $"justify-content: {GetJustify(format.Justify)} !important;\n";
+        var classString = $"font-size: {format.FontSize}px;\n";
+        //classString += $"font-family: {format.FontFamily};\n";
+        classString += format.Align is null ? "" : $"text-align: {GetAlign(format.Align.Value)};\n";
+        classString += format.Justify is null ? "" : $"justify-content: {GetJustify(format.Justify.Value)};\n";
 
         if (format.IsBold)
         {
-            classString += $"font-weight: 600 !important;\n";
+            classString += $"font-weight: 600;\n";
         }
         if (format.IsItalic)
         {
-            classString += $"font-style: italic !important;\n";
+            classString += $"font-style: italic;\n";
         }
         if (format.IsUnderline)
         {
-            classString += $"text-decoration: underline !important;\n";
+            classString += $"text-decoration: underline;\n";
         }
         return classString;
     }
 
-    private string CreateColorStyles(CellFormat format)
+    private string CreateColorStyles(IFormat format)
     {
         string classString = string.Empty;
         if (format.BackgroundColor is not null)
         {
-            classString += $"background-color: {format.BackgroundColor} !important;\n";
+            classString += $"background-color: {format.BackgroundColor};\n";
         }
         if (format.TextColor is not null)
         {
-            classString += $"color: {format.TextColor} !important;\n";
+            classString += $"color: {format.TextColor};\n";
         }
         return classString;
     }

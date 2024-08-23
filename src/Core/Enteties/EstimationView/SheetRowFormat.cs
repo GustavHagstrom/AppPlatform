@@ -3,12 +3,14 @@ using System.ComponentModel.DataAnnotations;
 
 namespace AppPlatform.Core.Enteties.EstimationView;
 
-public class CellFormat : IViewEntity
+public class SheetRowFormat : IViewEntity, IFormat
 {
     [StringLength(50)]
     public string Id { get; set; } = Guid.NewGuid().ToString();
+    public SheetRowType RowType { get; set; }
     [StringLength(50)]
-    public string FontFamily { get; set; } = string.Empty;
+    public string SheetSectionId { get; set; } = string.Empty;
+    public SheetSection? SheetSection { get; set; }
     [StringLength(50)]
     public string? BackgroundColor { get; set; }
     [StringLength(50)]
@@ -17,8 +19,8 @@ public class CellFormat : IViewEntity
     public bool IsBold { get; set; } = false;
     public bool IsItalic { get; set; } = false;
     public bool IsUnderline { get; set; } = false;
-    public Align Align { get; set; } = Align.Left;
-    public Justify Justify { get; set; } = Justify.Bottom;
+    public Align? Align { get; set; }
+    public Justify? Justify { get; set; }
     public TextFormatType FormatType { get; set; } = TextFormatType.Text;
     public bool HasThoasandsSeparator { get; set; } = true;
     public int DecimalCount { get; set; } = 2;

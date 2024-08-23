@@ -16,7 +16,7 @@ public class SheetItem
     public string? ParentId { get; set; }
     public SheetItem? Parent { get; set; }
     public int Position { get; set; }
-    public int Type { get; set; }
+    public int RowType { get; set; }
     public double? Quantity { get; set; }
     public List<SheetItem> Children { get; set; } = new List<SheetItem>();
     public string Remark { get; set; } = string.Empty;
@@ -33,11 +33,11 @@ public class SheetItem
 
 
     [NotMapped]
-    public double? UnitCost => Type == (int)RowType.LayeredItem ? LayerItemUnitCost : Children.Sum(x => x.TotalCost);
+    public double? UnitCost => RowType == (int)Enums.BidconAccess.RowType.LayeredItem ? LayerItemUnitCost : Children.Sum(x => x.TotalCost);
     [NotMapped]
     public double? TotalCost => UnitCost * (Quantity is null ? 1 : Quantity);
     [NotMapped]
-    public double? UnitAskingPrice => Type == (int)RowType.LayeredItem ? LayerItemUnitAskingPrice : Children.Sum(x => x.TotalAskingPrice);
+    public double? UnitAskingPrice => RowType == (int)Enums.BidconAccess.RowType.LayeredItem ? LayerItemUnitAskingPrice : Children.Sum(x => x.TotalAskingPrice);
     [NotMapped]
     public double? TotalAskingPrice => UnitAskingPrice * (Quantity is null ? 1 : Quantity);
 

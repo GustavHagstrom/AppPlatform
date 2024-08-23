@@ -75,8 +75,8 @@
 </ToolbarSection>
 
 @code{
-    [Parameter] public CellFormat? CellFormat { get; set; }
-    [Parameter] public EventCallback<CellFormat> CellFormatChanged { get; set; }
+    [Parameter] public DataCellFormat? CellFormat { get; set; }
+    [Parameter] public EventCallback<DataCellFormat> CellFormatChanged { get; set; }
 
     enum Border
     {
