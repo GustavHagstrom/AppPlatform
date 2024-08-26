@@ -4,19 +4,23 @@
 
     @if(EditMode)
     {
-        <MudToolBar Class="border-b border-solid" DisableGutters="true" Style="height: 128px;">
-            <div class="d-flex" style="height: 100%; width: 100%;">
-                <EditActions />
-            </div>
-            
-        </MudToolBar>
+        <ViewEditToolbar>
+            <EditActions />
+        </ViewEditToolbar>
     }
 
 
     <div class="pa-4" style="height: calc(100%-128px); display: flex;">
         <div class="gap-4" style="display: flex; flex-direction: column;">
         
-            <MudPaper Square="true" MinHeight="100px" MinWidth="100px">
+
+            <style>
+                .ViewPresenter > * {
+                @($"font-family: {View?.FontFamily};")
+                }
+            </style>
+
+            <MudPaper Class="ViewPresenter" Square="true" MinHeight="100px" MinWidth="100px" Width="900px;">
 
 
                 @foreach (var section in SectionsInOrder())

@@ -8,6 +8,8 @@
 
   <ItemGroup>
     <Content Remove="components\ViewPresenter.razor" />
+    <Content Remove="components\view\ToolbarColumn.razor" />
+    <Content Remove="Components\View\ToolbarRow.razor" />
   </ItemGroup>
 
 
@@ -37,12 +39,15 @@
     <_ContentIncludedByDefault Remove="components\AppNavLink.razor" />
     <_ContentIncludedByDefault Remove="components\PageSetupWithNavigation.razor" />
     <_ContentIncludedByDefault Remove="components\ViewPresenter.razor" />
+    <_ContentIncludedByDefault Remove="components\view\ToolbarColumn.razor" />
   </ItemGroup>
 
   <ItemGroup>
     <None Include="Components\AppNavLink.razor" />
     <None Include="Components\PageSetupWithNavigation.razor" />
     <None Include="Components\View\Edit\FormatEditor.razor" />
+    <None Include="Components\ToolbarRow.razor" />
+    <None Include="Components\ToolbarColumn.razor" />
     <None Include="Components\View\ViewPresenter.razor" />
   </ItemGroup>
 
@@ -52,6 +57,10 @@
 
   <ItemGroup>
     <UpToDateCheckInput Remove="components\AppNavLink.razor" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <UpToDateCheckInput Remove="components\view\ToolbarColumn.razor" />
   </ItemGroup>
 
 

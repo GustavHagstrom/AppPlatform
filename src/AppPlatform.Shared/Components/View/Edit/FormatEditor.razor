@@ -1,30 +1,14 @@
 @inject IStringLocalizer<FormatEditor> Localizer
 
 <ToolbarSection Title="@Localizer["Format"]">
-    <div class="d-flex gap-2">
-        <div class="d-flex flex-column gap-2">
-            <div class="d-flex gap-2">
-
-            </div>
-            <div class="d-flex gap-2">
-
-            </div>
-        </div>
-        <div class="d-flex flex-column gap-2">
-            <style>
-                .NoMarginPls > div {
-                    margin: 0!important;
-                }
-            </style>
-            <div class="d-flex gap-2 NoMarginPls">
-                <MudTextField T="string" Margin="Margin.Dense" Variant="Variant.Outlined" Placeholder="@Localizer["Teckensnitt"]" Style="width: 200px; height: 36px;"/>
-                <MudTextField T="string" Margin="Margin.Dense" Variant="Variant.Outlined" Adornment="Adornment.None" AdornmentIcon="@Icons.Material.Sharp.FormatSize" Style="width: 55px; ; height: 36px;" />
-            </div>
-            <div class="d-flex gap-2">
+    <ToolbarRow>
+        <ToolbarColumn>
+            <ToolbarRow>
                 <MudIconButton Variant="Variant.Outlined" Icon="@Icons.Material.Sharp.FormatBold" Style="background-color: var(--mud-palette-action-disabled-background)" />
                 <MudIconButton Variant="Variant.Outlined" Icon="@Icons.Material.Sharp.FormatItalic" />
                 <MudIconButton Variant="Variant.Outlined" Icon="@Icons.Material.Sharp.FormatUnderlined" />
-                <MudSpacer/>
+            </ToolbarRow>
+            <ToolbarRow>
                 <MudMenu Dense="true" AnchorOrigin="Origin.BottomLeft" TransformOrigin="Origin.TopLeft">
                     <ActivatorContent>
                         <MudIconButton Variant="Variant.Outlined" Color="Color.Primary" Icon="@Icons.Material.Sharp.BorderBottom" />
@@ -55,22 +39,34 @@
                         <MudColorPicker DisableToolbar="true" DisableColorField="false" DisableModeSwitch="true" DisablePreview="false" DisableAlpha="true" PickerVariant="PickerVariant.Static" />
                     </ChildContent>
                 </MudMenu>
-                
-            </div>
-        </div>
-        <div class="d-flex flex-column gap-2">
-            <div class="d-flex gap-2">
+            </ToolbarRow>
+        </ToolbarColumn>
+        <ToolbarColumn>
+            <ToolbarRow>
                 <MudIconButton Variant="Variant.Outlined" Icon="@Icons.Material.Sharp.VerticalAlignTop" />
                 <MudIconButton Variant="Variant.Outlined" Icon="@Icons.Material.Sharp.VerticalAlignCenter" />
                 <MudIconButton Variant="Variant.Outlined" Icon="@Icons.Material.Sharp.VerticalAlignBottom" />
-            </div>
-            <div class="d-flex gap-2">
+            </ToolbarRow>
+            <ToolbarRow>
                 <MudIconButton Variant="Variant.Outlined" Icon="@Icons.Material.Sharp.FormatAlignLeft" />
                 <MudIconButton Variant="Variant.Outlined" Icon="@Icons.Material.Sharp.FormatAlignCenter" />
                 <MudIconButton Variant="Variant.Outlined" Icon="@Icons.Material.Sharp.FormatAlignRight" />
-            </div>
-        </div>
-    </div>
+            </ToolbarRow>
+        </ToolbarColumn>
+        <ToolbarColumn>
+            <style>
+                .NoMarginPls > div {
+                    margin: 0 !important;
+                }
+            </style>
+            <ToolbarRow>
+                <div style="width: 36px; height: 36px;"/>
+            </ToolbarRow>
+            <ToolbarRow Class="NoMarginPls">
+                <MudTextField T="string" Margin="Margin.Dense" Label="@Localizer["Storlek"]" Variant="Variant.Outlined" Adornment="Adornment.None" AdornmentIcon="@Icons.Material.Sharp.FormatSize" ShrinkLabel="true" Style="width: 75px; ; height: 36px;" />
+            </ToolbarRow>
+        </ToolbarColumn>
+    </ToolbarRow>
     
 </ToolbarSection>
 

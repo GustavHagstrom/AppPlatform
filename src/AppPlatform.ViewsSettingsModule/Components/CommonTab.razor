@@ -1,0 +1,87 @@
+@using Microsoft.AspNetCore.Components.Authorization
+
+@inject IStringLocalizer<CommonTab> Localizer
+@inject IViewService _viewService
+@inject AuthenticationStateProvider AuthenticationStateProvider
+@inject IDialogService DialogService
+@inject NavigationManager NavigationManager
+
+
+<style>
+    .nomarginpls > div {
+        margin: 0 !important;
+    }
+</style>
+@* <div class="d-flex gap-2 nomarginpls">
+    <mudtextfield t="string" margin="margin.dense" variant="variant.outlined" placeholder="@localizer["teckensnitt"]" style="width: 200px; height: 36px;" />
+    <mudtextfield t="string" margin="margin.dense" variant="variant.outlined" adornment="adornment.none" adornmenticon="@icons.material.sharp.formatsize" style="width: 55px; ; height: 36px;" />
+</div>
+ *@
+<ViewEditToolbar>
+    
+    <ToolbarSection Title="@Localizer["Spara / Ta bort"]">
+        
+        <ToolbarColumn>
+            <MudButton Variant="Variant.Outlined" Color="Color.Success" StartIcon="@Icons.Material.Sharp.Save">@Localizer["Spara"]</MudButton>
+            <MudButton Variant="Variant.Outlined" Color="Color.Error" StartIcon="@Icons.Material.Sharp.Delete" OnClick="Delete">@Localizer["Ta bort"]</MudButton>
+        </ToolbarColumn>
+        
+    </ToolbarSection>
+    <ToolbarSection Title="@Localizer["Namn & teckensnitt"]">
+
+        <ToolbarColumn>
+            <div class="nomarginpls">
+                <MudTextField T="string" Variant="Variant.Outlined" Value="View?.Name" ValueChanged="SetName" Placeholder="@Localizer["Namn"]" Style="width: 200px; height: 36.5px;" />
+            </div>
+            <div class="nomarginpls">
+                <MudTextField T="string" Variant="Variant.Outlined" Value="View?.FontFamily" ValueChanged="SetFontFamily" Placeholder="@Localizer["Teckensnitt"]" Style="width: 200px; height: 36.5px;" />
+            </div>
+        </ToolbarColumn>
+
+    </ToolbarSection>
+    
+</ViewEditToolbar>
+<ViewPresenter EditMode="false" View="View" Estimation="Estimation" />
+
+@code{
+    [Parameter] public Estimation? Estimation { get; set; }
+    [Parameter] public View? View { get; set; }
+    [CascadingParameter] public EditViewPage? EditViewPage { get; set; }
+    async Task SetName(string name)
+    {
+        if (View is not null)
+        {
+            View.Name = name;
+            var state = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+            await _viewService.UpsertAsync(state.User, View);
+        }
+    }
+    async Task SetFontFamily(string fontFamily)
+    {
+        if (View is not null)
+        {
+            View.FontFamily = fontFamily;
+            var state = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+            await _viewService.UpsertAsync(state.User, View);
+        }
+    }
+
+    async Task Delete()
+    {
+        if (View is not null)
+        {
+            var parameters = new DialogParameters<YesNoDialog> {
+                { x => x.Info, Localizer["Är du säker på att du vill ta bort vyn?"] },
+                { x => x.YesButtonColor, Color.Error }
+            };
+            var dialog = await DialogService.ShowAsync<YesNoDialog>(Localizer["Bekräfta borttagning"], parameters);
+            var result = await dialog.Result;
+            if (result?.Data is true)
+            {
+                var state = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+                await _viewService.DeleteAsync(state.User, View);
+                NavigationManager.NavigateTo(Constants.Routes.ViewListPage);
+            }
+        }
+    }
+}

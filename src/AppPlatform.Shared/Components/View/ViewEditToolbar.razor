@@ -1,0 +1,10 @@
+<MudToolBar Class="border-b border-solid" DisableGutters="true" Style="height: 128px;">
+    <div class="d-flex" style="height: 100%; width: 100%;">
+        @ChildContent
+    </div>
+            
+</MudToolBar>
+
+@code{
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+}

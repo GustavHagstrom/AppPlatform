@@ -1,12 +1,6 @@
 @page "/Settings/ViewSettings/Edit/{ViewId}"
-@using AppPlatform.Core.Enteties.EstimationEnteties
-@using AppPlatform.Core.Enums.BidconAccess
-@using AppPlatform.Shared.Components
-@using AppPlatform.Shared.Components.Dialogs
-@using AppPlatform.ViewSettingsModule.Services
-@using Microsoft.AspNetCore.Components.Authorization
-@using AppPlatform.Shared.Components.View
 
+@using Microsoft.AspNetCore.Components.Authorization
 @layout MainLayout
 @inject IStringLocalizer<EditViewPage> Localizer
 @implements IAsyncDisposable
@@ -44,29 +38,22 @@
                     <MudProgressCircular Size="Size.Large" Color="Color.Primary" Indeterminate="true" />
                 </MudOverlay>
 
+                
+
                 <CascadingValue Value="this">
                     @switch (ActiveTab)
                     {
                         case TabType.Format:
-                            <ViewPresenter EditMode="true" View="View" Estimation="SampleEstimation()" />
+                            <ViewPresenter EditMode="true" View="View" Estimation="SampleEstimation" />
                             break;
                         case TabType.Common:
-                            <div class="pa-2">
-                                <SettingsSection>
-                                    <div class="d-flex gap-2">
-                                        <MudButton Variant="Variant.Outlined" Color="Color.Success" StartIcon="@Icons.Material.Sharp.Save">@Localizer["Spara"]</MudButton>
-                                        <MudButton Variant="Variant.Outlined" Color="Color.Error" StartIcon="@Icons.Material.Sharp.Delete" OnClick="Delete">@Localizer["Ta bort"]</MudButton>
-                                    </div>
-                                    <MudTextField T="string" Variant="Variant.Outlined" Value="View?.Name" ValueChanged="SetName" Label="@Localizer["Namn"]" Margin="Margin.Dense"/>
-                                </SettingsSection>
-                            </div>
-                            
+                            <CommonTab Estimation="SampleEstimation" View="View"/>
                             break;
                         case TabType.Tags:
-                            <p>Taggar....</p>
+                            <TagsTab Estimation="SampleEstimation" View="View"/>
                             break;
                         case TabType.Rights:
-                            <ViewRights View="View" />
+                            <RightsTab Estimation="SampleEstimation" View="View"/>
                             break;
                     }
                 </CascadingValue>
@@ -81,8 +68,7 @@
 
 @inject IViewService _viewService
 @inject AuthenticationStateProvider AuthenticationStateProvider
-@inject IDialogService DialogService
-@inject NavigationManager NavigationManager
+
 @inject IBrowserViewportService BrowserViewportService
 
 @code{
@@ -98,16 +84,19 @@
     }
 
     string TabHeaderBaseClass => "App-Nav-Link mud-ripple d-flex align-center px-4 py-2 cursor-pointer flex-shrink-0";
-
     string TabHeaderClass(TabType tabType) => ActiveTab == tabType ? $"{TabHeaderBaseClass} App-Nav-Link-Active" : TabHeaderBaseClass;
+
+    string TabPanelButtonColorStyle(TabType tab) => ActiveTab == tab ? "background-color: var(--mud-palette-primary-hover); color: var(--mud-palette-primary);" : "";
+
     bool IsLoading { get; set; } = false;
     View? View { get; set; }
     TabType ActiveTab = TabType.Common;
+
     Guid ObserverId = Guid.NewGuid();
     Breakpoint CurrentBreakPoint;
     Breakpoint LastBreakPoint;
     bool IsSmAndDown => CurrentBreakPoint == Breakpoint.Xs || CurrentBreakPoint == Breakpoint.Sm;// || CurrentBreakPoint == Breakpoint.Md;
-    string TabPanelButtonColorStyle(TabType tab) => ActiveTab == tab ? "background-color: var(--mud-palette-primary-hover); color: var(--mud-palette-primary);" : "";
+    
 
     protected override Task OnInitializedAsync()
     {
@@ -142,86 +131,62 @@
             SetLoading(false);
         }
     }
-    async Task SetName(string name)
-    {
-        if (View is not null)
-        {
-            View.Name = name;
-            var state = await AuthenticationStateProvider.GetAuthenticationStateAsync();
-            await _viewService.UpsertAsync(state.User, View);
-        }
-    }
+    
     public void SetLoading(bool isLoading)
     {
         IsLoading = isLoading;
         StateHasChanged();
     }
-    async Task Delete()
+    public void TriggerStateHasChanged()
     {
-        if (View is not null)
-        {
-            var parameters = new DialogParameters<YesNoDialog> {
-                { x => x.Info, Localizer["Är du säker på att du vill ta bort vyn?"] },
-                { x => x.YesButtonColor, Color.Error }
-            };
-            var dialog = await DialogService.ShowAsync<YesNoDialog>(Localizer["Bekräfta borttagning"], parameters);
-            var result = await dialog.Result;
-            if (result?.Data is true)
-            {
-                var state = await AuthenticationStateProvider.GetAuthenticationStateAsync();
-                await _viewService.DeleteAsync(state.User, View);
-                NavigationManager.NavigateTo(Constants.Routes.ViewListPage);
-            }
-        }
+        StateHasChanged();
     }
-    Estimation SampleEstimation()
+    Estimation SampleEstimation = new Estimation
     {
-        return new Estimation
+        BidconId = "123",
+        ConfirmationOfficer = "Test",
+        Customer = "Test",
+        Description = "Test",
+        HandlingOfficer = "Test",
+        Name = "Test",
+        Place = "Test",
+        NetSheet = new SheetItem
+        {
+            Description = "Root",
+            RowType = (int)RowType.Group,
+            Children = new List<SheetItem>
             {
-                BidconId = "123",
-                ConfirmationOfficer = "Test",
-                Customer = "Test",
-                Description = "Test",
-                HandlingOfficer = "Test",
-                Name = "Test",
-                Place = "Test",
-                NetSheet = new SheetItem
+                new SheetItem
                 {
-                    Description = "Root",
+                    Description = "Group",
                     RowType = (int)RowType.Group,
                     Children = new List<SheetItem>
                     {
                         new SheetItem
                         {
-                            Description = "Group",
-                            RowType = (int)RowType.Group,
+                            Description = "Part",
+                            RowType = (int)RowType.Part,
+                            Quantity = 2,
+                            Unit = "st",
                             Children = new List<SheetItem>
                             {
                                 new SheetItem
                                 {
-                                    Description = "Part",
-                                    RowType = (int)RowType.Part,
-                                    Quantity = 2,
+                                    Description = "Post",
+                                    RowType = (int)RowType.LayeredItem,
+                                    Quantity = 10,
                                     Unit = "st",
-                                    Children = new List<SheetItem>
-                                    {
-                                        new SheetItem
-                                        {
-                                            Description = "Post",
-                                            RowType = (int)RowType.LayeredItem,
-                                            Quantity = 10,
-                                            Unit = "st",
-                                            LayerItemUnitCost = 100.55,
-                                            LayerItemUnitAskingPrice = 200.1,
-                                        }
-                                    }
+                                    LayerItemUnitCost = 100.55,
+                                    LayerItemUnitAskingPrice = 200.1,
                                 }
                             }
                         }
                     }
                 }
-            };
-    }
+            }
+        }
+    };
+    
 }
 
 
