@@ -12,6 +12,8 @@ public class View : IViewEntity, ITenantEntety
     public List<SheetSection> SheetSections { get; set; } = new();
     [StringLength(50)]
     public string FontFamily { get; set; } = "Calibri";
+    public bool AllowChanges { get; set; } = true;
+    public List<Tag> Tags { get; set; } = new();
     [StringLength(50)]
     public string TenantId { get; set; } = string.Empty;
 

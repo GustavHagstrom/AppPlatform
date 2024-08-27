@@ -1,6 +1,6 @@
 @inject IStringLocalizer<FormatEditor> Localizer
 
-<ToolbarSection Title="@Localizer["Format"]">
+<ToolbarSection Title="@Localizer[SectionTitle]">
     <ToolbarRow>
         <ToolbarColumn>
             <ToolbarRow>
@@ -73,6 +73,7 @@
 @code{
     [Parameter] public DataCellFormat? CellFormat { get; set; }
     [Parameter] public EventCallback<DataCellFormat> CellFormatChanged { get; set; }
+    [Parameter] public string SectionTitle { get; set; } = string.Empty;
 
     enum Border
     {

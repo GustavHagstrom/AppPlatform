@@ -8,8 +8,6 @@
 
   <ItemGroup>
     <Content Remove="components\ViewPresenter.razor" />
-    <Content Remove="components\view\ToolbarColumn.razor" />
-    <Content Remove="Components\View\ToolbarRow.razor" />
   </ItemGroup>
 
 
@@ -46,8 +44,6 @@
     <None Include="Components\AppNavLink.razor" />
     <None Include="Components\PageSetupWithNavigation.razor" />
     <None Include="Components\View\Edit\FormatEditor.razor" />
-    <None Include="Components\ToolbarRow.razor" />
-    <None Include="Components\ToolbarColumn.razor" />
     <None Include="Components\View\ViewPresenter.razor" />
   </ItemGroup>
 

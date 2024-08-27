@@ -1,4 +1,7 @@
+@inject IStringLocalizer<EditActions> Localizer
 
 <SectionEditor/>
 
-<FormatEditor/>
+<FormatEditor SectionTitle="@Localizer["Kolumn"]"/>
+<FormatEditor SectionTitle="@Localizer["Rad"]" />
+<FormatEditor SectionTitle="@Localizer["Ändrad rad"]" />
