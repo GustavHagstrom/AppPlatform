@@ -13,7 +13,7 @@
         
         @foreach (var column in Section.Columns)
         {
-            ColumnTypeToStyleMapper.Add(column.ColumnType, "c" + Guid.NewGuid().ToString());
+            ColumnTypeToStyleMapper.Add(column.ColumnType, column.ColumnType.ToString());
             
             
             @($"table tbody tr .{ColumnTypeToStyleMapper[column.ColumnType]} {{")
@@ -23,7 +23,7 @@
         }
         @foreach (var format in Section.RowFormats)
         {
-            RowTypeToStyleMapper.Add(format.RowType, "r" + Guid.NewGuid().ToString());
+            RowTypeToStyleMapper.Add(format.RowType, format.RowType.ToString());
             
                 @($"table tbody tr .{RowTypeToStyleMapper[format.RowType]} {{")
                     @ViewClassService.CreateFormatStyles(format)

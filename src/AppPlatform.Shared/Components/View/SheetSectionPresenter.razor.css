@@ -1,19 +1,25 @@
-﻿table{
+﻿table {
+    transition: border-color 150ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
     border-collapse: collapse;
-    border: 1px solid black;
+    border: 1px solid transparent;
 }
-tbody {
-    transition: border-color 150ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
-}
+
 td, th {
-    border: 1px solid black;
-    transition: border-color 150ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
+    border: 1px solid transparent;
+    /*transition: border-color 150ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;*/
     padding: 8px;
+    margin: 1px;
 }
-td:hover, th:hover, tbody:hover {
+td:hover, th:hover, table:hover {
     cursor: cell;
-}
-td.selected, th:hover, table.selected {
     border-color: var(--mud-palette-info);
-   
+    border-width: 2px;
+    /* padding-top: 7px;
+    padding-bottom: 7px;*/
+    margin: 0px;
+}
+
+.selected {
+    border-color: var(--mud-palette-info);
+    border-width: 2px;
 }
