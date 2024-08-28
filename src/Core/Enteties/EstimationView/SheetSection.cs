@@ -26,7 +26,10 @@ public class SheetSection : IViewEntity, ISection
         new SheetRowFormat { RowType = SheetRowType.Group },
         new SheetRowFormat { RowType = SheetRowType.Part },
         new SheetRowFormat { RowType = SheetRowType.Post },
+        new SheetRowFormat { RowType = SheetRowType.ChangedRow },
+        new SheetRowFormat { RowType = SheetRowType.Header },
     };
+
     [StringLength(450)]
     public string ViewId { get; set; } = string.Empty;
     public View? View { get; set; }

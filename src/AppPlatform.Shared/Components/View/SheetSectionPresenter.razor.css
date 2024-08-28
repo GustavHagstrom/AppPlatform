@@ -1,0 +1,19 @@
+﻿table{
+    border-collapse: collapse;
+    border: 1px solid black;
+}
+tbody {
+    transition: border-color 150ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
+}
+td, th {
+    border: 1px solid black;
+    transition: border-color 150ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
+    padding: 8px;
+}
+td:hover, th:hover, tbody:hover {
+    cursor: cell;
+}
+td.selected, th:hover, table.selected {
+    border-color: var(--mud-palette-info);
+   
+}

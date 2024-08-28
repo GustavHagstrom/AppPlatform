@@ -5,7 +5,7 @@
     @if(EditMode)
     {
         <ViewEditToolbar>
-            <EditActions />
+            <ToolbarActions ChangedRowFormat="View?.SheetSections.FirstOrDefault()?.RowFormats.FirstOrDefault(x => x.RowType == Core.Enums.ViewTemplate.SheetRowType.ChangedRow)"/>
         </ViewEditToolbar>
     }
 

@@ -10,44 +10,45 @@
     ColumnTypeToStyleMapper = new();
     RowTypeToStyleMapper = new();
     <style>
+        
         @foreach (var column in Section.Columns)
         {
             ColumnTypeToStyleMapper.Add(column.ColumnType, "c" + Guid.NewGuid().ToString());
-            <text>
-                @($"table tbody tr .{ColumnTypeToStyleMapper[column.ColumnType]} {{")
-                    @ViewClassService.CreateSheetColumnStyles(column, Section.Columns.Sum(x => x.Width))
-                @("}")
-            </text>
+            
+            
+            @($"table tbody tr .{ColumnTypeToStyleMapper[column.ColumnType]} {{")
+                @ViewClassService.CreateSheetColumnStyles(column, Section.Columns.Sum(x => x.Width))
+            @("}")
+            
         }
         @foreach (var format in Section.RowFormats)
         {
             RowTypeToStyleMapper.Add(format.RowType, "r" + Guid.NewGuid().ToString());
-            <text>
+            
                 @($"table tbody tr .{RowTypeToStyleMapper[format.RowType]} {{")
-                    @ViewClassService.CreateFormatStyles(format))
+                    @ViewClassService.CreateFormatStyles(format)
                 @("}")
-            </text>
         }
     </style>
 
-    <MudSimpleTable Hover="false" Dense="true" Bordered="false">
+    <table @onclick="SetSelectedSection" class="@tableStyle">
         <tbody>
             <tr>
                 @foreach (var column in Section.Columns.OrderBy(x => x.Order))
                 {
-                    <th>@GetColumnName(column.ColumnType)</th>
+                    <th class="@thClass(column.ColumnType, SheetRowType.Header)">@GetColumnName(column.ColumnType)</th>
                 }
             </tr>
             <MudVirtualize T="SheetItem" Items="Estimation.NetSheet!.AllInOrder.Skip(1).ToList()">
                 <tr>
                     @foreach (var column in Section.Columns.OrderBy(x => x.Order))
                     {
-                        <td class="@tdStyle(column.ColumnType, context)">@GetColumnDataFromItem(column.ColumnType, context)</td>
+                        <td @onclick="() => SetSelectedSectionItem(context)" class="@tdClass(column.ColumnType, context)">@GetColumnDataFromItem(column.ColumnType, context)</td>
                     }
                 </tr>
             </MudVirtualize>
         </tbody>
-    </MudSimpleTable>
+    </table>
 }
 
 @code {
@@ -55,11 +56,14 @@
     [Parameter] public bool EditMode { get; set; } = false;
     [Parameter, EditorRequired] public Estimation? Estimation { get; set; }
     [Parameter, EditorRequired] public View? View { get; set; }
+    [CascadingParameter] public ViewPresenter? ViewPresenter { get; set; }
 
     Dictionary<SheetColumnType, string> ColumnTypeToStyleMapper { get; set; } = new();
     Dictionary<SheetRowType, string> RowTypeToStyleMapper { get; set; } = new();
 
-    string tdStyle(SheetColumnType cType, SheetItem item)
+    string tableStyle => ViewPresenter?.SelectedSection == Section ? "selected" : string.Empty;
+    string thClass(SheetColumnType cType, SheetRowType rType) => $"{ColumnTypeToStyleMapper[cType]} {RowTypeToStyleMapper[rType]}";
+    string tdClass(SheetColumnType cType, SheetItem item)
     {
         var rType = item.RowType switch
         {
@@ -67,9 +71,16 @@
             (int)AppPlatform.Core.Enums.BidconAccess.RowType.Part => SheetRowType.Part,
             _ => SheetRowType.Post
         };
-        return $"{ColumnTypeToStyleMapper[cType]} {RowTypeToStyleMapper[rType]}";
+        return $"{ColumnTypeToStyleMapper[cType]} {RowTypeToStyleMapper[rType]} {(ViewPresenter?.SelectedSectionItem == item ? "selected" : string.Empty)};";
     }
-
+    void SetSelectedSection()
+    {
+        ViewPresenter?.SetSelectedSection(Section);
+    }
+    void SetSelectedSectionItem(object item)
+    {
+        ViewPresenter?.SetSelectedSectionItem(item);
+    }
     string? GetColumnDataFromItem(SheetColumnType type, SheetItem item)
     {
         return type switch

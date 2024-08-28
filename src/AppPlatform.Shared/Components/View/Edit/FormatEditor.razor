@@ -1,3 +1,4 @@
+@using MudBlazor.Utilities
 @inject IStringLocalizer<FormatEditor> Localizer
 
 <ToolbarSection Title="@Localizer[SectionTitle]">
@@ -11,7 +12,7 @@
             <ToolbarRow>
                 <MudMenu Dense="true" AnchorOrigin="Origin.BottomLeft" TransformOrigin="Origin.TopLeft">
                     <ActivatorContent>
-                        <MudIconButton Variant="Variant.Outlined" Color="Color.Primary" Icon="@Icons.Material.Sharp.BorderBottom" />
+                        <MudIconButton Variant="Variant.Outlined" Icon="@Icons.Material.Sharp.BorderBottom" />
                     </ActivatorContent>
                     <ChildContent>
                         <MudMenuItem Icon="@Icons.Material.Sharp.BorderBottom"/>
@@ -23,20 +24,20 @@
                         <MudMenuItem Icon="@Icons.Material.Sharp.BorderOuter" />
                     </ChildContent>
                 </MudMenu>
-                <MudMenu >
+                <MudMenu Dense="true" AnchorOrigin="Origin.BottomLeft" TransformOrigin="Origin.TopLeft">
                     <ActivatorContent>
-                        <MudIconButton Variant="Variant.Filled" Color="Color.Primary" Icon="@Icons.Material.Sharp.FormatColorFill" />
+                        <MudIconButton Variant="Variant.Filled" Icon="@Icons.Material.Sharp.FormatColorFill" Class="border border-solid" Style="@($"background: linear-gradient(to bottom, var(--mud-palette-background), {BackgroundColor});")" />
                     </ActivatorContent>
                     <ChildContent>
-                        <MudColorPicker DisableToolbar="true" DisableColorField="false" DisableModeSwitch="true" DisablePreview="false" DisableAlpha="true" PickerVariant="PickerVariant.Static" />
+                        <MudColorPicker DisableToolbar="true" DisableColorField="false" DisableModeSwitch="true" DisablePreview="false" DisableAlpha="true" PickerVariant="PickerVariant.Static" Value="BackgroundColor" ValueChanged="SetBackgroundColor" />
                     </ChildContent>
                 </MudMenu>
-                <MudMenu>
+                <MudMenu Dense="true" AnchorOrigin="Origin.BottomLeft" TransformOrigin="Origin.TopLeft">
                     <ActivatorContent>
-                        <MudIconButton Variant="Variant.Filled" Color="Color.Primary" Icon="@Icons.Material.Sharp.FormatColorText" />
+                        <MudIconButton Variant="Variant.Filled" Icon="@Icons.Material.Sharp.FormatColorText" Class="border border-solid" Style="@($"background: linear-gradient(to bottom, var(--mud-palette-background), {TextColor});")" />
                     </ActivatorContent>
                     <ChildContent>
-                        <MudColorPicker DisableToolbar="true" DisableColorField="false" DisableModeSwitch="true" DisablePreview="false" DisableAlpha="true" PickerVariant="PickerVariant.Static" />
+                        <MudColorPicker DisableToolbar="true" DisableColorField="false" DisableModeSwitch="true" DisablePreview="false" DisableAlpha="true" PickerVariant="PickerVariant.Static" Value="TextColor" ValueChanged="SetTextColor" />
                     </ChildContent>
                 </MudMenu>
             </ToolbarRow>
@@ -71,9 +72,42 @@
 </ToolbarSection>
 
 @code{
-    [Parameter] public DataCellFormat? CellFormat { get; set; }
-    [Parameter] public EventCallback<DataCellFormat> CellFormatChanged { get; set; }
+    [Parameter] public IFormat? Format { get; set; }
+    [Parameter] public EventCallback<IFormat> FormatChanged { get; set; }
     [Parameter] public string SectionTitle { get; set; } = string.Empty;
+    
+
+    MudColor BackgroundColor = new("#FFFFFF");
+    MudColor TextColor = new("#424242");
+
+    protected override void OnParametersSet()
+    {
+        if (Format?.BackgroundColor is not null)
+        {
+            BackgroundColor = Format.BackgroundColor;
+        }
+        if (Format?.TextColor is not null)
+        {
+            TextColor = Format.TextColor;
+        }
+    }
+
+    void SetBackgroundColor(MudColor color)
+    {
+        BackgroundColor = color;
+        if (Format is not null)
+        {
+            Format.BackgroundColor = color.Value;
+        }
+    }
+    void SetTextColor(MudColor color)
+    {
+        TextColor = color;
+        if (Format is not null)
+        {
+            Format.TextColor = color.Value;
+        }
+    }
 
     enum Border
     {
@@ -86,118 +120,109 @@
         Outer
     }
 
-    Task SetFontFamlity(string font)
-    {
-        if (CellFormat is not null)
-        {
-            CellFormat.FontFamily = font;
-            return CellFormatChanged.InvokeAsync(CellFormat);
-        }
-        return Task.CompletedTask;
-    }
     Task SetFontSize(int size)
     {
-        if (CellFormat is not null)
+        if (Format is not null)
         {
-            CellFormat.FontSize = size;
-            return CellFormatChanged.InvokeAsync(CellFormat);
+            Format.FontSize = size;
+            return FormatChanged.InvokeAsync(Format);
         }
         return Task.CompletedTask;
     }
     Task SetIsBold(bool isbold)
     {
-        if (CellFormat is not null)
+        if (Format is not null)
         {
-            CellFormat.IsBold = isbold;
-            return CellFormatChanged.InvokeAsync(CellFormat);
+            Format.IsBold = isbold;
+            return FormatChanged.InvokeAsync(Format);
         }
         return Task.CompletedTask;
     }
     Task SetIsItalic(bool isItalic)
     {
-        if (CellFormat is not null)
+        if (Format is not null)
         {
-            CellFormat.IsItalic = isItalic;
-            return CellFormatChanged.InvokeAsync(CellFormat);
+            Format.IsItalic = isItalic;
+            return FormatChanged.InvokeAsync(Format);
         }
         return Task.CompletedTask;
     }
     Task SetIsUnderlined(bool isUnderlined)
     {
-        if (CellFormat is not null)
+        if (Format is not null)
         {
-            CellFormat.IsUnderline = isUnderlined;
-            return CellFormatChanged.InvokeAsync(CellFormat);
+            Format.IsUnderline = isUnderlined;
+            return FormatChanged.InvokeAsync(Format);
         }
         return Task.CompletedTask;
     }
     Task SetBorder(Border border)
     {
-        if (CellFormat is not null)
+        if (Format is not null)
         {
             Action action = border switch
             {
                 Border.None => () =>
                 {
-                    CellFormat.HasBorderBottom = false;
-                    CellFormat.HasBorderTop = false;
-                    CellFormat.HasBorderLeft = false;
-                    CellFormat.HasBorderRight = false;
+                    Format.HasBorderBottom = false;
+                    Format.HasBorderTop = false;
+                    Format.HasBorderLeft = false;
+                    Format.HasBorderRight = false;
                 },
                 Border.Bottom => () =>
                 {
-                    CellFormat.HasBorderBottom = true;
-                    CellFormat.HasBorderTop = false;
-                    CellFormat.HasBorderLeft = false;
-                    CellFormat.HasBorderRight = false;
+                    Format.HasBorderBottom = true;
+                    Format.HasBorderTop = false;
+                    Format.HasBorderLeft = false;
+                    Format.HasBorderRight = false;
                 }
                 ,
                 Border.Top => () =>
                 {
-                    CellFormat.HasBorderBottom = false;
-                    CellFormat.HasBorderTop = true;
-                    CellFormat.HasBorderLeft = false;
-                    CellFormat.HasBorderRight = false;
+                    Format.HasBorderBottom = false;
+                    Format.HasBorderTop = true;
+                    Format.HasBorderLeft = false;
+                    Format.HasBorderRight = false;
                 },
                 Border.Left => () =>
                 {
-                    CellFormat.HasBorderBottom = false;
-                    CellFormat.HasBorderTop = false;
-                    CellFormat.HasBorderLeft = true;
-                    CellFormat.HasBorderRight = false;
+                    Format.HasBorderBottom = false;
+                    Format.HasBorderTop = false;
+                    Format.HasBorderLeft = true;
+                    Format.HasBorderRight = false;
                 },
                 Border.Right => () =>
                 {
-                    CellFormat.HasBorderBottom = false;
-                    CellFormat.HasBorderTop = false;
-                    CellFormat.HasBorderLeft = false;
-                    CellFormat.HasBorderRight = true;
+                    Format.HasBorderBottom = false;
+                    Format.HasBorderTop = false;
+                    Format.HasBorderLeft = false;
+                    Format.HasBorderRight = true;
                 },
                 Border.All => () =>
                 {
-                    CellFormat.HasBorderBottom = true;
-                    CellFormat.HasBorderTop = true;
-                    CellFormat.HasBorderLeft = true;
-                    CellFormat.HasBorderRight = true;
+                    Format.HasBorderBottom = true;
+                    Format.HasBorderTop = true;
+                    Format.HasBorderLeft = true;
+                    Format.HasBorderRight = true;
                 },
                 Border.Outer => () =>
                 {
-                    CellFormat.HasBorderBottom = true;
-                    CellFormat.HasBorderTop = true;
-                    CellFormat.HasBorderLeft = true;
-                    CellFormat.HasBorderRight = true;
+                    Format.HasBorderBottom = true;
+                    Format.HasBorderTop = true;
+                    Format.HasBorderLeft = true;
+                    Format.HasBorderRight = true;
 
                 },
                 _ => () =>
                 {
-                    CellFormat.HasBorderBottom = false;
-                    CellFormat.HasBorderTop = false;
-                    CellFormat.HasBorderLeft = false;
-                    CellFormat.HasBorderRight = false;
+                    Format.HasBorderBottom = false;
+                    Format.HasBorderTop = false;
+                    Format.HasBorderLeft = false;
+                    Format.HasBorderRight = false;
                 },
             };
             action.Invoke();
-            return CellFormatChanged.InvokeAsync(CellFormat);
+            return FormatChanged.InvokeAsync(Format);
         }
         return Task.CompletedTask;
     }
