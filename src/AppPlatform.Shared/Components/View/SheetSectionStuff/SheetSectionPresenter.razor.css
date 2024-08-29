@@ -1,0 +1,41 @@
+﻿table {
+    border-collapse: collapse;
+    width: 100%;
+}
+tr {
+    height: 1px;
+}
+td, th {
+    height: 1px;
+    /*border: 1px solid;
+    border-color: lightgray;*/
+  /*  position: relative;*/
+}
+
+td:hover, th:hover {
+    cursor: cell;
+}
+
+
+.table-container {
+    padding: 1px;
+    box-sizing: border-box;
+}
+td div, th div {
+    display: flex;
+    padding: 8px;
+    height: 100%;
+    justify-content: inherit;
+    align-items: inherit;
+    box-sizing: border-box;
+}
+td.selected div, th.selected div {
+    padding: 7px;
+    border-color: var(--mud-palette-info);
+    border-width: 1px;
+}
+.table-container.selected {
+    border-color: var(--mud-palette-info);
+    border-width: 1px;
+    padding: 0;
+}

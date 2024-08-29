@@ -59,7 +59,7 @@ public class ViewStyleService : IViewStyleService
         var classString = $"font-size: {format.FontSize}px;\n";
         //classString += $"font-family: {format.FontFamily};\n";
         classString += format.Align is null ? "" : $"text-align: {GetAlign(format.Align.Value)};\n";
-        classString += format.Justify is null ? "" : $"justify-content: {GetJustify(format.Justify.Value)};\n";
+        classString += format.Justify is null ? "" : $"align-items: {GetJustify(format.Justify.Value)};\n";
 
         if (format.IsBold)
         {

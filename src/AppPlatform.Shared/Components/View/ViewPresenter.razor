@@ -1,4 +1,5 @@
 @using AppPlatform.Shared.Components.View.Edit
+@using AppPlatform.Shared.Components.View.SheetSectionStuff
 
 <CascadingValue Value="this">
 
@@ -16,7 +17,7 @@
 
             <style>
                 .ViewPresenter > * {
-                @($"font-family: {View?.FontFamily};")
+                 @($"font-family: {View?.FontFamily};")
                 }
             </style>
 
@@ -53,7 +54,7 @@
     [Parameter] public bool EditMode { get; set; } = false;
 
     public ISection? SelectedSection { get; private set; } = null;
-    public object? SelectedSectionItem { get; private set; } = null;
+    public object? SelectedItem { get; private set; } = null;
 
     public void SetSelectedSection(ISection? section)
     {
@@ -62,7 +63,7 @@
     }
     public void SetSelectedSectionItem(object item)
     {
-        SelectedSectionItem = item;
+        SelectedItem = item;
         StateHasChanged();
     }
 

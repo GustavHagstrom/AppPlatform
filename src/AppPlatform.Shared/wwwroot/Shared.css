@@ -19,3 +19,8 @@
         color: var(--mud-palette-primary);
         background-color: rgba(var(--mud-palette-primary-rgb), 0.12);
     }
+
+/*.view-item-selected {
+    border-color: var(--mud-palette-info) !important;*/
+    /*border-width: 2px;*/
+/*}*/

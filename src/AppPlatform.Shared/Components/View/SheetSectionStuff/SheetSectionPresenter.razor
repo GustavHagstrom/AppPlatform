@@ -1,6 +1,7 @@
 @using AppPlatform.Core.Enums.ViewTemplate
 @using AppPlatform.Shared.Services.Views
 @using System.Globalization
+@using Microsoft.AspNetCore.Components.Web.Virtualization
 @inject IViewStyleService ViewClassService
 @inject IStringLocalizer<SheetSectionPresenter> Localizer
 
@@ -31,24 +32,38 @@
         }
     </style>
 
-    <table @onclick="SetSelectedSection" class="@tableStyle">
-        <tbody>
-            <tr>
-                @foreach (var column in Section.Columns.OrderBy(x => x.Order))
-                {
-                    <th class="@thClass(column.ColumnType, SheetRowType.Header)">@GetColumnName(column.ColumnType)</th>
-                }
-            </tr>
-            <MudVirtualize T="SheetItem" Items="Estimation.NetSheet!.AllInOrder.Skip(1).ToList()">
+    <div class="@tableContainerClass" @onclick="SetSelectedSection">
+        <table style="width: 100%;">
+            <tbody>
                 <tr>
                     @foreach (var column in Section.Columns.OrderBy(x => x.Order))
                     {
-                        <td @onclick="() => SetSelectedSectionItem(context)" class="@tdClass(column.ColumnType, context)">@GetColumnDataFromItem(column.ColumnType, context)</td>
+                        <th @onclick="() => SetSelectedItem(column.ColumnType)" class="@cellClass(column.ColumnType, SheetRowType.Header)">
+                            <div >
+                                @GetColumnName(column.ColumnType)
+                            </div>
+                        
+                        </th>
                     }
                 </tr>
-            </MudVirtualize>
-        </tbody>
-    </table>
+
+               
+                <Virtualize TItem="SheetItem" Items="Estimation.NetSheet!.AllInOrder.Skip(1).ToList()">
+                    <tr>
+                        @foreach (var column in Section.Columns.OrderBy(x => x.Order))
+                        {
+                            <td @onclick="() => SetSheetItemSelection(context, column.ColumnType)" class="@cellClass(column.ColumnType, context)">
+                                <div >
+                                    @GetColumnDataFromItem(column.ColumnType, context)
+                                </div>
+                            </td>
+                        }
+                    </tr>
+                </Virtualize>
+            </tbody>
+        </table>
+    </div>
+    
 }
 
 @code {
@@ -61,9 +76,9 @@
     Dictionary<SheetColumnType, string> ColumnTypeToStyleMapper { get; set; } = new();
     Dictionary<SheetRowType, string> RowTypeToStyleMapper { get; set; } = new();
 
-    string tableStyle => ViewPresenter?.SelectedSection == Section ? "selected" : string.Empty;
-    string thClass(SheetColumnType cType, SheetRowType rType) => $"{ColumnTypeToStyleMapper[cType]} {RowTypeToStyleMapper[rType]}";
-    string tdClass(SheetColumnType cType, SheetItem item)
+    string tableContainerClass => IsSelected() ? "selected table-container " : "table-container";
+    string cellClass(SheetColumnType cType, SheetRowType rType) => $"{(IsSelected(cType) ? "selected " : string.Empty)}{ColumnTypeToStyleMapper[cType]} {RowTypeToStyleMapper[rType]}";
+    string cellClass(SheetColumnType cType, SheetItem item)
     {
         var rType = item.RowType switch
         {
@@ -71,13 +86,35 @@
             (int)AppPlatform.Core.Enums.BidconAccess.RowType.Part => SheetRowType.Part,
             _ => SheetRowType.Post
         };
-        return $"{ColumnTypeToStyleMapper[cType]} {RowTypeToStyleMapper[rType]} {(ViewPresenter?.SelectedSectionItem == item ? "selected" : string.Empty)};";
+        return $"{(IsSelected(item, cType) ? "selected " : string.Empty)}{ColumnTypeToStyleMapper[cType]} {RowTypeToStyleMapper[rType]};";
     }
+    bool IsSelected(SheetItem item, SheetColumnType column)
+    {
+        if (EditMode == false || ViewPresenter?.SelectedSection != Section) return false;
+        if(ViewPresenter?.SelectedItem is SheetCellSelection selection)
+        {
+            return selection.Item == item && selection.ColumnType == column;
+        }
+        return false;
+    }
+    bool IsSelected() => ViewPresenter?.SelectedSection == Section && EditMode;
+    bool IsSelected(SheetColumnType column) 
+    {
+        if (EditMode == false || ViewPresenter?.SelectedSection != Section) return false;
+        return ViewPresenter?.SelectedItem is SheetColumnType type && type == column && EditMode;
+    }
+    // string SelectedStyle(SheetItem item) => ViewPresenter?.SelectedSectionItem == item && EditMode ? "border-color: var(--mud-palette-info)" : string.Empty;
+
+
     void SetSelectedSection()
     {
         ViewPresenter?.SetSelectedSection(Section);
     }
-    void SetSelectedSectionItem(object item)
+    void SetSheetItemSelection(SheetItem item, SheetColumnType type)
+    {
+        SetSelectedItem(new SheetCellSelection(item, type));
+    }
+    void SetSelectedItem(object item)
     {
         ViewPresenter?.SetSelectedSectionItem(item);
     }
