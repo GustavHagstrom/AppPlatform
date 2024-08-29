@@ -11,7 +11,11 @@
     ColumnTypeToStyleMapper = new();
     RowTypeToStyleMapper = new();
     <style>
-        
+        @{
+            ColumnTypeToStyleMapper.Clear();
+            RowTypeToStyleMapper.Clear();
+        }
+
         @foreach (var column in Section.Columns)
         {
             ColumnTypeToStyleMapper.Add(column.ColumnType, column.ColumnType.ToString());
@@ -38,7 +42,7 @@
                 <tr>
                     @foreach (var column in Section.Columns.OrderBy(x => x.Order))
                     {
-                        <th @onclick="() => SetSelectedItem(column.ColumnType)" class="@cellClass(column.ColumnType, SheetRowType.Header)">
+                        <th @onclick="() => SetSelectedItem(column.ColumnType)" class="@cellClass(column.ColumnType, null)">
                             <div >
                                 @GetColumnName(column.ColumnType)
                             </div>
@@ -50,10 +54,16 @@
                
                 <Virtualize TItem="SheetItem" Items="Estimation.NetSheet!.AllInOrder.Skip(1).ToList()">
                     <tr>
+                        @{
+                        int columnCount = 0;
+                        }
                         @foreach (var column in Section.Columns.OrderBy(x => x.Order))
                         {
+                            columnCount +=1;
+                            var indentStyle = columnCount == 1 ? $"padding-left: {context.Level * 8}px" : string.Empty;
+
                             <td @onclick="() => SetSheetItemSelection(context, column.ColumnType)" class="@cellClass(column.ColumnType, context)">
-                                <div >
+                                <div style="@indentStyle">
                                     @GetColumnDataFromItem(column.ColumnType, context)
                                 </div>
                             </td>
@@ -77,17 +87,41 @@
     Dictionary<SheetRowType, string> RowTypeToStyleMapper { get; set; } = new();
 
     string tableContainerClass => IsSelected() ? "selected table-container " : "table-container";
-    string cellClass(SheetColumnType cType, SheetRowType rType) => $"{(IsSelected(cType) ? "selected " : string.Empty)}{ColumnTypeToStyleMapper[cType]} {RowTypeToStyleMapper[rType]}";
-    string cellClass(SheetColumnType cType, SheetItem item)
+
+    /// <summary>
+    /// for header or row cells
+    /// </summary>
+    /// <param name="cType"></param>
+    /// <param name="item"></param>
+    /// <returns></returns>
+    string cellClass(SheetColumnType cType, SheetItem? item)
     {
-        var rType = item.RowType switch
+        
+        bool isSelected = false;
+        if(item is null) //if item is null, it is a header cell
+        {
+            isSelected = IsSelected(cType);
+        }
+        else
+        {
+            isSelected = IsSelected(item, cType);
+        }
+
+        var rType = item?.RowType switch
         {
             (int)AppPlatform.Core.Enums.BidconAccess.RowType.Group => SheetRowType.Group,
             (int)AppPlatform.Core.Enums.BidconAccess.RowType.Part => SheetRowType.Part,
+            null => SheetRowType.Header,
             _ => SheetRowType.Post
         };
-        return $"{(IsSelected(item, cType) ? "selected " : string.Empty)}{ColumnTypeToStyleMapper[cType]} {RowTypeToStyleMapper[rType]};";
+        return $"{(isSelected == true ? "selected " : string.Empty)}{ColumnTypeToStyleMapper[cType]} {RowTypeToStyleMapper[rType]};";
     }
+    /// <summary>
+    /// for SheetItem cells
+    /// </summary>
+    /// <param name="item"></param>
+    /// <param name="column"></param>
+    /// <returns></returns>
     bool IsSelected(SheetItem item, SheetColumnType column)
     {
         if (EditMode == false || ViewPresenter?.SelectedSection != Section) return false;
@@ -98,12 +132,17 @@
         return false;
     }
     bool IsSelected() => ViewPresenter?.SelectedSection == Section && EditMode;
+
+    /// <summary>
+    /// for header cells
+    /// </summary>
+    /// <param name="column"></param>
+    /// <returns></returns>
     bool IsSelected(SheetColumnType column) 
     {
         if (EditMode == false || ViewPresenter?.SelectedSection != Section) return false;
         return ViewPresenter?.SelectedItem is SheetColumnType type && type == column && EditMode;
     }
-    // string SelectedStyle(SheetItem item) => ViewPresenter?.SelectedSectionItem == item && EditMode ? "border-color: var(--mud-palette-info)" : string.Empty;
 
 
     void SetSelectedSection()

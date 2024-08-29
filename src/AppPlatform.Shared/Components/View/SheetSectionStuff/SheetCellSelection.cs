@@ -3,4 +3,4 @@ using AppPlatform.Core.Enums.ViewTemplate;
 
 namespace AppPlatform.Shared.Components.View.SheetSectionStuff;
 
-internal record SheetCellSelection(SheetItem Item, SheetColumnType ColumnType);
+public record SheetCellSelection(SheetItem? Item, SheetColumnType ColumnType);

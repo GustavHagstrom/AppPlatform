@@ -1,0 +1,50 @@
+@using AppPlatform.Core.Enums.ViewTemplate
+@if (Section is not null && Item is not null)
+{
+    <tr>
+    @{
+        int columnCount = 0;
+        foreach (var column in Section.Columns.OrderBy(x => x.Order))
+        {
+            columnCount += 1;
+            var indentStyle = columnCount == 1 ? $"padding-left: {Item.Level * 8}px" : string.Empty;
+
+            <td @onclick="async () => await RequestCellSelection(Item, column.ColumnType)" class="@cellClass(column.ColumnType, Item)">
+                <div style="@indentStyle">
+                    @GetColumnDataFromItem(column.ColumnType, Item)
+                </div>
+            </td>
+        }
+    }
+    </tr>
+}
+
+
+
+@code{
+    [Parameter] public bool IsExpandedAtFirstRender { get; set; } = false;
+    [Parameter, EditorRequired] public SheetSection? Section { get; set; }
+    [Parameter, EditorRequired] public SheetItem? Item { get; set; }
+    [Parameter, EditorRequired] public SheetCellSelection? SelectedCell { get; set; }
+    [Parameter, EditorRequired] public EventCallback<SheetCellSelection> CellSelectionRequest { get; set; }
+
+    bool firstRenderDone = false;
+    bool isExpanded = false;
+
+    protected override void OnAfterRender(bool firstRender)
+    {
+        firstRenderDone = firstRender;
+    }
+    protected override void OnInitialized()
+    {
+        if(firstRenderDone == false)
+        {
+            isExpanded = IsExpandedAtFirstRender;
+        }
+    }
+    Task RequestCellSelection(SheetItem item, SheetColumnType type)
+    {
+        var cellSelection = new SheetCellSelection(item, type);
+        return CellSelectionRequest.InvokeAsync(cellSelection);
+    }
+}

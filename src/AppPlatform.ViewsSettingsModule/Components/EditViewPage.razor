@@ -72,7 +72,7 @@
 @inject IBrowserViewportService BrowserViewportService
 
 @code{
-    [Parameter] public string? ViewId { get; set; }
+        [Parameter] public string? ViewId { get; set; }
 
     enum TabType
     {
@@ -96,7 +96,7 @@
     Breakpoint CurrentBreakPoint;
     Breakpoint LastBreakPoint;
     bool IsSmAndDown => CurrentBreakPoint == Breakpoint.Xs || CurrentBreakPoint == Breakpoint.Sm;// || CurrentBreakPoint == Breakpoint.Md;
-    
+
 
     protected override Task OnInitializedAsync()
     {
@@ -131,7 +131,7 @@
             SetLoading(false);
         }
     }
-    
+
     public void SetLoading(bool isLoading)
     {
         IsLoading = isLoading;
@@ -141,51 +141,68 @@
     {
         StateHasChanged();
     }
-    Estimation SampleEstimation = new Estimation
+    Estimation SampleEstimation = CreateSamepleEstimation();
+    static Estimation CreateSamepleEstimation()
     {
-        BidconId = "123",
-        ConfirmationOfficer = "Test",
-        Customer = "Test",
-        Description = "Test",
-        HandlingOfficer = "Test",
-        Name = "Test",
-        Place = "Test",
-        NetSheet = new SheetItem
-        {
-            Description = "Root",
-            RowType = (int)RowType.Group,
-            Children = new List<SheetItem>
+        var estimation = new Estimation
             {
-                new SheetItem
+                BidconId = "123",
+                ConfirmationOfficer = "Test",
+                Customer = "Test",
+                Description = "Test",
+                HandlingOfficer = "Test",
+                Name = "Test",
+                Place = "Test",
+                NetSheet = new SheetItem
                 {
-                    Description = "Group",
+                    Description = "Root",
                     RowType = (int)RowType.Group,
                     Children = new List<SheetItem>
                     {
                         new SheetItem
                         {
-                            Description = "Part",
-                            RowType = (int)RowType.Part,
-                            Quantity = 2,
-                            Unit = "st",
+                            Description = "Group",
+                            RowType = (int)RowType.Group,
                             Children = new List<SheetItem>
                             {
                                 new SheetItem
                                 {
-                                    Description = "Post",
-                                    RowType = (int)RowType.LayeredItem,
-                                    Quantity = 10,
+                                    Description = "Part",
+                                    RowType = (int)RowType.Part,
+                                    Quantity = 2,
                                     Unit = "st",
-                                    LayerItemUnitCost = 100.55,
-                                    LayerItemUnitAskingPrice = 200.1,
+                                    Children = new List<SheetItem>
+                                    {
+                                        new SheetItem
+                                        {
+                                            Description = "Post",
+                                            RowType = (int)RowType.LayeredItem,
+                                            Quantity = 10,
+                                            Unit = "st",
+                                            LayerItemUnitCost = 100.55,
+                                            LayerItemUnitAskingPrice = 200.1,
+                                        }
+                                    }
                                 }
                             }
                         }
                     }
                 }
+            };
+        SetSheetItemParentReferenses(estimation.NetSheet, null);
+        return estimation;
+    }
+    static void SetSheetItemParentReferenses(SheetItem item, SheetItem? parent)
+    {
+        item.Parent = parent;
+        if (item.Children != null)
+        {
+            foreach (var child in item.Children)
+            {
+                SetSheetItemParentReferenses(child, item);
             }
         }
-    };
+    }
     
 }
 

@@ -48,4 +48,16 @@ public class SheetItem
             return new[] { this }.Concat(Children.SelectMany(x => x.AllInOrder).OrderBy(x => x.Position));
         }
     }
+    [NotMapped]
+    public int Level
+    {
+        get
+        {
+            if (Parent is null)
+            {
+                return 0;
+            }
+            return Parent.Level + 1;
+        }
+    }
 }
