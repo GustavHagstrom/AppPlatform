@@ -1,13 +1,41 @@
 @page "/Settings/ViewSettings/Edit/{ViewId}"
 
 @using Microsoft.AspNetCore.Components.Authorization
-@layout MainLayout
+@* @layout MainLayout *@
 @inject IStringLocalizer<EditViewPage> Localizer
 @implements IAsyncDisposable
 
 
+    <div class="main-container">
+        <div class="settings-container">
+            <SettingsSection >
+                <div class="d-flex gap-2">
+                    <MudButton Variant="Variant.Outlined" Color="Color.Success" StartIcon="@Icons.Material.Sharp.Save" Style="width: 150px;">@Localizer["Spara"]</MudButton>
+                    <MudButton Variant="Variant.Outlined" Color="Color.Error" StartIcon="@Icons.Material.Sharp.Delete" Style="width: 150px;">@Localizer["Ta bort"]</MudButton>
+                </div>
+          
+                <MudTextField T="string" Variant="Variant.Outlined" Value="View?.Name" Label="@Localizer["Namn"]" Margin="Margin.Dense"/>
+                <MudTextField T="string" Variant="Variant.Outlined" Value="View?.FontFamily" Label="@Localizer["Teckensnitt"]" Margin="Margin.Dense" />
 
-<div class="relative" style="height: 100%">
+                <MudList>
+                   @*  @foreach (var section in ((ISection)View?.SheetSections ?? Array<SheetSection>.Empty()) ?? Array<ISection>.Empty())
+                    {
+                    
+                    } *@
+                </MudList>
+
+
+
+                
+            </SettingsSection>
+        </div>
+        <div class="preview-container">
+            <ViewPresenter EditMode="true" View="View" Estimation="SampleEstimation" DoTableItemsStartAsExpanded="true" />
+        </div>
+    </div>
+
+
+@* <div class="relative" style="height: 100%">
 
     <PageSetupWithNavigation WhenToHideMobileView="Breakpoint.None" WhenToHideDesktopView="Breakpoint.Always">
         <NavigationContent>
@@ -64,7 +92,7 @@
 
     </PageSetupWithNavigation>
 
-</div>
+</div> *@
 
 @inject IViewService _viewService
 @inject AuthenticationStateProvider AuthenticationStateProvider

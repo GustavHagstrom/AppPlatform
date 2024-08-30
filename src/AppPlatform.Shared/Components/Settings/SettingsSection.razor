@@ -4,7 +4,7 @@
 } *@
 <div class="pb-6">
     <MudText Typo="Typo.subtitle1" Style="font-weight: bold;">@Title</MudText>
-    <div class="" style="min-width: 300px; max-width: 600px; display: flex; flex-direction: column; gap: 8px;">
+    <div  style="@style">
         <CascadingValue Value="this">
             @ChildContent
         </CascadingValue>
@@ -16,8 +16,15 @@
     [Parameter] public string Title { get; set; } = string.Empty;
     [Parameter] public bool DividerOnTop { get; set; } = false;
     [Parameter] public Func<Task>? LoadDataAsync { get; set; }
+    [Parameter] public string MinWidth { get; set; } = "300px";
+    [Parameter] public string MaxWidth { get; set; } = "600px";
+
     public bool IsLoading { get; set; } = false;
     public Action? IsLoadingChanged { get; set; }
+
+    string style => $"min-width: {MinWidth}; max-width: {MaxWidth}; display: flex; flex-direction: column; gap: 8px;";
+    
+
 
     protected override void OnInitialized()
     {

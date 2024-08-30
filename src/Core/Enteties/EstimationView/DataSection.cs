@@ -7,6 +7,8 @@ public class DataSection : IViewEntity, ISection
 {
     [StringLength(50)]
     public string Id { get; set; } = Guid.NewGuid().ToString();
+    [StringLength(50)]
+    public string Name { get; set; } = "DataSection";
     public int Order { get; set; }
     public List<DataColumn> Columns { get; set; } = new();
     public int RowCount { get; set; }

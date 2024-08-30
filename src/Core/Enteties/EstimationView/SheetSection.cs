@@ -8,6 +8,8 @@ public class SheetSection : IViewEntity, ISection
 {
     [StringLength(50)]
     public string Id { get; set; } = Guid.NewGuid().ToString();
+    [StringLength(50)]
+    public string Name { get; set; } = "SheetSection";
     public int Order { get; set; }
     public SheetType SheetType { get; set; }
 
