@@ -21,14 +21,14 @@
                 }
             </style>
 
-            <MudPaper Class="ViewPresenter" Square="true" MinHeight="100px" MinWidth="100px" Width="900px;">
+            <MudPaper Class="ViewPresenter" Square="true" Width="900px;">
 
 
                 @foreach (var section in SectionsInOrder())
                 {
                     if (section is SheetSection sheetSection)
                     {
-                        <SheetSectionPresenter Section="sheetSection" Estimation="Estimation" EditMode="EditMode" View="View"/>
+                        <SheetSectionPresenter Section="sheetSection" Estimation="Estimation" EditMode="EditMode" View="View" DoItemsStartAsExpanded="DoTableItemsStartAsExpanded" />
                     }
                     else if (section is DataSection dataSection)
                     {
@@ -52,6 +52,7 @@
     [Parameter] public View? View { get; set; }
     [Parameter] public Estimation? Estimation { get; set; }
     [Parameter] public bool EditMode { get; set; } = false;
+    [Parameter] public bool DoTableItemsStartAsExpanded { get; set; } = false;
 
     public ISection? SelectedSection { get; private set; } = null;
     public object? SelectedItem { get; private set; } = null;

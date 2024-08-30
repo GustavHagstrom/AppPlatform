@@ -1,50 +1,33 @@
-@using AppPlatform.Core.Enums.ViewTemplate
+@* @using AppPlatform.Core.Enums.ViewTemplate
 @if (Section is not null && Item is not null)
 {
-    <tr>
-    @{
-        int columnCount = 0;
-        foreach (var column in Section.Columns.OrderBy(x => x.Order))
-        {
-            columnCount += 1;
-            var indentStyle = columnCount == 1 ? $"padding-left: {Item.Level * 8}px" : string.Empty;
+    int columnCount = 0;
+    foreach (var column in Section.Columns.OrderBy(x => x.Order))
+    {
+        columnCount += 1;
+        var indentWidth = columnCount == 1 ? $"width: {Item.Level * 8}px;" : string.Empty;
 
-            <td @onclick="async () => await RequestCellSelection(Item, column.ColumnType)" class="@cellClass(column.ColumnType, Item)">
-                <div style="@indentStyle">
-                    @GetColumnDataFromItem(column.ColumnType, Item)
-                </div>
-            </td>
-        }
+        <td @onclick="async () => await Select(Item, column.ColumnType)" class="@ColumnClassMap[column.ColumnType]">
+            <span style="@indentWidth" />
+            <SheetItemCell Item="Item" SelectedCell="SelectedCell" CellSelectionRequest="CellSelectionRequest" ColumnType="column.ColumnType"/>
+        </td>
     }
-    </tr>
 }
 
 
 
 @code{
-    [Parameter] public bool IsExpandedAtFirstRender { get; set; } = false;
+    [Parameter] public Dictionary<SheetColumnType, string> ColumnClassMap { get; set; } = new();
     [Parameter, EditorRequired] public SheetSection? Section { get; set; }
     [Parameter, EditorRequired] public SheetItem? Item { get; set; }
     [Parameter, EditorRequired] public SheetCellSelection? SelectedCell { get; set; }
     [Parameter, EditorRequired] public EventCallback<SheetCellSelection> CellSelectionRequest { get; set; }
 
-    bool firstRenderDone = false;
-    bool isExpanded = false;
-
-    protected override void OnAfterRender(bool firstRender)
-    {
-        firstRenderDone = firstRender;
-    }
-    protected override void OnInitialized()
-    {
-        if(firstRenderDone == false)
-        {
-            isExpanded = IsExpandedAtFirstRender;
-        }
-    }
-    Task RequestCellSelection(SheetItem item, SheetColumnType type)
+    Task Select(SheetItem item, SheetColumnType type)
     {
         var cellSelection = new SheetCellSelection(item, type);
         return CellSelectionRequest.InvokeAsync(cellSelection);
     }
-}
+
+  
+} *@

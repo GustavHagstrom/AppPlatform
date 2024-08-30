@@ -1,0 +1,39 @@
+@* @using AppPlatform.Core.Enums.ViewTemplate
+@using System.Globalization
+
+@if(Item is not null)
+{
+    <div @onclick="async () => await RequestCellSelection(Item, ColumnType)">
+        @GetColumnDataFromItem(ColumnType, Item)
+    </div>
+}
+
+
+@code{
+
+    [Parameter, EditorRequired] public SheetColumnType ColumnType { get; set; }
+    [Parameter, EditorRequired] public SheetItem? Item { get; set; }
+    [Parameter, EditorRequired] public SheetCellSelection? SelectedCell { get; set; }
+    [Parameter, EditorRequired] public EventCallback<SheetCellSelection> CellSelectionRequest { get; set; }
+
+
+    Task RequestCellSelection(SheetItem item, SheetColumnType type)
+    {
+        var cellSelection = new SheetCellSelection(item, type);
+        return CellSelectionRequest.InvokeAsync(cellSelection);
+    }
+    string? GetColumnDataFromItem(SheetColumnType type, SheetItem item)
+    {
+        return type switch
+        {
+            SheetColumnType.Description => item.Description,
+            SheetColumnType.Quantity => item.Quantity.ToString(),
+            SheetColumnType.Unit => item.Unit,
+            SheetColumnType.UnitCost => item.UnitCost is null ? string.Empty : ((double)item.UnitCost).ToString("F1", CultureInfo.InvariantCulture),
+            SheetColumnType.TotalCost => item.TotalCost is null ? string.Empty : ((double)item.TotalCost).ToString("F1", CultureInfo.InvariantCulture),
+            SheetColumnType.UnitAskingPrice => item.UnitAskingPrice is null ? string.Empty : ((double)item.UnitAskingPrice).ToString("F1", CultureInfo.InvariantCulture),
+            SheetColumnType.TotalAskingPrice => item.TotalAskingPrice is null ? string.Empty : ((double)item.TotalAskingPrice).ToString("F1", CultureInfo.InvariantCulture),
+            _ => throw new NotImplementedException()
+        };
+    }
+} *@

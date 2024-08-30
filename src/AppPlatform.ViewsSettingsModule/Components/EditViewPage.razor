@@ -44,7 +44,7 @@
                     @switch (ActiveTab)
                     {
                         case TabType.Format:
-                            <ViewPresenter EditMode="true" View="View" Estimation="SampleEstimation" />
+                            <ViewPresenter EditMode="true" View="View" Estimation="SampleEstimation" DoTableItemsStartAsExpanded="true"/>
                             break;
                         case TabType.Common:
                             <CommonTab Estimation="SampleEstimation" View="View"/>

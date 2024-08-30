@@ -20,7 +20,7 @@ td:hover, th:hover {
     padding: 1px;
     box-sizing: border-box;
 }
-td div, th div {
+td .cell-value, th div {
     display: flex;
     padding: 8px;
     height: 100%;
@@ -28,7 +28,11 @@ td div, th div {
     align-items: inherit;
     box-sizing: border-box;
 }
-td.selected div, th.selected div {
+td > div, th > div {
+    display: flex;
+    height: 100%;
+}
+td.selected .cell-value, th.selected div {
     padding: 7px;
     border-color: var(--mud-palette-info);
     border-width: 1px;
@@ -37,4 +41,11 @@ td.selected div, th.selected div {
     border-color: var(--mud-palette-info);
     border-width: 1px;
     padding: 0;
+}
+
+.cell-expand-button {
+    position: absolute;
+    left: -32px;
+    top: 50%;
+    transform: translateY(-50%);
 }
