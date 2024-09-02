@@ -33,4 +33,8 @@ public class View : IViewEntity, ITenantEntety
             View = this
         });
     }
+    public IEnumerable<ISection> SectionsInOrder()
+    {
+        return DataSections.Cast<ISection>().Concat(SheetSections.Cast<ISection>()).OrderBy(s => s.Order);
+    }
 }

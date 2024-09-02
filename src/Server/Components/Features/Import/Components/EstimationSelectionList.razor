@@ -18,7 +18,7 @@
                     <Virtualize Items="ItemTree.SearchEstimations(Filter)!.Where(x => x.IsSelected).OrderBy(x => x.Name).ToArray()">
                         <tr class="d-flex">
                             <td class="d-flex flex-grow-1">
-                                <MudCheckBox @bind-Checked="context.IsSelected" @key="context"/>
+                                <MudCheckBox T="TreeItem" @bind-Checked="context.IsSelected" @key="context"/>
                                 <MudIcon Icon="@Icons.Material.Sharp.Article" Color="@Color.Tertiary" Class="align-self-center ml-3" />
                                 <MudText Class="align-self-center ml-2">@context.Name</MudText>
                             </td>

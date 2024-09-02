@@ -7,10 +7,11 @@ public static class CustomThemes
     private static MudTheme _mudDefault = new MudTheme();
     public static MudTheme PlatformStandard { get; private set; } = new()
     {
-        Palette = new PaletteLight
+
+        PaletteLight = new PaletteLight
         {
-            AppbarBackground = _mudDefault.Palette.White,
-            AppbarText = _mudDefault.Palette.Primary,
+            AppbarBackground = _mudDefault.PaletteLight.White,
+            AppbarText = _mudDefault.PaletteLight.Primary,
             //AppbarBackground = "#ffffff",
             //AppbarText = "#594ae2",
             //Secondary = "#1ec8a5",

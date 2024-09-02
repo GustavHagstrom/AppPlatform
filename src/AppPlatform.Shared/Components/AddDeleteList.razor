@@ -1,0 +1,115 @@
+@typeparam T where T : class
+
+<div class="d-block">
+    <div class="d-flex gap-2 mb-2">
+        <MudIconButton Icon="@Icons.Material.Sharp.Add" Variant="Variant.Outlined" Color="Color.Primary" Size="Size.Medium" OnClick="AddItemAsync" />
+        <MudIconButton Icon="@Icons.Material.Sharp.Delete" Variant="Variant.Outlined" Color="Color.Error" Size="Size.Medium" OnClick="DeleteSelectedItemAsync" Disabled="SelectedItem is null" />
+        @ChildContent
+    </div>
+
+    @switch (ListVariant)
+    {
+        case ListVariant.List:
+            <MudPaper>
+                <MudList T="T" SelectedValue="SelectedItem" SelectedValueChanged="TriggerSelectedItemChanged" Class="@ListClass" Style="@ListStyle" Dense="true" SelectionMode="SelectionMode.SingleSelection">
+                    @foreach (var item in Items)
+                    {
+                        <MudListItem Text="@(GetItemNameFunc is null ? item?.ToString() : GetItemNameFunc(item))" Value="item" Class="@ItemClass" Style="@ItemStyle" />
+                    }
+                </MudList>
+            </MudPaper>
+            break;
+        case ListVariant.DropDown:
+            <MudSelect T="T" MultiSelection="false" SelectedValues="SelectedItems" SelectedValuesChanged="TriggerSelectedItemChanged" Class="@ListClass" Style="@ListStyle" Variant="Variant.Outlined" ToStringFunc="GetItemNameFunc is null ? x => x.ToString() : GetItemNameFunc" Dense="true" Margin="Margin.Dense" AnchorOrigin="Origin.BottomRight" TransformOrigin="Origin.TopRight">
+                @foreach (var item in Items)
+                {
+                    <MudSelectItem T="T" Value="item" Class="@ItemClass" Style="@ItemStyle" />
+                }
+            </MudSelect>
+            break;
+        default:
+            break;
+    }
+    
+    
+</div>
+
+
+@inject IDialogService DialogService
+@inject IStringLocalizer<AddDeleteList<T>> Localizer
+@code{
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+    [Parameter] public List<T> Items { get; set; } = new List<T>();
+    [Parameter] public T? SelectedItem { get; set; }
+    [Parameter] public EventCallback<T> SelectedItemChanged { get; set; }
+    [Parameter] public Func<T, string>? GetItemNameFunc { get; set; }
+    [Parameter] public string? ListClass { get; set; }
+    [Parameter] public string? ListStyle { get; set; }
+    [Parameter] public string? ItemClass { get; set; }
+    [Parameter] public string? ItemStyle { get; set; }
+    [Parameter] public ListVariant ListVariant { get; set; } = ListVariant.List;
+
+    private IEnumerable<T> SelectedItems => SelectedItem is null ? new List<T>() : new List<T> { SelectedItem };
+    /// <summary>
+    /// Add to database, triggers before items are added to list. 
+    ///  Maybe you want to set some properties before adding to list in a dialog?
+    /// </summary>
+    [Parameter] public Func<Task<T?>>? AddAsyncFunc { get; set; }
+    /// <summary>
+    /// Delete from database, triggers before items are removed from list.
+    /// </summary>
+    [Parameter] public Func<T, Task>? DeleteAsyncFunc { get; set; }
+
+    Task TriggerSelectedItemChanged(T? item)
+    {
+        SelectedItem = item;
+        return SelectedItemChanged.InvokeAsync(SelectedItem);
+
+    }
+    Task TriggerSelectedItemChanged(IEnumerable<T> item)
+    {
+        SelectedItem = item.FirstOrDefault();
+        return SelectedItemChanged.InvokeAsync(SelectedItem);
+    }
+
+    async Task AddItemAsync()
+    {
+
+        if (AddAsyncFunc is not null)
+        {
+            var result = await AddAsyncFunc.Invoke();
+            if (result is not null)
+            {
+                Items.Add(result);
+            }
+        }
+    }
+    async Task DeleteSelectedItemAsync()
+    {
+        if(SelectedItem is null)
+        {
+            return;
+        }
+
+        //Show YesNoDialog and ask if user is sure
+        var itemString = GetItemNameFunc is null ? SelectedItem?.ToString() : GetItemNameFunc(SelectedItem);
+        var parameters = new DialogParameters<YesNoDialog> {
+            { x => x.Info, Localizer["Är du säker på att du vill ta bort: "] + itemString },
+            { x => x.YesButtonColor, Color.Error }
+        };
+        var dialog = await DialogService.ShowAsync<YesNoDialog>(Localizer["Bekräfta borttagning"], parameters);
+        var result = await dialog.Result;
+
+        if (result?.Canceled == false && DeleteAsyncFunc is not null)
+        {
+            await DeleteAsyncFunc.Invoke(SelectedItem!);
+            Items.Remove(SelectedItem!);
+            SelectedItem = null;
+        }
+
+
+        
+    }
+
+
+}

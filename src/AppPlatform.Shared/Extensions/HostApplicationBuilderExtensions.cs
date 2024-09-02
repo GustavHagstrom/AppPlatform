@@ -5,7 +5,6 @@ using AppPlatform.Shared.Constants;
 using AppPlatform.Shared.Models;
 using AppPlatform.Shared.Services;
 using AppPlatform.Shared.Services.Authorization;
-using AppPlatform.Shared.Services.Email;
 using AppPlatform.Shared.Services.MicrosoftGraph;
 using AppPlatform.Shared.Services.Settings;
 using AppPlatform.Shared.Services.Views;
@@ -44,7 +43,6 @@ public static class HostApplicationBuilderExtensions
         services.AddLocalization();
         services.AddScoped<IDarkModeService, DarkModeService>();
         services.AddTransient<IBidconCredentialsService, BidconCredentialsService>();
-        services.AddSingleton<IEmailService, EmailService>();
         services.AddScoped<ILocalStorageService, LocalStorageService>();
         services.AddTransient<IAccessClaimService, AccessClaimService>();
         services.AddSingleton<IApplicationLinkService, ApplicationLinkService>();

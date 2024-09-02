@@ -16,12 +16,12 @@
   </ItemGroup>
 
   <ItemGroup>
-	  <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="8.0.6" />
-	  <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.6" />
-	  <PackageReference Include="Microsoft.Graph" Version="5.56.0" />
-	  <PackageReference Include="Microsoft.Identity.Web" Version="2.20.0" />
-	  <PackageReference Include="Microsoft.Identity.Web.UI" Version="2.20.0" />
-	  <PackageReference Include="MudBlazor" Version="6.20.0" />
+	  <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="8.0.8" />
+	  <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.8" />
+	  <PackageReference Include="Microsoft.Graph" Version="5.56.1" />
+	  <PackageReference Include="Microsoft.Identity.Web" Version="3.1.0" />
+	  <PackageReference Include="Microsoft.Identity.Web.UI" Version="3.1.0" />
+	  <PackageReference Include="MudBlazor" Version="7.6.0" />
   </ItemGroup>
 
   <ItemGroup>

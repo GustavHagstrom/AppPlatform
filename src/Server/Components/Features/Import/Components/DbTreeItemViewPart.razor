@@ -12,7 +12,7 @@
             }
         }
     
-    <MudCheckBox @bind-Checked="TreeItem!.IsSelected" Class="span-40" />
+    <MudCheckBox T="TreeItem" @bind-Checked="TreeItem!.IsSelected" Class="span-40" />
     @if (TreeItem!.Type == DbTreeItemType.Folder)
     {
         <MudIcon Icon="@Icons.Material.Sharp.Folder" Class="align-self-center ml-3" />
