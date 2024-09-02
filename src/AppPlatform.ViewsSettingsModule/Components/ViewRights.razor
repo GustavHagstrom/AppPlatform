@@ -4,14 +4,13 @@
 @using Microsoft.AspNetCore.Components.Authorization
 @inject IStringLocalizer<ViewRights> Localizer
 
-<div class="pa-4">
-    <SettingsSection Title="@Localizer["Roller"]">
-        <RolePicker AllRoles="AllRoles" PickedRoleIds="PickedRoleIds" PickChanged="OnRolePickChanged" />
-    </SettingsSection>
-    <SettingsSection Title="@Localizer["Användare"]">
-        <UserPicker AllUsers="AllUsers" PickedUserIds="PickedUserIds" PickChanged="OnUserPickChanged" />
-    </SettingsSection>
-</div>
+
+<SettingsSection Title="@Localizer["Roller"]">
+    <RolePicker AllRoles="AllRoles" PickedRoleIds="PickedRoleIds" PickChanged="OnRolePickChanged" />
+</SettingsSection>
+<SettingsSection Title="@Localizer["Användare"]">
+    <UserPicker AllUsers="AllUsers" PickedUserIds="PickedUserIds" PickChanged="OnUserPickChanged" />
+</SettingsSection>
 
 @inject AuthenticationStateProvider AuthenticationStateProvider
 @inject IMicrosoftGraphUserAccess MicrosoftGraphUserAccess

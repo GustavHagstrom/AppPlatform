@@ -1,6 +1,7 @@
 ﻿using AppPlatform.Shared.Abstractions;
 using AppPlatform.Shared.Builders;
 using AppPlatform.Shared.Constants;
+using AppPlatform.ViewSettingsModule.Components;
 using AppPlatform.ViewSettingsModule.Services;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -22,6 +23,7 @@ public class ViewSettingsModule : IModule
         services.AddScoped<IViewService, ViewService>();
         services.AddScoped<IRoleViewService, RoleViewService>();
         services.AddScoped<IUserViewService, UserViewService>();
+        services.AddSingleton<Helper>();
         services.AddAuthorization(configure =>
         {
             configure.AddPolicy(Constants.Authorization.Policy, policy =>

@@ -6,8 +6,12 @@
 @if(View is not null)
 {
     
-    <div class="main-container">
-        
+    <div class="main-container relative">
+
+        <MudOverlay DarkBackground="true" Visible="IsLoading" Absolute="true">
+            <MudProgressCircular Size="Size.Large" Color="Color.Primary" Indeterminate="true" />
+        </MudOverlay>
+
         <div class="settings-container">
 
             <div class="settings-headers">
@@ -23,98 +27,37 @@
             </div>
 
             <div class="settings-values">
-                <SettingsSection Title="@Localizer["Alllmänt"]">
-                    <div class="d-flex gap-2">
-                        <MudButton Variant="Variant.Outlined" Color="Color.Success" StartIcon="@Icons.Material.Sharp.Save" Style="width: 150px;">@Localizer["Spara"]</MudButton>
-                        <MudButton Variant="Variant.Outlined" Color="Color.Error" StartIcon="@Icons.Material.Sharp.Delete" Style="width: 150px;">@Localizer["Ta bort"]</MudButton>
-                    </div>
 
-                    <MudTextField T="string" Variant="Variant.Outlined" Value="View?.Name" Label="@Localizer["Namn"]" Margin="Margin.Dense" />
-                    <MudTextField T="string" Variant="Variant.Outlined" Value="View?.FontFamily" Label="@Localizer["Teckensnitt"]" Margin="Margin.Dense" />
-                </SettingsSection>
+                <CascadingValue Value="this">
+                    @switch (ActiveTab)
+                    {
+                        case TabType.Common:
+                            <CommonTab View="View"/>
+                            break;
+                        case TabType.Tags:
+                            <TagsTab View="View" />
+                            break;
+                        case TabType.Rights:
+                            <RightsTab View="View" />
+                            break;
+                    }
+                </CascadingValue>
 
-                <SettingsSection Title="@Localizer["Sektioner"]">
-                    <AddDeleteList T="ISection" Items="View!.SectionsInOrder().ToList()" GetItemNameFunc="x => x.Name" ListVariant="ListVariant.DropDown">
-                        <MudIconButton Icon="@Icons.Material.Sharp.ArrowUpward" Variant="Variant.Outlined" Color="Color.Primary" Size="Size.Medium" />
-                        <MudIconButton Icon="@Icons.Material.Sharp.ArrowDownward" Variant="Variant.Outlined" Color="Color.Primary" Size="Size.Medium" />
-
-                    </AddDeleteList>
-                    <MudTextField T="string" Variant="Variant.Outlined" Label="@Localizer["Namn"]" Margin="Margin.Dense" />
-                </SettingsSection>
+                
             </div>
             
 
         </div>
         <div class="preview-container">
-            <ViewPresenter EditMode="true" View="View" Estimation="SampleEstimation" DoTableItemsStartAsExpanded="true" />
+            <ViewPresenter EditMode="false" View="View" Estimation="SampleEstimation" DoTableItemsStartAsExpanded="true" />
         </div>
     </div>
 }
-    
-
-
-@* <div class="relative" style="height: 100%">
-
-    <PageSetupWithNavigation WhenToHideMobileView="Breakpoint.None" WhenToHideDesktopView="Breakpoint.Always">
-        <NavigationContent>
-
-            <div class="@($"d-flex {(IsSmAndDown ? "flex-row" : "flex-row")}")" style="min-width: 150px; max-width: 100%; overflow-x: auto; overflow-y: hidden;">
-
-                <div class="@TabHeaderClass(TabType.Common)" @onclick="() => ActiveTab = TabType.Common">
-                    <MudText Inline="true" Class="pl-0" Style="font-weight: 500;">@Localizer["Allmänt"]</MudText>
-                </div>
-                <div class="@TabHeaderClass(TabType.Format)" @onclick="() => ActiveTab = TabType.Format">
-                    <MudText Inline="true" Class="pl-0" Style="font-weight: 500;">@Localizer["Format"]</MudText>
-                </div>
-                <div class="@TabHeaderClass(TabType.Tags)" @onclick="() => ActiveTab = TabType.Tags">
-                    <MudText Inline="true" Class="pl-0" Style="font-weight: 500;">@Localizer["Taggar"]</MudText>
-                </div>
-                <div class="@TabHeaderClass(TabType.Rights)" @onclick="() => ActiveTab = TabType.Rights">
-                    <MudText Inline="true" Class="pl-0" Style="font-weight: 500;">@Localizer["Rättigheter"]</MudText>
-                </div>
-
-            </div>
-
-        </NavigationContent>
-
-        <ChildContent>
-            <div class="relative" style="height: 100%">
-
-                <MudOverlay DarkBackground="true" Visible="IsLoading" Absolute="true">
-                    <MudProgressCircular Size="Size.Large" Color="Color.Primary" Indeterminate="true" />
-                </MudOverlay>
-
-                
-
-                <CascadingValue Value="this">
-                    @switch (ActiveTab)
-                    {
-                        case TabType.Format:
-                            <ViewPresenter EditMode="true" View="View" Estimation="SampleEstimation" DoTableItemsStartAsExpanded="true"/>
-                            break;
-                        case TabType.Common:
-                            <CommonTab Estimation="SampleEstimation" View="View"/>
-                            break;
-                        case TabType.Tags:
-                            <TagsTab Estimation="SampleEstimation" View="View"/>
-                            break;
-                        case TabType.Rights:
-                            <RightsTab Estimation="SampleEstimation" View="View"/>
-                            break;
-                    }
-                </CascadingValue>
-                
-
-            </div>
-        </ChildContent>
-
-    </PageSetupWithNavigation>
-
-</div> *@
+   
 
 @inject IViewService _viewService
 @inject AuthenticationStateProvider AuthenticationStateProvider
-
+@inject Helper Helper
 @inject IBrowserViewportService BrowserViewportService
 
 @code{
@@ -122,7 +65,6 @@
 
     enum TabType
     {
-        Format,
         Common,
         Tags,
         Rights,
@@ -131,12 +73,12 @@
 
     string TabHeaderBaseClass => "App-Nav-Link mud-ripple d-flex align-center px-4 py-2 cursor-pointer flex-shrink-0";
     string TabHeaderClass(TabType tabType) => ActiveTab == tabType ? $"{TabHeaderBaseClass} App-Nav-Link-Active" : TabHeaderBaseClass;
-
     string TabPanelButtonColorStyle(TabType tab) => ActiveTab == tab ? "background-color: var(--mud-palette-primary-hover); color: var(--mud-palette-primary);" : "";
 
     bool IsLoading { get; set; } = false;
     View? View { get; set; }
     TabType ActiveTab = TabType.Common;
+    Estimation? SampleEstimation;
 
     Guid ObserverId = Guid.NewGuid();
     Breakpoint CurrentBreakPoint;
@@ -146,6 +88,7 @@
 
     protected override Task OnInitializedAsync()
     {
+        SampleEstimation = Helper.CreateSamepleEstimation();
         return LoadDataAsync();
     }
     protected override async Task OnAfterRenderAsync(bool firstRender)
@@ -187,7 +130,7 @@
     {
         StateHasChanged();
     }
-    Estimation SampleEstimation = SampleEstimationFactory.CreateSamepleEstimation();
+    
     
     
 }

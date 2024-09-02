@@ -48,6 +48,7 @@
     [Parameter] public string? ItemClass { get; set; }
     [Parameter] public string? ItemStyle { get; set; }
     [Parameter] public ListVariant ListVariant { get; set; } = ListVariant.List;
+    [Parameter] public bool SelectItemsAfterCreation { get; set; } = true;
 
     private IEnumerable<T> SelectedItems => SelectedItem is null ? new List<T>() : new List<T> { SelectedItem };
     /// <summary>
@@ -81,6 +82,10 @@
             if (result is not null)
             {
                 Items.Add(result);
+                if(SelectItemsAfterCreation)
+                {
+                    SelectedItem = result;
+                }
             }
         }
     }

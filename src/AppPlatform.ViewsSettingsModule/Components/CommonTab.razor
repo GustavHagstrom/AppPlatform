@@ -1,6 +1,7 @@
 @using Microsoft.AspNetCore.Components.Authorization
 
 @inject IStringLocalizer<CommonTab> Localizer
+@inject Helper Helper
 @inject IViewService _viewService
 @inject AuthenticationStateProvider AuthenticationStateProvider
 @inject IDialogService DialogService
@@ -8,57 +9,55 @@
 
 
 
-@* <div class="d-flex gap-2 nomarginpls">
-    <mudtextfield t="string" margin="margin.dense" variant="variant.outlined" placeholder="@localizer["teckensnitt"]" style="width: 200px; height: 36px;" />
-    <mudtextfield t="string" margin="margin.dense" variant="variant.outlined" adornment="adornment.none" adornmenticon="@icons.material.sharp.formatsize" style="width: 55px; ; height: 36px;" />
-</div>
- *@
-<ViewEditToolbar>
-    
-    <ToolbarSection Title="@Localizer["Spara / Ta bort"]">
-        
-        <ToolbarColumn>
-            <MudButton Variant="Variant.Outlined" Color="Color.Success" StartIcon="@Icons.Material.Sharp.Save">@Localizer["Spara"]</MudButton>
-            <MudButton Variant="Variant.Outlined" Color="Color.Error" StartIcon="@Icons.Material.Sharp.Delete" OnClick="Delete">@Localizer["Ta bort"]</MudButton>
-        </ToolbarColumn>
-        
-    </ToolbarSection>
-    <ToolbarSection Title="@Localizer["Namn & teckensnitt"]">
+<SettingsSection Title="@Localizer["Alllmänt"]">
+    <div class="d-flex gap-2">
+        <MudButton Variant="Variant.Outlined" Color="Color.Success" StartIcon="@Icons.Material.Sharp.Save" Style="width: 50%;">@Localizer["Spara"]</MudButton>
+        <MudButton Variant="Variant.Outlined" Color="Color.Error" StartIcon="@Icons.Material.Sharp.Delete" Style="width: 50%;">@Localizer["Ta bort"]</MudButton>
+    </div>
 
-        <ToolbarColumn>
-            <div class="nomarginpls">
-                <MudTextField T="string" Variant="Variant.Outlined" Value="View?.Name" ValueChanged="SetName" Placeholder="@Localizer["Namn"]" Style="width: 200px; height: 36.5px;" />
-            </div>
-            <div class="nomarginpls">
-                <MudTextField T="string" Variant="Variant.Outlined" Value="View?.FontFamily" ValueChanged="SetFontFamily" Placeholder="@Localizer["Teckensnitt"]" Style="width: 200px; height: 36.5px;" />
-            </div>
-        </ToolbarColumn>
+    <MudTextField T="string" Variant="Variant.Outlined" Value="View?.Name" ValueChanged="SetName" Label="@Localizer["Namn"]" Margin="Margin.Dense" />
+    <MudTextField T="string" Variant="Variant.Outlined" Value="View?.FontFamily" ValueChanged="SetFontFamily" Label="@Localizer["Teckensnitt"]" Margin="Margin.Dense" />
+</SettingsSection>
 
-    </ToolbarSection>
+<SettingsSection Title="@Localizer["Sektioner"]">
+    <AddDeleteList T="ISection" Items="View!.SectionsInOrder().ToList()" GetItemNameFunc="x => x.Name" ListVariant="ListVariant.DropDown" AddAsyncFunc="NewSection" @bind-SelectedItem="SelectedSection" DeleteAsyncFunc="DeleteSection">
+        <MudIconButton Icon="@Icons.Material.Sharp.ArrowUpward" Variant="Variant.Outlined" Color="Color.Primary" Size="Size.Medium" />
+        <MudIconButton Icon="@Icons.Material.Sharp.ArrowDownward" Variant="Variant.Outlined" Color="Color.Primary" Size="Size.Medium" />
+    </AddDeleteList>
     
-</ViewEditToolbar>
-<ViewPresenter EditMode="false" View="View" Estimation="Estimation" DoTableItemsStartAsExpanded="true" />
+    @if(SelectedSection is not null)
+    {
+        <MudTextField T="string" Variant="Variant.Outlined" Label="@Localizer["Namn"]" Margin="Margin.Dense" @bind-Value="SelectedSection.Name"/>
+        <MudTextField T="string" Variant="Variant.Outlined" Label="@Localizer["Typ"]" Margin="Margin.Dense" ReadOnly="true" Value="Helper.GetSectionTypeName(SelectedSection)" />
+    }
+
+    
+</SettingsSection>
 
 @code{
-    [Parameter] public Estimation? Estimation { get; set; }
     [Parameter] public View? View { get; set; }
     [CascadingParameter] public EditViewPage? EditViewPage { get; set; }
-    async Task SetName(string name)
+
+    ISection? SelectedSection { get; set; }
+
+    void SetName(string name)
     {
         if (View is not null)
         {
             View.Name = name;
-            var state = await AuthenticationStateProvider.GetAuthenticationStateAsync();
-            await _viewService.UpsertAsync(state.User, View);
+            EditViewPage?.TriggerStateHasChanged();
+            // var state = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+            // await _viewService.UpsertAsync(state.User, View);
         }
     }
-    async Task SetFontFamily(string fontFamily)
+    void SetFontFamily(string fontFamily)
     {
         if (View is not null)
         {
             View.FontFamily = fontFamily;
-            var state = await AuthenticationStateProvider.GetAuthenticationStateAsync();
-            await _viewService.UpsertAsync(state.User, View);
+            EditViewPage?.TriggerStateHasChanged();
+            // var state = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+            // await _viewService.UpsertAsync(state.User, View);
         }
     }
 
@@ -79,5 +78,55 @@
                 NavigationManager.NavigateTo(Constants.Routes.ViewListPage);
             }
         }
+    }
+    async Task<ISection?> NewSection()
+    {
+        if(View is null)
+        {
+            return null;
+        }
+
+        var dialog = await DialogService.ShowAsync<NewSectionDialog>(Localizer["Ny sektion"]);
+        var result = await dialog.Result;
+        if (result?.Data is NewSectionDialogResult newSectionResult)
+        {
+
+            switch (newSectionResult.Type)
+            {
+                case SectionType.DataSection:
+                    var dataSection = new DataSection { Name = newSectionResult.Name, Order = View.SectionsInOrder().Count() + 1 };
+                    View?.DataSections.Add(dataSection);
+                    EditViewPage?.TriggerStateHasChanged();
+                    return dataSection;
+                case SectionType.SheetSection:
+                    var sheetSection = new SheetSection { Name = newSectionResult.Name, Order = View.SectionsInOrder().Count() + 1 };
+                    View?.SheetSections.Add(sheetSection);
+                    EditViewPage?.TriggerStateHasChanged();
+                    return sheetSection;
+                default:
+                    throw new NotImplementedException();
+            }
+        }
+        return null;
+    }
+    Task DeleteSection(ISection section)
+    {
+        if (View is not null)
+        {
+            if(section is DataSection dataSection)
+            {
+                View?.DataSections.Remove(dataSection);
+            }
+            else if (section is SheetSection sheetSection)
+            {
+                View?.SheetSections.Remove(sheetSection);
+            }
+            else
+            {
+                throw new NotImplementedException();
+            }
+        }
+        EditViewPage?.TriggerStateHasChanged();
+        return Task.CompletedTask;
     }
 }

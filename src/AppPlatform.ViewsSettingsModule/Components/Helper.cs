@@ -1,10 +1,45 @@
 ﻿using AppPlatform.Core.Enteties.EstimationEnteties;
+using AppPlatform.Core.Enteties.EstimationView;
 using AppPlatform.Core.Enums.BidconAccess;
+using Microsoft.Extensions.Localization;
 
 namespace AppPlatform.ViewSettingsModule.Components;
-static class SampleEstimationFactory
+public class Helper(IStringLocalizer<Helper> Localizer)
 {
-    public static Estimation CreateSamepleEstimation()
+    private Dictionary<SectionType, string> SectionTypeNames = new()
+    {
+        { SectionType.DataSection, Localizer["Datasektion"] },
+        { SectionType.SheetSection, Localizer["Tabellsektion"] }
+    };
+    public string GetSectionTypeName(SectionType sectionType)
+    {
+        return SectionTypeNames[sectionType];
+    }
+    public string GetSectionTypeName(ISection section)
+    {
+        if(section is DataSection)
+        {
+            return GetSectionTypeName(SectionType.DataSection);
+        }
+        else if (section is SheetSection)
+        {
+            return GetSectionTypeName(SectionType.SheetSection);
+        }
+        throw new NotImplementedException();
+    }
+    public SectionType GetSectionType(ISection section)
+    {
+        if (section is DataSection)
+        {
+            return SectionType.DataSection;
+        }
+        else if (section is SheetSection)
+        {
+            return SectionType.SheetSection;
+        }
+        throw new NotImplementedException();
+    }
+    public Estimation CreateSamepleEstimation()
     {
         var estimation = new Estimation
         {
