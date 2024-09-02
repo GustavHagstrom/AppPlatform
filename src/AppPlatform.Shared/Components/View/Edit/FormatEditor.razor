@@ -55,16 +55,12 @@
             </ToolbarRow>
         </ToolbarColumn>
         <ToolbarColumn>
-            <style>
-                .NoMarginPls > div {
-                    margin: 0 !important;
-                }
-            </style>
+            
             <ToolbarRow>
                 <div style="width: 36px; height: 36px;"/>
             </ToolbarRow>
             <ToolbarRow Class="NoMarginPls">
-                <MudTextField T="string" Margin="Margin.Dense" Label="@Localizer["Storlek"]" Variant="Variant.Outlined" Adornment="Adornment.None" AdornmentIcon="@Icons.Material.Sharp.FormatSize" ShrinkLabel="true" Style="width: 75px; ; height: 36px;" />
+                <MudTextField T="string" Margin="Margin.Dense" Label="@Localizer["Storlek"]" Variant="Variant.Outlined" Adornment="Adornment.None" AdornmentIcon="@Icons.Material.Sharp.FormatSize" ShrinkLabel="true" Style="width: 75px; ; height: 36px;" Class="nomarginpls" />
             </ToolbarRow>
         </ToolbarColumn>
     </ToolbarRow>

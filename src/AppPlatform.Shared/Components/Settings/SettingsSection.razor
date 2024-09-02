@@ -2,9 +2,9 @@
 {
     <MudDivider Style="flex-grow: 0;"/>
 } *@
-<div class="pb-6">
+<div class="pb-6" style="@widthStyle">
     <MudText Typo="Typo.subtitle1" Style="font-weight: bold;">@Title</MudText>
-    <div  style="@style">
+    <div style="@style">
         <CascadingValue Value="this">
             @ChildContent
         </CascadingValue>
@@ -16,13 +16,15 @@
     [Parameter] public string Title { get; set; } = string.Empty;
     [Parameter] public bool DividerOnTop { get; set; } = false;
     [Parameter] public Func<Task>? LoadDataAsync { get; set; }
-    [Parameter] public string MinWidth { get; set; } = "300px";
-    [Parameter] public string MaxWidth { get; set; } = "600px";
+    // [Parameter] public string MinWidth { get; set; } = "300px";
+    // [Parameter] public string MaxWidth { get; set; } = "600px";
+    [Parameter] public string Width { get; set; } = "100%";
 
     public bool IsLoading { get; set; } = false;
     public Action? IsLoadingChanged { get; set; }
 
-    string style => $"min-width: {MinWidth}; max-width: {MaxWidth}; display: flex; flex-direction: column; gap: 8px;";
+    string style => $"{widthStyle}; display: flex; flex-direction: column; gap: 8px;";
+    string widthStyle => $"width: {Width};";
     
 
 

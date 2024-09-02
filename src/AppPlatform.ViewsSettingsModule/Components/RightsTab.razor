@@ -1,11 +1,7 @@
 @inject IStringLocalizer<RightsTab> Localizer
 @inject IViewService _viewService
 
-@* <style>
-    .NoMarginPls > div {
-        margin: 0 !important;
-    }
-</style>
+@* 
 <div class="d-flex gap-2 NoMarginPls">
     <MudTextField T="string" Margin="Margin.Dense" Variant="Variant.Outlined" Placeholder="@Localizer["Teckensnitt"]" Style="width: 200px; height: 36px;" />
     <MudTextField T="string" Margin="Margin.Dense" Variant="Variant.Outlined" Adornment="Adornment.None" AdornmentIcon="@Icons.Material.Sharp.FormatSize" Style="width: 55px; ; height: 36px;" />

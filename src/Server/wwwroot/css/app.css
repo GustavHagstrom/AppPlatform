@@ -101,3 +101,7 @@ table.striped tr:nth-child(odd) {
 .loading-progress-text:after {
     content: var(--blazor-load-percentage-text, "Loading");
 }
+
+.nomarginpls > div {
+    margin: 0 !important;
+}

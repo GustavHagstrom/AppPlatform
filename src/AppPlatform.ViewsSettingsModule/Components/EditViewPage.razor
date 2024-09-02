@@ -5,27 +5,44 @@
 
 @if(View is not null)
 {
+    
     <div class="main-container">
+        
         <div class="settings-container">
 
-            <SettingsSection Title="@Localizer["Alllmänt"]">
-                <div class="d-flex gap-2">
-                    <MudButton Variant="Variant.Outlined" Color="Color.Success" StartIcon="@Icons.Material.Sharp.Save" Style="width: 150px;">@Localizer["Spara"]</MudButton>
-                    <MudButton Variant="Variant.Outlined" Color="Color.Error" StartIcon="@Icons.Material.Sharp.Delete" Style="width: 150px;">@Localizer["Ta bort"]</MudButton>
+            <div class="settings-headers">
+                <div class="@TabHeaderClass(TabType.Common)" @onclick="() => ActiveTab = TabType.Common">
+                    <MudText Inline="true" Class="pl-0" Style="font-weight: 500;">@Localizer["Start"]</MudText>
                 </div>
+                <div class="@TabHeaderClass(TabType.Tags)" @onclick="() => ActiveTab = TabType.Tags">
+                    <MudText Inline="true" Class="pl-0" Style="font-weight: 500;">@Localizer["Taggar"]</MudText>
+                </div>
+                <div class="@TabHeaderClass(TabType.Rights)" @onclick="() => ActiveTab = TabType.Rights">
+                    <MudText Inline="true" Class="pl-0" Style="font-weight: 500;">@Localizer["Rättigheter"]</MudText>
+                </div>
+            </div>
 
-                <MudTextField T="string" Variant="Variant.Outlined" Value="View?.Name" Label="@Localizer["Namn"]" Margin="Margin.Dense" />
-                <MudTextField T="string" Variant="Variant.Outlined" Value="View?.FontFamily" Label="@Localizer["Teckensnitt"]" Margin="Margin.Dense" />
-            </SettingsSection>
+            <div class="settings-values">
+                <SettingsSection Title="@Localizer["Alllmänt"]">
+                    <div class="d-flex gap-2">
+                        <MudButton Variant="Variant.Outlined" Color="Color.Success" StartIcon="@Icons.Material.Sharp.Save" Style="width: 150px;">@Localizer["Spara"]</MudButton>
+                        <MudButton Variant="Variant.Outlined" Color="Color.Error" StartIcon="@Icons.Material.Sharp.Delete" Style="width: 150px;">@Localizer["Ta bort"]</MudButton>
+                    </div>
 
-            <SettingsSection Title="@Localizer["Sektioner"]">
-                <AddDeleteList T="ISection" Items="View!.SectionsInOrder().ToList()" GetItemNameFunc="x => x.Name" ListVariant="ListVariant.DropDown" >
-                    <MudIconButton Icon="@Icons.Material.Sharp.ArrowUpward" Variant="Variant.Outlined" Color="Color.Primary" Size="Size.Medium" />
-                    <MudIconButton Icon="@Icons.Material.Sharp.ArrowDownward" Variant="Variant.Outlined" Color="Color.Primary" Size="Size.Medium" />
-                
-                </AddDeleteList>
-                <MudTextField T="string" Variant="Variant.Outlined"  Label="@Localizer["Namn"]" Margin="Margin.Dense" />
-            </SettingsSection>
+                    <MudTextField T="string" Variant="Variant.Outlined" Value="View?.Name" Label="@Localizer["Namn"]" Margin="Margin.Dense" />
+                    <MudTextField T="string" Variant="Variant.Outlined" Value="View?.FontFamily" Label="@Localizer["Teckensnitt"]" Margin="Margin.Dense" />
+                </SettingsSection>
+
+                <SettingsSection Title="@Localizer["Sektioner"]">
+                    <AddDeleteList T="ISection" Items="View!.SectionsInOrder().ToList()" GetItemNameFunc="x => x.Name" ListVariant="ListVariant.DropDown">
+                        <MudIconButton Icon="@Icons.Material.Sharp.ArrowUpward" Variant="Variant.Outlined" Color="Color.Primary" Size="Size.Medium" />
+                        <MudIconButton Icon="@Icons.Material.Sharp.ArrowDownward" Variant="Variant.Outlined" Color="Color.Primary" Size="Size.Medium" />
+
+                    </AddDeleteList>
+                    <MudTextField T="string" Variant="Variant.Outlined" Label="@Localizer["Namn"]" Margin="Margin.Dense" />
+                </SettingsSection>
+            </div>
+            
 
         </div>
         <div class="preview-container">
@@ -101,7 +118,7 @@
 @inject IBrowserViewportService BrowserViewportService
 
 @code{
-        [Parameter] public string? ViewId { get; set; }
+    [Parameter] public string? ViewId { get; set; }
 
     enum TabType
     {
@@ -170,68 +187,8 @@
     {
         StateHasChanged();
     }
-    Estimation SampleEstimation = CreateSamepleEstimation();
-    static Estimation CreateSamepleEstimation()
-    {
-        var estimation = new Estimation
-            {
-                BidconId = "123",
-                ConfirmationOfficer = "Test",
-                Customer = "Test",
-                Description = "Test",
-                HandlingOfficer = "Test",
-                Name = "Test",
-                Place = "Test",
-                NetSheet = new SheetItem
-                {
-                    Description = "Root",
-                    RowType = (int)RowType.Group,
-                    Children = new List<SheetItem>
-                    {
-                        new SheetItem
-                        {
-                            Description = "Group",
-                            RowType = (int)RowType.Group,
-                            Children = new List<SheetItem>
-                            {
-                                new SheetItem
-                                {
-                                    Description = "Part",
-                                    RowType = (int)RowType.Part,
-                                    Quantity = 2,
-                                    Unit = "st",
-                                    Children = new List<SheetItem>
-                                    {
-                                        new SheetItem
-                                        {
-                                            Description = "Post",
-                                            RowType = (int)RowType.LayeredItem,
-                                            Quantity = 10,
-                                            Unit = "st",
-                                            LayerItemUnitCost = 100.55,
-                                            LayerItemUnitAskingPrice = 200.1,
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            };
-        SetSheetItemParentReferenses(estimation.NetSheet, null);
-        return estimation;
-    }
-    static void SetSheetItemParentReferenses(SheetItem item, SheetItem? parent)
-    {
-        item.Parent = parent;
-        if (item.Children != null)
-        {
-            foreach (var child in item.Children)
-            {
-                SetSheetItemParentReferenses(child, item);
-            }
-        }
-    }
+    Estimation SampleEstimation = SampleEstimationFactory.CreateSamepleEstimation();
+    
     
 }
 
