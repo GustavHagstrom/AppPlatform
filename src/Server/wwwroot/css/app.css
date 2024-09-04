@@ -102,6 +102,10 @@ table.striped tr:nth-child(odd) {
     content: var(--blazor-load-percentage-text, "Loading");
 }
 
-.nomarginpls > div {
+/*.nomarginpls > div {
+    margin: 0 !important;
+}
+*/
+div.mud-input-control {
     margin: 0 !important;
 }

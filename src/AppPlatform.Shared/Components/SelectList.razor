@@ -1,11 +1,15 @@
-@typeparam T where T : class
+@typeparam T
 
 <div class="d-block">
-    <div class="d-flex gap-2 mb-2">
-        <MudIconButton Icon="@Icons.Material.Sharp.Add" Variant="Variant.Outlined" Color="Color.Primary" Size="Size.Medium" OnClick="AddItemAsync" />
-        <MudIconButton Icon="@Icons.Material.Sharp.Delete" Variant="Variant.Outlined" Color="Color.Error" Size="Size.Medium" OnClick="DeleteSelectedItemAsync" Disabled="SelectedItem is null" />
-        @ChildContent
-    </div>
+
+    @if (ShowActions)
+    {
+        <div class="d-flex gap-2 mb-2">
+            <MudIconButton Icon="@Icons.Material.Sharp.Add" Variant="Variant.Outlined" Color="Color.Primary" Size="Size.Medium" OnClick="AddItemAsync" />
+            <MudIconButton Icon="@Icons.Material.Sharp.Delete" Variant="Variant.Outlined" Color="Color.Error" Size="Size.Medium" OnClick="DeleteSelectedItemAsync" Disabled="SelectedItem is null" />
+            @ChildContent
+        </div>
+    }
 
     @switch (ListVariant)
     {
@@ -14,16 +18,16 @@
                 <MudList T="T" SelectedValue="SelectedItem" SelectedValueChanged="TriggerSelectedItemChanged" Class="@ListClass" Style="@ListStyle" Dense="true" SelectionMode="SelectionMode.SingleSelection">
                     @foreach (var item in Items)
                     {
-                        <MudListItem Text="@(GetItemNameFunc is null ? item?.ToString() : GetItemNameFunc(item))" Value="item" Class="@ItemClass" Style="@ItemStyle" />
+                        <MudListItem Text="@ToStringFunc(item)" Value="item" Class="@ItemClass" Style="@ItemStyle" />
                     }
                 </MudList>
             </MudPaper>
             break;
         case ListVariant.DropDown:
-            <MudSelect T="T" MultiSelection="false" SelectedValues="SelectedItems" SelectedValuesChanged="TriggerSelectedItemChanged" Class="@ListClass" Style="@ListStyle" Variant="Variant.Outlined" ToStringFunc="GetItemNameFunc is null ? x => x.ToString() : GetItemNameFunc" Dense="true" Margin="Margin.Dense" AnchorOrigin="Origin.BottomRight" TransformOrigin="Origin.TopRight">
+            <MudSelect T="T" MultiSelection="false" SelectedValues="SelectedItems" SelectedValuesChanged="TriggerSelectedItemChanged" Class="@ListClass" Style="@ListStyle" Variant="Variant.Outlined" ToStringFunc="ToStringFunc" Dense="true" Margin="Margin.Dense" AnchorOrigin="Origin.BottomRight" TransformOrigin="Origin.TopRight" Label="@DropDownLabel">
                 @foreach (var item in Items)
                 {
-                    <MudSelectItem T="T" Value="item" Class="@ItemClass" Style="@ItemStyle" />
+                    <MudSelectItem T="T" Value="item" Class="@ItemClass" Style="@ItemStyle"/>
                 }
             </MudSelect>
             break;
@@ -36,7 +40,7 @@
 
 
 @inject IDialogService DialogService
-@inject IStringLocalizer<AddDeleteList<T>> Localizer
+@inject IStringLocalizer<SelectList<object>> Localizer
 @code{
     [Parameter] public RenderFragment? ChildContent { get; set; }
     [Parameter] public List<T> Items { get; set; } = new List<T>();
@@ -49,6 +53,8 @@
     [Parameter] public string? ItemStyle { get; set; }
     [Parameter] public ListVariant ListVariant { get; set; } = ListVariant.List;
     [Parameter] public bool SelectItemsAfterCreation { get; set; } = true;
+    [Parameter] public bool ShowActions { get; set; } = true;
+    [Parameter] public string? DropDownLabel { get; set; }
 
     private IEnumerable<T> SelectedItems => SelectedItem is null ? new List<T>() : new List<T> { SelectedItem };
     /// <summary>
@@ -61,6 +67,20 @@
     /// </summary>
     [Parameter] public Func<T, Task>? DeleteAsyncFunc { get; set; }
 
+
+    string ToStringFunc(T item)
+    {
+        if (GetItemNameFunc is not null)
+        {
+            return GetItemNameFunc(item);
+        }
+        var stringResult = item?.ToString();
+        if (stringResult is not null)
+        {
+            return stringResult;
+        }
+        return string.Empty;
+    }
     Task TriggerSelectedItemChanged(T? item)
     {
         SelectedItem = item;
@@ -109,7 +129,7 @@
         {
             await DeleteAsyncFunc.Invoke(SelectedItem!);
             Items.Remove(SelectedItem!);
-            SelectedItem = null;
+            SelectedItem = default;
         }
 
 

@@ -1,0 +1,35 @@
+<SelectList T="FormatType" DropDownLabel="@Localizer["Formattyp"]" ShowActions="false" Items="Enum.GetValues<FormatType>().ToList()" ListVariant="ListVariant.DropDown" @bind-SelectedItem="SelectedFormat" GetItemNameFunc="GetItemNameFunc" />
+
+@if(SelectedFormat == FormatType.Column)
+{
+    <SheetColumnEditor Section="@Section" />
+}
+else
+{
+    <SheetRowEditor Section="@Section" />
+}
+
+
+@inject IStringLocalizer<SheetSectionEditor> Localizer
+@code {
+    [Parameter] public SheetSection? Section { get; set; }
+    [Parameter] public View? View { get; set; }
+
+    FormatType SelectedFormat = FormatType.Column;
+
+    enum FormatType
+    {
+        Column,
+        Row
+    }
+
+    string GetItemNameFunc(FormatType formatType)
+    {
+        return formatType switch
+        {
+            FormatType.Column => Localizer["Kolumn"],
+            FormatType.Row => Localizer["Rad"],
+            _ => throw new NotImplementedException()
+        };
+    }
+}

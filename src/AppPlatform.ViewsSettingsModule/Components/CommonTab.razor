@@ -1,3 +1,4 @@
+@using AppPlatform.ViewSettingsModule.Components.Section
 @using Microsoft.AspNetCore.Components.Authorization
 
 @inject IStringLocalizer<CommonTab> Localizer
@@ -20,15 +21,26 @@
 </SettingsSection>
 
 <SettingsSection Title="@Localizer["Sektioner"]">
-    <AddDeleteList T="ISection" Items="View!.SectionsInOrder().ToList()" GetItemNameFunc="x => x.Name" ListVariant="ListVariant.DropDown" AddAsyncFunc="NewSection" @bind-SelectedItem="SelectedSection" DeleteAsyncFunc="DeleteSection">
+    <SelectList T="ISection" Items="View!.SectionsInOrder().ToList()" GetItemNameFunc="x => x?.Name" ListVariant="ListVariant.DropDown" AddAsyncFunc="NewSection" @bind-SelectedItem="SelectedSection" DeleteAsyncFunc="DeleteSection" ShowActions="true">
         <MudIconButton Icon="@Icons.Material.Sharp.ArrowUpward" Variant="Variant.Outlined" Color="Color.Primary" Size="Size.Medium" />
         <MudIconButton Icon="@Icons.Material.Sharp.ArrowDownward" Variant="Variant.Outlined" Color="Color.Primary" Size="Size.Medium" />
-    </AddDeleteList>
+    </SelectList>
     
     @if(SelectedSection is not null)
     {
-        <MudTextField T="string" Variant="Variant.Outlined" Label="@Localizer["Namn"]" Margin="Margin.Dense" @bind-Value="SelectedSection.Name"/>
+        <MudTextField T="string" Variant="Variant.Outlined" Label="@Localizer["Namn"]" Margin="Margin.Dense" Value="SelectedSection.Name" ValueChanged="x => SelectedSection.Name = x" />
         <MudTextField T="string" Variant="Variant.Outlined" Label="@Localizer["Typ"]" Margin="Margin.Dense" ReadOnly="true" Value="Helper.GetSectionTypeName(SelectedSection)" />
+
+        if (SelectedSection is SheetSection sheetSection)
+        {
+            <SheetSectionEditor Section="@sheetSection" View="View" />
+        }
+        else if (SelectedSection is DataSection dataSection)
+        {
+            <DataSectionEditor Section="@dataSection" View="View" />
+        }
+
+        
     }
 
     
@@ -50,6 +62,14 @@
             // await _viewService.UpsertAsync(state.User, View);
         }
     }
+    // void SetSectionName(string name)
+    // {
+    //     if(SelectedSection is not null)
+    //     {
+    //         SelectedSection.Name = name;
+    //         EditViewPage?.TriggerStateHasChanged();
+    //     }
+    // }
     void SetFontFamily(string fontFamily)
     {
         if (View is not null)

@@ -1,4 +1,5 @@
 ﻿using AppPlatform.BidconDatabaseAccess;
+using AppPlatform.Core.Services;
 using AppPlatform.Shared.Abstractions;
 using AppPlatform.Shared.Builders;
 using AppPlatform.Shared.Constants;
@@ -54,6 +55,9 @@ public static class HostApplicationBuilderExtensions
         services.AddScoped<IMicrosoftGraphUserAccess, GraphClientUserAccess>();
         services.UseBidconDataAccess<BidconDatabaseConnectionsStringService>();
         services.AddTransient<IViewStyleService, ViewStyleService>();
+
+        //Core services
+        services.AddScoped<ISheetDataService, SheetDataService>();
 
         services.AddAuthorization(configure =>
         {

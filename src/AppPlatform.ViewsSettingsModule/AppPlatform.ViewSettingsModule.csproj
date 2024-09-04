@@ -6,6 +6,10 @@
     <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Content Remove="Components\FormatEditor.razor" />
+  </ItemGroup>
+
 
   <ItemGroup>
     <SupportedPlatform Include="browser" />
@@ -20,7 +24,12 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Components\Section\" />
     <Folder Include="wwwroot\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="Components\Format\FormatEditor.razor" />
   </ItemGroup>
 
 </Project>

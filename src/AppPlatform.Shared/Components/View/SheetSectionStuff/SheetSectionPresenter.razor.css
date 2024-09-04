@@ -15,13 +15,16 @@ td:hover, th:hover {
 
 }
 
+.cell-value{
 
+}
 .table-container {
     padding: 1px;
     box-sizing: border-box;
 }
-td .cell-value, th div {
+.cell-value {
     display: flex;
+    flex-grow: 1;
     padding: 8px;
     height: 100%;
     justify-content: inherit;

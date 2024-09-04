@@ -1,0 +1,223 @@
+@using MudBlazor.Utilities
+@inject IStringLocalizer<FormatEditor> Localizer
+
+<div>
+    <Row>
+        <Column>
+            <Row>
+                <MudIconButton Variant="Variant.Outlined" Icon="@Icons.Material.Sharp.FormatBold" Style="background-color: var(--mud-palette-action-disabled-background)" />
+                <MudIconButton Variant="Variant.Outlined" Icon="@Icons.Material.Sharp.FormatItalic" />
+                <MudIconButton Variant="Variant.Outlined" Icon="@Icons.Material.Sharp.FormatUnderlined" />
+            </Row>
+            <Row>
+                <MudMenu Dense="true" AnchorOrigin="Origin.BottomLeft" TransformOrigin="Origin.TopLeft">
+                    <ActivatorContent>
+                        <MudIconButton Variant="Variant.Outlined" Icon="@Icons.Material.Sharp.BorderBottom" />
+                    </ActivatorContent>
+                    <ChildContent>
+                        <MudMenuItem Icon="@Icons.Material.Sharp.BorderBottom"/>
+                        <MudMenuItem Icon="@Icons.Material.Sharp.BorderTop"/>
+                        <MudMenuItem Icon="@Icons.Material.Sharp.BorderLeft"/>
+                        <MudMenuItem Icon="@Icons.Material.Sharp.BorderRight"/>
+                        <MudMenuItem Icon="@Icons.Material.Sharp.BorderClear" />
+                   @*      <MudMenuItem Icon="@Icons.Material.Sharp.BorderAll" /> *@
+                        <MudMenuItem Icon="@Icons.Material.Sharp.BorderOuter" />
+                    </ChildContent>
+                </MudMenu>
+                <MudMenu Dense="true" AnchorOrigin="Origin.BottomLeft" TransformOrigin="Origin.TopLeft">
+                    <ActivatorContent>
+                        <MudIconButton Variant="Variant.Filled" Icon="@Icons.Material.Sharp.FormatColorFill" Class="border border-solid" Style="@($"background: linear-gradient(to bottom, var(--mud-palette-background), {BackgroundColor}); padding: 5px;")" />
+                    </ActivatorContent>
+                    <ChildContent>
+                        <MudColorPicker DisableToolbar="true" DisableColorField="false" DisableModeSwitch="true" DisablePreview="false" DisableAlpha="true" PickerVariant="PickerVariant.Static" Value="BackgroundColor" ValueChanged="SetBackgroundColor" />
+                    </ChildContent>
+                </MudMenu>
+                <MudMenu Dense="true" AnchorOrigin="Origin.BottomLeft" TransformOrigin="Origin.TopLeft">
+                    <ActivatorContent>
+                        <MudIconButton Variant="Variant.Filled" Icon="@Icons.Material.Sharp.FormatColorText" Class="border border-solid" Style="@($"background: linear-gradient(to bottom, var(--mud-palette-background), {TextColor}); padding: 5px;")" />
+                    </ActivatorContent>
+                    <ChildContent>
+                        <MudColorPicker DisableToolbar="true" DisableColorField="false" DisableModeSwitch="true" DisablePreview="false" DisableAlpha="true" PickerVariant="PickerVariant.Static" Value="TextColor" ValueChanged="SetTextColor" />
+                    </ChildContent>
+                </MudMenu>
+            </Row>
+        </Column>
+        <Column>
+            <Row>
+                <MudIconButton Variant="Variant.Outlined" Icon="@Icons.Material.Sharp.VerticalAlignTop" />
+                <MudIconButton Variant="Variant.Outlined" Icon="@Icons.Material.Sharp.VerticalAlignCenter" />
+                <MudIconButton Variant="Variant.Outlined" Icon="@Icons.Material.Sharp.VerticalAlignBottom" />
+            </Row>
+            <Row>
+                <MudIconButton Variant="Variant.Outlined" Icon="@Icons.Material.Sharp.FormatAlignLeft" />
+                <MudIconButton Variant="Variant.Outlined" Icon="@Icons.Material.Sharp.FormatAlignCenter" />
+                <MudIconButton Variant="Variant.Outlined" Icon="@Icons.Material.Sharp.FormatAlignRight" />
+            </Row>
+        </Column>
+        <Column>
+            
+            <Row>
+                <div style="width: 36px; height: 36px;"/>
+            </Row>
+            <Row>
+                <MudTextField T="int" Margin="Margin.Dense" Label="@Localizer["Storlek"]" Variant="Variant.Outlined" Adornment="Adornment.None" AdornmentIcon="@Icons.Material.Sharp.FormatSize" ShrinkLabel="true" Style="width: 75px; ; height: 36px;" Class="nomarginpls" Value="Format.FontSize" ValueChanged="SetFontSize" />
+            </Row>
+        </Column>
+    </Row>
+    
+</div>
+
+@code{
+    [Parameter] public IFormat? Format { get; set; }
+    [Parameter] public EventCallback<IFormat> FormatChanged { get; set; }
+    [CascadingParameter] public EditViewPage? EditViewPage { get; set; }
+
+    MudColor BackgroundColor = new("#FFFFFF");
+    MudColor TextColor = new("#424242");
+
+    protected override void OnParametersSet()
+    {
+        if (Format?.BackgroundColor is not null)
+        {
+            BackgroundColor = Format.BackgroundColor;
+        }
+        if (Format?.TextColor is not null)
+        {
+            TextColor = Format.TextColor;
+        }
+    }
+
+    void SetBackgroundColor(MudColor color)
+    {
+        BackgroundColor = color;
+        if (Format is not null)
+        {
+            Format.BackgroundColor = color.Value;
+            EditViewPage?.TriggerStateHasChanged();
+        }
+    }
+    void SetTextColor(MudColor color)
+    {
+        TextColor = color;
+        if (Format is not null)
+        {
+            Format.TextColor = color.Value;
+            EditViewPage?.TriggerStateHasChanged();
+        }
+    }
+
+    enum Border
+    {
+        None,
+        Bottom,
+        Top,
+        Left,
+        Right,
+        All,
+        Outer
+    }
+
+    void SetFontSize(int size)
+    {
+        if (Format is not null)
+        {
+            Format.FontSize = size;
+            EditViewPage?.TriggerStateHasChanged();
+        }
+    }
+    void SetIsBold(bool isbold)
+    {
+        if (Format is not null)
+        {
+            Format.IsBold = isbold;
+            EditViewPage?.TriggerStateHasChanged();
+        }
+    }
+    void SetIsItalic(bool isItalic)
+    {
+        if (Format is not null)
+        {
+            Format.IsItalic = isItalic;
+            EditViewPage?.TriggerStateHasChanged();
+        }
+    }
+    void SetIsUnderlined(bool isUnderlined)
+    {
+        if (Format is not null)
+        {
+            Format.IsUnderline = isUnderlined;
+            EditViewPage?.TriggerStateHasChanged();
+        }
+    }
+    void SetBorder(Border border)
+    {
+        if (Format is not null)
+        {
+            Action action = border switch
+            {
+                Border.None => () =>
+                {
+                    Format.HasBorderBottom = false;
+                    Format.HasBorderTop = false;
+                    Format.HasBorderLeft = false;
+                    Format.HasBorderRight = false;
+                },
+                Border.Bottom => () =>
+                {
+                    Format.HasBorderBottom = true;
+                    Format.HasBorderTop = false;
+                    Format.HasBorderLeft = false;
+                    Format.HasBorderRight = false;
+                }
+                ,
+                Border.Top => () =>
+                {
+                    Format.HasBorderBottom = false;
+                    Format.HasBorderTop = true;
+                    Format.HasBorderLeft = false;
+                    Format.HasBorderRight = false;
+                },
+                Border.Left => () =>
+                {
+                    Format.HasBorderBottom = false;
+                    Format.HasBorderTop = false;
+                    Format.HasBorderLeft = true;
+                    Format.HasBorderRight = false;
+                },
+                Border.Right => () =>
+                {
+                    Format.HasBorderBottom = false;
+                    Format.HasBorderTop = false;
+                    Format.HasBorderLeft = false;
+                    Format.HasBorderRight = true;
+                },
+                Border.All => () =>
+                {
+                    Format.HasBorderBottom = true;
+                    Format.HasBorderTop = true;
+                    Format.HasBorderLeft = true;
+                    Format.HasBorderRight = true;
+                },
+                Border.Outer => () =>
+                {
+                    Format.HasBorderBottom = true;
+                    Format.HasBorderTop = true;
+                    Format.HasBorderLeft = true;
+                    Format.HasBorderRight = true;
+
+                },
+                _ => () =>
+                {
+                    Format.HasBorderBottom = false;
+                    Format.HasBorderTop = false;
+                    Format.HasBorderLeft = false;
+                    Format.HasBorderRight = false;
+                },
+            };
+            action.Invoke();
+            EditViewPage?.TriggerStateHasChanged();
+        }
+    }
+    
+    
+}

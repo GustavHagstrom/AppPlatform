@@ -1,10 +1,12 @@
 @using AppPlatform.Core.Enums.ViewTemplate
+@using AppPlatform.Core.Services
 @using AppPlatform.Shared.Services.Views
 @using System.Globalization
 @using Microsoft.AspNetCore.Components.Web.Virtualization
+
 @inject IViewStyleService ViewClassService
 @inject IStringLocalizer<SheetSectionPresenter> Localizer
-
+@inject ISheetDataService SheetNameService
 
 @if (Section is not null && Estimation is not null && View is not null)
 {
@@ -21,7 +23,7 @@
             ColumnTypeToStyleMapper.Add(column.ColumnType, column.ColumnType.ToString());
             
             
-            @($".{ColumnTypeToStyleMapper[column.ColumnType]} {{")
+            @($".{ColumnTypeToStyleMapper[column.ColumnType]} .cell-value {{")
                 @ViewClassService.CreateSheetColumnStyles(column, Section.Columns.Sum(x => x.Width))
             @("}")
             
@@ -30,7 +32,7 @@
         {
             RowTypeToStyleMapper.Add(format.RowType, format.RowType.ToString());
             
-                @($".{RowTypeToStyleMapper[format.RowType]} {{")
+                @($".{RowTypeToStyleMapper[format.RowType]} .cell-value {{")
                     @ViewClassService.CreateFormatStyles(format)
                 @("}")
         }
@@ -43,10 +45,11 @@
                     @foreach (var column in Section.Columns.OrderBy(x => x.Order))
                     {
                         <th @onclick="() => SetSelectedItem(column.ColumnType)" class="@cellClass(column.ColumnType, null)">
-                            <div >
-                                @GetColumnName(column.ColumnType)
+                            <div class="d-flex relative">
+                                <div class="@CellValueClass">
+                                    @SheetNameService.GetColumnName(column.ColumnType)
+                                </div>
                             </div>
-                        
                         </th>
                     }
                 </tr>
@@ -72,8 +75,8 @@
                                         </div>
                                     
                                     }
-                                    <div class="@($"{CellValueClass} flex-grow-1")">
-                                        @GetColumnDataFromItem(column.ColumnType, context.SheetItem)
+                                    <div class="@CellValueClass">
+                                        @SheetNameService.GetColumnDataFromItem(column.ColumnType, context.SheetItem)
                                     </div>
                                 </div>
                             </td>
@@ -194,33 +197,5 @@
     void SetSelectedItem(object item)
     {
         ViewPresenter?.SetSelectedSectionItem(item);
-    }
-    string? GetColumnDataFromItem(SheetColumnType type, SheetItem item)
-    {
-        return type switch
-        {
-            SheetColumnType.Description => item.Description,
-            SheetColumnType.Quantity => item.Quantity.ToString(),
-            SheetColumnType.Unit => item.Unit,
-            SheetColumnType.UnitCost => item.UnitCost is null ? string.Empty : ((double)item.UnitCost).ToString("F1", CultureInfo.InvariantCulture),
-            SheetColumnType.TotalCost => item.TotalCost is null ? string.Empty : ((double)item.TotalCost).ToString("F1", CultureInfo.InvariantCulture),
-            SheetColumnType.UnitAskingPrice => item.UnitAskingPrice is null ? string.Empty : ((double)item.UnitAskingPrice).ToString("F1", CultureInfo.InvariantCulture),
-            SheetColumnType.TotalAskingPrice => item.TotalAskingPrice is null ? string.Empty : ((double)item.TotalAskingPrice).ToString("F1", CultureInfo.InvariantCulture),
-            _ => throw new NotImplementedException()
-        };
-    }
-    string? GetColumnName(SheetColumnType type)
-    {
-        return type switch
-        {
-            SheetColumnType.Description => Localizer["Benämning"],
-            SheetColumnType.Quantity => Localizer["Mängd"],
-            SheetColumnType.Unit => Localizer["Enhet"],
-            SheetColumnType.UnitCost => Localizer["Enhetskostnad"],
-            SheetColumnType.TotalCost => Localizer["Total kostnad"],
-            SheetColumnType.UnitAskingPrice => Localizer["Enhetspris kund"],
-            SheetColumnType.TotalAskingPrice => Localizer["Total kundpris"],
-            _ => throw new NotImplementedException()
-        };
     }
 }

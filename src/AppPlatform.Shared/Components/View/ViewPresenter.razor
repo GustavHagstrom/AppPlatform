@@ -3,16 +3,16 @@
 
 <CascadingValue Value="this">
 
-    @if(EditMode)
+ @*    @if(EditMode)
     {
         <ViewEditToolbar>
             <ToolbarActions ChangedRowFormat="View?.SheetSections.FirstOrDefault()?.RowFormats.FirstOrDefault(x => x.RowType == Core.Enums.ViewTemplate.SheetRowType.ChangedRow)"/>
         </ViewEditToolbar>
-    }
+    } *@
 
 
-    <div class="pa-4" style="height: calc(100% - 128px); display: flex; width: 100%; overflow: auto;">
-        <div class="gap-4" style="display: flex; flex-direction: column;">
+    <div style="height: 100%; display: flex; width: 100%;">
+        <div class="gap-4" style="display: flex; flex-direction: column; height: 100%;">
         
 
             <style>
@@ -21,7 +21,7 @@
                 }
             </style>
 
-            <MudPaper Class="ViewPresenter" Square="true" Width="900px;">
+            <MudPaper Class="ViewPresenter" Square="true" Width="900px;" Height="100%" Elevation="5">
 
 
                 @foreach (var section in SectionsInOrder())
