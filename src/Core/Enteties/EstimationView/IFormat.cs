@@ -3,7 +3,7 @@
 namespace AppPlatform.Core.Enteties.EstimationView;
 public interface IFormat
 {
-    Align? Align { get; set; }
+    Align? HorizontalAlign { get; set; }
     string? BackgroundColor { get; set; }
     BorderStyle BorderStyle { get; set; }
     int DecimalCount { get; set; }
@@ -18,6 +18,6 @@ public interface IFormat
     bool IsBold { get; set; }
     bool IsItalic { get; set; }
     bool IsUnderline { get; set; }
-    Justify? Justify { get; set; }
+    Align? VerticalAlign { get; set; }
     string? TextColor { get; set; }
 }

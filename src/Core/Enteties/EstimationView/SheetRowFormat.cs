@@ -19,8 +19,8 @@ public class SheetRowFormat : IViewEntity, IFormat
     public bool IsBold { get; set; } = false;
     public bool IsItalic { get; set; } = false;
     public bool IsUnderline { get; set; } = false;
-    public Align? Align { get; set; }
-    public Justify? Justify { get; set; }
+    public Align? HorizontalAlign { get; set; }
+    public Align? VerticalAlign { get; set; }
     public TextFormatType FormatType { get; set; } = TextFormatType.Text;
     public bool HasThoasandsSeparator { get; set; } = true;
     public int DecimalCount { get; set; } = 2;

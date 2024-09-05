@@ -17,8 +17,8 @@ public class DataCellFormat : IViewEntity, IFormat
     public bool IsBold { get; set; } = false;
     public bool IsItalic { get; set; } = false;
     public bool IsUnderline { get; set; } = false;
-    public Align? Align { get; set; } = Enums.ViewTemplate.Align.Left;
-    public Justify? Justify { get; set; } = Enums.ViewTemplate.Justify.Bottom;
+    public Align? HorizontalAlign { get; set; } = Align.Start;
+    public Align? VerticalAlign { get; set; } = Align.End;
     public TextFormatType FormatType { get; set; } = TextFormatType.Text;
     public bool HasThoasandsSeparator { get; set; } = true;
     public int DecimalCount { get; set; } = 2;

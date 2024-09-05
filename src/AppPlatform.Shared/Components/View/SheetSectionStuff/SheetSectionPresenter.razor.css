@@ -48,7 +48,8 @@ td.selected .cell-value, th.selected div {
 
 .cell-expand-button {
     position: absolute;
-    left: -32px;
+    /*left: -32px;*/
+    left: 0;
     top: 50%;
     transform: translateY(-50%);
 }

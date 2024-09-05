@@ -1,13 +1,14 @@
 @using MudBlazor.Utilities
+@using ViewScope = AppPlatform.Core.Enums.ViewTemplate
 @inject IStringLocalizer<FormatEditor> Localizer
 
 <div>
     <Row>
         <Column>
             <Row>
-                <MudIconButton Variant="Variant.Outlined" Icon="@Icons.Material.Sharp.FormatBold" Style="background-color: var(--mud-palette-action-disabled-background)" />
-                <MudIconButton Variant="Variant.Outlined" Icon="@Icons.Material.Sharp.FormatItalic" />
-                <MudIconButton Variant="Variant.Outlined" Icon="@Icons.Material.Sharp.FormatUnderlined" />
+                <MudIconButton Variant="Variant.Outlined" Icon="@Icons.Material.Sharp.FormatBold" Style="@ToggleStyle(Format?.IsBold, true)" OnClick="ToggleIsBold"/>
+                <MudIconButton Variant="Variant.Outlined" Icon="@Icons.Material.Sharp.FormatItalic" Style="@ToggleStyle(Format?.IsItalic, true)" OnClick="ToggleIsItalic"/>
+                <MudIconButton Variant="Variant.Outlined" Icon="@Icons.Material.Sharp.FormatUnderlined" Style="@ToggleStyle(Format?.IsUnderline, true)" OnClick="ToggleIsUnderlined"/>
             </Row>
             <Row>
                 <MudMenu Dense="true" AnchorOrigin="Origin.BottomLeft" TransformOrigin="Origin.TopLeft">
@@ -15,13 +16,13 @@
                         <MudIconButton Variant="Variant.Outlined" Icon="@Icons.Material.Sharp.BorderBottom" />
                     </ActivatorContent>
                     <ChildContent>
-                        <MudMenuItem Icon="@Icons.Material.Sharp.BorderBottom"/>
-                        <MudMenuItem Icon="@Icons.Material.Sharp.BorderTop"/>
-                        <MudMenuItem Icon="@Icons.Material.Sharp.BorderLeft"/>
-                        <MudMenuItem Icon="@Icons.Material.Sharp.BorderRight"/>
-                        <MudMenuItem Icon="@Icons.Material.Sharp.BorderClear" />
+                        <MudMenuItem Icon="@Icons.Material.Sharp.BorderBottom" Style="@ToggleStyle(Format?.HasBorderBottom, true)" OnClick="() => ToggleBorder(Border.Bottom)" />
+                        <MudMenuItem Icon="@Icons.Material.Sharp.BorderTop" Style="@ToggleStyle(Format?.HasBorderTop, true)" OnClick="() => ToggleBorder(Border.Top)" />
+                        <MudMenuItem Icon="@Icons.Material.Sharp.BorderLeft" Style="@ToggleStyle(Format?.HasBorderLeft, true)" OnClick="() => ToggleBorder(Border.Left)" />
+                        <MudMenuItem Icon="@Icons.Material.Sharp.BorderRight" Style="@ToggleStyle(Format?.HasBorderRight, true)" OnClick="() => ToggleBorder(Border.Right)" />
+                        <MudMenuItem Icon="@Icons.Material.Sharp.BorderClear" OnClick="() => ToggleBorder(Border.None)" />
                    @*      <MudMenuItem Icon="@Icons.Material.Sharp.BorderAll" /> *@
-                        <MudMenuItem Icon="@Icons.Material.Sharp.BorderOuter" />
+                        <MudMenuItem Icon="@Icons.Material.Sharp.BorderOuter" Style="@ToggleStyle(HasOuterBorder, true)" OnClick="() => ToggleBorder(Border.Outer)" />
                     </ChildContent>
                 </MudMenu>
                 <MudMenu Dense="true" AnchorOrigin="Origin.BottomLeft" TransformOrigin="Origin.TopLeft">
@@ -44,14 +45,14 @@
         </Column>
         <Column>
             <Row>
-                <MudIconButton Variant="Variant.Outlined" Icon="@Icons.Material.Sharp.VerticalAlignTop" />
-                <MudIconButton Variant="Variant.Outlined" Icon="@Icons.Material.Sharp.VerticalAlignCenter" />
-                <MudIconButton Variant="Variant.Outlined" Icon="@Icons.Material.Sharp.VerticalAlignBottom" />
+                <MudIconButton Variant="Variant.Outlined" Icon="@Icons.Material.Sharp.VerticalAlignTop" Style="@ToggleStyle(Format?.VerticalAlign, ViewScope.Align.Start)" OnClick="@(() => ToggleVerticalAlign(ViewScope.Align.Start))" />
+                <MudIconButton Variant="Variant.Outlined" Icon="@Icons.Material.Sharp.VerticalAlignCenter" Style="@ToggleStyle(Format?.VerticalAlign, ViewScope.Align.Center)" OnClick="@(() => ToggleVerticalAlign(ViewScope.Align.Center))" />
+                <MudIconButton Variant="Variant.Outlined" Icon="@Icons.Material.Sharp.VerticalAlignBottom" Style="@ToggleStyle(Format?.VerticalAlign, ViewScope.Align.End)" OnClick="@(() => ToggleVerticalAlign(ViewScope.Align.End))" />
             </Row>
             <Row>
-                <MudIconButton Variant="Variant.Outlined" Icon="@Icons.Material.Sharp.FormatAlignLeft" />
-                <MudIconButton Variant="Variant.Outlined" Icon="@Icons.Material.Sharp.FormatAlignCenter" />
-                <MudIconButton Variant="Variant.Outlined" Icon="@Icons.Material.Sharp.FormatAlignRight" />
+                <MudIconButton Variant="Variant.Outlined" Icon="@Icons.Material.Sharp.FormatAlignLeft" Style="@ToggleStyle(Format?.HorizontalAlign, ViewScope.Align.Start)" OnClick="@(() => ToggleHorizontalAlign(ViewScope.Align.Start))" />
+                <MudIconButton Variant="Variant.Outlined" Icon="@Icons.Material.Sharp.FormatAlignCenter" Style="@ToggleStyle(Format?.HorizontalAlign, ViewScope.Align.Center)" OnClick="@(() => ToggleHorizontalAlign(ViewScope.Align.Center))" />
+                <MudIconButton Variant="Variant.Outlined" Icon="@Icons.Material.Sharp.FormatAlignRight" Style="@ToggleStyle(Format?.HorizontalAlign, ViewScope.Align.End)" OnClick="@(() => ToggleHorizontalAlign(ViewScope.Align.End))" />
             </Row>
         </Column>
         <Column>
@@ -74,7 +75,9 @@
 
     MudColor BackgroundColor = new("#FFFFFF");
     MudColor TextColor = new("#424242");
+    string? ToggleStyle(object? value1, object? value2) => value1?.Equals(value2) == true ? "background-color: var(--mud-palette-action-disabled-background)" : null;
 
+    bool HasOuterBorder => Format?.HasBorderTop == true && Format?.HasBorderBottom == true && Format?.HasBorderLeft == true && Format?.HasBorderRight == true;
     protected override void OnParametersSet()
     {
         if (Format?.BackgroundColor is not null)
@@ -125,31 +128,61 @@
             EditViewPage?.TriggerStateHasChanged();
         }
     }
-    void SetIsBold(bool isbold)
+    void ToggleIsBold()
     {
         if (Format is not null)
         {
-            Format.IsBold = isbold;
+            Format.IsBold = !Format.IsBold;
             EditViewPage?.TriggerStateHasChanged();
         }
     }
-    void SetIsItalic(bool isItalic)
+    void ToggleIsItalic()
     {
         if (Format is not null)
         {
-            Format.IsItalic = isItalic;
+            Format.IsItalic = !Format.IsItalic;
             EditViewPage?.TriggerStateHasChanged();
         }
     }
-    void SetIsUnderlined(bool isUnderlined)
+    void ToggleIsUnderlined()
     {
         if (Format is not null)
         {
-            Format.IsUnderline = isUnderlined;
+            Format.IsUnderline = !Format.IsUnderline;
             EditViewPage?.TriggerStateHasChanged();
         }
     }
-    void SetBorder(Border border)
+    void ToggleHorizontalAlign(ViewScope.Align align)
+    {
+        if (Format is not null)
+        {
+            if (Format.HorizontalAlign == align)
+            {
+                Format.HorizontalAlign = null;
+            }
+            else
+            {
+                Format.HorizontalAlign = align;
+            }
+            EditViewPage?.TriggerStateHasChanged();
+        }
+    }
+    void ToggleVerticalAlign(ViewScope.Align align)
+    {
+        if (Format is not null)
+        {
+            if (Format.VerticalAlign == align)
+            {
+                Format.VerticalAlign = null;
+            }
+            else
+            {
+                Format.VerticalAlign = align;
+            }
+            EditViewPage?.TriggerStateHasChanged();
+        }
+    }
+    void ToggleBorder(Border border)
     {
         if (Format is not null)
         {
@@ -164,54 +197,42 @@
                 },
                 Border.Bottom => () =>
                 {
-                    Format.HasBorderBottom = true;
-                    Format.HasBorderTop = false;
-                    Format.HasBorderLeft = false;
-                    Format.HasBorderRight = false;
+                    Format.HasBorderBottom = !Format.HasBorderBottom;
                 }
                 ,
                 Border.Top => () =>
                 {
-                    Format.HasBorderBottom = false;
-                    Format.HasBorderTop = true;
-                    Format.HasBorderLeft = false;
-                    Format.HasBorderRight = false;
+                    Format.HasBorderTop = !Format.HasBorderTop;
                 },
                 Border.Left => () =>
                 {
-                    Format.HasBorderBottom = false;
-                    Format.HasBorderTop = false;
-                    Format.HasBorderLeft = true;
-                    Format.HasBorderRight = false;
+                    Format.HasBorderLeft = !Format.HasBorderLeft;
                 },
                 Border.Right => () =>
                 {
-                    Format.HasBorderBottom = false;
-                    Format.HasBorderTop = false;
-                    Format.HasBorderLeft = false;
-                    Format.HasBorderRight = true;
+                    Format.HasBorderRight = !Format.HasBorderRight;
                 },
                 Border.All => () =>
                 {
-                    Format.HasBorderBottom = true;
-                    Format.HasBorderTop = true;
-                    Format.HasBorderLeft = true;
-                    Format.HasBorderRight = true;
+                    Format.HasBorderTop = !Format.HasBorderBottom;
+                    Format.HasBorderLeft = !Format.HasBorderBottom;
+                    Format.HasBorderRight = !Format.HasBorderBottom;
+                    Format.HasBorderBottom = !Format.HasBorderBottom;
                 },
                 Border.Outer => () =>
                 {
-                    Format.HasBorderBottom = true;
-                    Format.HasBorderTop = true;
-                    Format.HasBorderLeft = true;
-                    Format.HasBorderRight = true;
+                    Format.HasBorderTop = !Format.HasBorderBottom;
+                    Format.HasBorderLeft = !Format.HasBorderBottom;
+                    Format.HasBorderRight = !Format.HasBorderBottom;
+                    Format.HasBorderBottom = !Format.HasBorderBottom;
 
                 },
                 _ => () =>
                 {
-                    Format.HasBorderBottom = false;
-                    Format.HasBorderTop = false;
-                    Format.HasBorderLeft = false;
-                    Format.HasBorderRight = false;
+                    Format.HasBorderTop = !Format.HasBorderBottom;
+                    Format.HasBorderLeft = !Format.HasBorderBottom;
+                    Format.HasBorderRight = !Format.HasBorderBottom;
+                    Format.HasBorderBottom = !Format.HasBorderBottom;
                 },
             };
             action.Invoke();

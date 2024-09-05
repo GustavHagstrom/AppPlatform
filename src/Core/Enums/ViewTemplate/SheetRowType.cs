@@ -6,5 +6,5 @@ public enum SheetRowType
     Post = 3,
     ChangedRow = 4,
     Header = 5,
-    Footer = 6
+   
 }

@@ -2,7 +2,7 @@
 
 public enum Align
 {
-    Left,
+    Start,
     Center,
-    Right,
+    End,
 }

@@ -24,8 +24,7 @@ public class SheetDataService(IStringLocalizer<SheetDataService> Localizer) : IS
     {
         return type switch
         {
-            SheetRowType.Header => Localizer["Sidhuvud"],
-            SheetRowType.Footer => Localizer["Sidfot"],
+            SheetRowType.Header => Localizer["Tabellrubrik"],
             SheetRowType.Group => Localizer["Grupp"],
             SheetRowType.Part => Localizer["Del"],
             SheetRowType.Post => Localizer["Post"],

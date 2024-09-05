@@ -58,8 +58,8 @@ public class ViewStyleService : IViewStyleService
     {
         var classString = $"font-size: {format.FontSize}px;\n";
         //classString += $"font-family: {format.FontFamily};\n";
-        classString += format.Align is null ? "" : $"text-align: {GetAlign(format.Align.Value)};\n";
-        classString += format.Justify is null ? "" : $"align-items: {GetJustify(format.Justify.Value)};\n";
+        classString += format.HorizontalAlign is null ? "" : $"justify-content: {GetAlign(format.HorizontalAlign.Value)};\n";
+        classString += format.VerticalAlign is null ? "" : $"align-items: {GetAlign(format.VerticalAlign.Value)};\n";
 
         if (format.IsBold)
         {
@@ -89,24 +89,24 @@ public class ViewStyleService : IViewStyleService
         }
         return classString;
     }
+    private string GetHorizontalAlign(Align align)
+    {
+        return align switch
+        {
+            Align.Start => "flex-start",
+            Align.Center => "center",
+            Align.End => "flex-end",
+            _ => "flex-start"
+        };
+    }
     private string GetAlign(Align align)
     {
         return align switch
         {
-            Align.Left => "left",
+            Align.Start => "flex-start",
             Align.Center => "center",
-            Align.Right => "right",
-            _ => "left"
-        };
-    }
-    private string GetJustify(Justify justify)
-    {
-        return justify switch
-        {
-            Justify.Top => "start",
-            Justify.Center => "center",
-            Justify.Bottom => "end",
-            _ => "end"
+            Align.End => "flex-end",
+            _ => "flex-start"
         };
     }
     private string GetBorderStyle(BorderStyle style)
