@@ -5,20 +5,20 @@ using System.Globalization;
 namespace AppPlatform.Shared.Services.Views;
 public class ViewStyleService : IViewStyleService
 {
-    public string CreateSheetColumnStyles(SheetColumn column, int allColumnsWidthSum)
-    {
-        //var classString = $".{name} {{";
-        var classString = $"width: {((double)column.Width / allColumnsWidthSum * 100).ToString(CultureInfo.InvariantCulture)}%;\n";
-        classString += CreateFormatStyles(column); 
-      /*  classString += "}"*/;
-        return classString;
-    }
+    //public string CreateSheetColumnStyles(SheetColumn column, int allColumnsWidthSum)
+    //{
+    //    //var classString = $".{name} {{";
+    //    var classString = $"width: {((double)column.Width / allColumnsWidthSum * 100).ToString(CultureInfo.InvariantCulture)}%;\n";
+    //    classString += CreateFormatStyles(column); 
+    //  /*  classString += "}"*/;
+    //    return classString;
+    //}
     public string CreateFormatStyles(IFormat format)
     {
-        var classString = string.Empty;
-        classString += CreateColorStyles(format);
-        classString +=  CreateTextStyles(format);
-        classString += CreateBorderStyles(format);
+        var styleString = string.Empty;
+        styleString += CreateColorStyles(format);
+        styleString +=  CreateTextStyles(format);
+        styleString += CreateBorderStyles(format);
 
         //if (    format.Padding is not null)
         //{
@@ -28,7 +28,7 @@ public class ViewStyleService : IViewStyleService
         //{
         //    classString += $"margin: {format.Margin};";
         //}
-        return classString;
+        return styleString;
     }
 
     private string CreateBorderStyles(IFormat format)
@@ -37,19 +37,19 @@ public class ViewStyleService : IViewStyleService
         string borderStyle = GetBorderStyle(format.BorderStyle);
         if (format.HasBorderLeft)
         {
-            classString += $"border-left: 1px {borderStyle} black;\n";
+            classString += $"border-left: 1px {borderStyle} black;";
         }
         if (format.HasBorderTop)
         {
-            classString += $"border-top: 1px {borderStyle} black;\n";
+            classString += $"border-top: 1px {borderStyle} black;";
         }
         if (format.HasBorderRight)
         {
-            classString += $"border-right: 1px {borderStyle} black;\n";
+            classString += $"border-right: 1px {borderStyle} black;";
         }
         if (format.HasBorderBottom)
         {
-            classString += $"border-bottom: 1px {borderStyle} black;\n";
+            classString += $"border-bottom: 1px {borderStyle} black;";
         }
         return classString;
     }
@@ -58,20 +58,20 @@ public class ViewStyleService : IViewStyleService
     {
         var classString = $"font-size: {format.FontSize}px;\n";
         //classString += $"font-family: {format.FontFamily};\n";
-        classString += format.HorizontalAlign is null ? "" : $"justify-content: {GetAlign(format.HorizontalAlign.Value)};\n";
-        classString += format.VerticalAlign is null ? "" : $"align-items: {GetAlign(format.VerticalAlign.Value)};\n";
+        classString += format.HorizontalAlign is null ? string.Empty : $"justify-content: {GetAlign(format.HorizontalAlign.Value)};";
+        classString += format.VerticalAlign is null ? string.Empty : $"align-items: {GetAlign(format.VerticalAlign.Value)};";
 
         if (format.IsBold)
         {
-            classString += $"font-weight: 600;\n";
+            classString += $"font-weight: 600;";
         }
         if (format.IsItalic)
         {
-            classString += $"font-style: italic;\n";
+            classString += $"font-style: italic;";
         }
         if (format.IsUnderline)
         {
-            classString += $"text-decoration: underline;\n";
+            classString += $"text-decoration: underline;";
         }
         return classString;
     }
@@ -81,11 +81,11 @@ public class ViewStyleService : IViewStyleService
         string classString = string.Empty;
         if (format.BackgroundColor is not null)
         {
-            classString += $"background-color: {format.BackgroundColor};\n";
+            classString += $"background-color: {format.BackgroundColor};";
         }
         if (format.TextColor is not null)
         {
-            classString += $"color: {format.TextColor};\n";
+            classString += $"color: {format.TextColor};";
         }
         return classString;
     }

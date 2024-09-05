@@ -4,81 +4,50 @@
 @using System.Globalization
 @using Microsoft.AspNetCore.Components.Web.Virtualization
 
-@inject IViewStyleService ViewClassService
+@inject IViewStyleService ViewStyleService
 @inject IStringLocalizer<SheetSectionPresenter> Localizer
 @inject ISheetDataService SheetNameService
 
 @if (Section is not null && Estimation is not null && View is not null)
 {
-    ColumnTypeToStyleMapper = new();
-    RowTypeToStyleMapper = new();
-    <style>
-        @{
-            ColumnTypeToStyleMapper.Clear();
-            RowTypeToStyleMapper.Clear();
-        }
-
-        @foreach (var column in Section.Columns)
-        {
-            ColumnTypeToStyleMapper.Add(column.ColumnType, column.ColumnType.ToString());
-            
-            
-            @($".{ColumnTypeToStyleMapper[column.ColumnType]} .cell-value {{")
-                @ViewClassService.CreateSheetColumnStyles(column, Section.Columns.Sum(x => x.Width))
-            @("}")
-            
-        }
-        @foreach (var format in Section.RowFormats)
-        {
-            RowTypeToStyleMapper.Add(format.RowType, format.RowType.ToString());
-            
-                @($".{RowTypeToStyleMapper[format.RowType]} .cell-value {{")
-                    @ViewClassService.CreateFormatStyles(format)
-                @("}")
-        }
-    </style>
-
-    <div class="@tableContainerClass" @onclick="SetSelectedSection">
+    CreateStyleMaps();
+    
+    <div class="table-container">
         <table style="width: 100%;">
             <tbody>
-                <tr class="@RowTypeToStyleMapper[SheetRowType.Header]">
+                <tr>
                     @foreach (var column in Section.Columns.OrderBy(x => x.Order))
                     {
-                        <th @onclick="() => SetSelectedItem(column.ColumnType)" class="@cellClass(column.ColumnType, null)">
+                        <th>
                             <div class="d-flex relative">
-                                <div class="@CellValueClass">
+                                <div class="@CellValueClass" style="@CellStyles[new SheetCellKey(SheetRowType.Header, column.ColumnType)]">
                                     @SheetNameService.GetColumnName(column.ColumnType)
                                 </div>
                             </div>
                         </th>
                     }
                 </tr>
-
                
                 <Virtualize TItem="SheetItemContainer" Items="NetSheetContainer?.AllExpandedInOrder.Skip(1).ToList()">
-                    <tr class="@RowTypeToStyleMapper[RowTypeFromInt(context.SheetItem.RowType)]">
+                    <tr>
                         @{
                         int columnCount = 0;
                         }
                         @foreach (var column in Section.Columns.OrderBy(x => x.Order))
                         {
                             columnCount += 1;
-                            @* var indentStyle = columnCount == 1 ? $"margin-left: {context.Level * 16 + 16}px;" : string.Empty; *@
                             var indentStyle2 = columnCount == 1 ? $"padding-left: {context.Level * 16 + 24}px;" : string.Empty;
                             var indentStyle3 = columnCount == 1 ? $"left: {context.Level * 16 - 8}px;" : string.Empty;
 
-                            <td @onclick="() => SetSheetItemSelection(context.SheetItem, column.ColumnType)" class="@cellClass(column.ColumnType, context.SheetItem)">
-                                @* <div class="d-flex relative" style="@($"{indentStyle}")"> *@
+                            <td>
                                 <div class="d-flex relative">
                                     @if(columnCount == 1 && context.Children.Count != 0)
                                     {
-                                                    <div class="cell-expand-button" style="@indentStyle3">
-                                            <MudToggleIconButton Icon="@Icons.Material.Sharp.KeyboardArrowRight" ToggledIcon="@Icons.Material.Sharp.KeyboardArrowDown" 
-                                                                 Toggled="context.IsExpanded" ToggledChanged="x => SetExpand(context, x)" Class="pa-1"/> 
+                                        <div class="cell-expand-button" style="@indentStyle3">
+                                            <MudToggleIconButton Icon="@Icons.Material.Sharp.KeyboardArrowRight" ToggledIcon="@Icons.Material.Sharp.KeyboardArrowDown" Toggled="context.IsExpanded" ToggledChanged="x => SetExpand(context, x)" Class="pa-1"/> 
                                         </div>
-                                    
                                     }
-                                            <div class="@CellValueClass" style="@indentStyle2">
+                                    <div class="@CellValueClass" style="@($"{indentStyle2} {CellStyles[new SheetCellKey(RowTypeFromInt(context.SheetItem.RowType), column.ColumnType)]}")">
                                         @SheetNameService.GetColumnDataFromItem(column.ColumnType, context.SheetItem)
                                     </div>
                                 </div>
@@ -94,26 +63,19 @@
 
 @code {
     [Parameter, EditorRequired] public SheetSection? Section { get; set; }
-    [Parameter] public bool EditMode { get; set; } = false;
     [Parameter] public bool DoItemsStartAsExpanded { get; set; } = false;
     [Parameter, EditorRequired] public Estimation? Estimation { get; set; }
     [Parameter, EditorRequired] public View? View { get; set; }
-    [CascadingParameter] public ViewPresenter? ViewPresenter { get; set; }
 
-    Dictionary<SheetColumnType, string> ColumnTypeToStyleMapper { get; set; } = new();
-    Dictionary<SheetRowType, string> RowTypeToStyleMapper { get; set; } = new();
+    Dictionary<SheetCellKey, string> CellStyles = new();
     SheetItemContainer? NetSheetContainer;
-
     string CellValueClass = "cell-value";
-
     bool _firstRender = true;
 
     protected override void OnAfterRender(bool firstRender)
     {
         _firstRender = firstRender;
-        base.OnAfterRender(firstRender);
     }
-
     protected override void OnParametersSet()
     {
         if(Estimation?.NetSheet is not null && _firstRender)
@@ -123,14 +85,22 @@
             var test = NetSheetContainer.AllExpandedInOrder.ToList();
         }
     }
-
     void SetExpand(SheetItemContainer container, bool isExpanded)
     {
         container.IsExpanded = isExpanded;
     }
+    void CreateStyleMaps()
+    {
+        CellStyles.Clear();
+        if (Section?.CellFormats is null) return;
 
-    string tableContainerClass => IsSelected() ? "selected table-container " : "table-container";
-
+        foreach (var cell in Section.CellFormats)
+        {
+            var key = new SheetCellKey(cell.RowType, cell.ColumnType);
+            var style = ViewStyleService.CreateFormatStyles(cell);
+            CellStyles.Add(key, style);
+        }
+    }
     SheetRowType RowTypeFromInt(int? rowType) => rowType switch
     {
         (int)AppPlatform.Core.Enums.BidconAccess.RowType.Group => SheetRowType.Group,
@@ -138,67 +108,4 @@
         null => SheetRowType.Header,
         _ => SheetRowType.Post
     };
-
-    /// <summary>
-    /// for header or row cells
-    /// </summary>
-    /// <param name="cType"></param>
-    /// <param name="item"></param>
-    /// <returns></returns>
-    string cellClass(SheetColumnType cType, SheetItem? item)
-    {
-
-        bool isSelected = false;
-        if(item is null) //if item is null, it is a header cell
-        {
-            isSelected = IsSelected(cType);
-        }
-        else
-        {
-            isSelected = IsSelected(item, cType);
-        }
-
-        return $"{(isSelected == true ? "selected " : string.Empty)}{ColumnTypeToStyleMapper[cType]}";
-    }
-    /// <summary>
-    /// for SheetItem cells
-    /// </summary>
-    /// <param name="item"></param>
-    /// <param name="column"></param>
-    /// <returns></returns>
-    bool IsSelected(SheetItem item, SheetColumnType column)
-    {
-        if (EditMode == false || ViewPresenter?.SelectedSection != Section) return false;
-        if(ViewPresenter?.SelectedItem is SheetCellSelection selection)
-        {
-            return selection.Item == item && selection.ColumnType == column;
-        }
-        return false;
-    }
-    bool IsSelected() => ViewPresenter?.SelectedSection == Section && EditMode;
-
-    /// <summary>
-    /// for header cells
-    /// </summary>
-    /// <param name="column"></param>
-    /// <returns></returns>
-    bool IsSelected(SheetColumnType column) 
-    {
-        if (EditMode == false || ViewPresenter?.SelectedSection != Section) return false;
-        return ViewPresenter?.SelectedItem is SheetColumnType type && type == column && EditMode;
-    }
-
-
-    void SetSelectedSection()
-    {
-        ViewPresenter?.SetSelectedSection(Section);
-    }
-    void SetSheetItemSelection(SheetItem item, SheetColumnType type)
-    {
-        SetSelectedItem(new SheetCellSelection(item, type));
-    }
-    void SetSelectedItem(object item)
-    {
-        ViewPresenter?.SetSelectedSectionItem(item);
-    }
 }

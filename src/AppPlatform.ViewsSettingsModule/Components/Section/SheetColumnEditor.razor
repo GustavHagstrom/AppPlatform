@@ -4,10 +4,10 @@
 
 <SelectList T="SheetColumnType" DropDownLabel="@Localizer["Kolumn"]" ShowActions="false" Items="Enum.GetValues<SheetColumnType>().ToList()" ListVariant="ListVariant.DropDown" @bind-SelectedItem="SelectedColumn" GetItemNameFunc="SheetDataService.GetColumnName"/>
 
-@if (SelectedFormat is not null)
+@* @if (SelectedFormat is not null)
 {
     <FormatEditor Format="SelectedFormat"/>
-}
+} *@
 
 @inject IStringLocalizer<SheetColumnEditor> Localizer
 @inject ISheetDataService SheetDataService

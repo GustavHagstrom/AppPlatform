@@ -28,7 +28,7 @@
                 {
                     if (section is SheetSection sheetSection)
                     {
-                        <SheetSectionPresenter Section="sheetSection" Estimation="Estimation" EditMode="EditMode" View="View" DoItemsStartAsExpanded="DoTableItemsStartAsExpanded" />
+                        <SheetSectionPresenter Section="sheetSection" Estimation="Estimation" View="View" DoItemsStartAsExpanded="DoTableItemsStartAsExpanded" />
                     }
                     else if (section is DataSection dataSection)
                     {
@@ -51,7 +51,6 @@
 @code{
     [Parameter] public View? View { get; set; }
     [Parameter] public Estimation? Estimation { get; set; }
-    [Parameter] public bool EditMode { get; set; } = false;
     [Parameter] public bool DoTableItemsStartAsExpanded { get; set; } = false;
 
     public ISection? SelectedSection { get; private set; } = null;

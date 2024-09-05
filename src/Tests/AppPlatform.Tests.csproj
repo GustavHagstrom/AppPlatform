@@ -33,6 +33,7 @@
 
   <ItemGroup>
     <Folder Include="Client\Features\Import\" />
+    <Folder Include="Server\Services\Email\" />
     <Folder Include="Shared\" />
   </ItemGroup>
 
