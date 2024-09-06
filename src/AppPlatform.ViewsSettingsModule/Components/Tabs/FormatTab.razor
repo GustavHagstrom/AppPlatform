@@ -12,26 +12,30 @@
 
 <SettingsSection Title="@Localizer["Sektioner"]">
     <SelectList T="ISection" Items="View!.SectionsInOrder().ToList()" GetItemNameFunc="x => x?.Name" ListVariant="ListVariant.DropDown" AddAsyncFunc="NewSection" @bind-SelectedItem="SelectedSection" DeleteAsyncFunc="DeleteSection" ShowActions="true">
-        <MudIconButton Icon="@Icons.Material.Sharp.ArrowUpward" Variant="Variant.Outlined" Color="Color.Primary" Size="Size.Medium" />
-        <MudIconButton Icon="@Icons.Material.Sharp.ArrowDownward" Variant="Variant.Outlined" Color="Color.Primary" Size="Size.Medium" />
+        <MudIconButton Icon="@Icons.Material.Sharp.ArrowUpward" Variant="Variant.Outlined" Color="Color.Primary" Size="Size.Medium" 
+                       Disabled="!CanMoveUp(SelectedSection)" OnClick="() => MoveUp(SelectedSection)"/>
+        <MudIconButton Icon="@Icons.Material.Sharp.ArrowDownward" Variant="Variant.Outlined" Color="Color.Primary" Size="Size.Medium" 
+                       Disabled="!CanMoveDown(SelectedSection)" OnClick="() => MoveDown(SelectedSection)" />
     </SelectList>
-    
+
+
     @if(SelectedSection is not null)
     {
-        <MudTextField T="string" Variant="Variant.Outlined" Label="@Localizer["Namn"]" Margin="Margin.Dense" Value="SelectedSection.Name" ValueChanged="x => SelectedSection.Name = x" />
-        <MudTextField T="string" Variant="Variant.Outlined" Label="@Localizer["Typ"]" Margin="Margin.Dense" ReadOnly="true" Value="Helper.GetSectionTypeName(SelectedSection)" />
-
-        if (SelectedSection is SheetSection sheetSection)
-        {
-            <SheetSectionEditor Section="@sheetSection" View="View" />
-        }
-        else if (SelectedSection is DataSection dataSection)
-        {
-            <DataSectionEditor Section="@dataSection" View="View" />
-        }
-
-        
+        <div class="d-flex gap-2">
+            <MudTextField T="string" Variant="Variant.Outlined" Label="@Localizer["Namn"]" Margin="Margin.Dense" Value="SelectedSection.Name" ValueChanged="x => SelectedSection.Name = x"/>
+            <MudTextField T="string" Variant="Variant.Outlined" Label="@Localizer["Typ"]" Margin="Margin.Dense" ReadOnly="true" Value="Helper.GetSectionTypeName(SelectedSection)" />
+        </div>
     }
+
+    @if (SelectedSection is SheetSection sheetSection)
+    {
+    <SheetSectionEditor Section="@sheetSection" View="View" />
+    }
+    else if (SelectedSection is DataSection dataSection)
+    {
+    <DataSectionEditor Section="@dataSection" View="View" />
+    }
+
 
     
 </SettingsSection>
@@ -41,6 +45,51 @@
     [CascadingParameter] public EditViewPage? EditViewPage { get; set; }
 
     ISection? SelectedSection { get; set; }
+
+    protected override void OnInitialized()
+    {
+        SelectedSection = View?.SectionsInOrder().FirstOrDefault();
+    }
+    bool CanMoveUp(ISection? section)
+    {
+        if (View is null || section is null)
+        {
+            return false;
+        }
+        return View.SectionsInOrder().First() != section;
+    }
+    bool CanMoveDown(ISection? section)
+    {
+        if (View is null || section is null)
+        {
+            return false;
+        }
+        return View.SectionsInOrder().Last() != section;
+    }
+    void MoveUp(ISection? section)
+    {
+        if (View is null || section is null || !CanMoveUp(section))
+        {
+            return;
+        }
+        var value = section.Order - 1;
+        var otherSection = View.SectionsInOrder().First(x => x.Order == value);
+        otherSection.Order += 1;
+        section.Order -= 1;
+        EditViewPage?.TriggerStateHasChanged();
+    }
+    void MoveDown(ISection? section)
+    {
+        if (View is null || section is null || !CanMoveDown(section))
+        {
+            return;
+        }
+        var value = section.Order + 1;
+        var otherSection = View.SectionsInOrder().First(x => x.Order == value);
+        otherSection.Order -= 1;
+        section.Order += 1;
+        EditViewPage?.TriggerStateHasChanged();
+    }
 
     async Task<ISection?> NewSection()
     {

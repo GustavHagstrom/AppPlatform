@@ -1,7 +1,7 @@
 <MudDialog>
     <DialogContent>
         <div class="d-flex gap-2 nomarginpls" style="flex-direction: column;">
-            <MudTextField T="string" Margin="Margin.Dense" @bind-Value="Name" Label="@Localizer["Namn"]" Variant="Variant.Outlined"/>
+            <MudTextField T="string" Margin="Margin.Dense" @bind-Value="Name" Label="@Localizer["Namn"]" Variant="Variant.Outlined" AutoFocus="true"/>
             <MudSelect T="SectionType" Margin="Margin.Dense" @bind-Value="Type" Label="@Localizer["Typ"]" ToStringFunc="x => Helper.GetSectionTypeName(x)" AnchorOrigin="Origin.BottomRight" TransformOrigin="Origin.TopRight" Variant="Variant.Outlined">
                 @foreach (var type in Enum.GetValues<SectionType>())
                 {

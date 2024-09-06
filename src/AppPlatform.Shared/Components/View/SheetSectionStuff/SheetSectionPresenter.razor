@@ -16,9 +16,9 @@
         <table style="width: 100%;">
             <colgroup>
                 @{
-                    var allColumnsWidthSum = Section.Columns.Sum(x => x.Width);
+                    var allColumnsWidthSum = Section.Columns.Where(x => x.IsVisible).Sum(x => x.Width);
                 }
-                @foreach (var column in Section.Columns.OrderBy(x => x.Order))
+                @foreach (var column in Section.Columns.Where(x => x.IsVisible).OrderBy(x => x.Order))
                 {
                     <col style="@($"width: {((double)column.Width / allColumnsWidthSum * 100).ToString(CultureInfo.InvariantCulture)}%")" />
                 }
@@ -26,7 +26,7 @@
             </colgroup>
             <thead>
                 <tr>
-                    @foreach (var column in Section.Columns.OrderBy(x => x.Order))
+                    @foreach (var column in Section.Columns.Where(x => x.IsVisible).OrderBy(x => x.Order))
                     {
                         <th>
                             <div class="cell-container">
@@ -44,7 +44,7 @@
                         @{
                             int columnCount = 0;
                         }
-                        @foreach (var column in Section.Columns.OrderBy(x => x.Order))
+                        @foreach (var column in Section.Columns.Where(x => x.IsVisible).OrderBy(x => x.Order))
                         {
                             columnCount += 1;
                             var indentStyle2 = columnCount == 1 ? $"padding-left: {context.Level * 16 + 24}px;" : string.Empty;

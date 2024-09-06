@@ -1,29 +1,43 @@
 @using AppPlatform.Core.Enums.ViewTemplate
 @using AppPlatform.Core.Services
 @inject ISheetDataService SheetDataService
+@inject IStringLocalizer<SheetSectionEditor> Localizer
 
-<div class="d-flex gap-2">
-    <div style="width: 50%">
+@if(Section is not null && View is not null)
+{
+    <div class="d-flex gap-2">
         <SelectList T="SheetColumnType" DropDownLabel="@Localizer["Kolumn"]" ShowActions="false" Items="Enum.GetValues<SheetColumnType>().ToList()" ListVariant="ListVariant.DropDown"
                     @bind-SelectedItem="SelectedColumnType" GetItemNameFunc="SheetDataService.GetColumnTypeName" />
-    </div>
-    <div style="width: 50%">
         <SelectList T="SheetRowType" DropDownLabel="@Localizer["Rad"]" ShowActions="false" Items="Enum.GetValues<SheetRowType>().ToList()" ListVariant="ListVariant.DropDown"
                     @bind-SelectedItem="SelectedRowType" GetItemNameFunc="SheetDataService.GetRowTypeName" />
+
+        
     </div>
-</div>
 
-<SheetCellEditor Section="Section" SheetColumnType="SelectedColumnType" SheetRowType="SelectedRowType"/>
+    <MudTextField Style="width: 50%" T="int" Margin="Margin.Dense" Value="SelectedColumn.Width" ValueChanged="SetColumnWidth" Label="@Localizer["Kolumnbredd"]" Variant="Variant.Outlined" />
+    <MudCheckBox Style="width: 50%" T="bool" Value="SelectedColumn.IsVisible" ValueChanged="SetColumnVisibility" Dense="true" Label="@Localizer["Visa kolumn"]" />
 
+    <SheetCellEditor Section="Section" SheetCellFormat="SelectedCellFormat" />
 
+    @code {
+        [Parameter] public SheetSection? Section { get; set; }
+        [Parameter] public View? View { get; set; }
+        [CascadingParameter] public EditViewPage? EditViewPage { get; set; }
 
+        SheetColumnType SelectedColumnType = SheetColumnType.Description;
+        SheetRowType SelectedRowType = SheetRowType.Group;
+        SheetCellFormat SelectedCellFormat => Section!.CellFormats.First(x => x.RowType == SelectedRowType && x.ColumnType == SelectedColumnType);
+        SheetColumn SelectedColumn => Section!.Columns.First(x => x.ColumnType == SelectedColumnType);
 
-@inject IStringLocalizer<SheetSectionEditor> Localizer
-@code {
-    [Parameter] public SheetSection? Section { get; set; }
-    [Parameter] public View? View { get; set; }
-
-    SheetColumnType SelectedColumnType = SheetColumnType.Description;
-    SheetRowType SelectedRowType = SheetRowType.Group;
-
+        void SetColumnVisibility(bool isVisible)
+        {
+            SelectedColumn.IsVisible = isVisible;
+            EditViewPage?.TriggerStateHasChanged();
+        }
+        void SetColumnWidth(int width)
+        {
+            SelectedColumn.Width = width;
+            EditViewPage?.TriggerStateHasChanged();
+        }
+    }
 }

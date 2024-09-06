@@ -16,21 +16,21 @@
 
 @code{
     [Parameter] public SheetSection? Section { get; set; }
-    [Parameter, EditorRequired] public SheetRowType SheetRowType { get; set; }
-    [Parameter, EditorRequired] public SheetColumnType SheetColumnType { get; set; }
     [CascadingParameter] public EditViewPage? EditViewPage { get; set; }
 
-    SheetCellFormat? SheetCellFormat { get; set; }// => Section?.CellFormats.FirstOrDefault(x => x.RowType == SheetRowType && x.ColumnType == SheetColumnType);
+    //SheetCellFormat? SheetCellFormat { get; set; }// => Section?.CellFormats.FirstOrDefault(x => x.RowType == SheetRowType && x.ColumnType == SheetColumnType);
 
-    protected override void OnParametersSet()
-    {
-        SheetCellFormat = Section?.CellFormats.FirstOrDefault(x => x.RowType == SheetRowType && x.ColumnType == SheetColumnType);
-    }
+    [Parameter] public SheetCellFormat? SheetCellFormat { get; set; }
+
+    // protected override void OnParametersSet()
+    // {
+    //     SheetCellFormat = Section?.CellFormats.FirstOrDefault(x => x.RowType == SheetRowType && x.ColumnType == SheetColumnType);
+    // }
     void ApplyToEntireRow()
     {
         if (SheetCellFormat is not null)
         {
-            foreach (var cellFormat in Section!.CellFormats.Where(x => x.RowType == SheetRowType))
+            foreach (var cellFormat in Section!.CellFormats.Where(x => x.RowType == SheetCellFormat.RowType))
             {
                 cellFormat.ApplyFormat(SheetCellFormat);
                 EditViewPage?.TriggerStateHasChanged();
@@ -41,7 +41,7 @@
     {
         if (SheetCellFormat is not null)
         {
-            foreach (var cellFormat in Section!.CellFormats.Where(x => x.ColumnType == SheetColumnType))
+            foreach (var cellFormat in Section!.CellFormats.Where(x => x.ColumnType == SheetCellFormat.ColumnType))
             {
                 cellFormat.ApplyFormat(SheetCellFormat);
                 EditViewPage?.TriggerStateHasChanged();
