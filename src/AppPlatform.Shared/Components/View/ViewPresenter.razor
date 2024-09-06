@@ -3,46 +3,35 @@
 
 <CascadingValue Value="this">
 
- @*    @if(EditMode)
-    {
-        <ViewEditToolbar>
-            <ToolbarActions ChangedRowFormat="View?.SheetSections.FirstOrDefault()?.RowFormats.FirstOrDefault(x => x.RowType == Core.Enums.ViewTemplate.SheetRowType.ChangedRow)"/>
-        </ViewEditToolbar>
-    } *@
+    <div style="height: 100%; width: 100%;">
+
+        <style>
+            .ViewPresenter > * {
+                @($"font-family: {View?.FontFamily};")
+            }
+        </style>
+
+        <MudPaper Class="ViewPresenter pa-4" Square="true" Width="900px;" Height="100%" Elevation="5">
 
 
-    <div style="height: 100%; display: flex; width: 100%;">
-        <div class="gap-4" style="display: flex; flex-direction: column; height: 100%;">
-        
-
-            <style>
-                .ViewPresenter > * {
-                 @($"font-family: {View?.FontFamily};")
-                }
-            </style>
-
-            <MudPaper Class="ViewPresenter pa-4" Square="true" Width="900px;" Height="100%" Elevation="5">
-
-
-                @foreach (var section in SectionsInOrder())
+            @foreach (var section in SectionsInOrder())
+            {
+                if (section is SheetSection sheetSection)
                 {
-                    if (section is SheetSection sheetSection)
-                    {
-                        <SheetSectionPresenter Section="sheetSection" Estimation="Estimation" View="View" DoItemsStartAsExpanded="DoTableItemsStartAsExpanded" />
-                    }
-                    else if (section is DataSection dataSection)
-                    {
-                        <DataSectionPresenter Section="dataSection" Estimation="Estimation" />
-                    }
-                    else
-                    {
-                        throw new NotImplementedException();
-                    }
+                    <SheetSectionPresenter Section="sheetSection" Estimation="Estimation" View="View" DoItemsStartAsExpanded="DoTableItemsStartAsExpanded" />
                 }
+                else if (section is DataSection dataSection)
+                {
+                    <DataSectionPresenter Section="dataSection" Estimation="Estimation" />
+                }
+                else
+                {
+                    throw new NotImplementedException();
+                }
+            }
 
 
-            </MudPaper>
-        </div>
+        </MudPaper>
     
     </div>
 

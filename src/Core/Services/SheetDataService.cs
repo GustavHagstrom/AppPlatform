@@ -13,10 +13,10 @@ public class SheetDataService(IStringLocalizer<SheetDataService> Localizer) : IS
             SheetColumnType.Description => item.Description,
             SheetColumnType.Quantity => item.Quantity.ToString(),
             SheetColumnType.Unit => item.Unit,
-            SheetColumnType.UnitCost => item.UnitCost is null ? string.Empty : ((double)item.UnitCost).ToString("F1", CultureInfo.InvariantCulture),
-            SheetColumnType.TotalCost => item.TotalCost is null ? string.Empty : ((double)item.TotalCost).ToString("F1", CultureInfo.InvariantCulture),
-            SheetColumnType.UnitAskingPrice => item.UnitAskingPrice is null ? string.Empty : ((double)item.UnitAskingPrice).ToString("F1", CultureInfo.InvariantCulture),
-            SheetColumnType.TotalAskingPrice => item.TotalAskingPrice is null ? string.Empty : ((double)item.TotalAskingPrice).ToString("F1", CultureInfo.InvariantCulture),
+            SheetColumnType.UnitCost => item.UnitCost is null ? string.Empty : ((double)item.UnitCost).ToString("N1"),
+            SheetColumnType.TotalCost => item.TotalCost is null ? string.Empty : ((double)item.TotalCost).ToString("N1"),
+            SheetColumnType.UnitAskingPrice => item.UnitAskingPrice is null ? string.Empty : ((double)item.UnitAskingPrice).ToString("N1"),
+            SheetColumnType.TotalAskingPrice => item.TotalAskingPrice is null ? string.Empty : ((double)item.TotalAskingPrice).ToString("N1"),
             _ => throw new NotImplementedException()
         };
     }
@@ -32,7 +32,9 @@ public class SheetDataService(IStringLocalizer<SheetDataService> Localizer) : IS
             _ => throw new NotImplementedException()
         };
     }
-    public string GetColumnName(SheetColumnType type)
+    public string GetColumnTypeName
+        
+        (SheetColumnType type)
     {
         return type switch
         {

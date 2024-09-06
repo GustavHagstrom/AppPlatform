@@ -1,7 +1,7 @@
 ﻿table {
     border-collapse: collapse;
     width: 100%;
-    cursor: cell;
+/*    cursor: cell;*/
 }
 tr {
     height: 1px;
@@ -10,40 +10,24 @@ td, th {
     height: 1px;
 
 }
-
-td:hover, th:hover {
-
-}
-
-.cell-value{
-
-}
 .table-container {
     padding: 1px;
     box-sizing: border-box;
+}
+.cell-container {
+    display: flex;
+    height: 100%;
+    display: flex;
+    position: relative;
 }
 .cell-value {
     display: flex;
     flex-grow: 1;
     padding: 8px;
     height: 100%;
-    justify-content: inherit;
-    align-items: inherit;
+/*    justify-content: inherit;
+    align-items: inherit;*/
     box-sizing: border-box;
-}
-td > div, th > div {
-    display: flex;
-    height: 100%;
-}
-td.selected .cell-value, th.selected div {
-    padding: 7px;
-    border-color: var(--mud-palette-info);
-    border-width: 1px;
-}
-.table-container.selected {
-    border-color: var(--mud-palette-info);
-    border-width: 1px;
-    padding: 0;
 }
 
 .cell-expand-button {
@@ -53,3 +37,4 @@ td.selected .cell-value, th.selected div {
     top: 50%;
     transform: translateY(-50%);
 }
+

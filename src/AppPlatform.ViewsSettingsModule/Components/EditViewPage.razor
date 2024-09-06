@@ -1,4 +1,5 @@
 @page "/Settings/ViewSettings/Edit/{ViewId}"
+@using AppPlatform.ViewSettingsModule.Components.Tabs
 @using Microsoft.AspNetCore.Components.Authorization
 @inject IStringLocalizer<EditViewPage> Localizer
 @implements IAsyncDisposable
@@ -18,6 +19,9 @@
                 <div class="@TabHeaderClass(TabType.Common)" @onclick="() => ActiveTab = TabType.Common">
                     <MudText Inline="true" Class="pl-0" Style="font-weight: 500;">@Localizer["Start"]</MudText>
                 </div>
+                <div class="@TabHeaderClass(TabType.Format)" @onclick="() => ActiveTab = TabType.Format">
+                    <MudText Inline="true" Class="pl-0" Style="font-weight: 500;">@Localizer["Format"]</MudText>
+                </div>
                 <div class="@TabHeaderClass(TabType.Tags)" @onclick="() => ActiveTab = TabType.Tags">
                     <MudText Inline="true" Class="pl-0" Style="font-weight: 500;">@Localizer["Taggar"]</MudText>
                 </div>
@@ -33,6 +37,9 @@
                     {
                         case TabType.Common:
                             <CommonTab View="View"/>
+                            break;
+                        case TabType.Format:
+                            <FormatTab View="View" />
                             break;
                         case TabType.Tags:
                             <TagsTab View="View" />
@@ -68,6 +75,7 @@
         Common,
         Tags,
         Rights,
+        Format,
 
     }
 

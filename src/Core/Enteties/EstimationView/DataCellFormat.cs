@@ -29,6 +29,27 @@ public class DataCellFormat : IViewEntity, IFormat
     public bool HasBorderBottom { get; set; } = false;
     public BorderStyle BorderStyle { get; set; } = BorderStyle.Solid;
 
+    public void ApplyFormat(IFormat format)
+    {
+        HorizontalAlign = format.HorizontalAlign;
+        BackgroundColor = format.BackgroundColor;
+        BorderStyle = format.BorderStyle;
+        DecimalCount = format.DecimalCount;
+        DoesIncludeTimeOfDay = format.DoesIncludeTimeOfDay;
+        FontSize = format.FontSize;
+        FormatType = format.FormatType;
+        HasBorderBottom = format.HasBorderBottom;
+        HasBorderLeft = format.HasBorderLeft;
+        HasBorderRight = format.HasBorderRight;
+        HasBorderTop = format.HasBorderTop;
+        HasThoasandsSeparator = format.HasThoasandsSeparator;
+        IsBold = format.IsBold;
+        IsItalic = format.IsItalic;
+        IsUnderline = format.IsUnderline;
+        VerticalAlign = format.VerticalAlign;
+        TextColor = format.TextColor;
+    }
+
 
 
     //[StringLength(50)]

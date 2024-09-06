@@ -2,7 +2,7 @@
 @using AppPlatform.Core.Services
 @using AppPlatform.ViewSettingsModule.Components.Format
 
-<SelectList T="SheetColumnType" DropDownLabel="@Localizer["Kolumn"]" ShowActions="false" Items="Enum.GetValues<SheetColumnType>().ToList()" ListVariant="ListVariant.DropDown" @bind-SelectedItem="SelectedColumn" GetItemNameFunc="SheetDataService.GetColumnName"/>
+<SelectList T="SheetColumnType" DropDownLabel="@Localizer["Kolumn"]" ShowActions="false" Items="Enum.GetValues<SheetColumnType>().ToList()" ListVariant="ListVariant.DropDown" @bind-SelectedItem="SelectedColumn" GetItemNameFunc="SheetDataService.GetColumnTypeName" />
 
 @* @if (SelectedFormat is not null)
 {

@@ -20,4 +20,6 @@ public interface IFormat
     bool IsUnderline { get; set; }
     Align? VerticalAlign { get; set; }
     string? TextColor { get; set; }
+
+    void ApplyFormat(IFormat format);
 }

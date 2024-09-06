@@ -1,13 +1,21 @@
-<SelectList T="FormatType" DropDownLabel="@Localizer["Formattyp"]" ShowActions="false" Items="Enum.GetValues<FormatType>().ToList()" ListVariant="ListVariant.DropDown" @bind-SelectedItem="SelectedFormat" GetItemNameFunc="GetItemNameFunc" />
+@using AppPlatform.Core.Enums.ViewTemplate
+@using AppPlatform.Core.Services
+@inject ISheetDataService SheetDataService
 
-@if(SelectedFormat == FormatType.Column)
-{
-    <SheetColumnEditor Section="@Section" />
-}
-else
-{
-    <SheetRowEditor Section="@Section" />
-}
+<div class="d-flex gap-2">
+    <div style="width: 50%">
+        <SelectList T="SheetColumnType" DropDownLabel="@Localizer["Kolumn"]" ShowActions="false" Items="Enum.GetValues<SheetColumnType>().ToList()" ListVariant="ListVariant.DropDown"
+                    @bind-SelectedItem="SelectedColumnType" GetItemNameFunc="SheetDataService.GetColumnTypeName" />
+    </div>
+    <div style="width: 50%">
+        <SelectList T="SheetRowType" DropDownLabel="@Localizer["Rad"]" ShowActions="false" Items="Enum.GetValues<SheetRowType>().ToList()" ListVariant="ListVariant.DropDown"
+                    @bind-SelectedItem="SelectedRowType" GetItemNameFunc="SheetDataService.GetRowTypeName" />
+    </div>
+</div>
+
+<SheetCellEditor Section="Section" SheetColumnType="SelectedColumnType" SheetRowType="SelectedRowType"/>
+
+
 
 
 @inject IStringLocalizer<SheetSectionEditor> Localizer
@@ -15,21 +23,7 @@ else
     [Parameter] public SheetSection? Section { get; set; }
     [Parameter] public View? View { get; set; }
 
-    FormatType SelectedFormat = FormatType.Column;
+    SheetColumnType SelectedColumnType = SheetColumnType.Description;
+    SheetRowType SelectedRowType = SheetRowType.Group;
 
-    enum FormatType
-    {
-        Column,
-        Row
-    }
-
-    string GetItemNameFunc(FormatType formatType)
-    {
-        return formatType switch
-        {
-            FormatType.Column => Localizer["Kolumn"],
-            FormatType.Row => Localizer["Rad"],
-            _ => throw new NotImplementedException()
-        };
-    }
 }

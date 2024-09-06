@@ -34,6 +34,9 @@ input:focus-visible {
 .mud-dialog-no-content-padding .mud-dialog-content {
     padding: 0;
 }
+.mud-button {
+    text-transform: none !important;
+}
 
 table.table-row-border {
     border-collapse: collapse;

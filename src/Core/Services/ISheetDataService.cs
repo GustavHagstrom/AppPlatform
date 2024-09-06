@@ -5,6 +5,6 @@ namespace AppPlatform.Core.Services;
 public interface ISheetDataService
 {
     string? GetColumnDataFromItem(SheetColumnType type, SheetItem item);
-    string GetColumnName(SheetColumnType type);
+    string GetColumnTypeName(SheetColumnType type);
     string GetRowTypeName(SheetRowType type);
 }

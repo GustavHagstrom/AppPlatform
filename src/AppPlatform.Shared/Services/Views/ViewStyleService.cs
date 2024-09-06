@@ -59,11 +59,16 @@ public class ViewStyleService : IViewStyleService
         var classString = $"font-size: {format.FontSize}px;\n";
         //classString += $"font-family: {format.FontFamily};\n";
         classString += format.HorizontalAlign is null ? string.Empty : $"justify-content: {GetAlign(format.HorizontalAlign.Value)};";
+        classString += format.HorizontalAlign is null ? string.Empty : $"text-align: {GetAlign(format.HorizontalAlign.Value)};";
         classString += format.VerticalAlign is null ? string.Empty : $"align-items: {GetAlign(format.VerticalAlign.Value)};";
 
         if (format.IsBold)
         {
             classString += $"font-weight: 600;";
+        }
+        else
+        {
+            classString += $"font-weight: 400;";
         }
         if (format.IsItalic)
         {
@@ -93,20 +98,20 @@ public class ViewStyleService : IViewStyleService
     {
         return align switch
         {
-            Align.Start => "flex-start",
+            Align.Start => "start",
             Align.Center => "center",
-            Align.End => "flex-end",
-            _ => "flex-start"
+            Align.End => "end",
+            _ => "start"
         };
     }
     private string GetAlign(Align align)
     {
         return align switch
         {
-            Align.Start => "flex-start",
+            Align.Start => "start",
             Align.Center => "center",
-            Align.End => "flex-end",
-            _ => "flex-start"
+            Align.End => "end",
+            _ => "start"
         };
     }
     private string GetBorderStyle(BorderStyle style)

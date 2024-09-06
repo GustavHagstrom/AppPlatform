@@ -1,0 +1,51 @@
+@using AppPlatform.ViewSettingsModule.Components.Format
+
+@inject IStringLocalizer<SheetCellEditor> Localizer
+
+@if (SheetCellFormat is not null)
+{
+    <FormatEditor Format="SheetCellFormat" />
+    <div class="d-flex gap-2">
+        <MudButton Variant="Variant.Outlined" Color="Color.Primary" Style="width: 50%;" OnClick="ApplyToEntireColumn">@Localizer["Applicera format på hela kolumnen"]</MudButton>
+        <MudButton Variant="Variant.Outlined" Color="Color.Primary" Style="width: 50%;" OnClick="ApplyToEntireRow">@Localizer["Applicera format på hela raden"]</MudButton>
+    </div>
+}
+
+
+
+
+@code{
+    [Parameter] public SheetSection? Section { get; set; }
+    [Parameter, EditorRequired] public SheetRowType SheetRowType { get; set; }
+    [Parameter, EditorRequired] public SheetColumnType SheetColumnType { get; set; }
+    [CascadingParameter] public EditViewPage? EditViewPage { get; set; }
+
+    SheetCellFormat? SheetCellFormat { get; set; }// => Section?.CellFormats.FirstOrDefault(x => x.RowType == SheetRowType && x.ColumnType == SheetColumnType);
+
+    protected override void OnParametersSet()
+    {
+        SheetCellFormat = Section?.CellFormats.FirstOrDefault(x => x.RowType == SheetRowType && x.ColumnType == SheetColumnType);
+    }
+    void ApplyToEntireRow()
+    {
+        if (SheetCellFormat is not null)
+        {
+            foreach (var cellFormat in Section!.CellFormats.Where(x => x.RowType == SheetRowType))
+            {
+                cellFormat.ApplyFormat(SheetCellFormat);
+                EditViewPage?.TriggerStateHasChanged();
+            }
+        }
+    }
+    void ApplyToEntireColumn()
+    {
+        if (SheetCellFormat is not null)
+        {
+            foreach (var cellFormat in Section!.CellFormats.Where(x => x.ColumnType == SheetColumnType))
+            {
+                cellFormat.ApplyFormat(SheetCellFormat);
+                EditViewPage?.TriggerStateHasChanged();
+            }
+        }
+    }
+}

@@ -6,27 +6,48 @@ public class SheetCellFormat : IFormat
 {
     [StringLength(50)]
 
-    public string SheetSectionId { get; set; } = Guid.NewGuid().ToString();
+    public required string SheetSectionId { get; set; }
     public SheetSection? SheetSection { get; set; }
-    public SheetRowType RowType { get; set; }
-    public SheetColumnType ColumnType { get; set; }
+    public required SheetRowType RowType { get; set; }
+    public required SheetColumnType ColumnType { get; set; }
 
 
-    public Align? HorizontalAlign { get; set; }
-    public string? BackgroundColor { get; set; }
-    public BorderStyle BorderStyle { get; set; }
-    public int DecimalCount { get; set; }
-    public bool DoesIncludeTimeOfDay { get; set; }
-    public int FontSize {   get; set; }
-    public TextFormatType FormatType { get; set; }
-    public bool HasBorderBottom { get; set; }
-    public bool HasBorderLeft { get; set; }
-    public bool HasBorderRight { get; set; }
-    public bool HasBorderTop { get; set; }
-    public bool HasThoasandsSeparator { get; set; }
-    public bool IsBold { get; set; }
-    public bool IsItalic { get; set; }
-    public bool IsUnderline { get; set; }
-    public Align? VerticalAlign { get; set; }
-    public string? TextColor { get; set; }
+    public Align? HorizontalAlign { get; set; } = Align.Start;
+    public string? BackgroundColor { get; set; } = null;
+    public BorderStyle BorderStyle { get; set; } = BorderStyle.Solid;
+    public int DecimalCount { get; set; } = 2;
+    public bool DoesIncludeTimeOfDay { get; set; } = true;
+    public int FontSize { get; set; } = 12;
+    public TextFormatType FormatType { get; set; } = TextFormatType.Text;
+    public bool HasBorderBottom { get; set; } = false;
+    public bool HasBorderLeft { get; set; } = false;
+    public bool HasBorderRight { get; set; } = false;
+    public bool HasBorderTop { get; set; } = false;
+    public bool HasThoasandsSeparator { get; set; } = true;
+    public bool IsBold { get; set; } = false;
+    public bool IsItalic { get; set; } = false;
+    public bool IsUnderline { get; set; } = false;
+    public Align? VerticalAlign { get; set; } = Align.End;
+    public string? TextColor { get; set; } = null;
+
+    public void ApplyFormat(IFormat format)
+    {
+        HorizontalAlign = format.HorizontalAlign;
+        BackgroundColor = format.BackgroundColor;
+        BorderStyle = format.BorderStyle;
+        DecimalCount = format.DecimalCount;
+        DoesIncludeTimeOfDay = format.DoesIncludeTimeOfDay;
+        FontSize = format.FontSize;
+        FormatType = format.FormatType;
+        HasBorderBottom = format.HasBorderBottom;
+        HasBorderLeft = format.HasBorderLeft;
+        HasBorderRight = format.HasBorderRight;
+        HasBorderTop = format.HasBorderTop;
+        HasThoasandsSeparator = format.HasThoasandsSeparator;
+        IsBold = format.IsBold;
+        IsItalic = format.IsItalic;
+        IsUnderline = format.IsUnderline;
+        VerticalAlign = format.VerticalAlign;
+        TextColor = format.TextColor;
+    }
 }

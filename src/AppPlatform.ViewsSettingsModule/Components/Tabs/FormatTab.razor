@@ -10,16 +10,6 @@
 
 
 
-<SettingsSection Title="@Localizer["Alllmänt"]">
-    <div class="d-flex gap-2">
-        <MudButton Variant="Variant.Outlined" Color="Color.Success" StartIcon="@Icons.Material.Sharp.Save" Style="width: 50%;">@Localizer["Spara"]</MudButton>
-        <MudButton Variant="Variant.Outlined" Color="Color.Error" StartIcon="@Icons.Material.Sharp.Delete" Style="width: 50%;">@Localizer["Ta bort"]</MudButton>
-    </div>
-
-    <MudTextField T="string" Variant="Variant.Outlined" Value="View?.Name" ValueChanged="SetName" Label="@Localizer["Namn"]" Margin="Margin.Dense" />
-    <MudTextField T="string" Variant="Variant.Outlined" Value="View?.FontFamily" ValueChanged="SetFontFamily" Label="@Localizer["Teckensnitt"]" Margin="Margin.Dense" />
-</SettingsSection>
-
 <SettingsSection Title="@Localizer["Sektioner"]">
     <SelectList T="ISection" Items="View!.SectionsInOrder().ToList()" GetItemNameFunc="x => x?.Name" ListVariant="ListVariant.DropDown" AddAsyncFunc="NewSection" @bind-SelectedItem="SelectedSection" DeleteAsyncFunc="DeleteSection" ShowActions="true">
         <MudIconButton Icon="@Icons.Material.Sharp.ArrowUpward" Variant="Variant.Outlined" Color="Color.Primary" Size="Size.Medium" />
@@ -52,53 +42,6 @@
 
     ISection? SelectedSection { get; set; }
 
-    void SetName(string name)
-    {
-        if (View is not null)
-        {
-            View.Name = name;
-            EditViewPage?.TriggerStateHasChanged();
-            // var state = await AuthenticationStateProvider.GetAuthenticationStateAsync();
-            // await _viewService.UpsertAsync(state.User, View);
-        }
-    }
-    // void SetSectionName(string name)
-    // {
-    //     if(SelectedSection is not null)
-    //     {
-    //         SelectedSection.Name = name;
-    //         EditViewPage?.TriggerStateHasChanged();
-    //     }
-    // }
-    void SetFontFamily(string fontFamily)
-    {
-        if (View is not null)
-        {
-            View.FontFamily = fontFamily;
-            EditViewPage?.TriggerStateHasChanged();
-            // var state = await AuthenticationStateProvider.GetAuthenticationStateAsync();
-            // await _viewService.UpsertAsync(state.User, View);
-        }
-    }
-
-    async Task Delete()
-    {
-        if (View is not null)
-        {
-            var parameters = new DialogParameters<YesNoDialog> {
-                { x => x.Info, Localizer["Är du säker på att du vill ta bort vyn?"] },
-                { x => x.YesButtonColor, Color.Error }
-            };
-            var dialog = await DialogService.ShowAsync<YesNoDialog>(Localizer["Bekräfta borttagning"], parameters);
-            var result = await dialog.Result;
-            if (result?.Data is true)
-            {
-                var state = await AuthenticationStateProvider.GetAuthenticationStateAsync();
-                await _viewService.DeleteAsync(state.User, View);
-                NavigationManager.NavigateTo(Constants.Routes.ViewListPage);
-            }
-        }
-    }
     async Task<ISection?> NewSection()
     {
         if(View is null)

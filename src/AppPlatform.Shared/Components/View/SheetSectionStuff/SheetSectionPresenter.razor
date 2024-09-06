@@ -14,24 +14,35 @@
     
     <div class="table-container">
         <table style="width: 100%;">
-            <tbody>
+            <colgroup>
+                @{
+                    var allColumnsWidthSum = Section.Columns.Sum(x => x.Width);
+                }
+                @foreach (var column in Section.Columns.OrderBy(x => x.Order))
+                {
+                    <col style="@($"width: {((double)column.Width / allColumnsWidthSum * 100).ToString(CultureInfo.InvariantCulture)}%")" />
+                }
+                    
+            </colgroup>
+            <thead>
                 <tr>
                     @foreach (var column in Section.Columns.OrderBy(x => x.Order))
                     {
                         <th>
-                            <div class="d-flex relative">
+                            <div class="cell-container">
                                 <div class="@CellValueClass" style="@CellStyles[new SheetCellKey(SheetRowType.Header, column.ColumnType)]">
-                                    @SheetNameService.GetColumnName(column.ColumnType)
+                                    @SheetNameService.GetColumnTypeName(column.ColumnType)
                                 </div>
                             </div>
                         </th>
                     }
                 </tr>
-               
+            </thead>
+            <tbody>               
                 <Virtualize TItem="SheetItemContainer" Items="NetSheetContainer?.AllExpandedInOrder.Skip(1).ToList()">
                     <tr>
                         @{
-                        int columnCount = 0;
+                            int columnCount = 0;
                         }
                         @foreach (var column in Section.Columns.OrderBy(x => x.Order))
                         {
@@ -40,7 +51,7 @@
                             var indentStyle3 = columnCount == 1 ? $"left: {context.Level * 16 - 8}px;" : string.Empty;
 
                             <td>
-                                <div class="d-flex relative">
+                                <div class="cell-container">
                                     @if(columnCount == 1 && context.Children.Count != 0)
                                     {
                                         <div class="cell-expand-button" style="@indentStyle3">

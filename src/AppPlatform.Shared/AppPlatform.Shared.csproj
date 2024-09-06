@@ -43,7 +43,6 @@
   <ItemGroup>
     <None Include="Components\AppNavLink.razor" />
     <None Include="Components\PageSetupWithNavigation.razor" />
-    <None Include="Components\View\Edit\FormatEditor.razor" />
     <None Include="Components\View\ViewPresenter.razor" />
   </ItemGroup>
 
