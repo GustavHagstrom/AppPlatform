@@ -4,11 +4,13 @@
 
 @if (SheetCellFormat is not null)
 {
-    <FormatEditor Format="SheetCellFormat" />
-    <div class="d-flex gap-2">
-        <MudButton Variant="Variant.Outlined" Color="Color.Primary" Style="width: 50%;" OnClick="ApplyToEntireColumn">@Localizer["Applicera format på hela kolumnen"]</MudButton>
-        <MudButton Variant="Variant.Outlined" Color="Color.Primary" Style="width: 50%;" OnClick="ApplyToEntireRow">@Localizer["Applicera format på hela raden"]</MudButton>
-    </div>
+    <SettingsSection Title="@Localizer["Format"]">
+        <FormatEditor Format="SheetCellFormat" />
+        <div class="d-flex gap-2">
+            <MudButton Variant="Variant.Outlined" Color="Color.Primary" Style="width: 50%;" OnClick="ApplyToEntireColumn">@Localizer["Applicera format på hela kolumnen"]</MudButton>
+            <MudButton Variant="Variant.Outlined" Color="Color.Primary" Style="width: 50%;" OnClick="ApplyToEntireRow">@Localizer["Applicera format på hela raden"]</MudButton>
+        </div>
+    </SettingsSection>
 }
 
 

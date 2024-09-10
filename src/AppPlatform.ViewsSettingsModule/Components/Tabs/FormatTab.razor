@@ -11,34 +11,52 @@
 
 
 <SettingsSection Title="@Localizer["Sektioner"]">
-    <SelectList T="ISection" Items="View!.SectionsInOrder().ToList()" GetItemNameFunc="x => x?.Name" ListVariant="ListVariant.DropDown" AddAsyncFunc="NewSection" @bind-SelectedItem="SelectedSection" DeleteAsyncFunc="DeleteSection" ShowActions="true">
-        <MudIconButton Icon="@Icons.Material.Sharp.ArrowUpward" Variant="Variant.Outlined" Color="Color.Primary" Size="Size.Medium" 
-                       Disabled="!CanMoveUp(SelectedSection)" OnClick="() => MoveUp(SelectedSection)"/>
-        <MudIconButton Icon="@Icons.Material.Sharp.ArrowDownward" Variant="Variant.Outlined" Color="Color.Primary" Size="Size.Medium" 
-                       Disabled="!CanMoveDown(SelectedSection)" OnClick="() => MoveDown(SelectedSection)" />
+    <SelectList T="ISection" Items="View!.SectionsInOrder().ToList()" GetItemNameFunc="x => x?.Name" ListVariant="ListVariant.List" AddAsyncFunc="NewSection" @bind-SelectedItem="SelectedSection" DeleteAsyncFunc="DeleteSection" ShowActions="true" ListStyle="min-height: 100px;">
+        <ChildContent>
+            <MudIconButton Icon="@Icons.Material.Sharp.ArrowUpward" Variant="Variant.Outlined" Color="Color.Primary" Size="Size.Medium"
+                           Disabled="!CanMoveUp(SelectedSection)" OnClick="() => MoveUp(SelectedSection)" />
+            <MudIconButton Icon="@Icons.Material.Sharp.ArrowDownward" Variant="Variant.Outlined" Color="Color.Primary" Size="Size.Medium"
+                           Disabled="!CanMoveDown(SelectedSection)" OnClick="() => MoveDown(SelectedSection)" />
+        </ChildContent>
+        <ListItemContent>
+            <div class="d-flex">
+                <div style="width: 50%; display: flex;">
+                    <span class="pr-1">@Localizer["Namn:"]</span>
+                    <Microsoft.AspNetCore.Components.Forms.InputText @bind-Value="@context.Name" style="width: 100px;" />
+                   @*  <MudTextField T="string" Variant="Variant.Outlined" Margin="Margin.Dense" @bind-Value="@context.Name" /> *@
+                </div>
+                <div style="width: 50%;">
+                    <span class="pr-0">@Localizer["Typ: "]</span>
+                    <span>@Helper.GetSectionTypeName(context)</span>
+                </div>
+                
+            </div>
+
+        </ListItemContent>
     </SelectList>
 
-
-    @if(SelectedSection is not null)
+@*     @if(SelectedSection is not null)
     {
         <div class="d-flex gap-2">
             <MudTextField T="string" Variant="Variant.Outlined" Label="@Localizer["Namn"]" Margin="Margin.Dense" Value="SelectedSection.Name" ValueChanged="x => SelectedSection.Name = x"/>
             <MudTextField T="string" Variant="Variant.Outlined" Label="@Localizer["Typ"]" Margin="Margin.Dense" ReadOnly="true" Value="Helper.GetSectionTypeName(SelectedSection)" />
         </div>
     }
+     *@
+</SettingsSection>
 
+
+<SettingsSection>
     @if (SelectedSection is SheetSection sheetSection)
     {
-    <SheetSectionEditor Section="@sheetSection" View="View" />
+        <SheetSectionEditor Section="@sheetSection" View="View" />
     }
     else if (SelectedSection is DataSection dataSection)
     {
-    <DataSectionEditor Section="@dataSection" View="View" />
+        <DataSectionEditor Section="@dataSection" View="View" />
     }
-
-
-    
 </SettingsSection>
+
 
 @code{
     [Parameter] public View? View { get; set; }

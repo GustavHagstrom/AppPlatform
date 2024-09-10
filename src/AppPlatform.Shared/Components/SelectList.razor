@@ -18,7 +18,17 @@
                 <MudList T="T" SelectedValue="SelectedItem" SelectedValueChanged="TriggerSelectedItemChanged" Class="@ListClass" Style="@ListStyle" Dense="true" SelectionMode="SelectionMode.SingleSelection">
                     @foreach (var item in Items)
                     {
-                        <MudListItem Text="@ToStringFunc(item)" Value="item" Class="@ItemClass" Style="@ItemStyle" />
+                        @* <MudListItem Text="@ToStringFunc(item)" Value="item" Class="@ItemClass" Style="@ItemStyle" /> *@
+                        <MudListItem Value="item" Class="@ItemClass" Style="@ItemStyle">
+                            @if (ListItemContent is not null)
+                            {
+                                @ListItemContent(item)
+                            }
+                            else
+                            {
+                                @ToStringFunc(item)
+                            }
+                        </MudListItem>
                     }
                 </MudList>
             </MudPaper>
@@ -43,6 +53,7 @@
 @inject IStringLocalizer<SelectList<object>> Localizer
 @code{
     [Parameter] public RenderFragment? ChildContent { get; set; }
+    [Parameter] public RenderFragment<T>? ListItemContent { get; set; }
     [Parameter] public List<T> Items { get; set; } = new List<T>();
     [Parameter] public T? SelectedItem { get; set; }
     [Parameter] public EventCallback<T> SelectedItemChanged { get; set; }
