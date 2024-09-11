@@ -19,7 +19,7 @@
                 <div class="@TabHeaderClass(TabType.Common)" @onclick="() => ActiveTab = TabType.Common">
                     <MudText Inline="true" Class="pl-0" Style="font-weight: 500;">@Localizer["Start"]</MudText>
                 </div>
-                <div class="@TabHeaderClass(TabType.Format)" @onclick="() => ActiveTab = TabType.Format">
+                <div class="@TabHeaderClass(TabType.Layout)" @onclick="() => ActiveTab = TabType.Layout">
                     <MudText Inline="true" Class="pl-0" Style="font-weight: 500;">@Localizer["Layout"]</MudText>
                 </div>
                 <div class="@TabHeaderClass(TabType.Tags)" @onclick="() => ActiveTab = TabType.Tags">
@@ -38,8 +38,8 @@
                         case TabType.Common:
                             <CommonTab View="View"/>
                             break;
-                        case TabType.Format:
-                            <FormatTab View="View" />
+                        case TabType.Layout:
+                            <LayoutTab View="View" />
                             break;
                         case TabType.Tags:
                             <TagsTab View="View" />
@@ -75,7 +75,7 @@
         Common,
         Tags,
         Rights,
-        Format,
+        Layout,
 
     }
 

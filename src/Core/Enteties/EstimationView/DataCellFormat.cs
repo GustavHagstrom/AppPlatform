@@ -8,6 +8,10 @@ public class DataCellFormat : IViewEntity, IFormat
     [StringLength(50)]
     public string Id { get; set; } = Guid.NewGuid().ToString();
     [StringLength(50)]
+    public string DataCellId { get; set; } = string.Empty;
+    public DataCell? DataCell { get; set; }
+
+    [StringLength(50)]
     public string FontFamily { get; set; } = string.Empty;
     [StringLength(50)]
     public string? BackgroundColor { get; set; }

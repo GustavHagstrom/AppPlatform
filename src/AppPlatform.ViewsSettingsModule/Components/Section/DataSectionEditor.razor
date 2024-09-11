@@ -1,6 +1,69 @@
+@using AppPlatform.ViewSettingsModule.Components.Format
+@inject IStringLocalizer<DataSectionEditor> Localizer
+
+@if (Section is not null && View is not null)
+{
+    <Row>
+        <MudTextField T="int" Margin="Margin.Dense" Label="@Localizer["Antal kolumner"]" />
+        <MudTextField T="int" Margin="Margin.Dense" Label="@Localizer["Antal rader"]"/>
+    </Row>
+    <Row>
+        <MudTextField T="int" Margin="Margin.Dense" Label="@Localizer["Kolumnbredd"]" />
+        <MudTextField T="int" Margin="Margin.Dense" Label="@Localizer["Radhöjd"]" />
+    </Row>
+    <Row>
+        <SelectList T="int" @bind-SelectedItem="SelectedColumn" Items="Enumerable.Range(1, Section!.ColumnCount).ToList()" Margin="Margin.Dense" Label="@Localizer["Kolumn"]" />
+        <SelectList T="int" @bind-SelectedItem="SelectedRow"  Items="Enumerable.Range(1, Section!.RowCount).ToList()" Margin="Margin.Dense" Label="@Localizer["Rad"]" />
+    </Row>
+@* 
+    <MudTextField Style="width: calc(50% - 4px);" T="int" Margin="Margin.Dense" Value="SelectedColumn.Width" ValueChanged="SetColumnWidth" Label="@Localizer["Kolumnbredd"]" Variant="Variant.Outlined" />
+    <MudCheckBox Style="width: 50%; margin-left: -4px !important;" T="bool" Value="SelectedColumn.IsVisible" ValueChanged="SetColumnVisibility" Dense="true" Label="@Localizer["Visa kolumn"]" /> *@
+
+    <DataCellEditor Section="Section" DataCellFormat="SelectedCellFormat" />
 
 
-@code {
+
+    @code {
     [Parameter] public DataSection? Section { get; set; }
     [Parameter] public View? View { get; set; }
+    [CascadingParameter] public EditViewPage? EditViewPage { get; set; }
+    int SelectedRow;
+    int SelectedColumn;
+
+
+    DataCellFormat? SelectedCellFormat 
+    {
+        get
+        {
+            if (Section is null) return null;
+
+            var cell = Section?.Cells.FirstOrDefault(x => x.Row == SelectedRow && x.Column == SelectedColumn);
+            if (cell is null)
+            {
+                cell = new DataCell
+                {
+                    Row = SelectedRow,
+                    Column = SelectedColumn
+                };
+                Section!.Cells.Add(cell);
+            }
+            return cell.CellFormat;
+            // return Section?.Cells.FirstOrDefault(x => x.RowType == SelectedRowType && x.ColumnType == SelectedColumnType);
+        }
+    }
+
+    // DataCellFormat SelectedCellFormat => Section!.CellFormats.First(x => x.RowType == SelectedRowType && x.ColumnType == SelectedColumnType);
+    // SheetColumn SelectedColumn => Section!.Columns.First(x => x.ColumnType == SelectedColumnType);
+
+    // void SetColumnVisibility(bool isVisible)
+    // {
+    //     SelectedColumn.IsVisible = isVisible;
+    //     EditViewPage?.TriggerStateHasChanged();
+    // }
+    // void SetColumnWidth(int width)
+    // {
+    //     SelectedColumn.Width = width;
+    //     EditViewPage?.TriggerStateHasChanged();
+    // }
+    }
 }

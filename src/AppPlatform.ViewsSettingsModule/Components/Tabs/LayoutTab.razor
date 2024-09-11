@@ -1,7 +1,7 @@
 @using AppPlatform.ViewSettingsModule.Components.Section
 @using Microsoft.AspNetCore.Components.Authorization
 
-@inject IStringLocalizer<CommonTab> Localizer
+@inject IStringLocalizer<LayoutTab> Localizer
 @inject Helper Helper
 @inject IViewService _viewService
 @inject AuthenticationStateProvider AuthenticationStateProvider
@@ -11,29 +11,38 @@
 
 
 <SettingsSection Title="@Localizer["Sektioner"]">
-    <SelectList T="ISection" Items="View!.SectionsInOrder().ToList()" GetItemNameFunc="x => x?.Name" ListVariant="ListVariant.List" AddAsyncFunc="NewSection" @bind-SelectedItem="SelectedSection" DeleteAsyncFunc="DeleteSection" ShowActions="true" ListStyle="min-height: 100px;">
-        <ChildContent>
-            <MudIconButton Icon="@Icons.Material.Sharp.ArrowUpward" Variant="Variant.Outlined" Color="Color.Primary" Size="Size.Medium"
-                           Disabled="!CanMoveUp(SelectedSection)" OnClick="() => MoveUp(SelectedSection)" />
-            <MudIconButton Icon="@Icons.Material.Sharp.ArrowDownward" Variant="Variant.Outlined" Color="Color.Primary" Size="Size.Medium"
-                           Disabled="!CanMoveDown(SelectedSection)" OnClick="() => MoveDown(SelectedSection)" />
-        </ChildContent>
-        <ListItemContent>
-            <div class="d-flex">
-                <div style="width: 50%; display: flex;">
-                    <span class="pr-1">@Localizer["Namn:"]</span>
-                    <Microsoft.AspNetCore.Components.Forms.InputText @bind-Value="@context.Name" style="width: 100px;" />
-                   @*  <MudTextField T="string" Variant="Variant.Outlined" Margin="Margin.Dense" @bind-Value="@context.Name" /> *@
-                </div>
-                <div style="width: 50%;">
-                    <span class="pr-0">@Localizer["Typ: "]</span>
-                    <span>@Helper.GetSectionTypeName(context)</span>
-                </div>
-                
-            </div>
+    <div class="d-flex gap-2 mb-2">
+        <MudIconButton Icon="@Icons.Material.Sharp.Add" Variant="Variant.Outlined" Color="Color.Primary" Size="Size.Medium" OnClick="NewSection" />
+        <MudIconButton Icon="@Icons.Material.Sharp.Delete" Variant="Variant.Outlined" Color="Color.Error" Size="Size.Medium" OnClick="() => DeleteSection(SelectedSection)" Disabled="SelectedSection is null" />
+        <MudIconButton Icon="@Icons.Material.Sharp.ArrowUpward" Variant="Variant.Outlined" Color="Color.Primary" Size="Size.Medium"
+                       Disabled="!CanMoveUp(SelectedSection)" OnClick="() => MoveUp(SelectedSection)" />
+        <MudIconButton Icon="@Icons.Material.Sharp.ArrowDownward" Variant="Variant.Outlined" Color="Color.Primary" Size="Size.Medium"
+                       Disabled="!CanMoveDown(SelectedSection)" OnClick="() => MoveDown(SelectedSection)" />
+    </div>
+    <MudPaper Elevation="3" MinHeight="92px">
+        <ul>
+            @foreach (var section in View!.SectionsInOrder())
+            {
+                <li class="@(section == SelectedSection ? "selected" : string.Empty)">
+                    <div>
+                        <div class="pr-1">@Localizer["Namn:"]</div>
+                        <input class="elevation-1" @bind-value="section.Name" style="width: 100px;" />
+                    </div>
+                    <div>
+                        <div class="pr-1">@Localizer["Typ:"]</div>
+                        <div>@Helper.GetSectionTypeName(section)</div>
+                    </div>
+                    <div class="d-block">
+                        <MudIconButton Icon="@Icons.Material.Sharp.Edit" Size="Size.Small" OnClick="() => SelectedSection = section"/>
+                    </div>
+                    
+                </li>
+            }
+        </ul>
+    </MudPaper>
+    
 
-        </ListItemContent>
-    </SelectList>
+
 
 @*     @if(SelectedSection is not null)
     {
@@ -139,9 +148,9 @@
         }
         return null;
     }
-    Task DeleteSection(ISection section)
+    Task DeleteSection(ISection? section)
     {
-        if (View is not null)
+        if (View is not null && section is not null)
         {
             if(section is DataSection dataSection)
             {

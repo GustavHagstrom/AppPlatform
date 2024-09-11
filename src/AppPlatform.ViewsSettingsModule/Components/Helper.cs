@@ -8,8 +8,8 @@ public class Helper(IStringLocalizer<Helper> Localizer)
 {
     private Dictionary<SectionType, string> SectionTypeNames = new()
     {
-        { SectionType.DataSection, Localizer["Datasektion"] },
-        { SectionType.SheetSection, Localizer["Tabellsektion"] }
+        { SectionType.DataSection, Localizer["Data"] },
+        { SectionType.SheetSection, Localizer["Tabell"] }
     };
     public string GetSectionTypeName(SectionType sectionType)
     {
