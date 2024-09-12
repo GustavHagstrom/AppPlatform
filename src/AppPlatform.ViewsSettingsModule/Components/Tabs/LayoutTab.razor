@@ -1,6 +1,8 @@
-@using AppPlatform.ViewSettingsModule.Components.Section
+@using AppPlatform.ViewSettingsModule.Components.Sections
+@using AppPlatform.ViewSettingsModule.Components.Sections.Data
+@using AppPlatform.ViewSettingsModule.Components.Sections.Sheet
 @using Microsoft.AspNetCore.Components.Authorization
-
+@using AppPlatform.ViewSettingsModule.Components.Format
 @inject IStringLocalizer<LayoutTab> Localizer
 @inject Helper Helper
 @inject IViewService _viewService
@@ -11,14 +13,14 @@
 
 
 <SettingsSection Title="@Localizer["Sektioner"]">
-    <div class="d-flex gap-2 mb-2">
+    <Row Class="mb-2">
         <MudIconButton Icon="@Icons.Material.Sharp.Add" Variant="Variant.Outlined" Color="Color.Primary" Size="Size.Medium" OnClick="NewSection" />
         <MudIconButton Icon="@Icons.Material.Sharp.Delete" Variant="Variant.Outlined" Color="Color.Error" Size="Size.Medium" OnClick="() => DeleteSection(SelectedSection)" Disabled="SelectedSection is null" />
         <MudIconButton Icon="@Icons.Material.Sharp.ArrowUpward" Variant="Variant.Outlined" Color="Color.Primary" Size="Size.Medium"
                        Disabled="!CanMoveUp(SelectedSection)" OnClick="() => MoveUp(SelectedSection)" />
         <MudIconButton Icon="@Icons.Material.Sharp.ArrowDownward" Variant="Variant.Outlined" Color="Color.Primary" Size="Size.Medium"
                        Disabled="!CanMoveDown(SelectedSection)" OnClick="() => MoveDown(SelectedSection)" />
-    </div>
+    </Row>
     <MudPaper Elevation="3" MinHeight="92px">
         <ul>
             @foreach (var section in View!.SectionsInOrder())

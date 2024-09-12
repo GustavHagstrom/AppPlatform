@@ -1,17 +1,18 @@
 @using AppPlatform.Core.Enums.ViewTemplate
 @using AppPlatform.Core.Services
+@using AppPlatform.ViewSettingsModule.Components.Format
 @inject ISheetDataService SheetDataService
 @inject IStringLocalizer<SheetSectionEditor> Localizer
 
 @if(Section is not null && View is not null)
 {
     
-        <div class="d-flex gap-2">
-            <SelectList T="SheetColumnType" DropDownLabel="@Localizer["Kolumn"]" ShowActions="false" Items="Enum.GetValues<SheetColumnType>().ToList()" ListVariant="ListVariant.DropDown"
-                        @bind-SelectedItem="SelectedColumnType" GetItemNameFunc="SheetDataService.GetColumnTypeName" />
-            <SelectList T="SheetRowType" DropDownLabel="@Localizer["Rad"]" ShowActions="false" Items="Enum.GetValues<SheetRowType>().ToList()" ListVariant="ListVariant.DropDown"
-                        @bind-SelectedItem="SelectedRowType" GetItemNameFunc="SheetDataService.GetRowTypeName" />
-        </div>
+    <Row>
+        <SelectList T="SheetColumnType" DropDownLabel="@Localizer["Kolumn"]" ShowActions="false" Items="Enum.GetValues<SheetColumnType>().ToList()" ListVariant="ListVariant.DropDown"
+                    @bind-SelectedItem="SelectedColumnType" GetItemNameFunc="SheetDataService.GetColumnTypeName" />
+        <SelectList T="SheetRowType" DropDownLabel="@Localizer["Rad"]" ShowActions="false" Items="Enum.GetValues<SheetRowType>().ToList()" ListVariant="ListVariant.DropDown"
+                    @bind-SelectedItem="SelectedRowType" GetItemNameFunc="SheetDataService.GetRowTypeName" />
+    </Row>
 
         <MudTextField Style="width: calc(50% - 4px);" T="int" Margin="Margin.Dense" Value="SelectedColumn.Width" ValueChanged="SetColumnWidth" Label="@Localizer["Kolumnbredd"]" Variant="Variant.Outlined" />
         <MudCheckBox Style="width: 50%; margin-left: -4px !important;" T="bool" Value="SelectedColumn.IsVisible" ValueChanged="SetColumnVisibility" Dense="true" Label="@Localizer["Visa kolumn"]" />

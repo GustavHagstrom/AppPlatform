@@ -1,0 +1,119 @@
+@using AppPlatform.ViewSettingsModule.Components.Format
+@inject IStringLocalizer<DataSectionEditor> Localizer
+
+@if (Section is not null && View is not null)
+{
+    <Row>
+        <MudField Margin="Margin.Dense" Variant="Variant.Outlined" Label="@Localizer["Antal kolumner"]">
+            <div class="d-flex">
+                <div>
+                    @Section.ColumnCount
+                </div>
+                <MudSpacer />
+                <div class="button-container">
+                    <MudButton Variant="Variant.Text" Size="Size.Small" OnClick="AddColumn" Style="min-width: 0; padding: 0;">
+                        <MudIcon Icon="@Icons.Material.Sharp.KeyboardArrowUp" Style="height: 20px; width: 20px;" />
+                    </MudButton>
+                    <MudButton Variant="Variant.Text" Size="Size.Small" OnClick="RemoveColumn" Style="min-width: 0; padding: 0;">
+                        <MudIcon Icon="@Icons.Material.Sharp.KeyboardArrowDown" Style="height: 20px; width: 20px;" />
+                    </MudButton>
+                </div>
+            </div>
+        </MudField>
+        <MudField Margin="Margin.Dense" Variant="Variant.Outlined" Label="@Localizer["Antal rader"]">
+            <div class="d-flex">
+                <div>
+                    @Section.RowCount
+                </div>
+                <MudSpacer />
+                <div class="button-container">
+                    <MudButton Variant="Variant.Text" Size="Size.Small" OnClick="AddRow" Style="min-width: 0; padding: 0;">
+                        <MudIcon Icon="@Icons.Material.Sharp.KeyboardArrowUp" Style="height: 20px; width: 20px;" />
+                    </MudButton>
+                    <MudButton Variant="Variant.Text" Size="Size.Small" OnClick="RemoveRow" Style="min-width: 0; padding: 0;">
+                        <MudIcon Icon="@Icons.Material.Sharp.KeyboardArrowDown" Style="height: 20px; width: 20px;" />
+                    </MudButton>
+                </div>
+            </div>
+        </MudField>
+        
+    </Row>
+    <Row>
+        <SelectList T="int" ListStyle="width: 100%; min-height: 40px;" @bind-SelectedItem="SelectedColumnCount" Items="Enumerable.Range(1, Section!.ColumnCount).ToList()" ShowActions="false" DropDownLabel="@Localizer["Kolumn"]" ListVariant="ListVariant.DropDown"/>
+        <SelectList T="int" @bind-SelectedItem="SelectedRowCount" Items="Enumerable.Range(1, Section!.RowCount).ToList()" ShowActions="false" DropDownLabel="@Localizer["Rad"]" ListVariant="ListVariant.DropDown" />
+    </Row>
+    
+
+    @if (SelectedCell is not null && SelectedColumn is not null && SelectedRow is not null)
+    {
+        <Row>
+            <MudTextField T="string" Margin="Margin.Dense" Variant="Variant.Outlined" Label="@Localizer["Formel"]" @bind-Value="SelectedCell.Formula" />
+        </Row>
+        <Row>
+            <MudTextField T="int" Margin="Margin.Dense" Variant="Variant.Outlined" Label="@Localizer["Kolumnbredd"]" @bind-Value="SelectedColumn.Width" />
+            <MudTextField T="int" Margin="Margin.Dense" Variant="Variant.Outlined" Label="@Localizer["Radhöjd"]" @bind-Value="SelectedRow.Height" />
+        </Row>
+        <DataCellEditor Section="Section" DataCellFormat="SelectedCell.CellFormat" />
+    }
+    
+    
+}
+
+@code {
+    [Parameter] public DataSection? Section { get; set; }
+    [Parameter] public View? View { get; set; }
+    [CascadingParameter] public EditViewPage? EditViewPage { get; set; }
+    int SelectedRowCount = 1;
+    int SelectedColumnCount = 1;
+
+    DataColumn? SelectedColumn => Section?.Columns.FirstOrDefault(x => x.Order == SelectedColumnCount);
+    DataRow? SelectedRow => Section?.Rows.FirstOrDefault(x => x.Order == SelectedRowCount);
+    DataCell? SelectedCell
+    {
+        get
+        {
+            if (Section is null || SelectedRowCount == 0 || SelectedColumnCount == 0) return null;
+
+            var cell = Section?.Cells.FirstOrDefault(x => x.Row == SelectedRowCount && x.Column == SelectedColumnCount);
+            if (cell is null)
+            {
+                cell = new DataCell
+                    {
+                        Row = SelectedRowCount,
+                        Column = SelectedColumnCount
+                    };
+                Section!.Cells.Add(cell);
+            }
+            return cell;
+        }
+    }
+    protected override void OnAfterRender(bool firstRender)
+    {
+        if (firstRender)
+        {
+            SelectedRowCount = Section?.Rows.Count > 0 ? 1 : 0;
+            SelectedColumnCount = Section?.Columns.Count > 0 ? 1 : 0;
+        }
+
+    }
+    void AddColumn()
+    {
+        if (Section is null) return;
+        Section.AddColumn();
+    }
+    void RemoveColumn()
+    {
+        if (Section is null || Section.ColumnCount < 2) return;
+        Section.Columns.Remove(Section.Columns.Last());
+    }
+    void AddRow()
+    {
+        if (Section is null) return;
+        Section.AddRow();
+    }
+    void RemoveRow()
+    {
+        if (Section is null || Section.RowCount < 2) return;
+        Section.Rows.Remove(Section.Rows.Last());
+    }
+}
