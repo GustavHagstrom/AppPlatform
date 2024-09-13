@@ -46,8 +46,12 @@
 
     @if (SelectedCell is not null && SelectedColumn is not null && SelectedRow is not null)
     {
-        <Row>
+        <Row Class="align-center relative">
             <MudTextField T="string" Margin="Margin.Dense" Variant="Variant.Outlined" Label="@Localizer["Formel"]" @bind-Value="SelectedCell.Formula" />
+            <MudIconButton Color="Color.Info" Icon="@Icons.Material.Sharp.Help" Size="Size.Large" Class="pa-0" OnClick="() => ShowFormulaHelp = !ShowFormulaHelp"/>
+            <MudPopover AnchorOrigin="Origin.TopRight" TransformOrigin="Origin.BottomRight" Paper="true" Open="ShowFormulaHelp" OverflowBehavior="OverflowBehavior.FlipAlways">
+                
+            </MudPopover>
         </Row>
         <Row>
             <MudTextField T="int" Margin="Margin.Dense" Variant="Variant.Outlined" Label="@Localizer["Kolumnbredd"]" @bind-Value="SelectedColumn.Width" />
@@ -65,6 +69,7 @@
     [CascadingParameter] public EditViewPage? EditViewPage { get; set; }
     int SelectedRowCount = 1;
     int SelectedColumnCount = 1;
+    bool ShowFormulaHelp = false;
 
     DataColumn? SelectedColumn => Section?.Columns.FirstOrDefault(x => x.Order == SelectedColumnCount);
     DataRow? SelectedRow => Section?.Rows.FirstOrDefault(x => x.Order == SelectedRowCount);
