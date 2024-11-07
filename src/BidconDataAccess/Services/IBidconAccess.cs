@@ -1,8 +1,10 @@
-﻿using AppPlatform.Core.Enteties.EstimationEnteties;
+﻿using AppPlatform.BidconDatabaseAccess.NewModels;
+using AppPlatform.Core.Enteties.EstimationEnteties;
 
 namespace AppPlatform.BidconDatabaseAccess.Services;
 public interface IBidconAccess
 {
-    Task<IEnumerable<Estimation>> GetEstimationListAsync();
+    Task<Folder> GetFolderRootAsync();
+    Task<Estimation> GetEstimation(string estimationId);
 
 }

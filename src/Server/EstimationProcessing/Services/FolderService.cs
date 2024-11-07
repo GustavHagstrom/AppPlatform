@@ -1,10 +1,10 @@
-﻿using AppPlatform.BidconDatabaseAccess.Models;
+﻿using AppPlatform.BidconDatabaseAccess.NewModels;
 using AppPlatform.Server.EstimationProcessing.Models;
 
 namespace AppPlatform.Server.EstimationProcessing.Services;
 public class FolderService : IFolderService
 {
-    public Folder CreateFromBatch(D_EstimationFolderBatch batch)
+    public Folder CreateFromBatch(EstimationFolderBatch batch)
     {
         Dictionary<int, Folder> map = new();
         var root = new Folder
@@ -34,7 +34,7 @@ public class FolderService : IFolderService
 
         return root;
     }
-    private Folder CreateDbFolder(D_EstimationFolder folder)
+    private Folder CreateDbFolder(EstimationFolder folder)
     {
         return new Folder
         {
@@ -45,7 +45,7 @@ public class FolderService : IFolderService
             Name = folder.Name,
         };
     }
-    private EstimationInfo CreateEstimationInfo(BidconDatabaseAccess.Models.D_Estimation estimation)
+    private EstimationInfo CreateEstimationInfo(BidconDatabaseAccess.Models.Estimation estimation)
     {
         return new EstimationInfo
         {
