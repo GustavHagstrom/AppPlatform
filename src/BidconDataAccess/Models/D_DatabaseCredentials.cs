@@ -1,6 +1,6 @@
 ﻿namespace AppPlatform.BidconDatabaseAccess.Models;
 
-public record DatabaseCredentials(
+public record D_DatabaseCredentials(
     string Server,
     string Database,
     string User,

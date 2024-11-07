@@ -11,29 +11,29 @@ public class BidconBackendAccessService : IBidconBackendAccessService
     {
         _httpClient = httpClient;
     }
-    public async Task<EstimationBatch?> GetBatchAsync(EstimationRequestBatchModel request, CancellationToken cancellationToken = default)
+    public async Task<D_EstimationBatch?> GetBatchAsync(D_EstimationRequestBatchModel request, CancellationToken cancellationToken = default)
     {
         var response = await _httpClient.PostAsJsonAsync(BidconLinkEndpoints.GetEstimationBatch, request, cancellationToken);
         response.EnsureSuccessStatusCode();
-        return await response.Content.ReadFromJsonAsync<EstimationBatch>();
+        return await response.Content.ReadFromJsonAsync<D_EstimationBatch>();
     }
-    public async Task<IEnumerable<EstimationBatch>?> GetManyBatchesAsync(EstimationRequestBatchesModel request, CancellationToken cancellationToken = default)
+    public async Task<IEnumerable<D_EstimationBatch>?> GetManyBatchesAsync(D_EstimationRequestBatchesModel request, CancellationToken cancellationToken = default)
     {
         var response = await _httpClient.PostAsJsonAsync(BidconLinkEndpoints.GetEstimationBatches, request, cancellationToken);
         response.EnsureSuccessStatusCode();
-        var batches = await response.Content.ReadFromJsonAsync<IEnumerable<EstimationBatch>>();
+        var batches = await response.Content.ReadFromJsonAsync<IEnumerable<D_EstimationBatch>>();
         return batches;
     }
-    public async Task<IEnumerable<Estimation>?> GetListAsync(CancellationToken cancellationToken = default)
+    public async Task<IEnumerable<D_Estimation>?> GetListAsync(CancellationToken cancellationToken = default)
     {
         var response = await _httpClient.GetAsync(BidconLinkEndpoints.GetEstimationList, cancellationToken);
         response.EnsureSuccessStatusCode();
-        return await response.Content.ReadFromJsonAsync<IEnumerable<Estimation>>();
+        return await response.Content.ReadFromJsonAsync<IEnumerable<D_Estimation>>();
     }
-    public async Task<EstimationFolderBatch?> GetFolderBatchAsync(CancellationToken cancellationToken = default)
+    public async Task<D_EstimationFolderBatch?> GetFolderBatchAsync(CancellationToken cancellationToken = default)
     {
         var response = await _httpClient.GetAsync(BidconLinkEndpoints.GetFolderBatch, cancellationToken);
         response.EnsureSuccessStatusCode();
-        return await response.Content.ReadFromJsonAsync<EstimationFolderBatch>();
+        return await response.Content.ReadFromJsonAsync<D_EstimationFolderBatch>();
     }
 }

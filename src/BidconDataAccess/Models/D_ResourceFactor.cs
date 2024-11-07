@@ -1,5 +1,5 @@
 ﻿namespace AppPlatform.BidconDatabaseAccess.Models;
-public class ResourceFactor
+public class D_ResourceFactor
 {
     public Guid EstimationId { get; set; }
     public required int ResourceType { get; set; }

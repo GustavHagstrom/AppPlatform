@@ -4,5 +4,5 @@ using AppPlatform.Server.EstimationProcessing.Models;
 namespace AppPlatform.Server.EstimationProcessing.Services;
 public interface IFolderService
 {
-    Folder CreateFromBatch(EstimationFolderBatch batch);
+    Folder CreateFromBatch(D_EstimationFolderBatch batch);
 }

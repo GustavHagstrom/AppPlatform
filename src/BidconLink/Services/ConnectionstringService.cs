@@ -1,10 +1,10 @@
-﻿using AppPlatform.BidconDatabaseAccess;
-using  AppPlatform.BidconLink.Constants;
+﻿using AppPlatform.BidconDatabaseAccess.Services.DbAccess;
+using AppPlatform.BidconLink.Constants;
 using System.Security.Claims;
 using System.Security.Cryptography;
 
 namespace AppPlatform.BidconLink.Services;
-public class ConnectionstringService : IConnectionstringService
+public class ConnectionstringService : IBidconDbConnectionstringService
 {
     private readonly byte[] ENCRYPTION_KEY = new byte[8] { 45, 103, 246, 79, 36, 99, 167, 3 };
     private readonly byte[] VECTOR = new byte[8] { 55, 103, 246, 79, 36, 99, 167, 3 };

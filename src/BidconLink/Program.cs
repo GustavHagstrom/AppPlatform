@@ -41,7 +41,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 builder.Services.AddTransient<IBidconConfigService, BidconConfigService>();
-builder.Services.UseBidconDataAccess<ConnectionstringService>();
+builder.Services.UseBidconDbAccess<ConnectionstringService>();
 
 var app = builder.Build();
 

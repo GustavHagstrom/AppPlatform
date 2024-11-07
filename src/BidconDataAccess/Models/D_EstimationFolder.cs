@@ -1,5 +1,5 @@
 ﻿namespace AppPlatform.BidconDatabaseAccess.Models;
-public class EstimationFolder
+public class D_EstimationFolder
 {
     public int FolderNum { get; set; }
     public int ParentNum { get; set; }

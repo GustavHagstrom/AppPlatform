@@ -8,8 +8,13 @@
 
 	<ItemGroup>
 		<PackageReference Include="Dapper" Version="2.1.35" />
+		<PackageReference Include="Elecosoft.Bidcon.SDK" Version="2023.2.23307.1" />
 		<PackageReference Include="Microsoft.Data.SqlClient" Version="5.2.2" />
 		<PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="8.0.0" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <ProjectReference Include="..\Core\AppPlatform.Core.csproj" />
 	</ItemGroup>
 
 </Project>

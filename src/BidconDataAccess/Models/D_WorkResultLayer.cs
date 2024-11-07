@@ -1,5 +1,5 @@
 ﻿namespace AppPlatform.BidconDatabaseAccess.Models;
-public class WorkResultLayer
+public class D_WorkResultLayer
 {
     public required string Id { get; set; }
     public Guid EstimationId { get; set; }

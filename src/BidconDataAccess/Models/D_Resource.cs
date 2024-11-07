@@ -1,5 +1,5 @@
 ﻿namespace AppPlatform.BidconDatabaseAccess.Models;
-public class Resource
+public class D_Resource
 {
     public required string Id { get; set; }
     public string? Description { get; set; }

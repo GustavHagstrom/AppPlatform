@@ -1,5 +1,5 @@
 ﻿namespace AppPlatform.BidconDatabaseAccess.Models;
-public class ATA
+public class D_ATA
 {
     public Guid EstimationId { get; set; }
     public int PMATANum { get; set; }

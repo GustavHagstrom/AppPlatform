@@ -1,6 +1,6 @@
 ﻿using AppPlatform.BidconBrowserModule.Models;
-using AppPlatform.BidconDatabaseAccess;
 using AppPlatform.BidconDatabaseAccess.Models;
+using AppPlatform.BidconDatabaseAccess.Services.DbAccess;
 using AppPlatform.Shared.Data;
 using AppPlatform.Shared.Extensions;
 using Microsoft.EntityFrameworkCore;
@@ -25,7 +25,7 @@ internal class BidconBrowserAccesService(IEstimationQueryService DbQueryService,
         var folder = CreateFromBatch(folderbatch);
         return new TreeItem(folder);
     }
-    private Folder CreateFromBatch(EstimationFolderBatch batch)
+    private Folder CreateFromBatch(D_EstimationFolderBatch batch)
     {
         Dictionary<int, Folder> map = new();
         var root = new Folder
@@ -58,7 +58,7 @@ internal class BidconBrowserAccesService(IEstimationQueryService DbQueryService,
 
         return root;
     }
-    private Folder CreateDbFolder(EstimationFolder folder)
+    private Folder CreateDbFolder(D_EstimationFolder folder)
     {
         return new Folder
         {
@@ -69,7 +69,7 @@ internal class BidconBrowserAccesService(IEstimationQueryService DbQueryService,
             Name = folder.Name,
         };
     }
-    private EstimationInfo CreateEstimationInfo(BidconDatabaseAccess.Models.Estimation estimation)
+    private EstimationInfo CreateEstimationInfo(BidconDatabaseAccess.Models.D_Estimation estimation)
     {
         return new EstimationInfo
         {

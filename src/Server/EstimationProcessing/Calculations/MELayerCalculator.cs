@@ -6,7 +6,7 @@ public class MELayerCalculator : ILayerCostCalculator
 {
     private readonly WRLayerCalculator _wRLayerCalculator = new();
     private readonly DELayerCalculator _dELayerCalculator = new();
-    public void Calculate(EstimationBatch batch, string layerId, out double unitCost, out double unitAskingPrice)
+    public void Calculate(D_EstimationBatch batch, string layerId, out double unitCost, out double unitAskingPrice)
     {
         unitCost = 0;
         unitAskingPrice = 0;
@@ -28,7 +28,7 @@ public class MELayerCalculator : ILayerCostCalculator
         }
     }
 
-    public Dictionary<int, double?> Calculate(EstimationBatch batch, string layerId)
+    public Dictionary<int, double?> Calculate(D_EstimationBatch batch, string layerId)
     {
         var activeLayerItems = batch.MELayers
             .Where(item => item.Id == layerId);

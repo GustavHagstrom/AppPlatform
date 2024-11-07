@@ -4,7 +4,7 @@ namespace AppPlatform.Server.EstimationProcessing.Calculations;
 public class DELayerCalculator : ILayerCostCalculator
 {
     private readonly WRLayerCalculator _wRLayerCalculator = new();
-    public void Calculate(EstimationBatch batch, string layerId, out double unitCost, out double unitAskingPrice)
+    public void Calculate(D_EstimationBatch batch, string layerId, out double unitCost, out double unitAskingPrice)
     {
         unitCost = 0;
         unitAskingPrice = 0;
@@ -17,7 +17,7 @@ public class DELayerCalculator : ILayerCostCalculator
         }
     }
 
-    public Dictionary<int, double?> Calculate(EstimationBatch batch, string layerId)
+    public Dictionary<int, double?> Calculate(D_EstimationBatch batch, string layerId)
     {
         var activeLayerItems = batch.DELayers.Where(item => item.Id == layerId);
         Dictionary<int, double?> costs = new();

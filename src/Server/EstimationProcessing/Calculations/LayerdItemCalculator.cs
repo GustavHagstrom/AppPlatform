@@ -10,7 +10,7 @@ public class LayerdItemCalculator : ILayerdItemCalculator
         { (int)LayerType.DesignElement, new DELayerCalculator() },
         { (int)LayerType.MixedElement, new MELayerCalculator() },
     };
-    public Dictionary<int, double?> CalculateUnitCosts(EstimationSheet sheetResult, EstimationBatch batch)
+    public Dictionary<int, double?> CalculateUnitCosts(D_EstimationSheet sheetResult, D_EstimationBatch batch)
     {
         if (sheetResult.LayerType is null)
         {
