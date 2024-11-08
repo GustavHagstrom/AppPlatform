@@ -1,4 +1,4 @@
-﻿using AppPlatform.BidconDatabaseAccess.Services.DbAccess;
+﻿using AppPlatform.BidconDatabaseAccess.DbAccess.Services;
 using AppPlatform.Shared.Data;
 using AppPlatform.Shared.Extensions;
 using Microsoft.EntityFrameworkCore;

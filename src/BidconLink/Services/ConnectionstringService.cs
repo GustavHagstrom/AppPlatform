@@ -1,4 +1,4 @@
-﻿using AppPlatform.BidconDatabaseAccess.Services.DbAccess;
+﻿using AppPlatform.BidconDatabaseAccess.DbAccess.Services;
 using AppPlatform.BidconLink.Constants;
 using System.Security.Claims;
 using System.Security.Cryptography;

@@ -1,5 +1,5 @@
-﻿using AppPlatform.BidconDatabaseAccess.Services.DbAccess;
-using AppPlatform.BidconDatabaseAccess.Services.SdkAccess;
+﻿using AppPlatform.BidconDatabaseAccess.DbAccess.Services;
+using AppPlatform.BidconDatabaseAccess.SdkAccess.Services;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace AppPlatform.BidconDatabaseAccess;
@@ -11,10 +11,11 @@ public static class ServiceExtensions
     /// </summary>
     /// <typeparam name="TImplementation"></typeparam>
     /// <param name="services"></param>
-    public static void UseBidconDbAccess<TImplementation>(this IServiceCollection services) where TImplementation : class, IBidconDbConnectionstringService
+    public static void UseBidconDirectDbAccess<TImplementation>(this IServiceCollection services) where TImplementation : class, IBidconDbConnectionstringService
     {
         services.AddTransient<IBidconDbConnectionstringService, TImplementation>();
         services.AddTransient<IEstimationQueryService, EstimationQueryService>();
+        services.AddTransient<IBidconAccess, BidconDirectDbAccess>();
     }
     /// <summary>
     /// Use this when using SDK access to DB
@@ -24,6 +25,6 @@ public static class ServiceExtensions
     public static void UseBidconSdkAccess<TImplementation>(this IServiceCollection services) where TImplementation : class, ISdkCredentialsService
     {
         services.AddTransient<ISdkCredentialsService, TImplementation>();
-
+        services.AddTransient<IBidconAccess, BidconSdkAccess>();
     }
 }

@@ -53,7 +53,7 @@ public static class HostApplicationBuilderExtensions
         services.AddTransient<IAuthenticationProvider, GraphClientAuthProvider>();
         services.AddScoped(sp => new GraphServiceClient(sp.GetRequiredService<IAuthenticationProvider>()));
         services.AddScoped<IMicrosoftGraphUserAccess, GraphClientUserAccess>();
-        services.UseBidconDbAccess<BidconDatabaseConnectionsStringService>();
+        services.UseBidconDirectDbAccess<BidconDatabaseConnectionsStringService>();
         services.AddTransient<IViewStyleService, ViewStyleService>();
 
         //Core services

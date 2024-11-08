@@ -1,4 +1,6 @@
-﻿namespace AppPlatform.BidconBrowserModule.Models;
+﻿using AppPlatform.BidconDatabaseAccess.Models;
+
+namespace AppPlatform.BidconBrowserModule.Models;
 public class SelectableDbEstimation : EstimationInfo
 {
     private bool _isSelected;
