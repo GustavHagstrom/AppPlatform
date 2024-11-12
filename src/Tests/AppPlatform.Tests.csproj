@@ -27,7 +27,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\BidconLink\AppPlatform.BidconLink.csproj" />
     <ProjectReference Include="..\Server\AppPlatform.Server.csproj" />
   </ItemGroup>
 

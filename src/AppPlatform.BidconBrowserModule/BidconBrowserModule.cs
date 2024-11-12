@@ -16,7 +16,10 @@ public class BidconBrowserModule : IModule
     {
         applicationLinkBuilder.AddMainLayoutLink<BidconBrowserAppLink>();
     }
-
+    public void RegisterInjectableComponents(ComponentBuilder componentBuilder)
+    {
+        componentBuilder.AddSettingsComponent<Test>();
+    }
     public void RegisterServices(IServiceCollection services)
     {
         services.AddScoped<IBidconBrowserAccesService, BidconBrowserAccesService>();

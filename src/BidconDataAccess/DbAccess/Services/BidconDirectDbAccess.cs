@@ -67,7 +67,7 @@ internal class BidconDirectDbAccess : IBidconAccess
             Name = folder.Name,
         };
     }
-    private EstimationInfo CreateEstimationInfo(Models.Estimation estimation)
+    private EstimationInfo CreateEstimationInfo(Models.B_Estimation estimation)
     {
         return new EstimationInfo
         {

@@ -7,4 +7,5 @@ public interface IModule
     void RegisterServices(IServiceCollection services);
     void RegisterAccessIds(AccessClaimInfoBuilder accessIdBuilder);
     void RegisterApplicationLinks(LinkBuilder applicationLinkBuilder);
+    void RegisterInjectableComponents(ComponentBuilder componentBuilder);
 }

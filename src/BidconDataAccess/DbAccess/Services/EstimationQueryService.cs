@@ -30,7 +30,7 @@ SELECT EstimationID, PMATANum, ResourceType, RemovalPer as RemovealPercent, Remo
         {
             using (var multi = await cnn.QueryMultipleAsync(sql, new { Id = estimationId.ToString() }))
             {
-                var estimation = await multi.ReadFirstAsync<Estimation>();
+                var estimation = await multi.ReadFirstAsync<B_Estimation>();
                 var sheets = await multi.ReadAsync<EstimationSheet>();
                 var mixedLayers = await multi.ReadAsync<MixedElementLayer>();
                 var designElementLayers = await multi.ReadAsync<DesignElementLayer>();
@@ -69,7 +69,7 @@ SELECT EstimationID, PMATANum, ResourceType, RemovalPer as RemovealPercent, Remo
         {
             using (var multi = await cnn.QueryMultipleAsync(sql, new { Ids = estimationIds }))
             {
-                var estimationResults = await multi.ReadAsync<Estimation>();
+                var estimationResults = await multi.ReadAsync<B_Estimation>();
                 var sheetResults = await multi.ReadAsync<EstimationSheet>();
                 var mixedLayerResults = await multi.ReadAsync<MixedElementLayer>();
                 var designElementLayerResults = await multi.ReadAsync<DesignElementLayer>();
@@ -111,12 +111,12 @@ SELECT EstimationID, PMATANum, ResourceType, RemovalPer as RemovealPercent, Remo
             }
         }
     }
-    public async Task<IEnumerable<Estimation>> GetEstimationListAsync(ClaimsPrincipal userClaims)
+    public async Task<IEnumerable<B_Estimation>> GetEstimationListAsync(ClaimsPrincipal userClaims)
     {
         var sql = "SELECT EstimationID, Name, Description, Customer, Place, HandlingOfficer, ConfirmationOfficer, IsLocked, FolderNum, CurrentVersion FROM Estimation";
         using (IDbConnection cnn = new SqlConnection(await _connectionStringBuilder.BuildAsync(userClaims)))
         {
-            return await cnn.QueryAsync<Estimation>(sql);
+            return await cnn.QueryAsync<B_Estimation>(sql);
         }
     }
     public async Task<EstimationFolderBatch> GetFolderBatchAsync(ClaimsPrincipal userClaims)
@@ -129,7 +129,7 @@ SELECT FolderNum, ParentNum, Name FROM EstimationFolder;
         {
             using (var multi = await cnn.QueryMultipleAsync(sql))
             {
-                var estimations = await multi.ReadAsync<Estimation>();
+                var estimations = await multi.ReadAsync<B_Estimation>();
                 var folders = await multi.ReadAsync<EstimationFolder>();
                 return new EstimationFolderBatch(estimations, folders);
             }

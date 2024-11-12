@@ -1,5 +1,4 @@
-﻿using AppPlatform.BidconDatabaseAccess.DbAccess.Models;
-using AppPlatform.BidconDatabaseAccess.Models;
+﻿using AppPlatform.BidconDatabaseAccess.Models;
 using AppPlatform.Core.Enteties.EstimationEnteties;
 using BidCon.SDK.Database;
 using System.Security.Claims;

@@ -31,4 +31,8 @@ public class UserRightSettingsModule : IModule
         applicationLinkBuilder.AddSettingsPageLink<UserSettingsLink>();
         applicationLinkBuilder.AddSettingsPageLink<RoleSettingsLink>();
     }
+    public void RegisterInjectableComponents(ComponentBuilder componentBuilder)
+    {
+
+    }
 }

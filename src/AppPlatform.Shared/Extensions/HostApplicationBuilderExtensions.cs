@@ -31,6 +31,10 @@ public static class HostApplicationBuilderExtensions
     {
         services.AddKeyedSingleton<IApplicationLink, T>(key);
     }
+    public static void AddApplicationInjectableComponent<T>(this IServiceCollection services, string key) where T : class, IInjectableComponent
+    {
+        services.AddKeyedTransient<IInjectableComponent, T>(key);
+    }
     public static void AddAccessClaimInfo<T>(this IServiceCollection services) where T : class, IAccessClaimInfo
     {
         services.AddSingleton<IAccessClaimInfo, T>();
@@ -47,6 +51,7 @@ public static class HostApplicationBuilderExtensions
         services.AddScoped<ILocalStorageService, LocalStorageService>();
         services.AddTransient<IAccessClaimService, AccessClaimService>();
         services.AddSingleton<IApplicationLinkService, ApplicationLinkService>();
+        services.AddSingleton<IApplicationRenderComponentsService, ApplicationRenderComponentsService>();
         services.AddApplicationLink<SettingsMainNavLink>(SharedApplicationLinkKeys.MainLayoutLink);
         services.AddSingleton<IAccessClaimInfoContainer, AccessClaimInfoContainer>();
         services.AddAccessClaimInfo<BidconConnectionClaimInfo>();
@@ -55,6 +60,7 @@ public static class HostApplicationBuilderExtensions
         services.AddScoped<IMicrosoftGraphUserAccess, GraphClientUserAccess>();
         services.UseBidconDirectDbAccess<BidconDatabaseConnectionsStringService>();
         services.AddTransient<IViewStyleService, ViewStyleService>();
+
 
         //Core services
         services.AddScoped<ISheetDataService, SheetDataService>();

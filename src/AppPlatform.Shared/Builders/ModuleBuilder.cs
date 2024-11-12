@@ -7,6 +7,7 @@ public class ModuleBuilder(IServiceCollection Services)
 {
     private readonly AccessClaimInfoBuilder _accessIdBuilder = new(Services);
     private readonly LinkBuilder _applicationLinkBuilder = new(Services);
+    private readonly ComponentBuilder _componentBuilder = new(Services);
 
     public void AddModule<T>() where T : IModule, new()
     {
@@ -14,5 +15,6 @@ public class ModuleBuilder(IServiceCollection Services)
         module.RegisterServices(Services);
         module.RegisterAccessIds(_accessIdBuilder);
         module.RegisterApplicationLinks(_applicationLinkBuilder);
+        module.RegisterInjectableComponents(_componentBuilder);
     }
 }

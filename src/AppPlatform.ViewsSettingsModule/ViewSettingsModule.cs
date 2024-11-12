@@ -18,6 +18,11 @@ public class ViewSettingsModule : IModule
         builder.AddSettingsPageLink<SettingsLink>();
     }
 
+    public void RegisterInjectableComponents(ComponentBuilder componentBuilder)
+    {
+
+    }
+
     public void RegisterServices(IServiceCollection services)
     {
         services.AddScoped<IViewService, ViewService>();

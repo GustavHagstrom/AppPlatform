@@ -1,6 +1,6 @@
 ﻿namespace AppPlatform.BidconDatabaseAccess.DbAccess.Models;
 internal record EstimationBatch(
-    Estimation Estimation,
+    B_Estimation Estimation,
     ICollection<EstimationSheet> SheetResults,
     ICollection<MixedElementLayer> MELayers,
     ICollection<DesignElementLayer> DELayers,
