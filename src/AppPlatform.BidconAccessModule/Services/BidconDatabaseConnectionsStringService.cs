@@ -4,7 +4,7 @@ using AppPlatform.Shared.Extensions;
 using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
 
-namespace AppPlatform.Shared.Services;
+namespace AppPlatform.BidconAccessModule.Services;
 public class BidconDatabaseConnectionsStringService(IDbContextFactory<ApplicationDbContext> DbContextFactory) : IBidconDbConnectionstringService
 {
     public async Task<string> BuildAsync(ClaimsPrincipal userClaims)
@@ -12,7 +12,7 @@ public class BidconDatabaseConnectionsStringService(IDbContextFactory<Applicatio
         var context = await DbContextFactory.CreateDbContextAsync();
         var credentials = await context.BidconAccessCredentials.Where(x => x.TenantId == userClaims.GetTenantId()).FirstOrDefaultAsync();
 
-        if(credentials == null)
+        if (credentials == null)
         {
             throw new Exception("No credentials found for user");
         }

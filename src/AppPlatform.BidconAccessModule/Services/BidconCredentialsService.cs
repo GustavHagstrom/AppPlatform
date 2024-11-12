@@ -4,7 +4,7 @@ using System.Security.Claims;
 using AppPlatform.Shared.Extensions;
 using AppPlatform.Shared.Data;
 
-namespace AppPlatform.Shared.Services.Settings;
+namespace AppPlatform.BidconAccessModule.Services;
 
 public class BidconCredentialsService(IDbContextFactory<ApplicationDbContext> ContextFactory) : IBidconCredentialsService
 {
@@ -49,6 +49,6 @@ public class BidconCredentialsService(IDbContextFactory<ApplicationDbContext> Co
             existingCredentials.UseDesktopBidconLink = credentials.UseDesktopBidconLink;
         }
         await dbContext.SaveChangesAsync();
-        
+
     }
 }

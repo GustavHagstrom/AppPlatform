@@ -47,7 +47,7 @@ public static class HostApplicationBuilderExtensions
     {
         services.AddLocalization();
         services.AddScoped<IDarkModeService, DarkModeService>();
-        services.AddTransient<IBidconCredentialsService, BidconCredentialsService>();
+//        services.AddTransient<IBidconCredentialsService, BidconCredentialsService>();
         services.AddScoped<ILocalStorageService, LocalStorageService>();
         services.AddTransient<IAccessClaimService, AccessClaimService>();
         services.AddSingleton<IApplicationLinkService, ApplicationLinkService>();
@@ -58,7 +58,7 @@ public static class HostApplicationBuilderExtensions
         services.AddTransient<IAuthenticationProvider, GraphClientAuthProvider>();
         services.AddScoped(sp => new GraphServiceClient(sp.GetRequiredService<IAuthenticationProvider>()));
         services.AddScoped<IMicrosoftGraphUserAccess, GraphClientUserAccess>();
-        services.UseBidconDirectDbAccess<BidconDatabaseConnectionsStringService>();
+        //services.UseBidconDirectDbAccess<BidconDatabaseConnectionsStringService>();
         services.AddTransient<IViewStyleService, ViewStyleService>();
 
 

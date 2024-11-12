@@ -19,6 +19,7 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Http.Extensions;
 using Microsoft.Identity.Client;
+using AppPlatform.BidconAccessModule;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -71,6 +72,7 @@ builder.Services.AddModules(moduleBuilder =>
     moduleBuilder.AddModule<ViewSettingsModule>();
     moduleBuilder.AddModule<UserRightSettingsModule>();
     moduleBuilder.AddModule<BidconBrowserModule>();
+    moduleBuilder.AddModule<BidconAccessModule>();
 }); //add assembly to the route aswell
 
 builder.Services.RegisterSharedServices();
@@ -128,7 +130,8 @@ app.MapRazorComponents<App>()
     .AddAdditionalAssemblies(typeof(MainLayout).Assembly, 
     typeof(ViewSettingsModule).Assembly,
     typeof(UserRightSettingsModule).Assembly,
-    typeof(BidconBrowserModule).Assembly);
+    typeof(BidconBrowserModule).Assembly,
+    typeof(BidconAccessModule).Assembly);
 
 app.MapControllers();
 app.Run();
