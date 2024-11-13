@@ -8,7 +8,7 @@ internal class Constants
     }
     public static class Authorization
     {
-        public const string Policy = "BidconAccessPolicy";
+        public const string EditBidconConnectionPolicy = "BidconAccessPolicy";
         public const string AccessClaimValue = "BidconAccessModuleAccess";
     }
 }

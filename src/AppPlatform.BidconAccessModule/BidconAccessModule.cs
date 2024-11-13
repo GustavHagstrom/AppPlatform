@@ -21,20 +21,25 @@ public class BidconAccessModule : IModule
 
     public void RegisterInjectableComponents(ComponentBuilder componentBuilder)
     {
-        componentBuilder.AddSettingsComponent<BidconSdkAccessData>();
+        //When using SDK
+        //componentBuilder.AddSettingsComponent<BidconSdkCredentials>();
+
+        //When using Direct
+        componentBuilder.AddSettingsComponent<BidconDirectCredentials>();
     }
 
     public void RegisterServices(IServiceCollection services)
     {
         services.UseBidconDirectDbAccess<BidconDatabaseConnectionsStringService>();
+
+
+
         services.AddTransient<IBidconCredentialsService, BidconCredentialsService>();
-        services.AddAuthorization(configure =>
-        {
-            configure.AddPolicy(Constants.Authorization.Policy, policy =>
+        services.AddAuthorizationBuilder()
+            .AddPolicy(Constants.Authorization.EditBidconConnectionPolicy, policy =>
             {
                 policy.RequireAuthenticatedUser();
                 policy.RequireClaim(SharedApplicationClaimTypes.AccessClaim, Constants.Authorization.AccessClaimValue);
             });
-        });
     }
 }

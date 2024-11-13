@@ -8,5 +8,5 @@ internal class ModuleClaimInfo(IStringLocalizer<ModuleClaimInfo> Localizer) : IA
 
     public string Name => Localizer["BidconAnslutning"];
 
-    public string Description => Localizer["Att modifiera Bidcon-anslutning"];
+    public string Description => Localizer["Tillåts att modifiera Bidcon-anslutning"];
 }
