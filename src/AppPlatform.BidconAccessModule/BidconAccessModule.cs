@@ -1,5 +1,6 @@
 ﻿using AppPlatform.BidconAccessModule.DirectAccess.Components;
 using AppPlatform.BidconAccessModule.DirectAccess.Services;
+using AppPlatform.BidconAccessModule.SdkAccess.Components;
 using AppPlatform.BidconAccessModule.SdkAccess.Services;
 using AppPlatform.BidconAccessModule.Services;
 using AppPlatform.Shared.Abstractions;
@@ -23,10 +24,10 @@ public class BidconAccessModule : IModule
     public void RegisterInjectableComponents(ComponentBuilder componentBuilder)
     {
         //When using SDK
-        //componentBuilder.AddSettingsComponent<BidconSdkCredentials>();
+        componentBuilder.AddSettingsComponent<BidconSdkCredentials>();
 
         //When using Direct
-        componentBuilder.AddSettingsComponent<BidconDirectCredentials>();
+        //componentBuilder.AddSettingsComponent<BidconDirectCredentials>();
 
 
 
@@ -35,10 +36,10 @@ public class BidconAccessModule : IModule
     public void RegisterServices(IServiceCollection services)
     {
         //when using SDK
-        //UseSdkServices<?????>(services);
+        UseSdkServices(services);
 
         //when using direct
-        UseDirectServices<BidconDatabaseConnectionsStringService>(services);
+        //UseDirectServices(services);
 
         services.AddTransient<IBidconDirectCredentialsService, BidconDirectCredentialsService>();
         services.AddAuthorizationBuilder()
@@ -55,20 +56,20 @@ public class BidconAccessModule : IModule
     /// </summary>
     /// <typeparam name="TImplementation"></typeparam>
     /// <param name="services"></param>
-    private void UseDirectServices<TImplementation>(IServiceCollection services) where TImplementation : class, IBidconDbConnectionstringService
+    private void UseDirectServices(IServiceCollection services)
     {
-        services.AddTransient<IBidconDbConnectionstringService, TImplementation>();
+        services.AddTransient<IBidconDbConnectionstringService, BidconDatabaseConnectionsStringService>();
         services.AddTransient<IEstimationQueryService, EstimationQueryService>();
         services.AddTransient<IBidconAccess, BidconDirectDbAccess>();
     }
     /// <summary>
-    /// Use this when using SDK access to DB
+    /// Use this when using SDK access to DB. SDK should be used when client use singel organization with on premis setup.
     /// </summary>
     /// <typeparam name="TImplementation"></typeparam>
     /// <param name="services"></param>
-    private void UseSdkServices<TImplementation>(IServiceCollection services) where TImplementation : class, ISdkCredentialsService
+    private void UseSdkServices(IServiceCollection services)
     {
-        services.AddTransient<ISdkCredentialsService, TImplementation>();
-        services.AddTransient<IBidconAccess, BidconSdkAccess>();
+        services.AddTransient<ISdkCredentialsService, SdkCredentialsService>();
+        services.AddScoped<IBidconAccess, BidconSdkAccess>();
     }
 }

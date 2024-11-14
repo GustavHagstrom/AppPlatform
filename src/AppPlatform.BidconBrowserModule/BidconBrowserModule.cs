@@ -18,7 +18,7 @@ public class BidconBrowserModule : IModule
     }
     public void RegisterInjectableComponents(ComponentBuilder componentBuilder)
     {
-        componentBuilder.AddSettingsComponent<Test>();
+
     }
     public void RegisterServices(IServiceCollection services)
     {

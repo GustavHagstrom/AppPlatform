@@ -3,6 +3,7 @@
     <MudDivider Style="flex-grow: 0;"/>
 } *@
 <div class="pb-6" style="@widthStyle">
+
     <MudText Typo="Typo.subtitle1" Style="font-weight: bold;">@Title</MudText>
     <div style="@style">
         <CascadingValue Value="this">
@@ -23,7 +24,7 @@
     public bool IsLoading { get; set; } = false;
     public Action? IsLoadingChanged { get; set; }
 
-    string style => $"{widthStyle}; display: flex; flex-direction: column; gap: 8px;";
+    string style => $"{widthStyle}; display: flex; flex-direction: column; gap: 16px; padding-top: 16px;";
     string widthStyle => $"width: {Width};";
     
 

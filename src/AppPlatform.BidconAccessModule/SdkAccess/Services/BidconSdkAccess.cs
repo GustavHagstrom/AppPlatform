@@ -7,26 +7,37 @@ using System.Security.Claims;
 namespace AppPlatform.BidconAccessModule.SdkAccess.Services;
 internal class BidconSdkAccess : IBidconAccess
 {
-    private readonly Lazy<Task<DatabaseUser>> _lazyUser;
+    private readonly DatabaseUser? _user = null;
     private readonly ISdkCredentialsService _sdkCredentialsService;
 
+    private async Task<DatabaseUser> LazyUserAsync(ClaimsPrincipal userClaims)
+    {
+        if (_user is not null) return _user;
+        var credentials = await _sdkCredentialsService.GetSdkCredentialsAsync(userClaims);
+
+        if (credentials is null) throw new ArgumentNullException("No credentials found");
+
+        var app = BidCon.SDK.Activator.CreateApp();
+        app.InitConnectionFromConfig(credentials.ConfigPath);
+        var user = await Task.Run(() =>app.Login(credentials.User, credentials.Password));
+        return user;
+    }
     public BidconSdkAccess(ISdkCredentialsService sdkCredentialsService)
     {
-        _lazyUser = new Lazy<Task<DatabaseUser>>(UserLazyLoadAsync);
         _sdkCredentialsService = sdkCredentialsService;
     }
 
     public async Task<Estimation> GetEstimation(string estimationId, ClaimsPrincipal userClaims)
     {
-        var user = await _lazyUser.Value;
+        var user = await LazyUserAsync(userClaims);
         var bEstimation = user.ReadEstimation(estimationId);
         throw new NotImplementedException();
     }
 
     public async Task<Folder> GetFolderRootAsync(ClaimsPrincipal userClaims)
     {
-        var user = await _lazyUser.Value;
-        var dbFolder = user!.ReadEstimations();
+        var user = await LazyUserAsync(userClaims);
+        var dbFolder = await Task.Run(() => user!.ReadEstimations());
         var folder = CreateFolder(dbFolder);
         return folder;
     }
@@ -36,8 +47,8 @@ internal class BidconSdkAccess : IBidconAccess
         var folder = new Folder
         {
             FolderNum = root.FolderNum,
-            ParentNum = root.Parent.FolderNum,
-            Name = root.Name,
+            ParentNum = root.Parent is null ? -2 : root.Parent.FolderNum,
+            Name = root.Name ?? string.Empty,
             DbEstimations = new List<EstimationInfo>(),
             SubFolders = new List<Folder>()
         };
@@ -61,12 +72,5 @@ internal class BidconSdkAccess : IBidconAccess
             Id = dbEstimation.ID,
         };
     }
-    private async Task<DatabaseUser> UserLazyLoadAsync()
-    {
-        var credentials = await _sdkCredentialsService.GetSdkCredentialsAsync();
-        var app = BidCon.SDK.Activator.CreateApp();
-        app.InitConnectionFromConfig(credentials.ConfigPath);
-        var user = app.Login(credentials.User, credentials.Password);
-        return user;
-    }
+    
 }

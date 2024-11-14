@@ -7,7 +7,7 @@
 @inject IBrowserViewportService BrowserViewportService
 
 
-    
+
 <PageSetupWithNavigation >
     <NavigationContent>
 
@@ -19,24 +19,31 @@
 
     </NavigationContent>
     <ChildContent>
-        <MudToolBar Dense="true" DisableGutters="true" Class="border-b border-solid">
+        <div style="height: 100%; position: relative">
+            <MudOverlay Visible="IsLoading" DarkBackground="true" Absolute="true">
+                <MudProgressCircular Color="Color.Primary" Indeterminate="true" Size="Size.Large" />
+            </MudOverlay>
 
-            <MudIconButton Icon="@Icons.Material.Sharp.Refresh" Style="height: 40px; width: 40px;" OnClick="LoadData"/>
-            <MudIconButton Icon="@Icons.Material.Sharp.Download" Style="height: 40px; width: 40px;" />
+            <MudToolBar Dense="true" DisableGutters="true" Class="border-b border-solid">
 
-        </MudToolBar>
-        @if (ActiveTab == 1)
-        {
-            <EstimationList ItemTree="ItemTree" IsRefreshing="IsLoading" Height="calc(100% - 48px)" />
-        }
-        @if (ActiveTab == 2)
-        {
-            <EstimationExplorer ItemTree="ItemTree" IsRefreshing="IsLoading" Height="calc(100% - 48px)" />
-        }
-        @if (ActiveTab == 3)
-        {
-            <EstimationSelectionList ItemTree="ItemTree" IsRefreshing="IsLoading" Height="calc(100% - 48px)" />
-        }
+                <MudIconButton Icon="@Icons.Material.Sharp.Refresh" Style="height: 40px; width: 40px;" OnClick="LoadDataAsync" />
+                <MudIconButton Icon="@Icons.Material.Sharp.Download" Style="height: 40px; width: 40px;" />
+
+            </MudToolBar>
+            @if (ActiveTab == 1)
+            {
+                <EstimationList ItemTree="ItemTree" Height="calc(100% - 48px)" />
+            }
+            @if (ActiveTab == 2)
+            {
+                <EstimationExplorer ItemTree="ItemTree" Height="calc(100% - 48px)" />
+            }
+            @if (ActiveTab == 3)
+            {
+                <EstimationSelectionList ItemTree="ItemTree" Height="calc(100% - 48px)" />
+            }
+        </div>
+        
     </ChildContent>
 </PageSetupWithNavigation>
 
@@ -61,10 +68,14 @@
 
     protected override Task OnInitializedAsync()
     {
-        return LoadData();
+        return LoadDataAsync();
     }
+    // protected override Task OnParametersSetAsync()
+    // {
+    //     return LoadData();
+    // }
 
-    async Task LoadData()
+    async Task LoadDataAsync()
     {
         var state = await AuthenticationStateProvider.GetAuthenticationStateAsync();
         if(state.User.Identity?.IsAuthenticated == true)
@@ -72,7 +83,7 @@
             IsLoading = true;
             StateHasChanged();
             ItemTree = await BidconBrowserAccesService.GetTreeItemRootAsync(state.User);
-             ItemTree.SelectionChanged = StateHasChanged;
+            ItemTree.SelectionChanged = StateHasChanged;
             IsLoading = false;
             StateHasChanged();
         }
@@ -80,8 +91,10 @@
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
+        
         if (firstRender)
         {
+            // await LoadDataAsync();
             await BrowserViewportService.SubscribeAsync(ObserverId, (args) =>
             {
                 LastBreakPoint = CurrentBreakPoint;
