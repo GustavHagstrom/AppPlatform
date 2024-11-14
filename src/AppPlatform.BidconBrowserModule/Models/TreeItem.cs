@@ -1,4 +1,4 @@
-﻿using AppPlatform.BidconDatabaseAccess.Models;
+﻿using AppPlatform.Shared.Models;
 
 namespace AppPlatform.BidconBrowserModule.Models;
 public class TreeItem

@@ -1,5 +1,4 @@
-﻿using AppPlatform.BidconDatabaseAccess;
-using AppPlatform.Core.Services;
+﻿using AppPlatform.Core.Services;
 using AppPlatform.Shared.Abstractions;
 using AppPlatform.Shared.Builders;
 using AppPlatform.Shared.Constants;

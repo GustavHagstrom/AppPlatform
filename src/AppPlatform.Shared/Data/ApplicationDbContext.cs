@@ -13,15 +13,16 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
             c => c.Aggregate(0, (a, v) => HashCode.Combine(a, v.GetHashCode())),
             c => c.ToList());
 
-    public DbSet<BidconAccessCredentials> BidconAccessCredentials { get; set; }
-    public DbSet<View> Views { get; set; }
-    public DbSet<UserView> UserViews { get; set; }
-    public DbSet<RoleView> RoleViews { get; set; }
-    public DbSet<UserSettings> UserSettings { get; set; }
-    public DbSet<Role> Roles { get; set; }
-    public DbSet<RoleAccess> RoleAccess { get; set; }
-    public DbSet<UserRole> UserRoles { get; set; }
-    public DbSet<UserAccess> UserAccess { get; set; }
+    public required DbSet<BidconAccessCredentials> BidconAccessCredentials { get; set; }
+    public required DbSet<View> Views { get; set; }
+    public required DbSet<UserView> UserViews { get; set; }
+    public required DbSet<RoleView> RoleViews { get; set; }
+    public required DbSet<UserSettings> UserSettings { get; set; }
+    public required DbSet<Role> Roles { get; set; }
+    public required DbSet<RoleAccess> RoleAccess { get; set; }
+    public required DbSet<UserRole> UserRoles { get; set; }
+    public required DbSet<UserAccess> UserAccess { get; set; }
+    public required DbSet<SdkCredentials> SdkCredentials { get; set; }
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);

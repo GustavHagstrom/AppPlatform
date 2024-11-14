@@ -1,10 +1,9 @@
-﻿using AppPlatform.BidconDatabaseAccess.DbAccess.Services;
-using AppPlatform.Shared.Data;
+﻿using AppPlatform.Shared.Data;
 using AppPlatform.Shared.Extensions;
 using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
 
-namespace AppPlatform.BidconAccessModule.Services;
+namespace AppPlatform.BidconAccessModule.DirectAccess.Services;
 public class BidconDatabaseConnectionsStringService(IDbContextFactory<ApplicationDbContext> DbContextFactory) : IBidconDbConnectionstringService
 {
     public async Task<string> BuildAsync(ClaimsPrincipal userClaims)

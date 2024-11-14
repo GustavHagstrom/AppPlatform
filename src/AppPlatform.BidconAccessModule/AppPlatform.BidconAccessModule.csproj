@@ -12,16 +12,18 @@
   </ItemGroup>
 
   <ItemGroup>
+	  <PackageReference Include="Dapper" Version="2.1.35" />
+	  <PackageReference Include="Elecosoft.Bidcon.SDK" Version="2023.2.23307.1" />
     <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="9.0.0" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Models\" />
+    <PackageReference Include="Microsoft.Data.SqlClient" Version="5.1.6" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\AppPlatform.Shared\AppPlatform.Shared.csproj" />
-    <ProjectReference Include="..\BidconDataAccess\AppPlatform.BidconDatabaseAccess.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="SdkAccess\Models\" />
   </ItemGroup>
 
 </Project>

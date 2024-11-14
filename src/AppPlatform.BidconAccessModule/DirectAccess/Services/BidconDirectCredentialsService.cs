@@ -3,10 +3,11 @@ using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
 using AppPlatform.Shared.Extensions;
 using AppPlatform.Shared.Data;
+using AppPlatform.BidconAccessModule.DirectAccess.Services;
 
 namespace AppPlatform.BidconAccessModule.Services;
 
-public class BidconCredentialsService(IDbContextFactory<ApplicationDbContext> ContextFactory) : IBidconCredentialsService
+public class BidconDirectCredentialsService(IDbContextFactory<ApplicationDbContext> ContextFactory) : IBidconDirectCredentialsService
 {
     public async Task<BidconAccessCredentials?> GetAsync(ClaimsPrincipal userClaims)
     {

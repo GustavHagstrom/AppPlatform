@@ -1,7 +1,7 @@
 ﻿using AppPlatform.Core.Enteties;
 using System.Security.Claims;
 
-namespace AppPlatform.BidconDatabaseAccess.SdkAccess.Services;
+namespace AppPlatform.BidconAccessModule.SdkAccess.Services;
 public interface ISdkCredentialsService
 {
     Task<SdkCredentials> GetSdkCredentialsAsync();

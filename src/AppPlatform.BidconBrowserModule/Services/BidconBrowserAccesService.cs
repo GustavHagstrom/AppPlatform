@@ -1,5 +1,5 @@
 ﻿using AppPlatform.BidconBrowserModule.Models;
-using AppPlatform.BidconDatabaseAccess;
+using AppPlatform.Shared.Abstractions;
 using AppPlatform.Shared.Data;
 using AppPlatform.Shared.Extensions;
 using Microsoft.EntityFrameworkCore;

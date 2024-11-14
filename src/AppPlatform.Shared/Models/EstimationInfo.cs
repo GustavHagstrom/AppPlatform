@@ -1,5 +1,4 @@
-﻿namespace AppPlatform.BidconDatabaseAccess.Models;
-
+﻿namespace AppPlatform.Shared.Models;
 public class EstimationInfo
 {
     public int FolderNum { get; set; }
