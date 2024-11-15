@@ -1,5 +1,6 @@
 ﻿@attribute [Authorize(Policy = Constants.AuthorizationConstants.Policy)]
 
+@using Microsoft.AspNetCore.Components.Authorization
 @using Microsoft.AspNetCore.Authorization
 @using Microsoft.AspNetCore.Components.Web
 @using AppPlatform.Shared.Components.Settings
@@ -13,3 +14,5 @@
 @using AppPlatform.Shared.Abstractions
 @using AppPlatform.Shared.Services
 @using AppPlatform.Shared.Components.Dialogs
+@using AppPlatform.Shared.Components.Rights
+@using System.Security.Claims

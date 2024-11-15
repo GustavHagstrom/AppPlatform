@@ -1,6 +1,4 @@
-@page "/Settings/Users/Edit/{UserId}"
-@using AppPlatform.UserRightSettingsModule.Components.Role
-@using Microsoft.AspNetCore.Components.Authorization
+@page "/Settings/rights/UserEdit/{UserId}"
 @layout SettingsLayout
 @inject IStringLocalizer<EditUserAccessPage> Localizer
 
@@ -11,14 +9,20 @@
     </SettingsSection>
 
     <SettingsSection Title="@Localizer["Roller"]">
-        <RolePicker CheckedRoles="Roles" CheckChanged="RolesChanged" />
+        <RolePicker AllRoles="AllRoles" PickedRoleIds="PickedRoleIds" PickChanged="RolesChanged">
+            <ExtraTdContent>
+                <div style="display: flex; justify-content: flex-end;">
+                    <MudIconButton Icon="@Icons.Material.Sharp.Edit" Color="Color.Primary" OnClick="() => EditRoleAccess(context)" Size="Size.Small" />
+                </div>
+            </ExtraTdContent>
+        </RolePicker>
     </SettingsSection>
 
     <SettingsSection Title="@Localizer["Rättigheter"]" LoadDataAsync="LoadUserDataAsync">
         <MudOverlay DarkBackground="true" Visible="IsLoading" Absolute="true">
             <MudProgressCircular Size="Size.Large" Color="Color.Primary" Indeterminate="true" />
         </MudOverlay>
-        <AccessClaimValuePicker AccessClaimValues="Access.Select(x => x.AccessClaimValue)" CheckChanged="UserAccessCheckBoxClick" />
+        <AccessClaimValuePicker AccessClaimValues="Access.Select(x => x.AccessClaimValue)" PickChanged="UserAccessCheckBoxClick" />
     </SettingsSection>
 </SettingsPageBase>
 
@@ -27,23 +31,28 @@
 @inject IAccessClaimInfoContainer AccessClaimInfoContainer
 @inject IMicrosoftGraphUserAccess MicrosoftGraphUserAccess
 @inject AuthenticationStateProvider AuthenticationStateProvider
+@inject NavigationManager NavigationManager
 
 @code{
     [Parameter] public string? UserId { get; set; }
     UserWithPhoto? User { get; set; }
     List<UserAccess> Access { get; set; } = new();
-    List<Role> Roles { get; set; } = new();
+    List<Role> AllRoles { get; set; } = new();
+    List<string> PickedRoleIds { get; set; } = new();
+
     bool IsLoading { get; set; } = false;
 
     async Task LoadUserDataAsync()
     {
         SetIsLoading(true);
+        var state = await AuthenticationStateProvider.GetAuthenticationStateAsync();
         Access.Clear();
         if (UserId is not null)
         {
             Access.AddRange(await AccessService.GetUserAccessClaimValuesAsync(UserId));
             User = await MicrosoftGraphUserAccess.GetUserWithPhotoAsync(UserId);
-            Roles = await RoleService.GetUserRolesForUserAsync(UserId);
+            AllRoles = await RoleService.GetRolesAsync(state.User);
+            PickedRoleIds = (await RoleService.GetUserRolesForUserAsync(UserId)).Select(x => x.Id).ToList();
         }
         SetIsLoading(false);
     }
@@ -52,15 +61,15 @@
         IsLoading = isLoading;
         StateHasChanged();
     }
-    async Task UserAccessCheckBoxClick(CheckChangedRecord<IAccessClaimInfo> checkedRecord)
+    async Task UserAccessCheckBoxClick(PickChangedRecord<IAccessClaimInfo> pickedRecord)
     {
-        if (checkedRecord.IsChecked)
+        if (pickedRecord.IsPicked)
         {
-            await CreateUserAccess(checkedRecord.Data.Value);
+            await CreateUserAccess(pickedRecord.Data.Value);
         }
         else
         {
-            await DeleteUserAccess(checkedRecord.Data.Value);
+            await DeleteUserAccess(pickedRecord.Data.Value);
         }
     }
 
@@ -86,19 +95,23 @@
             Access.Remove(userAccess);
         }
     }
-    async Task RolesChanged(CheckChangedRecord<Role> checkedRecord)
+    async Task RolesChanged(PickChangedRecord<Role> pickedRecord)
     {
         var state = await AuthenticationStateProvider.GetAuthenticationStateAsync();
         if (state is null) return;
-        if (checkedRecord.IsChecked)
+        if (pickedRecord.IsPicked)
         {
-            await RoleService.CreateUserRole(state.User, checkedRecord.Data);
-            Roles.Add(checkedRecord.Data);
+            await RoleService.CreateUserRole(state.User, pickedRecord.Data);
+            AllRoles.Add(pickedRecord.Data);
         }
         else
         {
-            await RoleService.DeleteUserRole(state.User, checkedRecord.Data);
-            Roles.Remove(Roles.First(x => x.Id == checkedRecord.Data.Id));
+            await RoleService.DeleteUserRole(state.User, pickedRecord.Data);
+            AllRoles.Remove(AllRoles.First(x => x.Id == pickedRecord.Data.Id));
         }
+    }
+    void EditRoleAccess(Role role)
+    {
+        NavigationManager.NavigateTo($"{Constants.ModuleRoutes.RoleAccessEdit}/{role.Id}");
     }
 }

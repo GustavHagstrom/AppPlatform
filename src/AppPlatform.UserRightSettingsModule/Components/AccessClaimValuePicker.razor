@@ -20,11 +20,11 @@
 
 @code{
     [Parameter] public IEnumerable<string> AccessClaimValues { get; set; } = new List<string>();
-    [Parameter] public EventCallback<CheckChangedRecord<IAccessClaimInfo>> CheckChanged { get; set; }
+    [Parameter] public EventCallback<PickChangedRecord<IAccessClaimInfo>> PickChanged { get; set; }
 
     Task OnCheckChanged(IAccessClaimInfo info, bool isChecked)
     {
-        return CheckChanged.InvokeAsync(new (info, isChecked));
+        return PickChanged.InvokeAsync(new (info, isChecked));
     }
 
 }

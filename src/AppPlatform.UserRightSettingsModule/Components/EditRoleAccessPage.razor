@@ -1,8 +1,4 @@
-@page "/Settings/Roles/Edit/{RoleId}"
-@using System.Security.Claims
-@using AppPlatform.Shared.Components.Rights
-@using AppPlatform.UserRightSettingsModule.Components.User
-@using Microsoft.AspNetCore.Components.Authorization
+@page "/Settings/rights/RoleEdit/{RoleId}"
 @inject IStringLocalizer<EditRoleAccessPage> Localizer
 @layout SettingsLayout
 
@@ -21,7 +17,7 @@
     </SettingsSection>
 
     <SettingsSection Title="@Localizer["Rättigheter"]" LoadDataAsync="LoadRoleDataAsync">
-        <AccessClaimValuePicker AccessClaimValues="Access.Select(x => x.AccessClaimValue)" CheckChanged="RoleAccessCheckBoxClick"/>
+        <AccessClaimValuePicker AccessClaimValues="Access.Select(x => x.AccessClaimValue)" PickChanged="RoleAccessCheckBoxClick"/>
     </SettingsSection>
     
     <SettingsSection Title="@Localizer["Användare"]">
@@ -89,7 +85,7 @@
             if (result?.Data is true)
             {
                 await RoleService.DeleteRoleAsync(Role);
-                NavigationManager.NavigateTo(Constants.ModuleRoutes.RoleListPage);
+                NavigationManager.NavigateTo(Constants.ModuleRoutes.SettingsPage);
             }
         }
     }
@@ -131,9 +127,9 @@
         IsLoading = isLoading;
         StateHasChanged();
     }
-    async Task RoleAccessCheckBoxClick(CheckChangedRecord<IAccessClaimInfo> checkedRecord)
+    async Task RoleAccessCheckBoxClick(PickChangedRecord<IAccessClaimInfo> checkedRecord)
     {
-        if (checkedRecord.IsChecked)
+        if (checkedRecord.IsPicked)
         {
             await CreateRoleAccess(checkedRecord.Data.Value);
         }

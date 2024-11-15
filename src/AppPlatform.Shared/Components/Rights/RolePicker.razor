@@ -19,6 +19,12 @@
                 <td style="width: 100%;">
                     @role.Description
                 </td>
+                @if (ExtraTdContent != null)
+                {
+                    <td>
+                        @ExtraTdContent(role)
+                    </td>
+                }
             </tr>
 
         }
@@ -32,7 +38,7 @@
     /// </summary>
     [Parameter] public EventCallback<PickChangedRecord<Role>> PickChanged { get; set; }
     [Parameter] public List<Role> AllRoles { get; set; } = new List<Role>();
-
+    [Parameter] public RenderFragment<Role>? ExtraTdContent { get; set; }
     async Task OnPickChanged(Role role, bool value)
     {
         await PickChanged.InvokeAsync(new PickChangedRecord<Role>(role, value));

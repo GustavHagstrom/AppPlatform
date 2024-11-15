@@ -3,11 +3,10 @@ internal static class Constants
 {
     public static class ModuleRoutes
     {
-        public const string UserListPage = "/Settings/Users";
-        public const string UserAccessEdit = "/Settings/Users/Edit";
-        public const string RoleListPage = "/Settings/Roles/";
-        public const string RoleAccessEdit = "/Settings/Roles/Edit";
-        
+        public const string UserAccessEdit = "/Settings/rights/UserEdit";
+        public const string RoleAccessEdit = "/Settings/rights/RoleEdit";
+        public const string SettingsPage = "/Settings/rights";
+
     }
     public static class AuthorizationConstants
     {

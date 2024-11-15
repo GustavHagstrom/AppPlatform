@@ -28,7 +28,6 @@ public class UserRightSettingsModule : IModule
     }
     public void RegisterInjectableComponents(ComponentBuilder componentBuilder)
     {
-        componentBuilder.AddSettingsNavigationComponent<RoleSettingsLink>();
-        componentBuilder.AddSettingsNavigationComponent<UserSettingsLink>();
+        componentBuilder.AddSettingsNavigationComponent<SettingsLink>();
     }
 }
