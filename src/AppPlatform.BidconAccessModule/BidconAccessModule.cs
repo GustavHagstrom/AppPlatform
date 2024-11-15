@@ -16,21 +16,13 @@ public class BidconAccessModule : IModule
         accessIdBuilder.AddAccessClaimInfo<ModuleClaimInfo>();
     }
 
-    public void RegisterApplicationLinks(LinkBuilder applicationLinkBuilder)
-    {
-
-    }
-
     public void RegisterInjectableComponents(ComponentBuilder componentBuilder)
     {
         //When using SDK
-        componentBuilder.AddSettingsComponent<BidconSdkCredentials>();
+        componentBuilder.AddCommonSettingsComponent<BidconSdkCredentials>();
 
         //When using Direct
         //componentBuilder.AddSettingsComponent<BidconDirectCredentials>();
-
-
-
     }
 
     public void RegisterServices(IServiceCollection services)

@@ -1,6 +1,7 @@
 ﻿using AppPlatform.Shared.Abstractions;
 using AppPlatform.Shared.Builders;
 using AppPlatform.Shared.Constants;
+using AppPlatform.UserRightSettingsModule.Components;
 using AppPlatform.UserRightSettingsModule.Services;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -25,14 +26,9 @@ public class UserRightSettingsModule : IModule
     {
         accessIdBuilder.AddAccessClaimInfo<ModuleAccessClaimInfo>();
     }
-
-    public void RegisterApplicationLinks(LinkBuilder applicationLinkBuilder)
-    {
-        applicationLinkBuilder.AddSettingsPageLink<UserSettingsLink>();
-        applicationLinkBuilder.AddSettingsPageLink<RoleSettingsLink>();
-    }
     public void RegisterInjectableComponents(ComponentBuilder componentBuilder)
     {
-
+        componentBuilder.AddSettingsNavigationComponent<RoleSettingsLink>();
+        componentBuilder.AddSettingsNavigationComponent<UserSettingsLink>();
     }
 }

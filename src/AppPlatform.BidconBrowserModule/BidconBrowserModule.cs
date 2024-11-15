@@ -1,4 +1,5 @@
-﻿using AppPlatform.BidconBrowserModule.Services;
+﻿using AppPlatform.BidconBrowserModule.Components;
+using AppPlatform.BidconBrowserModule.Services;
 using AppPlatform.Shared.Abstractions;
 using AppPlatform.Shared.Builders;
 using AppPlatform.Shared.Constants;
@@ -11,14 +12,9 @@ public class BidconBrowserModule : IModule
     {
         accessIdBuilder.AddAccessClaimInfo<ModuleClaimInfo>();
     }
-
-    public void RegisterApplicationLinks(LinkBuilder applicationLinkBuilder)
-    {
-        applicationLinkBuilder.AddMainLayoutLink<BidconBrowserAppLink>();
-    }
     public void RegisterInjectableComponents(ComponentBuilder componentBuilder)
     {
-
+        componentBuilder.AddAppBarNavLinkComponent<BidconBrowserAppLink>();
     }
     public void RegisterServices(IServiceCollection services)
     {

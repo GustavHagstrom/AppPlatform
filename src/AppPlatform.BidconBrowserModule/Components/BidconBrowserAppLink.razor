@@ -1,0 +1,6 @@
+@using AppPlatform.Shared
+@using AppPlatform.Shared.Abstractions
+@implements IInjectableComponent
+@inject IStringLocalizer<BidconBrowserAppLink> Localizer
+
+<AppBarNavLink Href="@Constants.ModuleRoutes.BidconBrowser" Text="@Localizer["Kalkylutforskaren"]" Icon="@CustomIcons.BidconIcon" AuthPolicy="@Constants.Authorization.Policy"/>

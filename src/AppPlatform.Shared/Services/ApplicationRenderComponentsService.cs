@@ -5,10 +5,14 @@ using Microsoft.Extensions.DependencyInjection;
 namespace AppPlatform.Shared.Services;
 public class ApplicationRenderComponentsService : IApplicationRenderComponentsService
 {
-    public ApplicationRenderComponentsService(
-        [FromKeyedServices(SharedInjectableComponentKeys.CommonSettingsComponent)] IEnumerable<IInjectableComponent> CommonSettingsComponents)
+    private readonly IServiceProvider serviceProvider;
+
+    public ApplicationRenderComponentsService(IServiceProvider sp)
     {
-        this.CommonSettingsComponents = CommonSettingsComponents;
+        serviceProvider = sp;
     }
-    public IEnumerable<IInjectableComponent> CommonSettingsComponents { get; }
+    public IEnumerable<IInjectableComponent> CommonSettingsComponents => serviceProvider.GetKeyedServices<IInjectableComponent>(SharedInjectableComponentKeys.CommonSettingsComponent);
+
+    public IEnumerable<IInjectableComponent> SettingsNavigationComponents => serviceProvider.GetKeyedServices<IInjectableComponent>(SharedInjectableComponentKeys.SettingsNavigationComponent);
+    public IEnumerable<IInjectableComponent> AppBarNavLinkComponents => serviceProvider.GetKeyedServices<IInjectableComponent>(SharedInjectableComponentKeys.AppBarNavLinkComponent);
 }

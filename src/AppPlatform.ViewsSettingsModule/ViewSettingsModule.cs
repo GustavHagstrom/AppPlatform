@@ -12,15 +12,9 @@ public class ViewSettingsModule : IModule
     {
         builder.AddAccessClaimInfo<ViewSettingsClaimInfo>();
     }
-
-    public void RegisterApplicationLinks(LinkBuilder builder)
-    {
-        builder.AddSettingsPageLink<SettingsLink>();
-    }
-
     public void RegisterInjectableComponents(ComponentBuilder componentBuilder)
     {
-
+        componentBuilder.AddSettingsNavigationComponent<SettingsLink>();
     }
 
     public void RegisterServices(IServiceCollection services)

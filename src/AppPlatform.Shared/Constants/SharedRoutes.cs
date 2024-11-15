@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace AppPlatform.Shared.Constants;
+﻿namespace AppPlatform.Shared.Constants;
 public static class SharedRoutes
 {
-    public const string Start = "/settings";
+    public const string Settings
+        = "/settings";
 }

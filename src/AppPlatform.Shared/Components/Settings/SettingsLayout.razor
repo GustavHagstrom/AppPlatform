@@ -3,27 +3,21 @@
 @layout MainLayout
 
 @inject IStringLocalizer<SettingsLayout> Localizer
-@inject IApplicationLinkService ApplicationLinkService
+@inject IApplicationRenderComponentsService ApplicationRenderComponentsService
 <PageSetupWithNavigation WhenToHideMobileView="Breakpoint.MdAndUp" WhenToHideDesktopView="Breakpoint.SmAndDown">
     <NavigationContent>
 
-        <AppNavLink Href="@SharedRoutes.Start" Match="NavLinkMatch.All" Class="d-flex align-center px-4 py-2">
+        <AppNavLink Href="@SharedRoutes.Settings" Match="NavLinkMatch.All" Class="d-flex align-center px-4 py-2">
             <MudIcon Icon="@Icons.Material.Sharp.Settings" Size="Size.Medium" />
             <MudHidden Breakpoint="Breakpoint.SmAndDown">
                 <MudText Inline="true" Class="pl-2">@Localizer["Allmänt"]</MudText>
             </MudHidden>
         </AppNavLink> 
-       @*  App-Nav-Link mud-ripple d-flex align-center px-4 py-2 cursor-pointer flex-shrink-0 *@
-        @foreach (var link in ApplicationLinkService.SettingsPageLinks)
+        @foreach (var component in ApplicationRenderComponentsService.SettingsNavigationComponents)
         {
-
-            <AuthorizedNavLink Href="@link.LinkRoute" Policy="@link.AuthPolicy" Match="NavLinkMatch.Prefix" Class="d-flex align-center px-4 py-2">
-                <MudIcon Icon="@link.Icon"Size="Size.Medium" />
-                <MudHidden Breakpoint="Breakpoint.SmAndDown">
-                    <MudText Inline="true" Class="pl-2">@link.Text</MudText>
-                </MudHidden>
-            </AuthorizedNavLink>
+            @component.Render();
         }
+
 
     </NavigationContent>
     <ChildContent>
