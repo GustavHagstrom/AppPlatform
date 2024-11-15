@@ -47,18 +47,18 @@
                         @foreach (var column in Section.Columns.Where(x => x.IsVisible).OrderBy(x => x.Order))
                         {
                             columnCount += 1;
-                            var indentStyle2 = columnCount == 1 ? $"padding-left: {context.Level * 16 + 24}px;" : string.Empty;
-                            var indentStyle3 = columnCount == 1 ? $"left: {context.Level * 16 - 8}px;" : string.Empty;
+                            var indentStyle1 = columnCount == 1 ? $"padding-left: {context.Level * 16 + 24}px;" : string.Empty;
+                            var indentStyle2 = columnCount == 1 ? $"left: {context.Level * 16 - 8}px;" : string.Empty;
 
                             <td>
                                 <div class="cell-container">
                                     @if(columnCount == 1 && context.Children.Count != 0)
                                     {
-                                        <div class="cell-expand-button" style="@indentStyle3">
+                                        <div class="cell-expand-button" style="@indentStyle2">
                                             <MudToggleIconButton Icon="@Icons.Material.Sharp.KeyboardArrowRight" ToggledIcon="@Icons.Material.Sharp.KeyboardArrowDown" Toggled="context.IsExpanded" ToggledChanged="x => SetExpand(context, x)" Class="pa-1"/> 
                                         </div>
                                     }
-                                    <div class="@CellValueClass" style="@($"{indentStyle2} {CellStyles[new SheetCellKey(RowTypeFromInt(context.SheetItem.RowType), column.ColumnType)]}")">
+                                    <div class="@CellValueClass" style="@($"{indentStyle1} {CellStyles[new SheetCellKey(RowTypeFromInt(context.SheetItem.RowType), column.ColumnType)]}")">
                                         @SheetNameService.GetColumnDataFromItem(column.ColumnType, context.SheetItem)
                                     </div>
                                 </div>

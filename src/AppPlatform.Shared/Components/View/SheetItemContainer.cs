@@ -1,7 +1,4 @@
 ﻿using AppPlatform.Core.Enteties.EstimationEnteties;
-using Microsoft.Graph.Models;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
 
 namespace AppPlatform.Shared.Components.View;
 public class SheetItemContainer
