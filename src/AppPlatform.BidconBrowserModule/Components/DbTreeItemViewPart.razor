@@ -1,34 +1,35 @@
 ﻿
-<div class="d-flex" style="@($"margin-left: {IndentLevel * 48}px")">
-        @if(IsNested)
+<div class="d-flex" style="@($"margin-left: {IndentLevel * 40}px;")">
+    @if (TreeItem!.Type == DbTreeItemType.Folder)
+    {
+        if(IsNested)
         {
-            @if (IsExpanded)
+            if (IsExpanded)
             {
-                <MudIconButton Icon="@Icons.Material.Sharp.KeyboardArrowDown" OnClick="ToggleExpansion" Class="pa-2"/>
+                <MudIconButton Icon="@Icons.Material.Sharp.KeyboardArrowDown" OnClick="ToggleExpansion" Class="pa-2" Style="margin-left: -40px" />
             }
             else
             {
-            <MudIconButton Icon="@Icons.Material.Sharp.KeyboardArrowRight" OnClick="ToggleExpansion" Class="pa-2" />
+                <MudIconButton Icon="@Icons.Material.Sharp.KeyboardArrowRight" OnClick="ToggleExpansion" Class="pa-2" Style="margin-left: -40px" />
             }
         }
-    
-    <MudCheckBox @bind-Value="TreeItem!.IsSelected" Class="span-40" />
-    @if (TreeItem!.Type == DbTreeItemType.Folder)
-    {
+        <MudCheckBox @bind-Value="TreeItem!.IsSelected" Class="span-40" />
         <MudIcon Icon="@Icons.Material.Sharp.Folder" Class="align-self-center ml-3" />
     }
     else
     {
+        @* <MudCheckBox @bind-Value="TreeItem!.IsSelected" Class="span-40" Style="margin-left: 40px !important;" /> *@
+        <MudCheckBox @bind-Value="TreeItem!.IsSelected" Class="span-40" />
         <MudIcon Icon="@Icons.Material.Sharp.Article" Style="color: var(--mud-palette-warning-lighten)" Class="align-self-center ml-3" />
     }
     <MudText Class="align-self-center ml-2">@TreeItem!.Name</MudText>
 </div>
+
 @if(IsExpanded)
 {
-    <MudCollapse Expanded="@IsExpanded">
-        <DbTreeItemView TreeItems="TreeItem!.Items" IndentLevel="@(IndentLevel + 1)"/>
-    </MudCollapse>
+    <DbTreeItemView TreeItems="TreeItem!.Items" IndentLevel="@(IndentLevel + 1)" />
 }
+
 @code{
     [Parameter, EditorRequired] public TreeItem? TreeItem { get; set; }
     [Parameter, EditorRequired] public int IndentLevel { get; set; } = 0;

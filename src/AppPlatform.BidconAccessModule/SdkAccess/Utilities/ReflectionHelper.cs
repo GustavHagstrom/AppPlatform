@@ -1,7 +1,7 @@
 ﻿using System.Reflection;
 using System.Reflection.Emit;
 
-namespace ConsoleApp1;
+namespace AppPlatform.BidconAccessModule.SdkAccess.Utilities;
 internal static class ReflectionHelper
 {
     /// <summary>

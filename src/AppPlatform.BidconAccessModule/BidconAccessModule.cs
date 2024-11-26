@@ -18,8 +18,8 @@ public class BidconAccessModule : IModule
 
     public void RegisterInjectableComponents(ComponentBuilder componentBuilder)
     {
-        //When using SDK
-        componentBuilder.AddCommonSettingsComponent<BidconSdkCredentials>();
+        //When using SDK. (Not reflection)
+        //componentBuilder.AddCommonSettingsComponent<BidconSdkCredentials>();
 
         //When using Direct
         //componentBuilder.AddSettingsComponent<BidconDirectCredentials>();
@@ -28,7 +28,7 @@ public class BidconAccessModule : IModule
     public void RegisterServices(IServiceCollection services)
     {
         //when using SDK
-        UseSdkServices(services);
+        UseSdkReflectionServices(services);
 
         //when using direct
         //UseDirectServices(services);
@@ -63,5 +63,11 @@ public class BidconAccessModule : IModule
     {
         services.AddTransient<ISdkCredentialsService, SdkCredentialsService>();
         services.AddScoped<IBidconAccess, BidconSdkAccess>();
+    }
+    private void UseSdkReflectionServices(IServiceCollection services)
+    {
+        services.AddTransient<ISdkCredentialsService, SdkCredentialsService>();
+        services.AddScoped<IBidconAccess, BidconSdkReflectionAccess>();
+        services.AddScoped<IBidconReflectionService, BidconReflectionService>();
     }
 }

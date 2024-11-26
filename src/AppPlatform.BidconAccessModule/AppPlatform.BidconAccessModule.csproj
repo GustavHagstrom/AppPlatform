@@ -24,6 +24,7 @@
 
   <ItemGroup>
     <Folder Include="SdkAccess\Models\" />
+    <Folder Include="SdkAccess\ReflectionUtilities\" />
   </ItemGroup>
 
 </Project>
