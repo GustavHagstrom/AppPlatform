@@ -57,6 +57,14 @@ internal static class BidconHelper
         app.InitConnectionFromIni();
         return ReflectionHelper.GetFieldOrPropertyValue<object>(app, "_connection");
     }
+    public static object ConnectionFromReflection()
+    {
+        var app = BidCon.SDK.Activator.CreateApp();
+        var system = GetSystemConnection();
+        var estimation = GetEstimationConnection();
+        ReflectionHelper.InvokeMethod(app, "InitConnection", [system, estimation]);
+        return ReflectionHelper.GetFieldOrPropertyValue<object>(app, "_connection");
+    }
     public static SqlConnection GetSystemConnection()
     {
         return new SqlConnection("Data Source=RHUSAPP02\\ELECOSOFT;Initial Catalog=BidConSystem;User ID=sa;Password=Putlig@15;Connect Timeout=30;Encrypt=False;");
