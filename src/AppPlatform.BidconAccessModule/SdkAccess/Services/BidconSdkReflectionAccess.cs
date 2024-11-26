@@ -12,7 +12,7 @@ internal class BidconSdkReflectionAccess(IBidconReflectionService ReflectionServ
     private async Task<DatabaseUser> LazyUserAsync(ClaimsPrincipal userClaims)
     {
         if (_user is not null) return _user;
-        _user = ReflectionService.CreateUser();
+        _user = await Task.Run(ReflectionService.CreateUser);
         return _user;
     }
 

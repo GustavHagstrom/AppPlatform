@@ -66,7 +66,6 @@ public class BidconAccessModule : IModule
     }
     private void UseSdkReflectionServices(IServiceCollection services)
     {
-        services.AddTransient<ISdkCredentialsService, SdkCredentialsService>();
         services.AddScoped<IBidconAccess, BidconSdkReflectionAccess>();
         services.AddScoped<IBidconReflectionService, BidconReflectionService>();
     }

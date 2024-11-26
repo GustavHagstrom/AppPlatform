@@ -8,7 +8,7 @@ internal class BidconReflectionService : IBidconReflectionService
 {
     public DatabaseUser CreateUser()
     {
-        var connection = ConnectionFromIni();
+        var connection = ConnectionFromReflection();
         var usr = (DatabaseUser)RuntimeHelpers.GetUninitializedObject(typeof(DatabaseUser));
 
         ReflectionHelper.SetFieldValue(usr, "<Name>k__BackingField", "Admin");

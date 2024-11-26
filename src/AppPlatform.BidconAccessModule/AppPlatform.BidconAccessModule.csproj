@@ -6,6 +6,17 @@
     <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Compile Remove="SdkAccess\Models\**" />
+    <Compile Remove="SdkAccess\ReflectionUtilities\**" />
+    <Content Remove="SdkAccess\Models\**" />
+    <Content Remove="SdkAccess\ReflectionUtilities\**" />
+    <EmbeddedResource Remove="SdkAccess\Models\**" />
+    <EmbeddedResource Remove="SdkAccess\ReflectionUtilities\**" />
+    <None Remove="SdkAccess\Models\**" />
+    <None Remove="SdkAccess\ReflectionUtilities\**" />
+  </ItemGroup>
+
 
   <ItemGroup>
     <SupportedPlatform Include="browser" />
@@ -20,11 +31,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\AppPlatform.Shared\AppPlatform.Shared.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="SdkAccess\Models\" />
-    <Folder Include="SdkAccess\ReflectionUtilities\" />
   </ItemGroup>
 
 </Project>
