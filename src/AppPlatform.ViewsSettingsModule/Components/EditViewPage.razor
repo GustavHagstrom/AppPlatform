@@ -2,11 +2,9 @@
 @using AppPlatform.ViewSettingsModule.Components.Tabs
 @using Microsoft.AspNetCore.Components.Authorization
 @inject IStringLocalizer<EditViewPage> Localizer
-@implements IAsyncDisposable
 
 @if(View is not null)
 {
-    
     <div class="main-container relative">
 
         <MudOverlay DarkBackground="true" Visible="IsLoading" Absolute="true">
@@ -31,7 +29,6 @@
             </div>
 
             <div class="settings-values">
-
                 <CascadingValue Value="this">
                     @switch (ActiveTab)
                     {
@@ -88,10 +85,6 @@
     TabType ActiveTab = TabType.Common;
     Estimation? SampleEstimation;
 
-    Guid ObserverId = Guid.NewGuid();
-    Breakpoint CurrentBreakPoint;
-    Breakpoint LastBreakPoint;
-    bool IsSmAndDown => CurrentBreakPoint == Breakpoint.Xs || CurrentBreakPoint == Breakpoint.Sm;// || CurrentBreakPoint == Breakpoint.Md;
 
 
     protected override Task OnInitializedAsync()
@@ -99,25 +92,7 @@
         SampleEstimation = Helper.CreateSamepleEstimation();
         return LoadDataAsync();
     }
-    protected override async Task OnAfterRenderAsync(bool firstRender)
-    {
-        if (firstRender)
-        {
-            await BrowserViewportService.SubscribeAsync(ObserverId, (args) =>
-            {
-                LastBreakPoint = CurrentBreakPoint;
-                CurrentBreakPoint = args.Breakpoint;
-                if (LastBreakPoint != CurrentBreakPoint)
-                {
-                    StateHasChanged();
-                }
-            });
-        }
-
-        await base.OnAfterRenderAsync(firstRender);
-    }
-    public async ValueTask DisposeAsync() => await BrowserViewportService.UnsubscribeAsync(ObserverId);
-
+ 
     async Task LoadDataAsync()
     {
         if (ViewId is not null)
@@ -142,8 +117,3 @@
     
     
 }
-
-
-
-
-

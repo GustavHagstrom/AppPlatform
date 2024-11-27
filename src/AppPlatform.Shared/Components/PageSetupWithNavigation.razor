@@ -1,37 +1,16 @@
-
-@* Desktop View *@
-<MudHidden Breakpoint="WhenToHideDesktopView">
-    <div style="height: 100%; max-width: 100%; display: flex">
-        <div class="border-solid border-r" style="height: 100%;">
-            @NavigationContent
-        </div>
-        <div class="flex-grow-1" style="height: 100%; overflow: auto;">
-            @ChildContent
-        </div>
+<div class="main-container">
+    <div class="nav-container">
+        @NavigationContent
     </div>
-</MudHidden>
-
-
-@* Mobile View *@
-<MudHidden Breakpoint="WhenToHideMobileView">
-    <div style="height: 100%; width: 100%; display: block">
-        <div class="border-solid border-b d-flex" style="height: calc(var(--mud-appbar-height) - var(--mud-appbar-height)/3);">
-            @NavigationContent
-        </div>
-        <div class="flex-grow-1" style="height: calc(100% - var(--mud-appbar-height) + var(--mud-appbar-height)/3); overflow: auto;">
-            @ChildContent
-        </div>
+    <div class="child-container">
+        @ChildContent
     </div>
-</MudHidden>
-
-
+</div>
 
 
 
 @code{
     [Parameter] public RenderFragment? NavigationContent { get; set; }
     [Parameter] public RenderFragment? ChildContent { get; set; }
-    [Parameter] public Breakpoint WhenToHideMobileView { get; set; } = Breakpoint.MdAndUp;
-    [Parameter] public Breakpoint WhenToHideDesktopView { get; set; } = Breakpoint.SmAndDown;
 
 }

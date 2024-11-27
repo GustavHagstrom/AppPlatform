@@ -4,15 +4,10 @@
 
 @inject IStringLocalizer<SettingsLayout> Localizer
 @inject IApplicationRenderComponentsService ApplicationRenderComponentsService
-<PageSetupWithNavigation WhenToHideMobileView="Breakpoint.MdAndUp" WhenToHideDesktopView="Breakpoint.SmAndDown">
+<PageSetupWithNavigation >
     <NavigationContent>
 
-        <AppNavLink Href="@SharedRoutes.Settings" Match="NavLinkMatch.All" Class="d-flex align-center px-4 py-2">
-            <MudIcon Icon="@Icons.Material.Sharp.Settings" Size="Size.Medium" />
-            <MudHidden Breakpoint="Breakpoint.SmAndDown">
-                <MudText Inline="true" Class="pl-2">@Localizer["Allmänt"]</MudText>
-            </MudHidden>
-        </AppNavLink> 
+        <SettingsNavLink Href="@SharedRoutes.Settings" Match="NavLinkMatch.All" Icon="@Icons.Material.Sharp.Settings" Text="@Localizer["Allmänt"]"/>
         @foreach (var component in ApplicationRenderComponentsService.SettingsNavigationComponents)
         {
             @component.Render();
