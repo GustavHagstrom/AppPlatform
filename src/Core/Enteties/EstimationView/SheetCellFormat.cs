@@ -10,7 +10,7 @@ public class SheetCellFormat : IFormat
     public SheetSection? SheetSection { get; set; }
     public required SheetRowType RowType { get; set; }
     public required SheetColumnType ColumnType { get; set; }
-
+    public bool IsVisible { get; set; } = true;
 
     public Align? HorizontalAlign { get; set; } = Align.Start;
     public string? BackgroundColor { get; set; } = null;

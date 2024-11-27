@@ -43,17 +43,6 @@
         </ul>
     </MudPaper>
     
-
-
-
-@*     @if(SelectedSection is not null)
-    {
-        <div class="d-flex gap-2">
-            <MudTextField T="string" Variant="Variant.Outlined" Label="@Localizer["Namn"]" Margin="Margin.Dense" Value="SelectedSection.Name" ValueChanged="x => SelectedSection.Name = x"/>
-            <MudTextField T="string" Variant="Variant.Outlined" Label="@Localizer["Typ"]" Margin="Margin.Dense" ReadOnly="true" Value="Helper.GetSectionTypeName(SelectedSection)" />
-        </div>
-    }
-     *@
 </SettingsSection>
 
 

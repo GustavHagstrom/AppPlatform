@@ -14,32 +14,44 @@
                     @bind-SelectedItem="SelectedRowType" GetItemNameFunc="SheetDataService.GetRowTypeName" />
     </Row>
 
-        <MudTextField Style="width: calc(50% - 4px);" T="int" Margin="Margin.Dense" Value="SelectedColumn.Width" ValueChanged="SetColumnWidth" Label="@Localizer["Kolumnbredd"]" Variant="Variant.Outlined" />
+    <MudTextField Style="width: calc(50% - 4px);" T="int" Margin="Margin.Dense" Value="SelectedColumn.Width" ValueChanged="SetColumnWidth" Label="@Localizer["Kolumnbredd"]" Variant="Variant.Outlined" />
+    
+    <div>
         <MudCheckBox Style="width: 50%; margin-left: -4px !important;" T="bool" Value="SelectedColumn.IsVisible" ValueChanged="SetColumnVisibility" Dense="true" Label="@Localizer["Visa kolumn"]" />
-
-        <SheetCellEditor Section="Section" SheetCellFormat="SelectedCellFormat" />
-   
+        <MudCheckBox Style="width: 50%; margin-left: -4px !important;" T="bool" Value="SelectedCellFormat.IsVisible" ValueChanged="SetCellVisibility" Dense="true" Label="@Localizer["Visa cell-värde"]" />
+    </div>
     
 
-    @code {
-        [Parameter] public SheetSection? Section { get; set; }
-        [Parameter] public View? View { get; set; }
-        [CascadingParameter] public EditViewPage? EditViewPage { get; set; }
 
-        SheetColumnType SelectedColumnType = SheetColumnType.Description;
-        SheetRowType SelectedRowType = SheetRowType.Group;
-        SheetCellFormat SelectedCellFormat => Section!.CellFormats.First(x => x.RowType == SelectedRowType && x.ColumnType == SelectedColumnType);
-        SheetColumn SelectedColumn => Section!.Columns.First(x => x.ColumnType == SelectedColumnType);
 
-        void SetColumnVisibility(bool isVisible)
-        {
-            SelectedColumn.IsVisible = isVisible;
-            EditViewPage?.TriggerStateHasChanged();
-        }
-        void SetColumnWidth(int width)
-        {
-            SelectedColumn.Width = width;
-            EditViewPage?.TriggerStateHasChanged();
-        }
+    <SheetCellEditor Section="Section" SheetCellFormat="SelectedCellFormat" />
+   
+       
+}
+
+@code {
+    [Parameter] public SheetSection? Section { get; set; }
+    [Parameter] public View? View { get; set; }
+    [CascadingParameter] public EditViewPage? EditViewPage { get; set; }
+
+    SheetColumnType SelectedColumnType = SheetColumnType.Description;
+    SheetRowType SelectedRowType = SheetRowType.Group;
+    SheetCellFormat SelectedCellFormat => Section!.CellFormats.First(x => x.RowType == SelectedRowType && x.ColumnType == SelectedColumnType);
+    SheetColumn SelectedColumn => Section!.Columns.First(x => x.ColumnType == SelectedColumnType);
+
+    void SetColumnVisibility(bool isVisible)
+    {
+        SelectedColumn.IsVisible = isVisible;
+        EditViewPage?.TriggerStateHasChanged();
+    }
+    void SetCellVisibility(bool isVisible)
+    {
+        SelectedCellFormat.IsVisible = isVisible;
+        EditViewPage?.TriggerStateHasChanged();
+    }
+    void SetColumnWidth(int width)
+    {
+        SelectedColumn.Width = width;
+        EditViewPage?.TriggerStateHasChanged();
     }
 }
