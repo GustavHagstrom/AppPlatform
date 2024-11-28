@@ -6,18 +6,50 @@
 
 @if(Section is not null && View is not null)
 {
+   
+
+
+    <CustomMudField Title="@Localizer["Kolumner"]" MudFieldClass="custom-input-1">
+        <ul>
+            @foreach (var column in Section.Columns)
+            {
+                <li class="@(column.ColumnType == SelectedColumn.ColumnType ? "selected" : string.Empty)" @onclick="() => SelectedColumnType = column.ColumnType">
+                    <div class="d-flex" style="align-items: center;" >
+                        <MudCheckBox T="bool" Value="column.IsVisible" ValueChanged="value => SetColumnVisibility(column.ColumnType, value)" Dense="true"/>
+                        <MudText Typo="Typo.body1">@SheetDataService.GetColumnTypeName(column.ColumnType)</MudText>
+                    </div>
+                </li>
+            }
+        </ul>
+    </CustomMudField>
+
+    <CustomMudField Title="@Localizer["Rader"]" MudFieldClass="custom-input-1">
+        <ul>
+            @foreach (var rowType in Enum.GetValues<SheetRowType>())
+            {
+                <li class="@(rowType == SelectedRowType ? "selected" : string.Empty)" @onclick="() => SelectedRowType = rowType">
+                    <div class="d-flex pa-1" style="align-items: center;">
+                        <MudText Typo="Typo.body1">@SheetDataService.GetRowTypeName(rowType)</MudText>
+                    </div>
+                </li>
+            }
+        </ul>
+    </CustomMudField>
+   
+
     
     <Row>
-        <SelectList T="SheetColumnType" DropDownLabel="@Localizer["Kolumn"]" ShowActions="false" Items="Enum.GetValues<SheetColumnType>().ToList()" ListVariant="ListVariant.DropDown"
-                    @bind-SelectedItem="SelectedColumnType" GetItemNameFunc="SheetDataService.GetColumnTypeName" />
-        <SelectList T="SheetRowType" DropDownLabel="@Localizer["Rad"]" ShowActions="false" Items="Enum.GetValues<SheetRowType>().ToList()" ListVariant="ListVariant.DropDown"
-                    @bind-SelectedItem="SelectedRowType" GetItemNameFunc="SheetDataService.GetRowTypeName" />
+        @* <SelectList T="SheetColumnType" DropDownLabel="@Localizer["Kolumn"]" ShowActions="false"  Items="Enum.GetValues<SheetColumnType>().ToList()" ListVariant="ListVariant.DropDown" @bind-SelectedItem="SelectedColumnType" GetItemNameFunc="SheetDataService.GetColumnTypeName" /> *@
+        <MudTextField T="string" Value="SheetDataService.GetColumnTypeName(SelectedColumnType)" ReadOnly="true" Variant="Variant.Outlined" Margin="Margin.Dense" Label="@Localizer["Kolumn"]" />
+        <MudTextField T="string" Value="SheetDataService.GetRowTypeName(SelectedRowType)" ReadOnly="true" Variant="Variant.Outlined" Margin="Margin.Dense" Label="@Localizer["Rad"]" />
+       @*  <SelectList T="SheetRowType" DropDownLabel="@Localizer["Rad"]" ShowActions="false" Items="Enum.GetValues<SheetRowType>().ToList()" ListVariant="ListVariant.DropDown"
+                    @bind-SelectedItem="SelectedRowType" GetItemNameFunc="SheetDataService.GetRowTypeName" /> *@
     </Row>
 
     <MudTextField Style="width: calc(50% - 4px);" T="int" Margin="Margin.Dense" Value="SelectedColumn.Width" ValueChanged="SetColumnWidth" Label="@Localizer["Kolumnbredd"]" Variant="Variant.Outlined" />
     
     <div>
-        <MudCheckBox Style="width: 50%; margin-left: -4px !important;" T="bool" Value="SelectedColumn.IsVisible" ValueChanged="SetColumnVisibility" Dense="true" Label="@Localizer["Visa kolumn"]" />
+        @* <MudCheckBox Style="width: 50%; margin-left: -4px !important;" T="bool" Value="SelectedColumn.IsVisible" ValueChanged="SetColumnVisibility" Dense="true" Label="@Localizer["Visa kolumn"]" /> *@
         <MudCheckBox Style="width: 50%; margin-left: -4px !important;" T="bool" Value="SelectedCellFormat.IsVisible" ValueChanged="SetCellVisibility" Dense="true" Label="@Localizer["Visa cell-värde"]" />
     </div>
     
@@ -33,6 +65,7 @@
     [Parameter] public SheetSection? Section { get; set; }
     [Parameter] public View? View { get; set; }
     [CascadingParameter] public EditViewPage? EditViewPage { get; set; }
+    
 
     SheetColumnType SelectedColumnType = SheetColumnType.Description;
     SheetRowType SelectedRowType = SheetRowType.Group;
@@ -44,6 +77,18 @@
         SelectedColumn.IsVisible = isVisible;
         EditViewPage?.TriggerStateHasChanged();
     }
+    void SetColumnVisibility(SheetColumnType type, bool isVisible)
+    {
+        if (Section is not null)
+        {
+            var column = Section.Columns.FirstOrDefault(x => x.ColumnType == type);
+            if (column is not null)
+            {
+                column.IsVisible = isVisible;
+                EditViewPage?.TriggerStateHasChanged();
+            }
+        }
+    }
     void SetCellVisibility(bool isVisible)
     {
         SelectedCellFormat.IsVisible = isVisible;
@@ -54,4 +99,5 @@
         SelectedColumn.Width = width;
         EditViewPage?.TriggerStateHasChanged();
     }
+
 }

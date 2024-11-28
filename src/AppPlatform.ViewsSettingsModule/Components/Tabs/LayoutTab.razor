@@ -12,38 +12,44 @@
 
 
 
-<SettingsSection Title="@Localizer["Sektioner"]">
-    <Row Class="mb-2">
-        <MudIconButton Icon="@Icons.Material.Sharp.Add" Variant="Variant.Outlined" Color="Color.Primary" Size="Size.Medium" OnClick="NewSection" />
-        <MudIconButton Icon="@Icons.Material.Sharp.Delete" Variant="Variant.Outlined" Color="Color.Error" Size="Size.Medium" OnClick="() => DeleteSection(SelectedSection)" Disabled="SelectedSection is null" />
-        <MudIconButton Icon="@Icons.Material.Sharp.ArrowUpward" Variant="Variant.Outlined" Color="Color.Primary" Size="Size.Medium"
-                       Disabled="!CanMoveUp(SelectedSection)" OnClick="() => MoveUp(SelectedSection)" />
-        <MudIconButton Icon="@Icons.Material.Sharp.ArrowDownward" Variant="Variant.Outlined" Color="Color.Primary" Size="Size.Medium"
-                       Disabled="!CanMoveDown(SelectedSection)" OnClick="() => MoveDown(SelectedSection)" />
-    </Row>
-    <MudPaper Elevation="3" MinHeight="92px">
-        <ul>
-            @foreach (var section in View!.SectionsInOrder())
-            {
-                <li class="@(section == SelectedSection ? "selected" : string.Empty)">
-                    <div>
-                        <div class="pr-1">@Localizer["Namn:"]</div>
-                        <input class="elevation-1" @bind-value="section.Name" style="width: 100px;" />
-                    </div>
-                    <div>
-                        <div class="pr-1">@Localizer["Typ:"]</div>
-                        <div>@Helper.GetSectionTypeName(section)</div>
-                    </div>
-                    <div class="d-block">
-                        <MudIconButton Icon="@Icons.Material.Sharp.Edit" Size="Size.Small" OnClick="() => SelectedSection = section"/>
-                    </div>
-                    
-                </li>
-            }
-        </ul>
-    </MudPaper>
+
+     
+
+    <CustomMudField Title="@Localizer["Sektioner"]" Alignment="CustomMudField.HeaderAlignment.Right" MudFieldClass="custom-input-1" MudFieldStyle="min-height: 92px">
+        <HeaderContent>
+            <MudIconButton Icon="@Icons.Material.Sharp.Add" Variant="Variant.Outlined" Color="Color.Primary" Size="Size.Medium" OnClick="NewSection" />
+            <MudIconButton Icon="@Icons.Material.Sharp.Delete" Variant="Variant.Outlined" Color="Color.Error" Size="Size.Medium" OnClick="() => DeleteSection(SelectedSection)" Disabled="SelectedSection is null" />
+            <MudIconButton Icon="@Icons.Material.Sharp.ArrowUpward" Variant="Variant.Outlined" Color="Color.Primary" Size="Size.Medium"
+                            Disabled="!CanMoveUp(SelectedSection)" OnClick="() => MoveUp(SelectedSection)" />
+            <MudIconButton Icon="@Icons.Material.Sharp.ArrowDownward" Variant="Variant.Outlined" Color="Color.Primary" Size="Size.Medium"
+                            Disabled="!CanMoveDown(SelectedSection)" OnClick="() => MoveDown(SelectedSection)" />
+        </HeaderContent>
+            
+        <ChildContent>
+            <ul>
+                @foreach (var section in View!.SectionsInOrder())
+                {
+                <li class="@(section == SelectedSection ? "selected" : string.Empty)" @onclick="() => SelectedSection = section">
+                        <div>
+                            <div class="pr-1">@Localizer["Namn:"]</div>
+                            <input class="elevation-1" @bind-value="section.Name" style="width: 100px;" />
+                        </div>
+                        <div>
+                            <div class="pr-1">@Localizer["Typ:"]</div>
+                            <div>@Helper.GetSectionTypeName(section)</div>
+                        </div>
+
+
+                    </li>
+                }
+            </ul>
+        </ChildContent>
+    </CustomMudField>
+
     
-</SettingsSection>
+    
+    
+
 
 
 <SettingsSection>

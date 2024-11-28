@@ -112,3 +112,12 @@ table.striped tr:nth-child(odd) {
 div.mud-input-control {
     margin: 0 !important;
 }
+.custom-input-1.custom-input-1.custom-input-1.custom-input-1.custom-input-1.custom-input-1.custom-input-1.custom-input-1 .mud-input-label {
+    transform: translate(0px, -15px) scale(0.75);
+    max-width: 100%;
+    padding: 0 !important;
+}
+
+.custom-input-1.custom-input-1.custom-input-1.custom-input-1 .mud-input-slot {
+    padding: 0;
+}

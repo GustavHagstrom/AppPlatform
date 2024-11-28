@@ -1,9 +1,13 @@
 ﻿li {
     display: flex;
-    justify-content: space-between;
+    /*justify-content: space-between;*/
     padding: 8px;
+    gap: 8px;
 }
-
+li:hover {
+    background-color: var(--mud-palette-action-default-hover); /*var(--mud-palette-action-default-hover)*/
+    cursor: pointer;
+}
 li.selected {
     background-color: var(--mud-palette-primary-hover);
     color: var(--mud-palette-primary);
