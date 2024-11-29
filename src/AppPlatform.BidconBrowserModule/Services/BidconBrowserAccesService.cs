@@ -10,7 +10,7 @@ internal class BidconBrowserAccesService(IBidconAccess bidconAccess, IDbContextF
 {
     public async Task<TreeItem> GetTreeItemRootAsync(ClaimsPrincipal userClaims)
     {
-        var context = await DbContextFactory.CreateDbContextAsync();
+        using var context = await DbContextFactory.CreateDbContextAsync();
         var credentials = await context.BidconAccessCredentials.Where(x => x.TenantId == userClaims.GetTenantId()).FirstOrDefaultAsync();
         if(credentials == null)
         {

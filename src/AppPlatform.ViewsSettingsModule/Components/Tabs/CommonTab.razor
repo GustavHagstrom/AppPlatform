@@ -12,8 +12,8 @@
 
 <SettingsSection Title="@Localizer["Alllmänt"]">
     <div class="d-flex gap-2">
-        <MudButton Variant="Variant.Outlined" Color="Color.Success" StartIcon="@Icons.Material.Sharp.Save" Style="width: 50%;">@Localizer["Spara"]</MudButton>
-        <MudButton Variant="Variant.Outlined" Color="Color.Error" StartIcon="@Icons.Material.Sharp.Delete" Style="width: 50%;">@Localizer["Ta bort"]</MudButton>
+        <MudButton Variant="Variant.Outlined" Color="Color.Success" StartIcon="@Icons.Material.Sharp.Save" Style="width: 50%;" OnClick="Save">@Localizer["Spara"]</MudButton>
+        <MudButton Variant="Variant.Outlined" Color="Color.Error" StartIcon="@Icons.Material.Sharp.Delete" Style="width: 50%;" OnClick="Delete">@Localizer["Ta bort"]</MudButton>
     </div>
 
     <MudTextField T="string" Variant="Variant.Outlined" Value="View?.Name" ValueChanged="SetName" Label="@Localizer["Namn"]" Margin="Margin.Dense" />
@@ -43,7 +43,14 @@
             EditViewPage?.TriggerStateHasChanged();
         }
     }
-
+    async Task Save()
+    {
+        if (View is not null)
+        {
+            var state = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+            await _viewService.UpsertAsync(state.User, View);
+        }
+    }
     async Task Delete()
     {
         if (View is not null)

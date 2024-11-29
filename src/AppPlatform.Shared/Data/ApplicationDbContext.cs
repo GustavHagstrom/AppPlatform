@@ -49,7 +49,7 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
             .HasForeignKey(si => si.ParentId)
             .OnDelete(DeleteBehavior.Cascade);
 
-        modelBuilder.Entity<SheetCellFormat>()
-            .HasKey(sc => new { sc.SheetSectionId, sc.ColumnType, sc.RowType});
+        //modelBuilder.Entity<SheetCellFormat>()
+        //    .HasKey(sc => new { sc.SheetSectionId, sc.ColumnType, sc.RowType});
     }
 }

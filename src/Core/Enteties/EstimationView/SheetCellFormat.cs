@@ -2,8 +2,10 @@
 using System.ComponentModel.DataAnnotations;
 
 namespace AppPlatform.Core.Enteties.EstimationView;
-public class SheetCellFormat : IFormat
+public class SheetCellFormat : IFormat, IViewEntity
 {
+    [StringLength(50)]
+    public string Id { get; set; } = Guid.NewGuid().ToString();
     [StringLength(50)]
 
     public required string SheetSectionId { get; set; }
@@ -29,6 +31,7 @@ public class SheetCellFormat : IFormat
     public bool IsUnderline { get; set; } = false;
     public Align? VerticalAlign { get; set; } = Align.End;
     public string? TextColor { get; set; } = null;
+    
 
     public void ApplyFormat(IFormat format)
     {

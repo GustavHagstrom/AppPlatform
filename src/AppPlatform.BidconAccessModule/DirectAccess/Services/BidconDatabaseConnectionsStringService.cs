@@ -8,7 +8,7 @@ public class BidconDatabaseConnectionsStringService(IDbContextFactory<Applicatio
 {
     public async Task<string> BuildAsync(ClaimsPrincipal userClaims)
     {
-        var context = await DbContextFactory.CreateDbContextAsync();
+        using var context = await DbContextFactory.CreateDbContextAsync();
         var credentials = await context.BidconAccessCredentials.Where(x => x.TenantId == userClaims.GetTenantId()).FirstOrDefaultAsync();
 
         if (credentials == null)

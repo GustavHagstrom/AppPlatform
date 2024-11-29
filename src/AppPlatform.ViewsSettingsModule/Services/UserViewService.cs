@@ -8,7 +8,7 @@ internal class UserViewService(IDbContextFactory<ApplicationDbContext> contextFa
 {
     public async Task<IEnumerable<string>> GetPickedUserIdsAsync(ClaimsPrincipal userClaims, View view)
     {
-        var context = await contextFactory.CreateDbContextAsync();
+        using var context = await contextFactory.CreateDbContextAsync();
         return await context.UserViews
             .Where(x => x.ViewId == view.Id)
             .Select(x => x.UserId)
@@ -16,7 +16,7 @@ internal class UserViewService(IDbContextFactory<ApplicationDbContext> contextFa
     }
     public async Task PickAsync(ClaimsPrincipal userClaims, View view, IEnumerable<string> userIds)
     {
-        var context = await contextFactory.CreateDbContextAsync();
+        using var context = await contextFactory.CreateDbContextAsync();
         var userViews = userIds.Select(x => new UserView
         {
             UserId = x,
@@ -27,7 +27,7 @@ internal class UserViewService(IDbContextFactory<ApplicationDbContext> contextFa
     }
     public async Task UnpickAsync(ClaimsPrincipal userClaims, View view, IEnumerable<string> userIds)
     {
-        var context = await contextFactory.CreateDbContextAsync();
+        using var context = await contextFactory.CreateDbContextAsync();
         var userViews = await context.UserViews
             .Where(x => x.ViewId == view.Id && userIds.Contains(x.UserId))
             .ToListAsync();

@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
 namespace AppPlatform.Core.Enteties.EstimationView;
-public class DataRow
+public class DataRow : IViewEntity
 {
     [StringLength(50)]
     public string Id { get; set; } = Guid.NewGuid().ToString();

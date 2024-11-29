@@ -15,12 +15,12 @@ internal class RoleViewService(IDbContextFactory<ApplicationDbContext> contextFa
         {
             return Array.Empty<Role>();
         }
-        var context = await contextFactory.CreateDbContextAsync();
+        using var context = await contextFactory.CreateDbContextAsync();
         return await context.Roles.Where(x => x.TenantId == tenantId).ToListAsync();
     }
     public async Task<IEnumerable<string>> GetPickedRoleIdsAsync(ClaimsPrincipal userClaims, View view)
     {
-        var context = await contextFactory.CreateDbContextAsync();
+        using var context = await contextFactory.CreateDbContextAsync();
         return await context.RoleViews
             .Where(x => x.ViewId == view.Id)
             .Select(x => x.RoleId)
@@ -28,7 +28,7 @@ internal class RoleViewService(IDbContextFactory<ApplicationDbContext> contextFa
     }
     public async Task PickAsync(ClaimsPrincipal userClaims, View view, IEnumerable<string> roleIds)
     {
-        var context = await contextFactory.CreateDbContextAsync();
+        using var context = await contextFactory.CreateDbContextAsync();
         var roleViews = roleIds.Select(x => new RoleView
         {
             RoleId = x,
@@ -39,7 +39,7 @@ internal class RoleViewService(IDbContextFactory<ApplicationDbContext> contextFa
     }
     public async Task UnpickAsync(ClaimsPrincipal userClaims, View view, IEnumerable<string> roleIds)
     {
-        var context = await contextFactory.CreateDbContextAsync();
+        using var context = await contextFactory.CreateDbContextAsync();
         var roleViews = await context.RoleViews
             .Where(x => x.ViewId == view.Id && roleIds.Contains(x.RoleId))
             .ToListAsync();
