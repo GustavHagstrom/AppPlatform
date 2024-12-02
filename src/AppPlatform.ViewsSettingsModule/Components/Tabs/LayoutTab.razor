@@ -13,42 +13,42 @@
 
 
 
-     
 
-    <CustomMudField Title="@Localizer["Sektioner"]" Alignment="CustomMudField.HeaderAlignment.Right" MudFieldClass="custom-input-1" MudFieldStyle="min-height: 92px">
-        <HeaderContent>
-            <MudIconButton Icon="@Icons.Material.Sharp.Add" Variant="Variant.Outlined" Color="Color.Primary" Size="Size.Medium" OnClick="NewSection" />
-            <MudIconButton Icon="@Icons.Material.Sharp.Delete" Variant="Variant.Outlined" Color="Color.Error" Size="Size.Medium" OnClick="() => DeleteSection(SelectedSection)" Disabled="SelectedSection is null" />
-            <MudIconButton Icon="@Icons.Material.Sharp.ArrowUpward" Variant="Variant.Outlined" Color="Color.Primary" Size="Size.Medium"
-                            Disabled="!CanMoveUp(SelectedSection)" OnClick="() => MoveUp(SelectedSection)" />
-            <MudIconButton Icon="@Icons.Material.Sharp.ArrowDownward" Variant="Variant.Outlined" Color="Color.Primary" Size="Size.Medium"
-                            Disabled="!CanMoveDown(SelectedSection)" OnClick="() => MoveDown(SelectedSection)" />
-        </HeaderContent>
-            
-        <ChildContent>
-            <ul>
-                @foreach (var section in View!.SectionsInOrder())
-                {
+
+<CustomMudField Title="@Localizer["Sektioner"]" Alignment="CustomMudField.HeaderAlignment.Right" MudFieldClass="custom-input-1" MudFieldStyle="min-height: 92px">
+    <HeaderContent>
+        <MudIconButton Icon="@Icons.Material.Sharp.Add" Variant="Variant.Outlined" Color="Color.Primary" Size="Size.Medium" OnClick="NewSection" />
+        <MudIconButton Icon="@Icons.Material.Sharp.Delete" Variant="Variant.Outlined" Color="Color.Error" Size="Size.Medium" OnClick="() => DeleteSection(SelectedSection)" Disabled="SelectedSection is null" />
+        <MudIconButton Icon="@Icons.Material.Sharp.ArrowUpward" Variant="Variant.Outlined" Color="Color.Primary" Size="Size.Medium"
+        Disabled="!CanMoveUp(SelectedSection)" OnClick="() => MoveUp(SelectedSection)" />
+        <MudIconButton Icon="@Icons.Material.Sharp.ArrowDownward" Variant="Variant.Outlined" Color="Color.Primary" Size="Size.Medium"
+        Disabled="!CanMoveDown(SelectedSection)" OnClick="() => MoveDown(SelectedSection)" />
+    </HeaderContent>
+
+    <ChildContent>
+        <ul>
+            @foreach (var section in View!.SectionsInOrder())
+            {
                 <li class="@(section == SelectedSection ? "selected" : string.Empty)" @onclick="() => SelectedSection = section">
-                        <div>
-                            <div class="pr-1">@Localizer["Namn:"]</div>
-                            <input class="elevation-1" @bind-value="section.Name" style="width: 100px;" />
-                        </div>
-                        <div>
-                            <div class="pr-1">@Localizer["Typ:"]</div>
-                            <div>@Helper.GetSectionTypeName(section)</div>
-                        </div>
+                    <div>
+                        <div class="pr-1">@Localizer["Namn:"]</div>
+                        <input class="elevation-1" @bind-value="section.Name" style="width: 100px;" />
+                    </div>
+                    <div>
+                        <div class="pr-1">@Localizer["Typ:"]</div>
+                        <div>@Helper.GetSectionTypeName(section)</div>
+                    </div>
 
 
-                    </li>
-                }
-            </ul>
-        </ChildContent>
-    </CustomMudField>
+                </li>
+            }
+        </ul>
+    </ChildContent>
+</CustomMudField>
 
-    
-    
-    
+
+
+
 
 
 
@@ -136,6 +136,16 @@
                     return dataSection;
                 case SectionType.SheetSection:
                     var sheetSection = new SheetSection { Name = newSectionResult.Name, Order = View.SectionsInOrder().Count() + 1 };
+                    sheetSection.Columns.AddRange(
+                    [
+                        new SheetColumn { Order = 1, Width = 30, ColumnType = SheetColumnType.Description },
+                        new SheetColumn { Order = 2, Width = 10, ColumnType = SheetColumnType.Quantity },
+                        new SheetColumn { Order = 3, Width = 10, ColumnType = SheetColumnType.Unit },
+                        new SheetColumn { Order = 4, Width = 10, ColumnType = SheetColumnType.UnitCost },
+                        new SheetColumn { Order = 5, Width = 10, ColumnType = SheetColumnType.TotalCost },
+                        new SheetColumn { Order = 6, Width = 10, ColumnType = SheetColumnType.UnitAskingPrice },
+                        new SheetColumn { Order = 7, Width = 10, ColumnType = SheetColumnType.TotalAskingPrice },
+                    ]);
                     View?.SheetSections.Add(sheetSection);
                     EditViewPage?.TriggerStateHasChanged();
                     return sheetSection;

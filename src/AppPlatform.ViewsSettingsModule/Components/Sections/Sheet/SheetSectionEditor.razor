@@ -9,18 +9,26 @@
    
 
 
-    <CustomMudField Title="@Localizer["Kolumner"]" MudFieldClass="custom-input-1">
-        <ul>
-            @foreach (var column in Section.Columns)
-            {
-                <li class="@(column.ColumnType == SelectedColumn.ColumnType ? "selected" : string.Empty)" @onclick="() => SelectedColumnType = column.ColumnType">
-                    <div class="d-flex" style="align-items: center;" >
-                        <MudCheckBox T="bool" Value="column.IsVisible" ValueChanged="value => SetColumnVisibility(column.ColumnType, value)" Dense="true"/>
-                        <MudText Typo="Typo.body1">@SheetDataService.GetColumnTypeName(column.ColumnType)</MudText>
-                    </div>
-                </li>
-            }
-        </ul>
+    <CustomMudField Title="@Localizer["Kolumner"]" MudFieldClass="custom-input-1" Alignment="CustomMudField.HeaderAlignment.Right">
+        <HeaderContent>
+            <MudIconButton Icon="@Icons.Material.Sharp.ArrowUpward" Variant="Variant.Outlined" Color="Color.Primary" Size="Size.Medium"
+                           Disabled="!CanMoveColumnUp()" OnClick="() => MoveColumnUp()" />
+            <MudIconButton Icon="@Icons.Material.Sharp.ArrowDownward" Variant="Variant.Outlined" Color="Color.Primary" Size="Size.Medium"
+                           Disabled="!CanMoveColumnDown()" OnClick="() => MoveColumnDown()" />
+        </HeaderContent>
+        <ChildContent>        
+            <ul>
+                @foreach (var column in Section.Columns.OrderBy(x => x.Order))
+                {
+                    <li class="@(column.ColumnType == SelectedColumn.ColumnType ? "selected" : string.Empty)" @onclick="() => SelectedColumnType = column.ColumnType">
+                        <div class="d-flex" style="align-items: center;" >
+                            <MudCheckBox T="bool" Value="column.IsVisible" ValueChanged="value => SetColumnVisibility(column.ColumnType, value)" Dense="true"/>
+                            <MudText Typo="Typo.body1">@SheetDataService.GetColumnTypeName(column.ColumnType)</MudText>
+                        </div>
+                    </li>
+                }
+            </ul>
+        </ChildContent>
     </CustomMudField>
 
     <CustomMudField Title="@Localizer["Rader"]" MudFieldClass="custom-input-1">
@@ -97,6 +105,53 @@
     void SetColumnWidth(int width)
     {
         SelectedColumn.Width = width;
+        EditViewPage?.TriggerStateHasChanged();
+    }
+
+
+    bool CanMoveColumnUp()
+    {
+        var columns = Section?.Columns.OrderBy(x => x.Order).ToList();
+        if (columns is null || columns.Count < 2)
+        {
+            return false;
+        }
+        return columns.First() != SelectedColumn;
+    }
+    bool CanMoveColumnDown()
+    {
+        var columns = Section?.Columns.OrderBy(x => x.Order).ToList();
+        if (columns is null || columns.Count < 2)
+        {
+            return false;
+        }
+        return columns.Last() != SelectedColumn;
+    }
+    void MoveColumnUp()
+    {
+        var columns = Section?.Columns.OrderBy(x => x.Order).ToList();
+        if (!CanMoveColumnUp() || columns is null)
+        {
+            return;
+        }
+        var value = SelectedColumn.Order - 1;
+        var otherColumn = columns.First(x => x.Order == value);
+        otherColumn.Order += 1;
+        SelectedColumn.Order -= 1;
+        EditViewPage?.TriggerStateHasChanged();
+    }
+    void MoveColumnDown()
+    {
+        var columns = Section?.Columns.OrderBy(x => x.Order).ToList();
+        if (!CanMoveColumnDown() || columns is null)
+        {
+            return;
+        }
+
+        var value = SelectedColumn.Order + 1;
+        var otherColumn = columns.First(x => x.Order == value);
+        otherColumn.Order -= 1;
+        SelectedColumn.Order += 1;
         EditViewPage?.TriggerStateHasChanged();
     }
 

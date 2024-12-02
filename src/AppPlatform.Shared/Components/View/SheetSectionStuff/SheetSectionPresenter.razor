@@ -28,7 +28,8 @@
                 <tr>
                     @foreach (var column in Section.Columns.Where(x => x.IsVisible).OrderBy(x => x.Order))
                     {
-                        var styleContainer = CellStyles[new SheetCellKey(SheetRowType.Header, column.ColumnType)];
+                        @*  var styleContainer = CellStyles[new SheetCellKey(SheetRowType.Header, column.ColumnType)]; *@
+                        var styleContainer = CellStyles[Section.CellFormats.First(x => x.RowType == SheetRowType.Header && x.ColumnType == column.ColumnType).Id];
                         <th>
                             <div class="cell-container">
                                 <div class="@CellValueClass" style="@styleContainer.CssStyle">
@@ -50,7 +51,9 @@
                         }
                         @foreach (var column in Section.Columns.Where(x => x.IsVisible).OrderBy(x => x.Order))
                         {
-                            var styleContainer = CellStyles[new SheetCellKey(RowTypeFromInt(context.SheetItem.RowType), column.ColumnType)];
+                            @* var styleContainer = CellStyles[new SheetCellKey(RowTypeFromInt(context.SheetItem.RowType), column.ColumnType)]; *@
+                            var rowType = RowTypeFromInt(context.SheetItem.RowType);
+                            var styleContainer = CellStyles[Section.CellFormats.First(x => x.RowType == rowType && x.ColumnType == column.ColumnType).Id];
                             columnCount += 1;
                             var indentStyle1 = columnCount == 1 ? $"padding-left: {context.Level * 16 + 24}px;" : string.Empty;
                             var indentStyle2 = columnCount == 1 ? $"left: {context.Level * 16 - 8}px;" : string.Empty;
@@ -77,7 +80,7 @@
             </tbody>
         </table>
     </div>
-    
+
 }
 
 @code {
@@ -86,7 +89,7 @@
     [Parameter, EditorRequired] public Estimation? Estimation { get; set; }
     [Parameter, EditorRequired] public View? View { get; set; }
 
-    Dictionary<SheetCellKey, SheetCellFormatContainer> CellStyles = new();
+    Dictionary<string, SheetCellFormatContainer> CellStyles = new();
     SheetItemContainer? NetSheetContainer;
     string CellValueClass = "cell-value";
     bool _firstRender = true;
@@ -115,7 +118,8 @@
 
         foreach (var cellFormat in Section.CellFormats)
         {
-            var key = new SheetCellKey(cellFormat.RowType, cellFormat.ColumnType);
+            // var key = new SheetCellKey(cellFormat.RowType, cellFormat.ColumnType);
+            var key = cellFormat.Id;
             var style = ViewStyleService.CreateFormatStyles(cellFormat);
             CellStyles.Add(key, new(style, cellFormat));
         }
