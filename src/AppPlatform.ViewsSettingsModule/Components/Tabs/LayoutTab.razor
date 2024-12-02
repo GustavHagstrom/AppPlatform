@@ -149,6 +149,11 @@
                     View?.SheetSections.Add(sheetSection);
                     EditViewPage?.TriggerStateHasChanged();
                     return sheetSection;
+                case SectionType.PageBreakSection:
+                    var pageBreakSection = new PageBreakSection { Name = newSectionResult.Name, Order = View.SectionsInOrder().Count() + 1 };
+                    View?.PageBreakSections.Add(pageBreakSection);
+                    EditViewPage?.TriggerStateHasChanged();
+                    return pageBreakSection;
                 default:
                     throw new NotImplementedException();
             }

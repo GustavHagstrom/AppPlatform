@@ -9,7 +9,8 @@ public class Helper(IStringLocalizer<Helper> Localizer)
     private Dictionary<SectionType, string> SectionTypeNames = new()
     {
         { SectionType.DataSection, Localizer["Data"] },
-        { SectionType.SheetSection, Localizer["Tabell"] }
+        { SectionType.SheetSection, Localizer["Tabell"] },
+        { SectionType.PageBreakSection, Localizer["Sidbrytning"] },
     };
     public string GetSectionTypeName(SectionType sectionType)
     {
@@ -25,6 +26,10 @@ public class Helper(IStringLocalizer<Helper> Localizer)
         {
             return GetSectionTypeName(SectionType.SheetSection);
         }
+        else if(section is PageBreakSection)
+        {
+            return GetSectionTypeName(SectionType.PageBreakSection);
+        }
         throw new NotImplementedException();
     }
     public SectionType GetSectionType(ISection section)
@@ -36,6 +41,10 @@ public class Helper(IStringLocalizer<Helper> Localizer)
         else if (section is SheetSection)
         {
             return SectionType.SheetSection;
+        }
+        else if (section is PageBreakSection)
+        {
+            return SectionType.PageBreakSection;
         }
         throw new NotImplementedException();
     }

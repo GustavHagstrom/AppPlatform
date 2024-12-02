@@ -2,5 +2,6 @@
 public enum SectionType
 {
     DataSection,
-    SheetSection
+    SheetSection,
+    PageBreakSection
 }
