@@ -172,6 +172,10 @@
             {
                 View?.SheetSections.Remove(sheetSection);
             }
+            else if (section is PageBreakSection pageBreakSection)
+            {
+                View?.PageBreakSections.Remove(pageBreakSection);
+            }
             else
             {
                 throw new NotImplementedException();

@@ -1,7 +1,10 @@
-<tr>
+<tr style="@_style">
     @ChildContent
 </tr>
 
 @code{
     [Parameter] public RenderFragment? ChildContent { get; set; }
+    [Parameter, EditorRequired] public int Height { get; set; } = 10;
+
+    string _style => $"height: {Height * 2}px";
 }

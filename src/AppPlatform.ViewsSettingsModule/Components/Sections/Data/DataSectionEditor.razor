@@ -7,7 +7,7 @@
         <MudField Margin="Margin.Dense" Variant="Variant.Outlined" Label="@Localizer["Antal kolumner"]">
             <div class="d-flex">
                 <div>
-                    @Section.ColumnCount
+                    @Section.Columns.Count
                 </div>
                 <MudSpacer />
                 <div class="button-container">
@@ -23,7 +23,7 @@
         <MudField Margin="Margin.Dense" Variant="Variant.Outlined" Label="@Localizer["Antal rader"]">
             <div class="d-flex">
                 <div>
-                    @Section.RowCount
+                    @Section.Rows.Count
                 </div>
                 <MudSpacer />
                 <div class="button-container">
@@ -39,8 +39,8 @@
         
     </Row>
     <Row>
-        <SelectList T="int" ListStyle="width: 100%; min-height: 40px;" @bind-SelectedItem="SelectedColumnCount" Items="Enumerable.Range(1, Section!.ColumnCount).ToList()" ShowActions="false" DropDownLabel="@Localizer["Kolumn"]" ListVariant="ListVariant.DropDown"/>
-        <SelectList T="int" @bind-SelectedItem="SelectedRowCount" Items="Enumerable.Range(1, Section!.RowCount).ToList()" ShowActions="false" DropDownLabel="@Localizer["Rad"]" ListVariant="ListVariant.DropDown" />
+        <SelectList T="int" ListStyle="width: 100%; min-height: 40px;" @bind-SelectedItem="SelectedColumnCount" Items="Enumerable.Range(1, Section!.Columns.Count).ToList()" ShowActions="false" DropDownLabel="@Localizer["Kolumn"]" ListVariant="ListVariant.DropDown" />
+        <SelectList T="int" @bind-SelectedItem="SelectedRowCount" Items="Enumerable.Range(1, Section!.Rows.Count).ToList()" ShowActions="false" DropDownLabel="@Localizer["Rad"]" ListVariant="ListVariant.DropDown" />
     </Row>
     
 
@@ -80,15 +80,6 @@
             if (Section is null || SelectedRowCount == 0 || SelectedColumnCount == 0) return null;
 
             var cell = Section?.Cells.FirstOrDefault(x => x.Row == SelectedRowCount && x.Column == SelectedColumnCount);
-            if (cell is null)
-            {
-                cell = new DataCell
-                    {
-                        Row = SelectedRowCount,
-                        Column = SelectedColumnCount
-                    };
-                Section!.Cells.Add(cell);
-            }
             return cell;
         }
     }
@@ -108,7 +99,7 @@
     }
     void RemoveColumn()
     {
-        if (Section is null || Section.ColumnCount < 2) return;
+        if (Section is null || Section.Columns.Count < 2) return;
         Section.Columns.Remove(Section.Columns.Last());
     }
     void AddRow()
@@ -118,7 +109,7 @@
     }
     void RemoveRow()
     {
-        if (Section is null || Section.RowCount < 2) return;
+        if (Section is null || Section.Rows.Count < 2) return;
         Section.Rows.Remove(Section.Rows.Last());
     }
 }

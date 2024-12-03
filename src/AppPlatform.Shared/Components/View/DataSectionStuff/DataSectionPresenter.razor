@@ -1,0 +1,77 @@
+@using AppPlatform.Shared.Components.View.DataSectionStuff
+@using AppPlatform.Shared.Components.View.TableStuff
+@using System.Globalization
+@using AppPlatform.Shared.Services.Views
+@inject IStringLocalizer<DataSectionPresenter> Localizer
+@inject IViewStyleService ViewStyleService
+
+@if(Section is not null)
+{
+    @*  <div>
+        @for (int i = 1; i <= Section.RowCount; i++)
+        {
+            <div class="row">
+                @Localizer[$"Rad {i}"]
+                @for (int j = 1; j <= Section.ColumnCount; j++)
+                {
+                    <div class="col">
+                        <DataCellPresenter Estimation="@Estimation" />
+                    </div>
+                }
+            </div>
+        }
+
+    </div> *@
+    <ViewTable>
+        <ColumnDefinitionsContent>
+            @{
+                var totalWidth = Section.Columns.Sum(x => x.Width);
+                foreach (var column in Section.Columns.OrderBy(x => x.Order))
+                {
+                    var widthValue = ((double)column.Width / totalWidth * 100).ToString(CultureInfo.InvariantCulture);
+                    var widthText = widthValue + "%";
+                    <ColumnDefinition Width="@widthText" />
+                }
+            }
+        </ColumnDefinitionsContent>
+        <BodyContent>
+            @foreach (var row in Section.Rows.OrderBy(x => x.Order))
+            {
+                <ViewRow Height="@row.Height">
+                    @foreach (var column in Section.Columns)
+                    {
+                        var cell = Section.Cells.FirstOrDefault(x => x.Row == row.Order && x.Column == column.Order);
+                        if (cell is not null)
+                        {
+                            var style = ViewStyleService.CreateFormatStyles(cell.CellFormat!);
+                            <ViewCell CellValueStyle="@style" Type="ViewCell.CellType.TableCell" CellValue="@cell.Formula" />
+                        }
+
+                    }
+                </ViewRow>
+            }
+          @*   @for (int i = 1; i <= Section.Rows.Count; i++)
+            {
+                var row = Section.Rows.First(x => x.Order == i);
+                <ViewRow Height="@row.Height">
+                    @for (int j = 1; j <= Section.Columns.Count; j++)
+                    {
+                        var cell = Section.Cells.FirstOrDefault(x => x.Row == i && x.Column == j);
+                        if(cell is not null)
+                        {
+                            var style = ViewStyleService.CreateFormatStyles(cell.CellFormat!);
+                            <ViewCell CellValueStyle="@style" Type="ViewCell.CellType.TableCell" CellValue="@cell.Formula" />
+                        }
+                    }
+                </ViewRow>
+      
+            } *@
+        </BodyContent>
+    </ViewTable>
+}
+
+@code {
+    [Parameter] public DataSection? Section { get; set; }
+    [Parameter] public bool EditMode { get; set; } = false;
+    [Parameter] public Estimation? Estimation { get; set; }
+}
