@@ -1,10 +1,13 @@
-<tr style="@_style">
+@* <tr style="@_style">
     @ChildContent
-</tr>
+</tr> *@
+<div style="@_style">
+    @ChildContent
+</div>
 
 @code{
     [Parameter] public RenderFragment? ChildContent { get; set; }
-    [Parameter, EditorRequired] public int Height { get; set; } = 10;
+    [Parameter] public int? Height { get; set; }
 
-    string _style => $"height: {Height * 2}px";
+    string _style => Height is null ? string.Empty : $"height: {Height.Value * 2}px";
 }

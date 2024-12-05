@@ -12,27 +12,28 @@
 
 @if (Section is not null && Estimation is not null && View is not null)
 {
+    var totalWidth = Section.Columns.Sum(x => x.Width);
+    var widthMap = new Dictionary<SheetColumn, string>();
+    var columns = Section.Columns.OrderBy(x => x.Order).ToList();
+
+    foreach (var column in columns)
+    {
+        var widthValue = ((double)column.Width / totalWidth * 100).ToString(CultureInfo.InvariantCulture);
+        var widthText = widthValue + "%";
+        widthMap.Add(column, widthText);
+    }
+
     CreateStyleMaps();
+
     <ViewTable>
-        <ColumnDefinitionsContent>
-            @{
-                var allColumnsWidthSum = Section.Columns.Where(x => x.IsVisible).Sum(x => x.Width);
-                foreach (var column in Section.Columns.Where(x => x.IsVisible).OrderBy(x => x.Order))
-                {
-                    var widthValue = ((double)column.Width / allColumnsWidthSum * 100).ToString(CultureInfo.InvariantCulture);
-                    var widthText = widthValue + "%";
-                    <ColumnDefinition Width="@widthText" />
-                }
-            }
-        </ColumnDefinitionsContent>
         <HeaderContent>
             <ViewRow>
-                @foreach (var column in Section.Columns.Where(x => x.IsVisible).OrderBy(x => x.Order))
+                @foreach (var column in columns)
                 {
                     var styleContainer = CellStyles[Section.CellFormats.First(x => x.RowType == SheetRowType.Header && x.ColumnType == column.ColumnType).Id];
                     var isVisible = styleContainer.Format.IsVisible;
                     var value = SheetNameService.GetColumnTypeName(column.ColumnType);
-                    <ViewCell CellValueStyle="@styleContainer.CssStyle" IsVisible="@isVisible" Type="ViewCell.CellType.HeaderCell" CellValue="@value"/>
+                    <ViewCell Width="@widthMap[column]" CellValueStyle="@styleContainer.CssStyle" IsVisible="@isVisible" Type="ViewCell.CellType.HeaderCell" CellValue="@value" />
                 }
             </ViewRow>
         </HeaderContent>
@@ -41,7 +42,7 @@
                 <ViewRow>
                     @{
                         int columnCount = 0;
-                        @foreach (var column in Section.Columns.Where(x => x.IsVisible).OrderBy(x => x.Order))
+                        @foreach (var column in columns)
                         {
                             var rowType = RowTypeFromInt(context.SheetItem.RowType);
                             var styleContainer = CellStyles[Section.CellFormats.First(x => x.RowType == rowType && x.ColumnType == column.ColumnType).Id];
@@ -50,7 +51,7 @@
                             var cellValue = SheetNameService.GetColumnDataFromItem(column.ColumnType, context.SheetItem);
                             var isIndented = columnCount == 1;
                             var showExpandButton = columnCount == 1 && context.SheetItem.Children.Count != 0;
-                            <ViewCell CellValueStyle="@styleContainer.CssStyle" IsVisible="@isVisible" Type="ViewCell.CellType.TableCell" CellValue="@cellValue" IndentLevel="@context.Level" Toggled="context.IsExpanded" ToggledChanged="x => SetExpand(context, x)" IsIndented="@isIndented" ShowExpandButton="@showExpandButton" />
+                            <ViewCell Width="@widthMap[column]" CellValueStyle="@styleContainer.CssStyle" IsVisible="@isVisible" Type="ViewCell.CellType.TableCell" CellValue="@cellValue" IndentLevel="@context.Level" Toggled="context.IsExpanded" ToggledChanged="x => SetExpand(context, x)" IsIndented="@isIndented" ShowExpandButton="@showExpandButton" />
                         }
                     }
                 </ViewRow>

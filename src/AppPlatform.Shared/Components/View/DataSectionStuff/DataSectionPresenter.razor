@@ -7,23 +7,21 @@
 
 @if(Section is not null)
 {
-    @*  <div>
-        @for (int i = 1; i <= Section.RowCount; i++)
-        {
-            <div class="row">
-                @Localizer[$"Rad {i}"]
-                @for (int j = 1; j <= Section.ColumnCount; j++)
-                {
-                    <div class="col">
-                        <DataCellPresenter Estimation="@Estimation" />
-                    </div>
-                }
-            </div>
-        }
+    
+    var totalWidth = Section.Columns.Sum(x => x.Width);
+    var widthMap = new Dictionary<DataColumn, string>();
+    var columns = Section.Columns.OrderBy(x => x.Order).ToList();
 
-    </div> *@
+    foreach (var column in columns)
+    {
+        var widthValue = ((double)column.Width / totalWidth * 100).ToString(CultureInfo.InvariantCulture);
+        var widthText = widthValue + "%";
+        widthMap.Add(column, widthText);
+    }
+    
     <ViewTable>
-        <ColumnDefinitionsContent>
+
+     @*    <ColumnDefinitionsContent>
             @{
                 var totalWidth = Section.Columns.Sum(x => x.Width);
                 foreach (var column in Section.Columns.OrderBy(x => x.Order))
@@ -33,39 +31,24 @@
                     <ColumnDefinition Width="@widthText" />
                 }
             }
-        </ColumnDefinitionsContent>
+        </ColumnDefinitionsContent> *@
         <BodyContent>
+            
             @foreach (var row in Section.Rows.OrderBy(x => x.Order))
             {
                 <ViewRow Height="@row.Height">
-                    @foreach (var column in Section.Columns)
+                    @foreach (var column in columns)
                     {
                         var cell = Section.Cells.FirstOrDefault(x => x.Row == row.Order && x.Column == column.Order);
                         if (cell is not null)
                         {
                             var style = ViewStyleService.CreateFormatStyles(cell.CellFormat!);
-                            <ViewCell CellValueStyle="@style" Type="ViewCell.CellType.TableCell" CellValue="@cell.Formula" />
+                            <ViewCell Width="@widthMap[column]" CellValueStyle="@style" Type="ViewCell.CellType.TableCell" CellValue="@cell.Formula" />
                         }
 
                     }
                 </ViewRow>
             }
-          @*   @for (int i = 1; i <= Section.Rows.Count; i++)
-            {
-                var row = Section.Rows.First(x => x.Order == i);
-                <ViewRow Height="@row.Height">
-                    @for (int j = 1; j <= Section.Columns.Count; j++)
-                    {
-                        var cell = Section.Cells.FirstOrDefault(x => x.Row == i && x.Column == j);
-                        if(cell is not null)
-                        {
-                            var style = ViewStyleService.CreateFormatStyles(cell.CellFormat!);
-                            <ViewCell CellValueStyle="@style" Type="ViewCell.CellType.TableCell" CellValue="@cell.Formula" />
-                        }
-                    }
-                </ViewRow>
-      
-            } *@
         </BodyContent>
     </ViewTable>
 }

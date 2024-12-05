@@ -1,5 +1,5 @@
-<MudElement HtmlTag="@_type">
-    <div class="cell-container">
+@* <MudElement HtmlTag="@_type"> *@
+    <div class="cell-container" style="@_containerWidthStyle">
         @if (ShowExpandButton)
         {
             <ViewExpandButton IndentLevel="@IndentLevel" Toggled="@Toggled" ToggledChanged="@ToggledChanged" />
@@ -11,7 +11,7 @@
             }
         </div>
     </div>
-</MudElement>
+@* </MudElement> *@
     
 
 @code{
@@ -19,6 +19,7 @@
     [Parameter] public string CellValue { get; set; } = "";
     [Parameter] public bool IsVisible { get; set; } = true;
     [Parameter] public CellType Type { get; set; } = CellType.TableCell;
+    [Parameter, EditorRequired] public string Width { get; set; } = string.Empty;
 
 
     [Parameter] public bool IsIndented { get; set; } = false;
@@ -29,7 +30,7 @@
     [Parameter] public EventCallback<bool> ToggledChanged { get; set; }
 
     string _style => IsIndented || ShowExpandButton ? $"padding-left: {IndentLevel * 16 + 24}px; {CellValueStyle}" : CellValueStyle;
-
+    string _containerWidthStyle => $"width: {Width}";
 
     string _type => Type switch
     {

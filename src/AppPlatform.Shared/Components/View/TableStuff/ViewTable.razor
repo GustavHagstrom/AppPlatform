@@ -1,4 +1,4 @@
-<div class="table-container">
+@* <div class="table-container">
     <table style="width: 100%;">
         <colgroup>
             @ColumnDefinitionsContent
@@ -10,10 +10,20 @@
             @BodyContent
         </tbody>
     </table>
+</div> *@
+<div class="table-container">
+    <div style="width: 100%;">
+        <div>
+            @HeaderContent
+        </div>
+        <div>
+            @BodyContent
+        </div>
+    </div>
 </div>
 
 @code{
-    [Parameter] public RenderFragment? ColumnDefinitionsContent { get; set; }
+    // [Parameter] public RenderFragment? ColumnDefinitionsContent { get; set; }
     [Parameter] public RenderFragment? HeaderContent { get; set; }
     [Parameter] public RenderFragment? BodyContent { get; set; }
 }
