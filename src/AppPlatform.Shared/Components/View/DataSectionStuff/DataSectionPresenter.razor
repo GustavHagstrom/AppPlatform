@@ -20,18 +20,6 @@
     }
     
     <ViewTable>
-
-     @*    <ColumnDefinitionsContent>
-            @{
-                var totalWidth = Section.Columns.Sum(x => x.Width);
-                foreach (var column in Section.Columns.OrderBy(x => x.Order))
-                {
-                    var widthValue = ((double)column.Width / totalWidth * 100).ToString(CultureInfo.InvariantCulture);
-                    var widthText = widthValue + "%";
-                    <ColumnDefinition Width="@widthText" />
-                }
-            }
-        </ColumnDefinitionsContent> *@
         <BodyContent>
             
             @foreach (var row in Section.Rows.OrderBy(x => x.Order))

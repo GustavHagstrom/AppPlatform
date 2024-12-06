@@ -1,12 +1,7 @@
 <div>
-    <div class="d-flex" style="@JustifyContent">
-        <div style="display: flex; align-items: flex-end;">
-            <MudText Typo="Typo.subtitle1" Style="font-weight: bold; margin-bottom: -4px;">@Title</MudText>
-        </div>
-        <div style="padding-bottom: 4px;">
-            @HeaderContent
-        </div>
-    </div>
+    <FieldHeader Alignment="@Alignment" Title="@Title">
+        @HeaderContent
+    </FieldHeader>
     <MudField Class="@MudFieldClass" Style="@MudFieldStyle" Variant="Variant.Outlined" Margin="Margin.Dense">
         <div style="@_minChildHeight">
             @ChildContent
@@ -24,13 +19,7 @@
     [Parameter] public string? MudFieldStyle { get; set; }
     [Parameter] public string MinChildHeight { get; set; } = "92px";
 
-        string _minChildHeight => $"min-height: {MinChildHeight}";
-
-    string JustifyContent => Alignment switch
-    {
-        HeaderAlignment.Left => "justify-content: flex-start",
-        _ => "justify-content: space-between;"
-    };
+    string _minChildHeight => $"min-height: {MinChildHeight}";
 
     public enum HeaderAlignment
     {

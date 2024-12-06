@@ -4,13 +4,12 @@
 
 @if (DataCellFormat is not null)
 {
-    <SettingsSection Title="@Localizer["Format"]">
+        <FieldHeader Title="@Localizer["Format"]" />
         <FormatEditor Format="DataCellFormat" />
         <div class="d-flex gap-2">
             <MudButton Variant="Variant.Outlined" Color="Color.Primary" Style="width: 50%;" OnClick="ApplyToEntireColumn">@Localizer["Applicera format på hela kolumnen"]</MudButton>
             <MudButton Variant="Variant.Outlined" Color="Color.Primary" Style="width: 50%;" OnClick="ApplyToEntireRow">@Localizer["Applicera format på hela raden"]</MudButton>
         </div>
-    </SettingsSection>
 }
 
 
@@ -20,37 +19,31 @@
     [Parameter] public DataSection? Section { get; set; }
     [CascadingParameter] public EditViewPage? EditViewPage { get; set; }
 
-    //SheetCellFormat? SheetCellFormat { get; set; }// => Section?.CellFormats.FirstOrDefault(x => x.RowType == SheetRowType && x.ColumnType == SheetColumnType);
+
 
     [Parameter] public DataCellFormat? DataCellFormat { get; set; }
 
-    // protected override void OnParametersSet()
-    // {
-    //     SheetCellFormat = Section?.CellFormats.FirstOrDefault(x => x.RowType == SheetRowType && x.ColumnType == SheetColumnType);
-    // }
+
     void ApplyToEntireRow()
     {
-        throw new NotImplementedException();
-        if (DataCellFormat is not null)
+        if (DataCellFormat is not null && Section is not null)
         {
-            // foreach (var cellFormat in Section!.CellFormats.Where(x => x.RowType == SheetCellFormat.RowType))
-            // {
-            //     cellFormat.ApplyFormat(SheetCellFormat);
-            //     EditViewPage?.TriggerStateHasChanged();
-            // }
+            foreach (var cell in Section.Cells.Where(x => x.Row == DataCellFormat.DataCell!.Row))
+            {
+                cell.CellFormat?.ApplyFormat(DataCellFormat);
+            }
+            EditViewPage?.TriggerStateHasChanged();
         }
     }
     void ApplyToEntireColumn()
     {
-        throw new NotImplementedException();
-        if (DataCellFormat is not null)
+        if (DataCellFormat is not null && Section is not null)
         {
-
-            // foreach (var cellFormat in Section!.CellFormats.Where(x => x.ColumnType == SheetCellFormat.ColumnType))
-            // {
-            //     cellFormat.ApplyFormat(SheetCellFormat);
-            //     EditViewPage?.TriggerStateHasChanged();
-            // }
+            foreach (var cell in Section.Cells.Where(x => x.Column == DataCellFormat.DataCell!.Column))
+            {
+                cell.CellFormat?.ApplyFormat(DataCellFormat);
+            }
+            EditViewPage?.TriggerStateHasChanged();
         }
     }
 }

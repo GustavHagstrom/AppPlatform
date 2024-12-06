@@ -36,31 +36,31 @@
                 </div>
             </div>
         </MudField>
-        
+
     </Row>
     <Row>
         <SelectList T="int" ListStyle="width: 100%; min-height: 40px;" @bind-SelectedItem="SelectedColumnCount" Items="Enumerable.Range(1, Section!.Columns.Count).ToList()" ShowActions="false" DropDownLabel="@Localizer["Kolumn"]" ListVariant="ListVariant.DropDown" />
         <SelectList T="int" @bind-SelectedItem="SelectedRowCount" Items="Enumerable.Range(1, Section!.Rows.Count).ToList()" ShowActions="false" DropDownLabel="@Localizer["Rad"]" ListVariant="ListVariant.DropDown" />
     </Row>
-    
+
 
     @if (SelectedCell is not null && SelectedColumn is not null && SelectedRow is not null)
     {
         <Row Class="align-center relative">
-            <MudTextField T="string" Margin="Margin.Dense" Variant="Variant.Outlined" Label="@Localizer["Formel"]" @bind-Value="SelectedCell.Formula" />
+            <MudTextField T="string" Margin="Margin.Dense" Variant="Variant.Outlined" Label="@Localizer["Formel"]" Value="SelectedCell.Formula" ValueChanged="value => SetFormula(SelectedCell, value)" />
             <MudIconButton Color="Color.Info" Icon="@Icons.Material.Sharp.Help" Size="Size.Large" Class="pa-0" OnClick="() => ShowFormulaHelp = !ShowFormulaHelp"/>
             <MudPopover AnchorOrigin="Origin.TopRight" TransformOrigin="Origin.BottomRight" Paper="true" Open="ShowFormulaHelp" OverflowBehavior="OverflowBehavior.FlipAlways">
-                
+
             </MudPopover>
         </Row>
         <Row>
-            <MudTextField T="int" Margin="Margin.Dense" Variant="Variant.Outlined" Label="@Localizer["Kolumnbredd"]" @bind-Value="SelectedColumn.Width" />
-            <MudTextField T="int" Margin="Margin.Dense" Variant="Variant.Outlined" Label="@Localizer["Radhöjd"]" @bind-Value="SelectedRow.Height" />
+            <MudTextField T="int" Margin="Margin.Dense" Variant="Variant.Outlined" Label="@Localizer["Kolumnbredd"]" Value="SelectedColumn.Width" ValueChanged="value => SetWidth(SelectedColumn, value)" />
+            <MudTextField T="int" Margin="Margin.Dense" Variant="Variant.Outlined" Label="@Localizer["Radhöjd"]" Value="SelectedRow.Height" ValueChanged="value => SetHeight(SelectedRow, value)" />
         </Row>
         <DataCellEditor Section="Section" DataCellFormat="SelectedCell.CellFormat" />
     }
-    
-    
+
+
 }
 
 @code {
@@ -96,20 +96,39 @@
     {
         if (Section is null) return;
         Section.AddColumn();
+        EditViewPage?.TriggerStateHasChanged();
     }
     void RemoveColumn()
     {
         if (Section is null || Section.Columns.Count < 2) return;
         Section.Columns.Remove(Section.Columns.Last());
+        EditViewPage?.TriggerStateHasChanged();
     }
     void AddRow()
     {
         if (Section is null) return;
         Section.AddRow();
+        EditViewPage?.TriggerStateHasChanged();
     }
     void RemoveRow()
     {
         if (Section is null || Section.Rows.Count < 2) return;
         Section.Rows.Remove(Section.Rows.Last());
+        EditViewPage?.TriggerStateHasChanged();
+    }
+    void SetHeight(DataRow row, int height)
+    {
+        row.Height = height;
+        EditViewPage?.TriggerStateHasChanged();
+    }
+    void SetWidth(DataColumn column, int width)
+    {
+        column.Width = width;
+        EditViewPage?.TriggerStateHasChanged();
+    }
+    void SetFormula(DataCell cell, string formula)
+    {
+        cell.Formula = formula;
+        EditViewPage?.TriggerStateHasChanged();
     }
 }
