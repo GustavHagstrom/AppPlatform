@@ -4,13 +4,15 @@
 
 @if (SheetCellFormat is not null)
 {
-    <SettingsSection Title="@Localizer["Format"]">
+    <div>
+        <FieldHeader Title="@Localizer["Format"]"/>
         <FormatEditor Format="SheetCellFormat" />
-        <div class="d-flex gap-2">
-            <MudButton Variant="Variant.Outlined" Color="Color.Primary" Style="width: 50%;" OnClick="ApplyToEntireColumn">@Localizer["Applicera format på hela kolumnen"]</MudButton>
-            <MudButton Variant="Variant.Outlined" Color="Color.Primary" Style="width: 50%;" OnClick="ApplyToEntireRow">@Localizer["Applicera format på hela raden"]</MudButton>
-        </div>
-    </SettingsSection>
+    </div>
+    <div class="d-flex gap-2">
+        <MudButton Variant="Variant.Outlined" Color="Color.Primary" Style="width: 50%;" OnClick="ApplyToEntireColumn">@Localizer["Applicera format på hela kolumnen"]</MudButton>
+        <MudButton Variant="Variant.Outlined" Color="Color.Primary" Style="width: 50%;" OnClick="ApplyToEntireRow">@Localizer["Applicera format på hela raden"]</MudButton>
+    </div>
+    
 }
 
 
@@ -19,15 +21,9 @@
 @code{
     [Parameter] public SheetSection? Section { get; set; }
     [CascadingParameter] public EditViewPage? EditViewPage { get; set; }
-
-    //SheetCellFormat? SheetCellFormat { get; set; }// => Section?.CellFormats.FirstOrDefault(x => x.RowType == SheetRowType && x.ColumnType == SheetColumnType);
-
     [Parameter] public SheetCellFormat? SheetCellFormat { get; set; }
 
-    // protected override void OnParametersSet()
-    // {
-    //     SheetCellFormat = Section?.CellFormats.FirstOrDefault(x => x.RowType == SheetRowType && x.ColumnType == SheetColumnType);
-    // }
+
     void ApplyToEntireRow()
     {
         if (SheetCellFormat is not null)
