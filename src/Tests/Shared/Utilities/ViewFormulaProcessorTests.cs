@@ -7,15 +7,18 @@ namespace AppPlatform.Tests.Shared.Utilities;
 public class ViewFormulaProcessorTests
 {
     //Test for basic placeholders
-    [TestCase(Placeholders.Estimation.Name, "Name")]
-    [TestCase(Placeholders.Estimation.Id, "Id")]
-    [TestCase(Placeholders.Estimation.Description, "Description")]
-    [TestCase(Placeholders.Estimation.Customer, "Customer")]
-    [TestCase(Placeholders.Estimation.Place, "Place")]
-    [TestCase(Placeholders.Estimation.HandlingOfficer, "HandlingOfficer")]
-    [TestCase(Placeholders.Estimation.ConfirmationOfficer, "ConfirmationOfficer")]
-    [TestCase(Placeholders.Estimation.TenderTotal, "1\u00A0000\u00A0000")]
-    [TestCase($"{Placeholders.Estimation.Name} - {Placeholders.Estimation.Description}", "Name - Description")]
+    [TestCase(Placeholders.Estimation.Properties.Name, "Name")]
+    [TestCase(Placeholders.Estimation.Properties.Id, "Id")]
+    [TestCase(Placeholders.Estimation.Properties.Description, "Description")]
+    [TestCase(Placeholders.Estimation.Properties.Customer, "Customer")]
+    [TestCase(Placeholders.Estimation.Properties.Place, "Place")]
+    [TestCase(Placeholders.Estimation.Properties.HandlingOfficer, "HandlingOfficer")]
+    [TestCase(Placeholders.Estimation.Properties.ConfirmationOfficer, "ConfirmationOfficer")]
+    [TestCase(Placeholders.Estimation.Properties.TenderTotal, "1\u00A0000\u00A0000")]
+    [TestCase($"{Placeholders.Estimation.Properties.Name} - {Placeholders.Estimation.Properties.Description}", "Name - Description")]
+    [TestCase($"{Placeholders.Estimation.Properties.Name} - Calc(5* (1+1))", "Name - 10")]
+    [TestCase($"{Placeholders.Estimation.Properties.Name} - AccountSingle(7786)", "Name - 7786")]
+    [TestCase("Calc(1/0)", "MATH-ERROR")]
 
     public void Process_EstimationName_ReturnsEstimationName(string placeholder, string expected)
     {

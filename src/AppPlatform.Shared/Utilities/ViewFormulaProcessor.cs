@@ -1,6 +1,7 @@
 ﻿using AppPlatform.Core.Enteties.EstimationEnteties;
 using AppPlatform.Shared.Constants;
 using Microsoft.Extensions.Logging;
+using NCalc;
 using System.Text.RegularExpressions;
 
 namespace AppPlatform.Shared.Utilities;
@@ -8,14 +9,14 @@ public static class ViewFormulaProcessor
 {
     private static readonly Dictionary<string, Func<Estimation, string?>> _formulas = new()
     {
-        { Placeholders.Estimation.Id, estimation => estimation.Id },
-        { Placeholders.Estimation.Name, estimation => estimation.Name },
-        { Placeholders.Estimation.Description, estimation => estimation.Description },
-        { Placeholders.Estimation.Customer, estimation => estimation.Customer },
-        { Placeholders.Estimation.Place, estimation => estimation.Place },
-        { Placeholders.Estimation.HandlingOfficer, estimation => estimation.HandlingOfficer },
-        { Placeholders.Estimation.ConfirmationOfficer, estimation => estimation.ConfirmationOfficer },
-        { Placeholders.Estimation.TenderTotal, estimation => estimation.TenderTotal?.ToString("N0") }
+        { Placeholders.Estimation.Properties.Id, estimation => estimation.Id },
+        { Placeholders.Estimation.Properties.Name, estimation => estimation.Name },
+        { Placeholders.Estimation.Properties.Description, estimation => estimation.Description },
+        { Placeholders.Estimation.Properties.Customer, estimation => estimation.Customer },
+        { Placeholders.Estimation.Properties.Place, estimation => estimation.Place },
+        { Placeholders.Estimation.Properties.HandlingOfficer, estimation => estimation.HandlingOfficer },
+        { Placeholders.Estimation.Properties.ConfirmationOfficer, estimation => estimation.ConfirmationOfficer },
+        { Placeholders.Estimation.Properties.TenderTotal, estimation => estimation.TenderTotal?.ToString("N0") }
     };
     /// <summary>
     /// Processes the formula and replaces the placeholders with the values from the estimation.
@@ -25,10 +26,12 @@ public static class ViewFormulaProcessor
     /// <returns></returns>
     public static string Process(string formula, Estimation estimation)
     {
-        //regex patterns for placeholders and calculation
+        //regex patterns for placeholders
         var placeholderPattern = @"\{([^\}]+)\}";
+        var calcFuncPattern = "Calc\\((.*?)\\)";
+        var accountSingleFuncPattern = "AccountSingle\\((.*?)\\)";
 
-        return Regex.Replace(formula, placeholderPattern, match =>
+        var result = Regex.Replace(formula, placeholderPattern, match =>
         {
             var placeholder = match.Groups[0].Value;
             if (_formulas.ContainsKey(placeholder))
@@ -38,6 +41,24 @@ public static class ViewFormulaProcessor
              return placeholder;
             
         });
+        result = Regex.Replace(result, accountSingleFuncPattern, match =>
+        {
+            var accountValue = match.Groups[1].Value;
+            
+            return $"{accountValue}";
+        });
+
+        result = Regex.Replace(result, calcFuncPattern, match =>
+        {
+            var formula = match.Groups[1].Value;
+            var expression = new Expression(formula);
+            var mathResult = expression.Evaluate();
+            return mathResult.ToString() ?? "MATH-ERROR";
+        });
+
+
+
+        return result;
     }
 
 }
