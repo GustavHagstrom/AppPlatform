@@ -11,12 +11,12 @@ public class EfCoreRepository<T> : IRepository<T> where T : class
         dbContextFactory = contextFactory;
     }
 
-    public async Task<T?> GetByIdAsync(string id)
+    public virtual async Task<T?> GetByIdAsync(string id)
     {
         using var context = dbContextFactory.CreateDbContext();
         return await context.Set<T>().FindAsync(id);
     }
-    public async Task<IEnumerable<T>> GetAllAsync()
+    public virtual async Task<IEnumerable<T>> GetAllAsync()
     {
         using var context = dbContextFactory.CreateDbContext();
         return await context.Set<T>().ToListAsync();
