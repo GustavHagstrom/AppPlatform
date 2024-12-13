@@ -1,5 +1,6 @@
 ﻿using AppPlatform.Shared.Data;
 using AppPlatform.Shared.Extensions;
+using AppPlatform.Shared.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using System.Security.Claims;

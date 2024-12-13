@@ -1,4 +1,5 @@
-﻿using System.Security.Claims;
+﻿using AppPlatform.Shared.Models;
+using System.Security.Claims;
 
 namespace AppPlatform.Shared.Services.Authorization;
 public interface IAccessClaimService
