@@ -1,12 +1,11 @@
-﻿using AppPlatform.BidconAccessModule.DirectAccess.Components;
-using AppPlatform.BidconAccessModule.DirectAccess.Services;
-using AppPlatform.BidconAccessModule.SdkAccess.Components;
+﻿using AppPlatform.BidconAccessModule.DirectAccess.Services;
 using AppPlatform.BidconAccessModule.SdkAccess.Services;
 using AppPlatform.BidconAccessModule.Services;
 using AppPlatform.Shared.Abstractions;
 using AppPlatform.Shared.Builders;
 using AppPlatform.Shared.Constants;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace AppPlatform.BidconAccessModule;
@@ -26,7 +25,7 @@ public class BidconAccessModule : IModule
         //componentBuilder.AddSettingsComponent<BidconDirectCredentials>();
     }
 
-    public void Configure(WebApplicationBuilder builder)
+    public void GeneralConfig(WebApplicationBuilder builder)
     {
         //when using SDK
         UseSdkReflectionServices(builder.Services);
@@ -34,7 +33,7 @@ public class BidconAccessModule : IModule
         //when using direct
         //UseDirectServices(services);
 
-        builder.Services.AddTransient<IBidconDirectCredentialsService, BidconDirectCredentialsService>();
+        
         builder.Services.AddAuthorizationBuilder()
             .AddPolicy(Constants.Authorization.EditBidconConnectionPolicy, policy =>
             {
@@ -42,7 +41,15 @@ public class BidconAccessModule : IModule
                 policy.RequireClaim(SharedApplicationClaimTypes.AccessClaim, Constants.Authorization.AccessClaimValue);
             });
     }
+    public void ConfigForEfCore(WebApplicationBuilder builder)
+    {
+        builder.Services.AddTransient<IBidconDirectCredentialsService, BidconDirectCredentialsService>();
+    }
 
+    public void ConfigForMongoDb(WebApplicationBuilder builder)
+    {
+
+    }
 
     /// <summary>
     /// Use this when using direct access to DB
@@ -69,5 +76,10 @@ public class BidconAccessModule : IModule
     {
         services.AddScoped<IBidconAccess, BidconSdkReflectionAccess>();
         services.AddScoped<IBidconReflectionService, BidconReflectionService>();
+    }
+
+    public void OnEfCoreModelCreating(ModelBuilder modelBuilder)
+    {
+
     }
 }

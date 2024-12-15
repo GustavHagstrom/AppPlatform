@@ -2,12 +2,13 @@
 using AppPlatform.Core.Enteties.Authorization;
 using AppPlatform.Core.Enteties.EstimationEnteties;
 using AppPlatform.Core.Enteties.EstimationView;
+using AppPlatform.Shared.Abstractions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 
 namespace AppPlatform.Shared.Data;
 
-public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : DbContext(options)
+public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options, IEnumerable<IModule> modules) : DbContext(options)
 {
     private readonly ValueComparer<ICollection<string>> _stringCollectionValueComparer = new((c1, c2) => c1!.SequenceEqual(c2!),
             c => c.Aggregate(0, (a, v) => HashCode.Combine(a, v.GetHashCode())),
@@ -25,7 +26,10 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
     public required DbSet<SdkCredentials> SdkCredentials { get; set; }
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        base.OnModelCreating(modelBuilder);
+        foreach (var module in modules)
+        {
+            module.OnEfCoreModelCreating(modelBuilder);
+        }
         modelBuilder.Entity<RoleAccess>()
             .HasKey(ra => new { ra.RoleId, ra.AccessClaimValue });
         modelBuilder.Entity<UserAccess>()

@@ -4,6 +4,7 @@ using AppPlatform.Shared.Constants;
 using AppPlatform.ViewSettingsModule.Components;
 using AppPlatform.ViewSettingsModule.Services;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace AppPlatform.ViewSettingsModule;
@@ -18,11 +19,8 @@ public class ViewSettingsModule : IModule
         componentBuilder.AddSettingsNavigationComponent<SettingsLink>();
     }
 
-    public void Configure(WebApplicationBuilder builder)
+    public void GeneralConfig(WebApplicationBuilder builder)
     {
-        builder.Services.AddScoped<IViewService, ViewService>();
-        builder.Services.AddScoped<IRoleViewService, RoleViewService>();
-        builder.Services.AddScoped<IUserViewService, UserViewService>();
         builder.Services.AddSingleton<Helper>();
         builder.Services.AddAuthorization(configure =>
         {
@@ -32,5 +30,20 @@ public class ViewSettingsModule : IModule
                 policy.RequireClaim(SharedApplicationClaimTypes.AccessClaim, Constants.Authorization.AccessClaimValue);
             });
         });
+    }
+
+    public void ConfigForEfCore(WebApplicationBuilder builder)
+    {
+        builder.Services.AddScoped<IViewService, ViewService>();
+        builder.Services.AddScoped<IRoleViewService, RoleViewService>();
+        builder.Services.AddScoped<IUserViewService, UserViewService>();
+    }
+    public void OnEfCoreModelCreating(ModelBuilder modelBuilder)
+    {
+
+    }
+    public void ConfigForMongoDb(WebApplicationBuilder builder)
+    {
+
     }
 }

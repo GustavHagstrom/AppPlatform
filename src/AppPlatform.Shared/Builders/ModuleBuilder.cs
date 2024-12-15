@@ -1,5 +1,6 @@
 ﻿using AppPlatform.Shared.Abstractions;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace AppPlatform.Shared.Builders;
 public class ModuleBuilder(WebApplicationBuilder builder)
@@ -10,8 +11,23 @@ public class ModuleBuilder(WebApplicationBuilder builder)
     public void AddModule<T>() where T : IModule, new()
     {
         var module = new T();
-        module.Configure(builder);
+        module.GeneralConfig(builder);
         module.RegisterAccessIds(_accessIdBuilder);
         module.RegisterInjectableComponents(_componentBuilder);
+
+        if (builder.Configuration["DbType"] == "SqlServer")
+        {
+            module.ConfigForEfCore(builder);
+        }
+        else if (builder.Configuration["DbType"] == "MondoDb")
+        {
+            module.ConfigForMongoDb(builder);
+        }
+        else
+        {
+            throw new InvalidOperationException("DbType not found");
+        }
+
+        builder.Services.AddSingleton<IModule>(module);
     }
 }

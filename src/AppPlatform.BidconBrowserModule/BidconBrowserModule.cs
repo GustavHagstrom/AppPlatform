@@ -4,6 +4,7 @@ using AppPlatform.Shared.Abstractions;
 using AppPlatform.Shared.Builders;
 using AppPlatform.Shared.Constants;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace AppPlatform.BidconBrowserModule;
@@ -17,9 +18,9 @@ public class BidconBrowserModule : IModule
     {
         componentBuilder.AddAppBarNavLinkComponent<BidconBrowserAppLink>();
     }
-    public void Configure(WebApplicationBuilder builder)
+    public void GeneralConfig(WebApplicationBuilder builder)
     {
-        builder.Services.AddScoped<IBidconBrowserAccesService, BidconBrowserAccesService>();
+        
         builder.Services.AddAuthorization(configure =>
         {
             configure.AddPolicy(Constants.Authorization.Policy, policy =>
@@ -28,5 +29,18 @@ public class BidconBrowserModule : IModule
                 policy.RequireClaim(SharedApplicationClaimTypes.AccessClaim, Constants.Authorization.AccessClaimValue);
             });
         });
+    }
+
+    public void ConfigForEfCore(WebApplicationBuilder builder)
+    {
+        builder.Services.AddScoped<IBidconBrowserAccesService, BidconBrowserAccesService>();
+    }
+    public void OnEfCoreModelCreating(ModelBuilder modelBuilder)
+    {
+
+    }
+    public void ConfigForMongoDb(WebApplicationBuilder builder)
+    {
+
     }
 }
