@@ -19,7 +19,7 @@ public class ModuleBuilder(WebApplicationBuilder builder)
         {
             module.ConfigForEfCore(builder);
         }
-        else if (builder.Configuration["DbType"] == "MondoDb")
+        else if (builder.Configuration["DbType"] == "MongoDb")
         {
             module.ConfigForMongoDb(builder, _mongoCollectionBuilder);
         }
