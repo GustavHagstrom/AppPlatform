@@ -3,6 +3,7 @@ using AppPlatform.BidconBrowserModule.Services;
 using AppPlatform.Shared.Abstractions;
 using AppPlatform.Shared.Builders;
 using AppPlatform.Shared.Constants;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace AppPlatform.BidconBrowserModule;
@@ -16,10 +17,10 @@ public class BidconBrowserModule : IModule
     {
         componentBuilder.AddAppBarNavLinkComponent<BidconBrowserAppLink>();
     }
-    public void RegisterServices(IServiceCollection services)
+    public void Configure(WebApplicationBuilder builder)
     {
-        services.AddScoped<IBidconBrowserAccesService, BidconBrowserAccesService>();
-        services.AddAuthorization(configure =>
+        builder.Services.AddScoped<IBidconBrowserAccesService, BidconBrowserAccesService>();
+        builder.Services.AddAuthorization(configure =>
         {
             configure.AddPolicy(Constants.Authorization.Policy, policy =>
             {

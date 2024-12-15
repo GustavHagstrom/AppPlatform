@@ -1,17 +1,16 @@
 ﻿using AppPlatform.Shared.Abstractions;
-using AppPlatform.Shared.Services;
-using Microsoft.Extensions.DependencyInjection;
+using Microsoft.AspNetCore.Builder;
 
 namespace AppPlatform.Shared.Builders;
-public class ModuleBuilder(IServiceCollection Services)
+public class ModuleBuilder(WebApplicationBuilder builder)
 {
-    private readonly AccessClaimInfoBuilder _accessIdBuilder = new(Services);
-    private readonly ComponentBuilder _componentBuilder = new(Services);
+    private readonly AccessClaimInfoBuilder _accessIdBuilder = new(builder.Services);
+    private readonly ComponentBuilder _componentBuilder = new(builder.Services);
 
     public void AddModule<T>() where T : IModule, new()
     {
         var module = new T();
-        module.RegisterServices(Services);
+        module.Configure(builder);
         module.RegisterAccessIds(_accessIdBuilder);
         module.RegisterInjectableComponents(_componentBuilder);
     }

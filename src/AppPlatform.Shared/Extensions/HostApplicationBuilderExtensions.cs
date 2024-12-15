@@ -9,6 +9,7 @@ using AppPlatform.Shared.Services.Authorization;
 using AppPlatform.Shared.Services.MicrosoftGraph;
 using AppPlatform.Shared.Services.Settings;
 using AppPlatform.Shared.Services.Views;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Graph;
 using Microsoft.Kiota.Abstractions.Authentication;
@@ -17,9 +18,9 @@ namespace AppPlatform.Shared.Extensions;
 public static class HostApplicationBuilderExtensions
 {
 
-    public static void AddModules(this IServiceCollection services, Action<ModuleBuilder> configure)
+    public static void AddModules(this WebApplicationBuilder builder, Action<ModuleBuilder> configure)
     {
-        var moduleBuilder = new ModuleBuilder(services);
+        var moduleBuilder = new ModuleBuilder(builder);
         configure(moduleBuilder);
     }
     public static void AddApplicationInjectableComponent<T>(this IServiceCollection services, string key) where T : class, IInjectableComponent

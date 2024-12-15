@@ -6,6 +6,7 @@ using AppPlatform.BidconAccessModule.Services;
 using AppPlatform.Shared.Abstractions;
 using AppPlatform.Shared.Builders;
 using AppPlatform.Shared.Constants;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace AppPlatform.BidconAccessModule;
@@ -25,16 +26,16 @@ public class BidconAccessModule : IModule
         //componentBuilder.AddSettingsComponent<BidconDirectCredentials>();
     }
 
-    public void RegisterServices(IServiceCollection services)
+    public void Configure(WebApplicationBuilder builder)
     {
         //when using SDK
-        UseSdkReflectionServices(services);
+        UseSdkReflectionServices(builder.Services);
 
         //when using direct
         //UseDirectServices(services);
 
-        services.AddTransient<IBidconDirectCredentialsService, BidconDirectCredentialsService>();
-        services.AddAuthorizationBuilder()
+        builder.Services.AddTransient<IBidconDirectCredentialsService, BidconDirectCredentialsService>();
+        builder.Services.AddAuthorizationBuilder()
             .AddPolicy(Constants.Authorization.EditBidconConnectionPolicy, policy =>
             {
                 policy.RequireAuthenticatedUser();

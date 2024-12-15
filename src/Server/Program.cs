@@ -67,7 +67,7 @@ builder.Services.AddMudServices(config =>
 
 
 
-builder.Services.AddModules(moduleBuilder =>
+builder.AddModules(moduleBuilder =>
 {
     moduleBuilder.AddModule<ViewSettingsModule>();
     moduleBuilder.AddModule<UserRightSettingsModule>();

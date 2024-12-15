@@ -3,6 +3,7 @@ using AppPlatform.Shared.Builders;
 using AppPlatform.Shared.Constants;
 using AppPlatform.ViewSettingsModule.Components;
 using AppPlatform.ViewSettingsModule.Services;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace AppPlatform.ViewSettingsModule;
@@ -17,13 +18,13 @@ public class ViewSettingsModule : IModule
         componentBuilder.AddSettingsNavigationComponent<SettingsLink>();
     }
 
-    public void RegisterServices(IServiceCollection services)
+    public void Configure(WebApplicationBuilder builder)
     {
-        services.AddScoped<IViewService, ViewService>();
-        services.AddScoped<IRoleViewService, RoleViewService>();
-        services.AddScoped<IUserViewService, UserViewService>();
-        services.AddSingleton<Helper>();
-        services.AddAuthorization(configure =>
+        builder.Services.AddScoped<IViewService, ViewService>();
+        builder.Services.AddScoped<IRoleViewService, RoleViewService>();
+        builder.Services.AddScoped<IUserViewService, UserViewService>();
+        builder.Services.AddSingleton<Helper>();
+        builder.Services.AddAuthorization(configure =>
         {
             configure.AddPolicy(Constants.Authorization.Policy, policy =>
             {

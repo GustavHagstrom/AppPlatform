@@ -3,16 +3,17 @@ using AppPlatform.Shared.Builders;
 using AppPlatform.Shared.Constants;
 using AppPlatform.UserRightSettingsModule.Components;
 using AppPlatform.UserRightSettingsModule.Services;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace AppPlatform.UserRightSettingsModule;
 public class UserRightSettingsModule : IModule
 {
-    public void RegisterServices(IServiceCollection services)
+    public void Configure(WebApplicationBuilder builder)
     {
-        services.AddScoped<IAccessService, AccessService>();
-        services.AddScoped<IRoleService, RoleService>();
-        services.AddAuthorization(configure =>
+        builder.Services.AddScoped<IAccessService, AccessService>();
+        builder.Services.AddScoped<IRoleService, RoleService>();
+        builder.Services.AddAuthorization(configure =>
         {
             configure.AddPolicy(Constants.AuthorizationConstants.Policy, policy =>
             {
