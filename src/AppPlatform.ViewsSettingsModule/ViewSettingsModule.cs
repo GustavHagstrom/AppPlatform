@@ -42,7 +42,7 @@ public class ViewSettingsModule : IModule
     {
 
     }
-    public void ConfigForMongoDb(WebApplicationBuilder builder)
+    public void ConfigForMongoDb(WebApplicationBuilder builder, MongoCollectionBuilder collectionBuilder)
     {
 
     }

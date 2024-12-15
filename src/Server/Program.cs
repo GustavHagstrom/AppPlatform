@@ -18,6 +18,9 @@ using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Http.Extensions;
 using Microsoft.Identity.Client;
 using AppPlatform.BidconAccessModule;
+using MongoDB.Driver;
+using MongoDB.Driver.Core.Configuration;
+using System.Xml.Linq;
 
 internal class Program
 {
@@ -53,9 +56,21 @@ internal class Program
     builder.Services.AddDbContextFactory<ApplicationDbContext>(options => options.UseSqlServer(connectionString, b => b.MigrationsAssembly("AppPlatform.Server")));
 #endif
         }
-        else if (builder.Configuration["DbType"] == "MondoDb")
+        else if (builder.Configuration["DbType"] == "MongoDb")
         {
-
+            builder.Services.AddSingleton(sp =>
+            {
+                var configuration = sp.GetRequiredService<IConfiguration>();
+                var connectionString = configuration["MongoDbSettings:ConnectionString"];
+                var dbName = configuration["MongoDbSettings:DatabaseName"];
+                if (string.IsNullOrEmpty(dbName) || string.IsNullOrEmpty(connectionString))
+                {
+                    throw new InvalidOperationException("MongoDB settings are not configured properly.");
+                }
+                var client = new MongoClient(connectionString);
+                return client.GetDatabase(dbName);
+            });
+            
         }
         else
         {

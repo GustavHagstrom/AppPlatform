@@ -46,7 +46,7 @@ public class BidconAccessModule : IModule
         builder.Services.AddTransient<IBidconDirectCredentialsService, BidconDirectCredentialsService>();
     }
 
-    public void ConfigForMongoDb(WebApplicationBuilder builder)
+    public void ConfigForMongoDb(WebApplicationBuilder builder, MongoCollectionBuilder collectionBuilder)
     {
 
     }
