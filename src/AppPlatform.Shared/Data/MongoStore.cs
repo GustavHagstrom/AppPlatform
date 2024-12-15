@@ -2,11 +2,11 @@
 using MongoDB.Driver;
 
 namespace AppPlatform.Shared.Data;
-internal class MongoRepository<T> : IRepository<T> where T : class
+internal class MongoStore<T> : IDataStore<T> where T : class
 {
     private readonly IMongoCollection<T> collection;
 
-    public MongoRepository(IMongoCollection<T> collection)
+    public MongoStore(IMongoCollection<T> collection)
     {
         this.collection = collection;
     }

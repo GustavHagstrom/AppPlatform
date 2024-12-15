@@ -1,5 +1,5 @@
 ﻿namespace AppPlatform.Shared.Data;
-public interface IRepository<T> where T : class
+public interface IDataStore<T> where T : class
 {
     Task<IEnumerable<T>> GetAllAsync();
     Task<T?> GetByIdAsync(string id);

@@ -2,11 +2,11 @@
 using Microsoft.EntityFrameworkCore.Storage;
 
 namespace AppPlatform.Shared.Data;
-public class EfCoreRepository<T> : IRepository<T> where T : class
+public class EfCoreStore<T> : IDataStore<T> where T : class
 {
     protected readonly IDbContextFactory<ApplicationDbContext> dbContextFactory;
 
-    public EfCoreRepository(IDbContextFactory<ApplicationDbContext> contextFactory)
+    public EfCoreStore(IDbContextFactory<ApplicationDbContext> contextFactory)
     {
         dbContextFactory = contextFactory;
     }
