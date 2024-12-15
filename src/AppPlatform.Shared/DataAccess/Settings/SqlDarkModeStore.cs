@@ -4,9 +4,9 @@ using AppPlatform.Core.Enteties;
 using AppPlatform.Shared.Data;
 using AppPlatform.Shared.Extensions;
 
-namespace AppPlatform.Shared.Services.Settings;
+namespace AppPlatform.Shared.DataAccess.Settings;
 
-public class DarkModeService(IDbContextFactory<ApplicationDbContext> ContextFactory) : IDarkModeService
+public class SqlDarkModeStore(IDbContextFactory<ApplicationDbContext> ContextFactory) : IDarkModeStore
 {
     public async Task<bool> GetAsync(ClaimsPrincipal user)
     {

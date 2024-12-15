@@ -1,4 +1,5 @@
-﻿using Microsoft.Graph.Models;
+﻿using AppPlatform.Shared.Models;
+using Microsoft.Graph.Models;
 
 namespace AppPlatform.Shared.Services.MicrosoftGraph;
 public interface IMicrosoftGraphUserAccess

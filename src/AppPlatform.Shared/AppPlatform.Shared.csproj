@@ -59,10 +59,6 @@
     <UpToDateCheckInput Remove="components\view\ToolbarColumn.razor" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="DataAccess\Authorization\" />
-  </ItemGroup>
-
 
 
 </Project>

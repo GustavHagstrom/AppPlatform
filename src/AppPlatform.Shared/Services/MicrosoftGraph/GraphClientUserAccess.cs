@@ -1,4 +1,5 @@
-﻿using Microsoft.Graph;
+﻿using AppPlatform.Shared.Models;
+using Microsoft.Graph;
 using Microsoft.Graph.Models;
 
 namespace AppPlatform.Shared.Services.MicrosoftGraph;

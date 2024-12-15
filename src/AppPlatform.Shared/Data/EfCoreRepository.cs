@@ -21,11 +21,11 @@ public class EfCoreRepository<T> : IRepository<T> where T : class
         using var context = dbContextFactory.CreateDbContext();
         return await context.Set<T>().ToListAsync();
     }
-    public virtual async Task UpsertAsync(T entity)
+    public virtual async Task UpsertAsync(T entity, string id)
     {
         using var context = dbContextFactory.CreateDbContext();
         var dbSet = context.Set<T>();
-        var existingEntity = await dbSet.FindAsync(entity);
+        var existingEntity = await dbSet.FindAsync(id);
         if (existingEntity == null)
         {
             dbSet.Add(entity);

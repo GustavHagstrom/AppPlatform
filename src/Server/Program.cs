@@ -8,7 +8,6 @@ using MudBlazor.Services;
 using MudBlazor;
 using AppPlatform.Shared.Extensions;
 using AppPlatform.Shared.Data;
-using AppPlatform.Shared.Services.Authorization;
 using AppPlatform.Shared.Components;
 using AppPlatform.ViewSettingsModule;
 using AppPlatform.UserRightSettingsModule;
@@ -19,8 +18,7 @@ using Microsoft.AspNetCore.Http.Extensions;
 using Microsoft.Identity.Client;
 using AppPlatform.BidconAccessModule;
 using MongoDB.Driver;
-using MongoDB.Driver.Core.Configuration;
-using System.Xml.Linq;
+using AppPlatform.Shared.DataAccess.Authorization;
 
 internal class Program
 {
@@ -168,7 +166,7 @@ internal class Program
 
         async Task OnTokenValidatedFunc(TokenValidatedContext context)
         {
-            var accessClaimService = context.HttpContext.RequestServices.GetRequiredService<IAccessClaimService>();
+            var accessClaimService = context.HttpContext.RequestServices.GetRequiredService<IAccessClaimStore>();
             if (accessClaimService is not null)
             {
                 var claims = (await accessClaimService.GetAccessClaims(context.Principal)).ToList();

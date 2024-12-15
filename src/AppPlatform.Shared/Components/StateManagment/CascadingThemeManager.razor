@@ -1,12 +1,10 @@
-﻿@using AppPlatform.Shared.Services.Settings
-
-<MudThemeProvider Theme="CustomThemes.PlatformStandard" IsDarkMode="IsDarkMode" DefaultScrollbar="false" />
+﻿<MudThemeProvider Theme="CustomThemes.PlatformStandard" IsDarkMode="IsDarkMode" DefaultScrollbar="false" />
 <CascadingValue Value="this">
     @ChildContent
 </CascadingValue>
 
 @code{
-    [Inject] IDarkModeService? DarkModeService { get; set; }
+    [Inject] IDarkModeStore? DarkModeService { get; set; }
     [Inject] AuthenticationStateProvider? AuthenticationStateProvider { get; set; }
     [Parameter] public RenderFragment? ChildContent { get; set; }
 

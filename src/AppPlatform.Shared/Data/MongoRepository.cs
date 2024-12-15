@@ -4,32 +4,31 @@ using MongoDB.Driver;
 namespace AppPlatform.Shared.Data;
 internal class MongoRepository<T> : IRepository<T> where T : class
 {
-    //constructor inject mongo client
-    public MongoRepository(IMongoClient client)
+    private readonly IMongoCollection<T> collection;
+
+    public MongoRepository(IMongoCollection<T> collection)
     {
-        //create database
-        var database = client.GetDatabase("appplatform");
-        //create collection
-        var collection = database.GetCollection<T>(typeof(T).Name);
+        this.collection = collection;
     }
 
     public Task DeleteAsync(string id)
     {
-        throw new NotImplementedException();
+        return collection.DeleteOneAsync(Builders<T>.Filter.Eq("_id", id));
     }
 
-    public Task<IEnumerable<T>> GetAllAsync()
+    public async Task<IEnumerable<T>> GetAllAsync()
     {
-        throw new NotImplementedException();
+        return await collection.Find(Builders<T>.Filter.Empty).ToListAsync();
     }
 
-    public Task<T?> GetByIdAsync(string id)
+    public async Task<T?> GetByIdAsync(string id)
     {
-        throw new NotImplementedException();
+        var result = await collection.Find(Builders<T>.Filter.Eq("_id", id)).FirstOrDefaultAsync();
+        return result;
     }
 
-    public Task UpsertAsync(T entity)
+    public Task UpsertAsync(T entity, string id)
     {
-        throw new NotImplementedException();
+        return collection.ReplaceOneAsync(Builders<T>.Filter.Eq("_id", id), entity, new ReplaceOptions { IsUpsert = true });
     }
 }

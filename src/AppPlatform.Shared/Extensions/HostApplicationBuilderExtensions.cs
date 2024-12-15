@@ -3,11 +3,11 @@ using AppPlatform.Shared.Abstractions;
 using AppPlatform.Shared.Builders;
 using AppPlatform.Shared.Components.Settings;
 using AppPlatform.Shared.Constants;
+using AppPlatform.Shared.DataAccess.Authorization;
+using AppPlatform.Shared.DataAccess.Settings;
 using AppPlatform.Shared.Models;
 using AppPlatform.Shared.Services;
-using AppPlatform.Shared.Services.Authorization;
 using AppPlatform.Shared.Services.MicrosoftGraph;
-using AppPlatform.Shared.Services.Settings;
 using AppPlatform.Shared.Services.Views;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
@@ -38,9 +38,9 @@ public static class HostApplicationBuilderExtensions
     public static void RegisterSharedServices(this IServiceCollection services)
     {
         services.AddLocalization();
-        services.AddScoped<IDarkModeService, DarkModeService>();
+        services.AddScoped<IDarkModeStore, SqlDarkModeStore>();
         services.AddScoped<ILocalStorageService, LocalStorageService>();
-        services.AddTransient<IAccessClaimService, AccessClaimService>();
+        services.AddTransient<IAccessClaimStore, SqlAccessClaimStore>();
         services.AddSingleton<IApplicationRenderComponentsService, ApplicationRenderComponentsService>();
         services.AddApplicationInjectableComponent<AppbarSettingsLink>(SharedInjectableComponentKeys.AppBarNavLinkComponent);
         services.AddSingleton<IAccessClaimInfoContainer, AccessClaimInfoContainer>();

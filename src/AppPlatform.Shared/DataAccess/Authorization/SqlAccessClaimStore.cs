@@ -5,8 +5,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using System.Security.Claims;
 
-namespace AppPlatform.Shared.Services.Authorization;
-public class AccessClaimService(IDbContextFactory<ApplicationDbContext> DbContextFactory, ILogger<AccessClaimService> logger) : IAccessClaimService
+namespace AppPlatform.Shared.DataAccess.Authorization;
+public class SqlAccessClaimStore(IDbContextFactory<ApplicationDbContext> DbContextFactory, ILogger<SqlAccessClaimStore> logger) : IAccessClaimStore
 {
     public async Task<IEnumerable<AccessClaim>> GetAccessClaims(ClaimsPrincipal? userClaims)
     {

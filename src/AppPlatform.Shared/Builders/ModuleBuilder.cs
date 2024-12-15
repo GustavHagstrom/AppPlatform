@@ -7,7 +7,7 @@ public class ModuleBuilder(WebApplicationBuilder builder)
 {
     private readonly AccessClaimInfoBuilder _accessIdBuilder = new(builder.Services);
     private readonly ComponentBuilder _componentBuilder = new(builder.Services);
-    private readonly MongoCollectionBuilder _mongoCollectionBuilder = new(builder.Services);
+    private readonly MongoCollectionRegistrar _mongoCollectionBuilder = new(builder.Services);
     public void AddModule<T>() where T : IModule, new()
     {
         var module = new T();
