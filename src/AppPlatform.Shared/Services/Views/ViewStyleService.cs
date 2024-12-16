@@ -2,7 +2,7 @@
 using AppPlatform.Core.Enums.ViewTemplate;
 using System.Globalization;
 
-namespace AppPlatform.Shared.Services.Views;
+namespace AppPlatform.SharedModule.Services.Views;
 public class ViewStyleService : IViewStyleService
 {
     //public string CreateSheetColumnStyles(SheetColumn column, int allColumnsWidthSum)

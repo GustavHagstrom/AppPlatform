@@ -1,6 +1,6 @@
 ﻿using MudBlazor;
 
-namespace AppPlatform.Shared;
+namespace AppPlatform.SharedModule;
 
 public static class CustomThemes
 {

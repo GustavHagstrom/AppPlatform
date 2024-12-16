@@ -2,7 +2,7 @@
 using Microsoft.Graph;
 using Microsoft.Graph.Models;
 
-namespace AppPlatform.Shared.Services.MicrosoftGraph;
+namespace AppPlatform.SharedModule.Services.MicrosoftGraph;
 internal class GraphClientUserAccess(GraphServiceClient graphServiceClient) : IMicrosoftGraphUserAccess
 {
     public async Task<User?> GetMeAsync()

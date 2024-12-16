@@ -1,6 +1,6 @@
 ﻿using AppPlatform.Core.Models.EstimationView;
 
-namespace AppPlatform.Shared.Services.Views;
+namespace AppPlatform.SharedModule.Services.Views;
 public interface IViewStyleService
 {
     string CreateFormatStyles(IFormat format);

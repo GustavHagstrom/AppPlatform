@@ -9,7 +9,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AppPlatform.Tests", "Tests\
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AppPlatform.Core", "Core\AppPlatform.Core.csproj", "{605E28B6-C53F-4B7A-9FDD-2C6A6025203B}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AppPlatform.Shared", "AppPlatform.Shared\AppPlatform.Shared.csproj", "{F30E2F32-A213-4B16-8DA3-D8ED866E0E29}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AppPlatform.SharedModule", "AppPlatform.Shared\AppPlatform.SharedModule.csproj", "{F30E2F32-A213-4B16-8DA3-D8ED866E0E29}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AppPlatform.ViewSettingsModule", "AppPlatform.ViewsSettingsModule\AppPlatform.ViewSettingsModule.csproj", "{280AE21A-A849-4260-BA9A-AAF7E8EF73B3}"
 EndProject

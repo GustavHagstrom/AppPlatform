@@ -1,7 +1,7 @@
 ﻿
 using AppPlatform.Core.Abstractions;
 
-namespace AppPlatform.Shared.Services;
+namespace AppPlatform.SharedModule.Services;
 
 public interface IAccessClaimInfoContainer
 {

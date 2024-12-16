@@ -1,4 +1,4 @@
-﻿namespace AppPlatform.Shared.Components;
+﻿namespace AppPlatform.SharedModule.Components;
 public enum ListVariant
 {
     List,

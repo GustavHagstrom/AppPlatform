@@ -21,11 +21,11 @@
     </SettingsSection>
 
     <SettingsSection Title="@Localizer["Användare"]" LoadDataAsync="LoadUserDataAsync">
-        <AppPlatform.Shared.Components.Rights.UserPicker AllUsers="Users" EnablePicking="false">
+        <AppPlatform.SharedModule.Components.Rights.UserPicker AllUsers="Users" EnablePicking="false">
             <ExtraTdContent>
                 <MudIconButton Icon="@Icons.Material.Sharp.Edit" Color="Color.Primary" OnClick="() => EditUserAccess(context)" Size="Size.Small" />
             </ExtraTdContent>
-        </AppPlatform.Shared.Components.Rights.UserPicker>
+        </AppPlatform.SharedModule.Components.Rights.UserPicker>
     </SettingsSection>
 
 </SettingsPageBase>

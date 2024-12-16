@@ -3,7 +3,7 @@ using Microsoft.Identity.Web;
 using Microsoft.Kiota.Abstractions;
 using Microsoft.Kiota.Abstractions.Authentication;
 
-namespace AppPlatform.Shared;
+namespace AppPlatform.SharedModule;
 /// <summary>
 /// Consumed by MSAL
 /// </summary>

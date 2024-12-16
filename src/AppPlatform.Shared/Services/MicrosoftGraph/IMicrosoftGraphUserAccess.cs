@@ -1,7 +1,7 @@
 ﻿using AppPlatform.Core.Models.FromShared;
 using Microsoft.Graph.Models;
 
-namespace AppPlatform.Shared.Services.MicrosoftGraph;
+namespace AppPlatform.SharedModule.Services.MicrosoftGraph;
 public interface IMicrosoftGraphUserAccess
 {
     

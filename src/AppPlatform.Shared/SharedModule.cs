@@ -5,7 +5,7 @@ using AppPlatform.Core.DataAccess.Settings;
 using AppPlatform.Core.Services;
 using AppPlatform.Data.Abstractions;
 using AppPlatform.Data.EfCore.Stores;
-using AppPlatform.Shared.Components.Settings;
+using AppPlatform.SharedModule.Components.Settings;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Kiota.Abstractions.Authentication;
@@ -13,11 +13,11 @@ using Microsoft.Extensions.DependencyInjection;
 using AppPlatform.Core.Extensions;
 using Microsoft.Graph;
 using AppPlatform.Core.Models.FromShared;
-using AppPlatform.Shared.Services;
-using AppPlatform.Shared.Services.MicrosoftGraph;
-using AppPlatform.Shared.Services.Views;
+using AppPlatform.SharedModule.Services;
+using AppPlatform.SharedModule.Services.MicrosoftGraph;
+using AppPlatform.SharedModule.Services.Views;
 
-namespace AppPlatform.Shared;
+namespace AppPlatform.SharedModule;
 public class SharedModule : IModule
 {
     public void ConfigForEfCore(WebApplicationBuilder builder)

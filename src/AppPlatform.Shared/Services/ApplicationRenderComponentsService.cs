@@ -2,7 +2,7 @@
 using AppPlatform.Core.Constants;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace AppPlatform.Shared.Services;
+namespace AppPlatform.SharedModule.Services;
 public class ApplicationRenderComponentsService : IApplicationRenderComponentsService
 {
     private readonly IServiceProvider serviceProvider;

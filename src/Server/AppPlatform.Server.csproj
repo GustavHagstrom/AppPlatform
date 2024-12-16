@@ -24,7 +24,7 @@
     <ProjectReference Include="..\AppPlatform.BidconAccessModule\AppPlatform.BidconAccessModule.csproj" />
     <ProjectReference Include="..\AppPlatform.BidconBrowserModule\AppPlatform.BidconBrowserModule.csproj" />
     <ProjectReference Include="..\AppPlatform.Data\AppPlatform.Data.csproj" />
-    <ProjectReference Include="..\AppPlatform.Shared\AppPlatform.Shared.csproj" />
+    <ProjectReference Include="..\AppPlatform.Shared\AppPlatform.SharedModule.csproj" />
     <ProjectReference Include="..\AppPlatform.UserRightSettingsModule\AppPlatform.UserRightSettingsModule.csproj" />
     <ProjectReference Include="..\AppPlatform.ViewsSettingsModule\AppPlatform.ViewSettingsModule.csproj" />
   </ItemGroup>

@@ -1,6 +1,6 @@
 ﻿using Microsoft.JSInterop;
 
-namespace AppPlatform.Shared.Services;
+namespace AppPlatform.SharedModule.Services;
 public class LocalStorageService(IJSRuntime JSRuntime) : ILocalStorageService
 {
 

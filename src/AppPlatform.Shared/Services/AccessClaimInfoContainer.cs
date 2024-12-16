@@ -1,6 +1,6 @@
 ﻿using AppPlatform.Core.Abstractions;
 
-namespace AppPlatform.Shared.Services;
+namespace AppPlatform.SharedModule.Services;
 public class AccessClaimInfoContainer : IAccessClaimInfoContainer
 {
     public AccessClaimInfoContainer(IEnumerable<IAccessClaimInfo> accessClaimInfos)

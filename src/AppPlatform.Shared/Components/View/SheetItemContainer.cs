@@ -1,6 +1,6 @@
 ﻿using AppPlatform.Core.Models.EstimationEnteties;
 
-namespace AppPlatform.Shared.Components.View;
+namespace AppPlatform.SharedModule.Components.View;
 public class SheetItemContainer
 {
     public SheetItemContainer(SheetItem sheetItem, bool isExpanded = true, SheetItemContainer? parent = null)

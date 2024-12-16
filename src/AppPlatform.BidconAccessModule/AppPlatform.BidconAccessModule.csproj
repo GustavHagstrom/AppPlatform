@@ -30,7 +30,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\AppPlatform.Shared\AppPlatform.Shared.csproj" />
+    <ProjectReference Include="..\AppPlatform.Shared\AppPlatform.SharedModule.csproj" />
   </ItemGroup>
 
 </Project>

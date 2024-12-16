@@ -18,7 +18,7 @@ using AppPlatform.BidconAccessModule;
 using MongoDB.Driver;
 using AppPlatform.Data.EfCore;
 using AppPlatform.Core.Abstractions;
-using AppPlatform.Shared;
+using AppPlatform.SharedModule;
 
 internal class Program
 {

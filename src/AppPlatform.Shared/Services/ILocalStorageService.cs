@@ -1,4 +1,4 @@
-﻿namespace AppPlatform.Shared.Services;
+﻿namespace AppPlatform.SharedModule.Services;
 public interface ILocalStorageService
 {
     Task<string?> GetItemAsync(string key);
