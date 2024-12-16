@@ -10,6 +10,7 @@
     <Folder Include="EfCore\Enteties\" />
     <Folder Include="EfCore\Mappers\" />
     <Folder Include="MongoDb\Mappers\" />
+    <Folder Include="MongoDb\MongoAbstractions\" />
   </ItemGroup>
 
   <ItemGroup>

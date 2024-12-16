@@ -1,6 +1,5 @@
 ﻿using AppPlatform.Core.Data;
 using AppPlatform.Core.Extensions;
-using AppPlatform.Core.Models.FromShared;
 using AppPlatform.Data.Abstractions;
 using AppPlatform.Data.MongoDb.Enteties;
 using MongoDB.Driver;

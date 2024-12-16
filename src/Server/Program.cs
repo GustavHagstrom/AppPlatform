@@ -118,20 +118,24 @@ internal class Program
             app.UseHsts();
         }
 
-        using (var scope = app.Services.CreateScope())
+        if (app.Configuration["DbType"] == "SqlServer")
         {
-            var dbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
-            try
+            using (var scope = app.Services.CreateScope())
             {
-                dbContext.Database.Migrate();
-            }
-            catch (Exception ex)
-            {
-                // Log the error or handle it as necessary
-                Console.WriteLine("An error occurred while migrating the database.", ex);
-                throw;
+                var dbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+                try
+                {
+                    dbContext.Database.Migrate();
+                }
+                catch (Exception ex)
+                {
+                    // Log the error or handle it as necessary
+                    Console.WriteLine("An error occurred while migrating the database.", ex);
+                    throw;
+                }
             }
         }
+        
 
         app.UseHttpsRedirection();
 

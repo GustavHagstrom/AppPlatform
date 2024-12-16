@@ -37,10 +37,6 @@ public class SharedModule : IModule
 
         builder.Services.AddScoped<IDarkModeStore, MongoDarkModeStore>();
         builder.Services.AddTransient<IAccessClaimStore, MongoAccessClaimStore>();
-
-        builder.Services.AddScoped<IDataStore<Data.MongoDb.Enteties.Authorization.Role>, MongoRoleStore>();
-        builder.Services.AddScoped<IDataStore<Data.MongoDb.Enteties.Authorization.UserRole>, MongoUserRoleStore>();
-        builder.Services.AddScoped<IDataStore<Data.MongoDb.Enteties.Authorization.UserAccess>, MongoUserAccessStore>();
     }
 
     public void GeneralConfig(WebApplicationBuilder builder)
