@@ -16,6 +16,10 @@ public class MongoCollectionRegistrar(IServiceCollection services)
         services.AddSingleton(sp =>
         {
             var db = sp.GetRequiredService<IMongoDatabase>();
+            if(!db.ListCollectionNames().ToList().Contains(collectionName))
+            {
+                db.CreateCollection(collectionName);
+            }
             return db.GetCollection<T>(collectionName);
         });
     }
