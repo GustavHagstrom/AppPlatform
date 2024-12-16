@@ -3,11 +3,15 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace AppPlatform.Core.Builders;
-public class ModuleBuilder(WebApplicationBuilder builder)
+public class MonolithConfigurator(WebApplicationBuilder builder)
 {
     private readonly AccessClaimInfoBuilder _accessIdBuilder = new(builder.Services);
     private readonly ComponentBuilder _componentBuilder = new(builder.Services);
     private readonly MongoCollectionRegistrar _mongoCollectionBuilder = new(builder.Services);
+    public AccessClaimInfoBuilder AccessClaimInfoBuilder => _accessIdBuilder;
+    public ComponentBuilder ComponentBuilder => _componentBuilder;
+    public MongoCollectionRegistrar MongoCollectionRegistrar => _mongoCollectionBuilder;
+
     public void AddModule<T>() where T : IModule, new()
     {
         var module = new T();
@@ -30,4 +34,5 @@ public class ModuleBuilder(WebApplicationBuilder builder)
 
         builder.Services.AddSingleton<IModule>(module);
     }
+   
 }

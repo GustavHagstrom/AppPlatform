@@ -7,9 +7,9 @@ namespace AppPlatform.Core.Extensions;
 public static class HostApplicationBuilderExtensions
 {
 
-    public static void AddModules(this WebApplicationBuilder builder, Action<ModuleBuilder> configure)
+    public static void ConfigureMonolith(this WebApplicationBuilder builder, Action<MonolithConfigurator> configure)
     {
-        var moduleBuilder = new ModuleBuilder(builder);
+        var moduleBuilder = new MonolithConfigurator(builder);
         configure(moduleBuilder);
     }
     public static void AddApplicationInjectableComponent<T>(this IServiceCollection services, string key) where T : class, IInjectableComponent

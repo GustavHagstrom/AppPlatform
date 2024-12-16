@@ -16,26 +16,39 @@ using AppPlatform.Core.Models.FromShared;
 using AppPlatform.SharedModule.Services;
 using AppPlatform.SharedModule.Services.MicrosoftGraph;
 using AppPlatform.SharedModule.Services.Views;
+using AppPlatform.Data.MongoDb.Stores;
 
 namespace AppPlatform.SharedModule;
 public class SharedModule : IModule
 {
     public void ConfigForEfCore(WebApplicationBuilder builder)
     {
-
+        builder.Services.AddScoped<IDarkModeStore, SqlDarkModeStore>();
+        builder.Services.AddTransient<IAccessClaimStore, SqlAccessClaimStore>();
     }
 
     public void ConfigForMongoDb(WebApplicationBuilder builder, MongoCollectionRegistrar collectionBuilder)
     {
+        collectionBuilder.Add<Data.MongoDb.Enteties.UserSettings>("UserSettings");
+        collectionBuilder.Add<Data.MongoDb.Enteties.Authorization.Role>("Roles");
+        collectionBuilder.Add<Data.MongoDb.Enteties.Authorization.UserAccess>("UserAccess");
+        collectionBuilder.Add<Data.MongoDb.Enteties.Authorization.UserRole>("UserRoles");
 
+
+        builder.Services.AddScoped<IDarkModeStore, MongoDarkModeStore>();
+        builder.Services.AddTransient<IAccessClaimStore, MongoAccessClaimStore>();
+
+        builder.Services.AddScoped<IDataStore<Data.MongoDb.Enteties.Authorization.Role>, MongoRoleStore>();
+        builder.Services.AddScoped<IDataStore<Data.MongoDb.Enteties.Authorization.UserRole>, MongoUserRoleStore>();
+        builder.Services.AddScoped<IDataStore<Data.MongoDb.Enteties.Authorization.UserAccess>, MongoUserAccessStore>();
     }
 
     public void GeneralConfig(WebApplicationBuilder builder)
     {
         builder.Services.AddLocalization();
-        builder.Services.AddScoped<IDarkModeStore, SqlDarkModeStore>();
+        
         builder.Services.AddScoped<ILocalStorageService, LocalStorageService>();
-        builder.Services.AddTransient<IAccessClaimStore, SqlAccessClaimStore>();
+        
         builder.Services.AddSingleton<IApplicationRenderComponentsService, ApplicationRenderComponentsService>();
         builder.Services.AddApplicationInjectableComponent<AppbarSettingsLink>(SharedInjectableComponentKeys.AppBarNavLinkComponent);
         builder.Services.AddSingleton<IAccessClaimInfoContainer, AccessClaimInfoContainer>();

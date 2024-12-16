@@ -1,4 +1,5 @@
-﻿using System.Security.Claims;
+﻿using AppPlatform.Core.Models;
+using System.Security.Claims;
 
 namespace AppPlatform.Data.Abstractions;
 

@@ -93,13 +93,15 @@ internal class Program
 
 
 
-        builder.AddModules(moduleBuilder =>
+        builder.ConfigureMonolith(config =>
         {
-            moduleBuilder.AddModule<SharedModule>();
-            moduleBuilder.AddModule<ViewSettingsModule>();
-            moduleBuilder.AddModule<UserRightSettingsModule>();
-            moduleBuilder.AddModule<BidconBrowserModule>();
-            moduleBuilder.AddModule<BidconAccessModule>();
+            config.AddModule<SharedModule>();
+            config.AddModule<ViewSettingsModule>();
+            config.AddModule<UserRightSettingsModule>();
+            config.AddModule<BidconBrowserModule>();
+            config.AddModule<BidconAccessModule>();
+
+
         }); //add assembly to the route aswell
 
         var app = builder.Build();

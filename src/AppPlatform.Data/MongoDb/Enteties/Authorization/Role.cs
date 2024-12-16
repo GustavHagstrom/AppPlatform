@@ -9,5 +9,5 @@ public class Role : ITenantEntety
     public string TenantId { get; set; } = string.Empty;
     public string Name { get; set; } = string.Empty;
     public string Description { get; set; } = string.Empty;
-    public List<RoleAccess> RoleAccesses { get; set; } = [];
+    public List<string> AccessClaimValues { get; set; } = [];
 }

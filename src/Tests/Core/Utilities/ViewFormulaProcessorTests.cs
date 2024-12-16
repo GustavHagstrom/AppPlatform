@@ -2,7 +2,7 @@
 using AppPlatform.Core.Constants;
 using AppPlatform.Core.Utilities;
 
-namespace AppPlatform.Tests.Shared.Utilities;
+namespace AppPlatform.Tests.Core.Utilities;
 [TestFixture]
 public class ViewFormulaProcessorTests
 {
