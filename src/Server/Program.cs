@@ -17,8 +17,8 @@ using Microsoft.Identity.Client;
 using AppPlatform.BidconAccessModule;
 using MongoDB.Driver;
 using AppPlatform.Data.EfCore;
-using AppPlatform.Core.Abstractions;
 using AppPlatform.SharedModule;
+using AppPlatform.Data.Abstractions;
 
 internal class Program
 {
