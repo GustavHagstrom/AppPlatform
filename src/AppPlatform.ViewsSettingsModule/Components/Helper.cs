@@ -1,5 +1,5 @@
-﻿using AppPlatform.Core.Enteties.EstimationEnteties;
-using AppPlatform.Core.Enteties.EstimationView;
+﻿using AppPlatform.Core.Models.EstimationEnteties;
+using AppPlatform.Core.Models.EstimationView;
 using AppPlatform.Core.Enums.BidconAccess;
 using Microsoft.Extensions.Localization;
 

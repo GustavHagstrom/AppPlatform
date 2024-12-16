@@ -1,6 +1,6 @@
-﻿using AppPlatform.Core.Enteties.EstimationEnteties;
-using AppPlatform.Shared.Constants;
-using AppPlatform.Shared.Utilities;
+﻿using AppPlatform.Core.Models.EstimationEnteties;
+using AppPlatform.Core.Constants;
+using AppPlatform.Core.Utilities;
 
 namespace AppPlatform.Tests.Shared.Utilities;
 [TestFixture]

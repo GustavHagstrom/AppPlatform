@@ -1,4 +1,4 @@
-﻿using AppPlatform.Core.Enteties;
+﻿using AppPlatform.Core.Models;
 using System.Security.Claims;
 
 namespace AppPlatform.BidconAccessModule.DirectAccess.Services;

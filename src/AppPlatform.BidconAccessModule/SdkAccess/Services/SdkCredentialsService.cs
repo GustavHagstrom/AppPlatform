@@ -1,8 +1,8 @@
-﻿using AppPlatform.Core.Enteties;
-using AppPlatform.Shared.Data;
-using AppPlatform.Shared.Extensions;
+﻿using AppPlatform.Core.Models;
+using AppPlatform.Core.Extensions;
 using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
+using AppPlatform.Data.EfCore;
 
 namespace AppPlatform.BidconAccessModule.SdkAccess.Services;
 internal class SdkCredentialsService(IDbContextFactory<ApplicationDbContext> contextFactory) : ISdkCredentialsService

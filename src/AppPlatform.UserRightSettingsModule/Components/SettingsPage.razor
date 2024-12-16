@@ -1,5 +1,5 @@
 @page "/Settings/rights"
-@using AppPlatform.Shared.Models
+@using AppPlatform.Core.Models
 
 @layout SettingsLayout
 @inject IStringLocalizer<SettingsPage> Localizer
@@ -38,7 +38,7 @@
 @inject NavigationManager NavigationManager
 
 @code{
-    List<AppPlatform.Core.Enteties.Authorization.Role> Roles { get; set; } = new();
+    List<AppPlatform.Core.Models.Authorization.Role> Roles { get; set; } = new();
     List<UserWithPhoto> Users { get; set; } = new();
 
     async Task LoadUserDataAsync()

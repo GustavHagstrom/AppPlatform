@@ -1,9 +1,8 @@
-﻿using AppPlatform.Core.Enteties.EstimationView;
-using AppPlatform.Shared.Data;
-using AppPlatform.Shared.Extensions;
+﻿using AppPlatform.Core.Models.EstimationView;
+using AppPlatform.Core.Extensions;
 using Microsoft.EntityFrameworkCore;
-using System.Linq.Expressions;
 using System.Security.Claims;
+using AppPlatform.Data.EfCore;
 
 namespace AppPlatform.ViewSettingsModule.Services;
 internal class ViewService(IDbContextFactory<ApplicationDbContext> dbContextFactory) : IViewService

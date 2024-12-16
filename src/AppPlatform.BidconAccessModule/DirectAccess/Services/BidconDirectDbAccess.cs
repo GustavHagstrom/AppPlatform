@@ -1,6 +1,6 @@
 ﻿using AppPlatform.BidconAccessModule.DirectAccess.Models;
-using AppPlatform.Shared.Abstractions;
-using AppPlatform.Shared.Models;
+using AppPlatform.Core.Abstractions;
+using AppPlatform.Core.Models.FromShared;
 using System.Security.Claims;
 
 namespace AppPlatform.BidconAccessModule.DirectAccess.Services;
@@ -12,7 +12,7 @@ internal class BidconDirectDbAccess : IBidconAccess
     {
         _estimationQuery = estimationQuery;
     }
-    public Task<Core.Enteties.EstimationEnteties.Estimation> GetEstimation(string estimationId, ClaimsPrincipal userClaims)
+    public Task<Core.Models.EstimationEnteties.Estimation> GetEstimation(string estimationId, ClaimsPrincipal userClaims)
     {
         throw new NotImplementedException();
     }

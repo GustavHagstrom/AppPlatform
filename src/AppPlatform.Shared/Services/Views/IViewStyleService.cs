@@ -1,4 +1,4 @@
-﻿using AppPlatform.Core.Enteties.EstimationView;
+﻿using AppPlatform.Core.Models.EstimationView;
 
 namespace AppPlatform.Shared.Services.Views;
 public interface IViewStyleService

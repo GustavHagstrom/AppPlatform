@@ -1,4 +1,4 @@
-﻿using AppPlatform.Core.Enteties.EstimationEnteties;
+﻿using AppPlatform.Core.Models.EstimationEnteties;
 using AppPlatform.Core.Enums.ViewTemplate;
 
 namespace AppPlatform.Core.Services;

@@ -1,4 +1,4 @@
-﻿using AppPlatform.Core.Enteties.EstimationEnteties;
+﻿using AppPlatform.Core.Models.EstimationEnteties;
 
 namespace AppPlatform.Shared.Components.View;
 public class SheetItemContainer

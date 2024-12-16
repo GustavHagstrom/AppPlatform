@@ -1,4 +1,4 @@
-﻿using AppPlatform.Core.Enteties.EstimationView;
+﻿using AppPlatform.Core.Models.EstimationView;
 
-namespace AppPlatform.Shared.Components.View.SheetSectionStuff;
+namespace AppPlatform.Shared.Components.View.SheetSectionFolder;
 internal record SheetCellFormatContainer(string CssStyle, SheetCellFormat Format);

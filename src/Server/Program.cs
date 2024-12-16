@@ -6,9 +6,7 @@ using Microsoft.Identity.Web;
 using Microsoft.Identity.Web.UI;
 using MudBlazor.Services;
 using MudBlazor;
-using AppPlatform.Shared.Extensions;
-using AppPlatform.Shared.Data;
-using AppPlatform.Shared.Components;
+using AppPlatform.Core.Extensions;
 using AppPlatform.ViewSettingsModule;
 using AppPlatform.UserRightSettingsModule;
 using AppPlatform.BidconBrowserModule;
@@ -18,7 +16,9 @@ using Microsoft.AspNetCore.Http.Extensions;
 using Microsoft.Identity.Client;
 using AppPlatform.BidconAccessModule;
 using MongoDB.Driver;
-using AppPlatform.Shared.DataAccess.Authorization;
+using AppPlatform.Data.EfCore;
+using AppPlatform.Core.Abstractions;
+using AppPlatform.Shared;
 
 internal class Program
 {
@@ -95,13 +95,12 @@ internal class Program
 
         builder.AddModules(moduleBuilder =>
         {
+            moduleBuilder.AddModule<SharedModule>();
             moduleBuilder.AddModule<ViewSettingsModule>();
             moduleBuilder.AddModule<UserRightSettingsModule>();
             moduleBuilder.AddModule<BidconBrowserModule>();
             moduleBuilder.AddModule<BidconAccessModule>();
         }); //add assembly to the route aswell
-
-        builder.Services.RegisterSharedServices();
 
         var app = builder.Build();
         // Configure the HTTP request pipeline.
@@ -154,7 +153,8 @@ internal class Program
 
         app.MapRazorComponents<App>()
             .AddInteractiveServerRenderMode()
-            .AddAdditionalAssemblies(typeof(MainLayout).Assembly,
+            .AddAdditionalAssemblies(
+            typeof(SharedModule).Assembly,
             typeof(ViewSettingsModule).Assembly,
             typeof(UserRightSettingsModule).Assembly,
             typeof(BidconBrowserModule).Assembly,

@@ -1,6 +1,6 @@
-﻿using AppPlatform.Shared.Abstractions;
-using AppPlatform.Shared.Builders;
-using AppPlatform.Shared.Constants;
+﻿using AppPlatform.Core.Constants;
+using AppPlatform.Core.Abstractions;
+using AppPlatform.Core.Builders;
 using AppPlatform.ViewSettingsModule.Components;
 using AppPlatform.ViewSettingsModule.Services;
 using Microsoft.AspNetCore.Builder;

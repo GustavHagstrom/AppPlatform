@@ -1,8 +1,8 @@
-﻿using AppPlatform.Core.Enteties.EstimationEnteties;
-using AppPlatform.Shared.Abstractions;
-using AppPlatform.Shared.Models;
+﻿using AppPlatform.Core.Models.EstimationEnteties;
+using AppPlatform.Core.Abstractions;
 using BidCon.SDK.Database;
 using System.Security.Claims;
+using AppPlatform.Core.Models.FromShared;
 
 namespace AppPlatform.BidconAccessModule.SdkAccess.Services;
 internal class BidconSdkAccess : IBidconAccess

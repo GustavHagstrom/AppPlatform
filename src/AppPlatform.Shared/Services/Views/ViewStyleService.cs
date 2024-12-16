@@ -1,4 +1,4 @@
-﻿using AppPlatform.Core.Enteties.EstimationView;
+﻿using AppPlatform.Core.Models.EstimationView;
 using AppPlatform.Core.Enums.ViewTemplate;
 using System.Globalization;
 

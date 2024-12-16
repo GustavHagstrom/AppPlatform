@@ -1,10 +1,11 @@
 ﻿@using AppPlatform.ViewSettingsModule
 @using AppPlatform.UserRightSettingsModule
+
 <StateManager>
     <Router AppAssembly="@typeof(Program).Assembly"
             AdditionalAssemblies="@(new[] 
 { 
-    typeof(MainLayout).Assembly, 
+    typeof(SharedModule).Assembly, 
     typeof(ViewSettingsModule).Assembly,
     typeof(UserRightSettingsModule).Assembly,
     typeof(BidconBrowserModule.BidconBrowserModule).Assembly,

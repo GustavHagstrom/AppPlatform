@@ -1,9 +1,9 @@
-﻿using AppPlatform.Core.Enteties;
+﻿using AppPlatform.Core.Models;
 using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
-using AppPlatform.Shared.Extensions;
-using AppPlatform.Shared.Data;
+using AppPlatform.Core.Extensions;
 using AppPlatform.BidconAccessModule.DirectAccess.Services;
+using AppPlatform.Data.EfCore;
 
 namespace AppPlatform.BidconAccessModule.Services;
 

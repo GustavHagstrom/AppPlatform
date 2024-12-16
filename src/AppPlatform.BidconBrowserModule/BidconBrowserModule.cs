@@ -1,8 +1,8 @@
 ﻿using AppPlatform.BidconBrowserModule.Components;
 using AppPlatform.BidconBrowserModule.Services;
-using AppPlatform.Shared.Abstractions;
-using AppPlatform.Shared.Builders;
-using AppPlatform.Shared.Constants;
+using AppPlatform.Core.Constants;
+using AppPlatform.Core.Abstractions;
+using AppPlatform.Core.Builders;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;

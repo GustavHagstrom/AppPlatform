@@ -1,7 +1,7 @@
 ﻿using AppPlatform.BidconBrowserModule.Models;
-using AppPlatform.Shared.Abstractions;
-using AppPlatform.Shared.Data;
-using AppPlatform.Shared.Extensions;
+using AppPlatform.Core.Abstractions;
+using AppPlatform.Core.Extensions;
+using AppPlatform.Data.EfCore;
 using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
 

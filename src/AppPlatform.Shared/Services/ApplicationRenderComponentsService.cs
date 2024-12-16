@@ -1,5 +1,5 @@
-﻿using AppPlatform.Shared.Abstractions;
-using AppPlatform.Shared.Constants;
+﻿using AppPlatform.Core.Abstractions;
+using AppPlatform.Core.Constants;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace AppPlatform.Shared.Services;

@@ -1,4 +1,4 @@
-﻿using AppPlatform.Shared.Abstractions;
+﻿using AppPlatform.Core.Abstractions;
 using Microsoft.Extensions.Localization;
 
 namespace AppPlatform.ViewSettingsModule;

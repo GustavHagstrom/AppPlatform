@@ -4,7 +4,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using AppPlatform.Shared.Data;
+using AppPlatform.Core.Data;
+using AppPlatform.Data.EfCore;
 
 #nullable disable
 

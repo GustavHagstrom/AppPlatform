@@ -1,5 +1,5 @@
 ﻿
-using AppPlatform.Shared.Abstractions;
+using AppPlatform.Core.Abstractions;
 
 namespace AppPlatform.Shared.Services;
 

@@ -1,9 +1,9 @@
-﻿using AppPlatform.Core.Enteties.Authorization;
-using AppPlatform.Core.Enteties.EstimationView;
-using AppPlatform.Shared.Data;
-using AppPlatform.Shared.Extensions;
+﻿using AppPlatform.Core.Models.Authorization;
+using AppPlatform.Core.Models.EstimationView;
+using AppPlatform.Core.Extensions;
 using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
+using AppPlatform.Data.EfCore;
 
 namespace AppPlatform.ViewSettingsModule.Services;
 internal class RoleViewService(IDbContextFactory<ApplicationDbContext> contextFactory) : IRoleViewService

@@ -1,6 +1,6 @@
-﻿using AppPlatform.Shared.Abstractions;
-using AppPlatform.Shared.Builders;
-using AppPlatform.Shared.Constants;
+﻿using AppPlatform.Core.Constants;
+using AppPlatform.Core.Abstractions;
+using AppPlatform.Core.Builders;
 using AppPlatform.UserRightSettingsModule.Components;
 using AppPlatform.UserRightSettingsModule.Services;
 using Microsoft.AspNetCore.Builder;

@@ -1,8 +1,8 @@
-﻿using AppPlatform.Core.Enteties.Authorization;
-using AppPlatform.Shared.Data;
-using AppPlatform.Shared.Extensions;
+﻿using AppPlatform.Core.Models.Authorization;
+using AppPlatform.Core.Extensions;
 using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
+using AppPlatform.Data.EfCore;
 
 namespace AppPlatform.UserRightSettingsModule.Services;
 internal class AccessService : IAccessService

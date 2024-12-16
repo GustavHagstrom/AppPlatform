@@ -1,7 +1,7 @@
-﻿using AppPlatform.Core.Enteties.EstimationView;
-using AppPlatform.Shared.Data;
+﻿using AppPlatform.Core.Models.EstimationView;
 using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
+using AppPlatform.Data.EfCore;
 
 namespace AppPlatform.ViewSettingsModule.Services;
 internal class UserViewService(IDbContextFactory<ApplicationDbContext> contextFactory) : IUserViewService

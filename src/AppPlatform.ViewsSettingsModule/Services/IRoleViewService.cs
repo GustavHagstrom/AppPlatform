@@ -1,5 +1,5 @@
-﻿using AppPlatform.Core.Enteties.Authorization;
-using AppPlatform.Core.Enteties.EstimationView;
+﻿using AppPlatform.Core.Models.Authorization;
+using AppPlatform.Core.Models.EstimationView;
 using System.Security.Claims;
 
 namespace AppPlatform.ViewSettingsModule.Services;

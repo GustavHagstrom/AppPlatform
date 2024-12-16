@@ -1,4 +1,4 @@
-﻿using AppPlatform.Core.Enteties.Authorization;
+﻿using AppPlatform.Core.Models.Authorization;
 using System.Security.Claims;
 
 namespace AppPlatform.UserRightSettingsModule.Services;

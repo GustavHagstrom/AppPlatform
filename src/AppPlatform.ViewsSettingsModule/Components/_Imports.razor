@@ -1,14 +1,14 @@
 ﻿@layout SettingsLayout
 @attribute [Authorize(policy: Constants.Authorization.Policy)]
 
+@using AppPlatform.Shared.Components.Settings
 @using Microsoft.AspNetCore.Authorization
 @using Microsoft.AspNetCore.Components.Web
-@using AppPlatform.Shared.Components.Settings
 @using Microsoft.Extensions.Localization
-@using AppPlatform.Core.Enteties.EstimationView
+@using AppPlatform.Core.Models.EstimationView
 @using MudBlazor
 @using AppPlatform.ViewSettingsModule.Services
-@using AppPlatform.Core.Enteties.EstimationEnteties
+@using AppPlatform.Core.Models.EstimationEnteties
 @using AppPlatform.Core.Enums.BidconAccess
 @using AppPlatform.Shared.Components
 @using AppPlatform.Shared.Components.Dialogs

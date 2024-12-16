@@ -1,6 +1,4 @@
-﻿using System.IO;
-
-namespace AppPlatform.Shared;
+﻿namespace AppPlatform.Shared;
 public static class CustomIcons
 {
     public static string BidconIcon => @"<svg viewBox=""0 0 247.6 247.6"" xmlns=""http://www.w3.org/2000/svg"">
