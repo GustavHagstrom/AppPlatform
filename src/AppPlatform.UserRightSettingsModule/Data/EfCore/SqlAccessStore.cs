@@ -3,13 +3,14 @@ using AppPlatform.Core.Extensions;
 using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
 using AppPlatform.Data.EfCore;
+using AppPlatform.UserRightSettingsModule.Data.Abstractions;
 
-namespace AppPlatform.UserRightSettingsModule.Services;
-internal class AccessService : IAccessService
+namespace AppPlatform.UserRightSettingsModule.Data.EfCore;
+internal class SqlAccessStore : IAccessStore
 {
     private readonly IDbContextFactory<ApplicationDbContext> _dbContextFactory;
 
-    public AccessService(IDbContextFactory<ApplicationDbContext> dbContextFactory)
+    public SqlAccessStore(IDbContextFactory<ApplicationDbContext> dbContextFactory)
     {
         _dbContextFactory = dbContextFactory;
     }
@@ -60,7 +61,7 @@ internal class AccessService : IAccessService
     public async Task<IEnumerable<Role>> GetRolesAsync(ClaimsPrincipal user)
     {
         var tenantId = user.GetTenantId();
-        if(tenantId == null)
+        if (tenantId == null)
         {
             throw new ArgumentNullException(nameof(tenantId));
         }

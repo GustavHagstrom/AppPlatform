@@ -26,8 +26,8 @@
     </SettingsSection>
 </SettingsPageBase>
 
-@inject IAccessService AccessService
-@inject IRoleService RoleService
+@inject IAccessStore AccessStore
+@inject IRoleStore RoleStore
 @inject IAccessClaimInfoContainer AccessClaimInfoContainer
 @inject IMicrosoftGraphUserAccess MicrosoftGraphUserAccess
 @inject AuthenticationStateProvider AuthenticationStateProvider
@@ -49,10 +49,15 @@
         Access.Clear();
         if (UserId is not null)
         {
-            Access.AddRange(await AccessService.GetUserAccessClaimValuesAsync(UserId));
+            Access.AddRange(await AccessStore.GetUserAccessClaimValuesAsync(UserId));
             User = await MicrosoftGraphUserAccess.GetUserWithPhotoAsync(UserId);
-            AllRoles = await RoleService.GetRolesAsync(state.User);
-            PickedRoleIds = (await RoleService.GetUserRolesForUserAsync(UserId)).Select(x => x.Id).ToList();
+            var tenantId = state.User.GetTenantId();
+            if (tenantId is null)
+            {
+                return;
+            }
+            AllRoles = await RoleStore.GetRolesAsync(tenantId);
+            PickedRoleIds = (await RoleStore.GetUserRolesForUserAsync(UserId)).Select(x => x.Id).ToList();
         }
         SetIsLoading(false);
     }
@@ -82,7 +87,7 @@
                     UserId = User.User.Id,
                 AccessClaimValue = accessClaimValue
             };
-            await AccessService.CreateUserAccessAsync(userAccess);
+            await AccessStore.CreateUserAccessAsync(userAccess);
             Access.Add(userAccess);
         }
     }
@@ -91,22 +96,27 @@
         var userAccess = Access.FirstOrDefault(x => x.AccessClaimValue == accessClaimValue);
         if (userAccess is not null)
         {
-            await AccessService.DeleteUserAccessAsync(userAccess);
+            await AccessStore.DeleteUserAccessAsync(userAccess);
             Access.Remove(userAccess);
         }
     }
     async Task RolesChanged(PickChangedRecord<Role> pickedRecord)
     {
         var state = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+        var userId = state.User.GetUserId();
+        if (userId is null)
+        {
+            return;
+        }
         if (state is null) return;
         if (pickedRecord.IsPicked)
         {
-            await RoleService.CreateUserRole(state.User, pickedRecord.Data);
+            await RoleStore.CreateUserRole(userId, pickedRecord.Data);
             AllRoles.Add(pickedRecord.Data);
         }
         else
         {
-            await RoleService.DeleteUserRole(state.User, pickedRecord.Data);
+            await RoleStore.DeleteUserRole(userId, pickedRecord.Data);
             AllRoles.Remove(AllRoles.First(x => x.Id == pickedRecord.Data.Id));
         }
     }

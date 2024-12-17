@@ -33,8 +33,8 @@
 </SettingsPageBase>
 
 
-@inject IAccessService AccessService
-@inject IRoleService RoleService
+@inject IAccessStore AccessStore
+@inject IRoleStore RoleStore
 @inject IAccessClaimInfoContainer AccessClaimInfoContainer
 @inject AuthenticationStateProvider AuthenticationStateProvider
 @inject IMicrosoftGraphUserAccess MicrosoftGraphUserAccess
@@ -59,12 +59,12 @@
         };
         if (record.IsPicked)
         {
-            await RoleService.CreateUserRole(userRole);
+            await RoleStore.CreateUserRole(userRole);
             PickedUserIds.Add(record.Data.User.Id!);
         }
         else
         {
-            await RoleService.DeleteUserRole(userRole);
+            await RoleStore.DeleteUserRole(userRole);
             PickedUserIds.Remove(record.Data.User.Id!);
         }
     }
@@ -84,7 +84,7 @@
             var result = await dialog.Result;
             if (result?.Data is true)
             {
-                await RoleService.DeleteRoleAsync(Role);
+                await RoleStore.DeleteRoleAsync(Role);
                 NavigationManager.NavigateTo(Constants.ModuleRoutes.SettingsPage);
             }
         }
@@ -92,19 +92,21 @@
     async Task SetName(string value)
     {
         var state = await AuthenticationStateProvider.GetAuthenticationStateAsync();
-        if (Role is not null && state.User is not null)
+        var tenantId = state.User.GetTenantId();
+        if (Role is not null && tenantId is not null)
         {
             Role.Name = value;
-            await RoleService.UpsertRoleAsync(state.User, Role);
+            await RoleStore.UpsertRoleAsync(tenantId, Role);
         }
     }
     async Task SetDescription(string value)
     {
         var state = await AuthenticationStateProvider.GetAuthenticationStateAsync();
-        if (Role is not null && state.User is not null)
+        var tenantId = state.User.GetTenantId();
+        if (Role is not null && tenantId is not null)
         {
             Role.Description = value;
-            await RoleService.UpsertRoleAsync(state.User, Role);
+            await RoleStore.UpsertRoleAsync(tenantId, Role);
         }
     }
     async Task LoadRoleDataAsync()
@@ -112,11 +114,11 @@
         SetIsLoading(true);
         if (RoleId is not null)
         {
-            var access = await AccessService.GetRoleAccessClaimValuesAsync(RoleId);
+            var access = await AccessStore.GetRoleAccessClaimValuesAsync(RoleId);
             Access = access.ToList();
-            Role = await RoleService.GetRoleAsync(RoleId);
+            Role = await RoleStore.GetRoleAsync(RoleId);
             var users = await MicrosoftGraphUserAccess.GetUsersWithPhotoAsync();
-            var userRoles = await RoleService.GetUserRolesForRoleAsync(RoleId);
+            var userRoles = await RoleStore.GetUserRolesForRoleAsync(RoleId);
             AllUsers = users.ToList();
             PickedUserIds = users.Where(u => userRoles.Any(ur => ur.UserId == u.User.Id)).Select(x => x.User.Id!).ToList();
         }
@@ -147,7 +149,7 @@
                     RoleId = Role.Id,
                     AccessClaimValue = accessClaimValue
                 };
-            await AccessService.CreateRoleAccessAsync(roleAccess);
+            await AccessStore.CreateRoleAccessAsync(roleAccess);
             Access.Add(roleAccess);
         }
     }
@@ -156,7 +158,7 @@
         var roleAccess = Access.FirstOrDefault(x => x.AccessClaimValue == accessClaimValue);
         if (roleAccess is not null)
         {
-            await AccessService.DeleteRoleAccessAsync(roleAccess);
+            await AccessStore.DeleteRoleAccessAsync(roleAccess);
             Access.Remove(roleAccess);
         }
     }

@@ -4,25 +4,21 @@ using Microsoft.EntityFrameworkCore;
 using System.Data;
 using System.Security.Claims;
 using AppPlatform.Data.EfCore;
+using AppPlatform.UserRightSettingsModule.Data.Abstractions;
 
-namespace AppPlatform.UserRightSettingsModule.Services;
-internal class RoleService : IRoleService
+namespace AppPlatform.UserRightSettingsModule.Data.EfCore;
+internal class SqlRoleStore : IRoleStore
 {
     private readonly IDbContextFactory<ApplicationDbContext> _dbContextFactory;
 
-    public RoleService(IDbContextFactory<ApplicationDbContext> dbContextFactory)
+    public SqlRoleStore(IDbContextFactory<ApplicationDbContext> dbContextFactory)
     {
         _dbContextFactory = dbContextFactory;
     }
 
-    public Task UpsertRoleAsync(ClaimsPrincipal userClaims, Role role)
+    public Task UpsertRoleAsync(string tenantId, Role role)
     {
         using var context = _dbContextFactory.CreateDbContext();
-        var tenantId = userClaims.GetTenantId();
-        if (tenantId == null)
-        {
-            throw new ArgumentNullException(nameof(tenantId));
-        }
         var existingRole = context.Roles.FirstOrDefault(x => x.Id == role.Id);
         if (existingRole != null)
         {
@@ -52,13 +48,8 @@ internal class RoleService : IRoleService
         return context.Roles.FirstOrDefaultAsync(x => x.Id == roleId);
     }
 
-    public Task<List<Role>> GetRolesAsync(ClaimsPrincipal user)
+    public Task<List<Role>> GetRolesAsync(string tenantId)
     {
-        var tenantId = user.GetTenantId();
-        if (tenantId == null)
-        {
-            throw new ArgumentNullException(nameof(tenantId));
-        }
         using var context = _dbContextFactory.CreateDbContext();
         return context.Roles.Where(x => x.TenantId == tenantId).ToListAsync();
     }
@@ -72,7 +63,7 @@ internal class RoleService : IRoleService
             .ToListAsync();
         var roles = result?.Where(x => x is not null).Select(x => x!).ToList();
         return roles ?? new List<Role>();
-        
+
     }
 
     public Task<List<UserRole>> GetUserRolesForRoleAsync(string roleId)
@@ -81,13 +72,8 @@ internal class RoleService : IRoleService
         return context.UserRoles.Where(x => x.RoleId == roleId).ToListAsync();
     }
 
-    public Task CreateUserRole(ClaimsPrincipal userClaims, Role role)
+    public Task CreateUserRole(string userId, Role role)
     {
-        var userId = userClaims.GetUserId();
-        if (userId == null)
-        {
-            throw new ArgumentNullException(nameof(userId));
-        }
         var userRole = new UserRole
         {
             RoleId = role.Id,
@@ -101,13 +87,8 @@ internal class RoleService : IRoleService
         context.UserRoles.Add(userRole);
         return context.SaveChangesAsync();
     }
-    public Task DeleteUserRole(ClaimsPrincipal userClaims, Role role)
+    public Task DeleteUserRole(string userId, Role role)
     {
-        var userId = userClaims.GetUserId();
-        if (userId == null)
-        {
-            throw new ArgumentNullException(nameof(userId));
-        }
         var userRole = new UserRole
         {
             RoleId = role.Id,

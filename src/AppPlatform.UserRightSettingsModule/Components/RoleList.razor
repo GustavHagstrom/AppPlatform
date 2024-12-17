@@ -21,7 +21,7 @@
     </tbody>
 </MudSimpleTable>
 
-@inject IRoleService RoleService
+@inject IRoleStore RoleService
 @inject NavigationManager NavigationManager
 @code {
     [Parameter] public List<Role> Roles { get; set; } = new();

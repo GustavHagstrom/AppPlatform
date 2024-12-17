@@ -31,22 +31,29 @@ public class MongoAccessClaimStore
 
     public async Task<IEnumerable<AccessClaim>> GetAccessClaims(string userId)
     {
-
-        
-        var userRoles = await userRoleCollection.Find(Builders<UserRole>.Filter.Eq(nameof(UserRole.UserId), userId)).ToListAsync();
-        var userAccesses = await userAccessCollection.Find(Builders<UserAccess>.Filter.Eq(nameof(UserAccess.UserId), userId)).ToListAsync();
+        var userRoles = await userRoleCollection.Find(x => x.UserId == userId).ToListAsync();
+        var userAccess = await userAccessCollection.Find(x => x.UserId == userId).FirstOrDefaultAsync();
         var accessClaims = new List<AccessClaim>();
+        var accessValues = new List<string>();
+        var aClaims = new Dictionary<string, AccessClaim>();
         foreach (var userRole in userRoles)
         {
-            var role = await roleCollection.Find(Builders<Role>.Filter.Eq(nameof(Role.Id), userRole.RoleId)).FirstOrDefaultAsync();
+            var role = await roleCollection.Find(x => x.Id == userRole.RoleId).FirstOrDefaultAsync();
             if (role == null)
             {
                 logger.LogWarning("Role not found");
                 continue;
             }
-            accessClaims.AddRange(role.AccessClaimValues.Select(ac => new AccessClaim(ac)));
+            var values = role.AccessClaimValues.Where(x => accessValues.Contains(x) == false).ToList();
+            accessClaims.AddRange(values.Select(ac => new AccessClaim(ac)));
+            accessValues.AddRange(values);
         }
-        accessClaims.AddRange(userAccesses.Select(ua => new AccessClaim(ua.AccessClaimValue)));
+        if (userAccess is not null)
+        {
+            var values = userAccess.AccessClaimValues.Where(x => accessValues.Contains(x) == false).ToList();
+            accessClaims.AddRange(values.Select(x => new AccessClaim(x)));
+        }
+        
         return accessClaims;
     }
 }

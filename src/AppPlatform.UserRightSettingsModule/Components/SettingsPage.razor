@@ -30,7 +30,7 @@
 
 </SettingsPageBase>
 
-@inject IRoleService RoleService
+@inject IRoleStore RoleStore
 @inject NavigationManager NavigationManager
 @inject AuthenticationStateProvider AuthenticationStateProvider
 @inject IDialogService DialogService
@@ -51,7 +51,12 @@
     {
         Roles.Clear();
         var state = await AuthenticationStateProvider.GetAuthenticationStateAsync();
-        Roles.AddRange(await RoleService.GetRolesAsync(state.User));
+        var tenantId = state.User.GetTenantId();
+        if (tenantId is null)
+        {
+            return;
+        }
+        Roles.AddRange(await RoleStore.GetRolesAsync(tenantId));
         StateHasChanged();
     }
     void EditUserAccess(UserWithPhoto user)
@@ -67,8 +72,13 @@
         if (result?.Canceled == false && result.Data is string input and not null)
         {
             var state = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+            var tenantId = state.User.GetTenantId();
+            if (tenantId is null)
+            {
+                return;
+            }
             var role = new Role { Name = input };
-            await RoleService.UpsertRoleAsync(state.User, role);
+            await RoleStore.UpsertRoleAsync(tenantId, role);
             NavigationManager.NavigateTo($"{Constants.ModuleRoutes.RoleAccessEdit}/{role.Id}");
         }
     }

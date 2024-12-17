@@ -1,8 +1,8 @@
 ﻿using AppPlatform.Core.Models.Authorization;
-using System.Security.Claims;
 
-namespace AppPlatform.UserRightSettingsModule.Services;
-internal interface IAccessService
+
+namespace AppPlatform.UserRightSettingsModule.Data.Abstractions;
+internal interface IAccessStore
 {
     Task<IEnumerable<UserAccess>> GetUserAccessClaimValuesAsync(string userId);
     Task<IEnumerable<RoleAccess>> GetRoleAccessClaimValuesAsync(string roleId);
