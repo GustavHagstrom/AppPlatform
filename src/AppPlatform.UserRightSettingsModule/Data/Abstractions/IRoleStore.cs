@@ -9,8 +9,8 @@ internal interface IRoleStore
     Task DeleteRoleAsync(Role role);
     Task<List<Role>> GetUserRolesForUserAsync(string userId);
     Task<List<UserRole>> GetUserRolesForRoleAsync(string roleId);
-    Task CreateUserRole(string userId, Role role);
-    Task DeleteUserRole(string userId, Role role);
-    Task CreateUserRole(UserRole userRole);
-    Task DeleteUserRole(UserRole userRole);
+    Task CreateUserRoleAsync(string userId, Role role);
+    Task DeleteUserRoleAsync(string userId, Role role);
+    Task CreateUserRoleAsync(UserRole userRole);
+    Task DeleteUserRoleAsync(UserRole userRole);
 }

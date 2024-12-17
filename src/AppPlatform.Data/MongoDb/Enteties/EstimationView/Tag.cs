@@ -1,19 +1,10 @@
 ﻿using AppPlatform.Core.Enums.ViewTemplate;
-using System.ComponentModel.DataAnnotations;
 
 namespace AppPlatform.Data.MongoDb.Enteties.EstimationView;
 
-public class Tag : IViewEntity
+public class Tag 
 {
-    [StringLength(50)]
-    public string Id { get; set; } = Guid.NewGuid().ToString();
-    [StringLength(50)]
     public string Name { get; set; } = string.Empty;
-    [StringLength(50)]
     public string Value { get; set; } = string.Empty;
     public TagType Type { get; set; }
-    [StringLength(50)]
-    public string ViewId { get; set; } = string.Empty;
-    public View? View { get; set; }
-
 }

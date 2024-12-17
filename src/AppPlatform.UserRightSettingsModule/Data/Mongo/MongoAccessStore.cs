@@ -1,7 +1,6 @@
 ﻿using AppPlatform.Core.Models.Authorization;
 using AppPlatform.UserRightSettingsModule.Data.Abstractions;
 using MongoDB.Driver;
-using AppPlatform.Data;
 using MongoEnteties = AppPlatform.Data.MongoDb.Enteties.Authorization;
 
 namespace AppPlatform.UserRightSettingsModule.Data.Mongo;
@@ -12,9 +11,9 @@ internal class MongoAccessStore
     ) 
     : IAccessStore
 {
-    public Task CreateRoleAccessAsync(RoleAccess roleAccess)
+    public async Task CreateRoleAccessAsync(RoleAccess roleAccess)
     {
-        var role = roleCollection.Find(r => r.Id == roleAccess.RoleId).FirstOrDefault();
+        var role = await roleCollection.Find(r => r.Id == roleAccess.RoleId).FirstOrDefaultAsync();
         if (role is null)
         {
             role = new MongoEnteties.Role
@@ -22,19 +21,19 @@ internal class MongoAccessStore
                 Id = roleAccess.RoleId,
                 AccessClaimValues = new List<string> { roleAccess.AccessClaimValue }
             };
-            return roleCollection.InsertOneAsync(role);
+            await roleCollection.InsertOneAsync(role);
         }
-        if(!role.AccessClaimValues.Contains(roleAccess.AccessClaimValue))
+        else if(!role.AccessClaimValues.Contains(roleAccess.AccessClaimValue))
         {
             role.AccessClaimValues.Add(roleAccess.AccessClaimValue);
-            return roleCollection.ReplaceOneAsync(r => r.Id == roleAccess.RoleId, role);
+            await roleCollection.ReplaceOneAsync(r => r.Id == roleAccess.RoleId, role);
         }
-        return Task.CompletedTask;
+
     }
 
-    public Task CreateUserAccessAsync(UserAccess userAccess)
+    public async Task CreateUserAccessAsync(UserAccess userAccess)
     {
-        var mongoUserAccess = userAccessCollection.Find(u => u.UserId == userAccess.UserId).FirstOrDefault();
+        var mongoUserAccess = await userAccessCollection.Find(u => u.UserId == userAccess.UserId).FirstOrDefaultAsync();
         if (mongoUserAccess is null)
         {
             mongoUserAccess = new MongoEnteties.UserAccess
@@ -42,55 +41,52 @@ internal class MongoAccessStore
                 UserId = userAccess.UserId,
                 AccessClaimValues = new List<string> { userAccess.AccessClaimValue }
             };
-            return userAccessCollection.InsertOneAsync(mongoUserAccess);
+            await userAccessCollection.InsertOneAsync(mongoUserAccess);
         }
-        if (!mongoUserAccess.AccessClaimValues.Contains(userAccess.AccessClaimValue))
+        else if (!mongoUserAccess.AccessClaimValues.Contains(userAccess.AccessClaimValue))
         {
             mongoUserAccess.AccessClaimValues.Add(userAccess.AccessClaimValue);
-            return userAccessCollection.ReplaceOneAsync(u => u.UserId == userAccess.UserId, mongoUserAccess);
+            await userAccessCollection.ReplaceOneAsync(u => u.UserId == userAccess.UserId, mongoUserAccess);
         }
-        return Task.CompletedTask;
     }
 
-    public Task DeleteRoleAccessAsync(RoleAccess roleAccess)
+    public async Task DeleteRoleAccessAsync(RoleAccess roleAccess)
     {
-        var role = roleCollection.Find(r => r.Id == roleAccess.RoleId).FirstOrDefault();
+        var role = await roleCollection.Find(r => r.Id == roleAccess.RoleId).FirstOrDefaultAsync();
         if (role is not null && role.AccessClaimValues.Contains(roleAccess.AccessClaimValue))
         {
             role.AccessClaimValues.Remove(roleAccess.AccessClaimValue);
-            return roleCollection.ReplaceOneAsync(r => r.Id == roleAccess.RoleId, role);
+            await roleCollection.ReplaceOneAsync(r => r.Id == roleAccess.RoleId, role);
         }
-        return Task.CompletedTask;
     }
 
-    public Task DeleteUserAccessAsync(UserAccess userAccess)
+    public async Task DeleteUserAccessAsync(UserAccess userAccess)
     {
-        var mongoUserAccess = userAccessCollection.Find(u => u.UserId == userAccess.UserId).FirstOrDefault();
+        var mongoUserAccess = await userAccessCollection.Find(u => u.UserId == userAccess.UserId).FirstOrDefaultAsync();
         if (mongoUserAccess is not null && mongoUserAccess.AccessClaimValues.Contains(userAccess.AccessClaimValue))
         {
             mongoUserAccess.AccessClaimValues.Remove(userAccess.AccessClaimValue);
-            return userAccessCollection.ReplaceOneAsync(u => u.UserId == userAccess.UserId, mongoUserAccess);
+            await userAccessCollection.ReplaceOneAsync(u => u.UserId == userAccess.UserId, mongoUserAccess);
         }
-        return Task.CompletedTask;
     }
 
-    public Task<IEnumerable<RoleAccess>> GetRoleAccessClaimValuesAsync(string roleId)
+    public async Task<IEnumerable<RoleAccess>> GetRoleAccessClaimValuesAsync(string roleId)
     {
-        var role = roleCollection.Find(r => r.Id == roleId).FirstOrDefault();
+        var role = await roleCollection.Find(r => r.Id == roleId).FirstOrDefaultAsync();
         if (role is not null)
         {
-            return Task.FromResult(role.AccessClaimValues.Select(acv => new RoleAccess { RoleId = roleId, AccessClaimValue = acv }));
+            role.AccessClaimValues.Select(acv => new RoleAccess { RoleId = roleId, AccessClaimValue = acv });
         }
-        return Task.FromResult(Enumerable.Empty<RoleAccess>());
+        return Enumerable.Empty<RoleAccess>();
     }
 
-    public Task<IEnumerable<UserAccess>> GetUserAccessClaimValuesAsync(string userId)
+    public async Task<IEnumerable<UserAccess>> GetUserAccessClaimValuesAsync(string userId)
     {
-        var mongoUserAccess = userAccessCollection.Find(u => u.UserId == userId).FirstOrDefault();
+        var mongoUserAccess = await userAccessCollection.Find(u => u.UserId == userId).FirstOrDefaultAsync();
         if (mongoUserAccess is not null)
         {
-            return Task.FromResult(mongoUserAccess.AccessClaimValues.Select(acv => new UserAccess { UserId = userId, AccessClaimValue = acv }));
+            return mongoUserAccess.AccessClaimValues.Select(acv => new UserAccess { UserId = userId, AccessClaimValue = acv });
         }
-        return Task.FromResult(Enumerable.Empty<UserAccess>());
+        return Enumerable.Empty<UserAccess>();
     }
 }

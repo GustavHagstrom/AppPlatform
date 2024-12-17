@@ -14,7 +14,7 @@ public class SheetColumn : IViewEntity
 
     [StringLength(50)]
     public string SheetSectionId { get; set; } = string.Empty;
-    public SheetSection? SheetSectionTemplate { get; set; }
+    public SheetSection? SheetSection { get; set; }
     
 
 }

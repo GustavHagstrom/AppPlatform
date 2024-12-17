@@ -1,13 +1,9 @@
-﻿using AppPlatform.Data.MongoDb.Enteties.Authorization;
-using System.ComponentModel.DataAnnotations;
+﻿using MongoDB.Bson;
 
 namespace AppPlatform.Data.MongoDb.Enteties.EstimationView;
 public class RoleView
 {
-    [StringLength(50)]
+    public ObjectId _id { get; set; }
     public string RoleId { get; set; } = string.Empty;
-    public Role? Role { get; set; }
-    [StringLength(50)]
     public string ViewId { get; set; } = string.Empty;
-    public View? View { get; set; }
 }

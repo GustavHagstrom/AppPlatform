@@ -1,9 +1,6 @@
-
-@using Microsoft.AspNetCore.Components.Authorization
-
 @inject IStringLocalizer<CommonTab> Localizer
 @inject Helper Helper
-@inject IViewService _viewService
+@inject IViewStore _viewService
 @inject AuthenticationStateProvider AuthenticationStateProvider
 @inject IDialogService DialogService
 @inject NavigationManager NavigationManager
@@ -48,7 +45,11 @@
         if (View is not null)
         {
             var state = await AuthenticationStateProvider.GetAuthenticationStateAsync();
-            await _viewService.UpsertAsync(state.User, View);
+            var tenantId = state.User.GetTenantId();
+            if (tenantId is not null)
+            {
+                await _viewService.UpsertAsync(tenantId, View);
+            }
         }
     }
     async Task Delete()
@@ -64,8 +65,12 @@
             if (result?.Data is true)
             {
                 var state = await AuthenticationStateProvider.GetAuthenticationStateAsync();
-                await _viewService.DeleteAsync(state.User, View);
-                NavigationManager.NavigateTo(Constants.Routes.ViewListPage);
+                var tenantId = state.User.GetTenantId();
+                if (tenantId is not null)
+                {
+                    await _viewService.DeleteAsync(tenantId, View);
+                    NavigationManager.NavigateTo(Constants.Routes.ViewListPage);
+                }
             }
         }
     }

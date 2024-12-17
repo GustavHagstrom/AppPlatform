@@ -2,11 +2,12 @@
 using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
 using AppPlatform.Data.EfCore;
+using AppPlatform.ViewSettingsModule.Data.Abstractions;
 
-namespace AppPlatform.ViewSettingsModule.Services;
-internal class UserViewService(IDbContextFactory<ApplicationDbContext> contextFactory) : IUserViewService
+namespace AppPlatform.ViewSettingsModule.Data.EfCore;
+internal class SqlUserViewStore(IDbContextFactory<ApplicationDbContext> contextFactory) : IUserViewStore
 {
-    public async Task<IEnumerable<string>> GetPickedUserIdsAsync(ClaimsPrincipal userClaims, View view)
+    public async Task<IEnumerable<string>> GetPickedUserIdsAsync(View view)
     {
         using var context = await contextFactory.CreateDbContextAsync();
         return await context.UserViews
@@ -14,7 +15,7 @@ internal class UserViewService(IDbContextFactory<ApplicationDbContext> contextFa
             .Select(x => x.UserId)
             .ToListAsync();
     }
-    public async Task PickAsync(ClaimsPrincipal userClaims, View view, IEnumerable<string> userIds)
+    public async Task PickAsync(View view, IEnumerable<string> userIds)
     {
         using var context = await contextFactory.CreateDbContextAsync();
         var userViews = userIds.Select(x => new UserView
@@ -25,7 +26,7 @@ internal class UserViewService(IDbContextFactory<ApplicationDbContext> contextFa
         await context.UserViews.AddRangeAsync(userViews);
         await context.SaveChangesAsync();
     }
-    public async Task UnpickAsync(ClaimsPrincipal userClaims, View view, IEnumerable<string> userIds)
+    public async Task UnpickAsync(View view, IEnumerable<string> userIds)
     {
         using var context = await contextFactory.CreateDbContextAsync();
         var userViews = await context.UserViews

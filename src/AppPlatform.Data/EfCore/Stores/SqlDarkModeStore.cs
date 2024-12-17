@@ -3,9 +3,8 @@ using System.Security.Claims;
 using AppPlatform.Core.Models;
 using AppPlatform.Core.Extensions;
 using AppPlatform.Data.Abstractions;
-using AppPlatform.Data.EfCore;
 
-namespace AppPlatform.Core.DataAccess.Settings;
+namespace AppPlatform.Data.EfCore.Stores;
 
 public class SqlDarkModeStore(IDbContextFactory<ApplicationDbContext> ContextFactory) : IDarkModeStore
 {

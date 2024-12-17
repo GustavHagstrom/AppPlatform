@@ -1,7 +1,6 @@
 ﻿using AppPlatform.Core.Models.Authorization;
 using AppPlatform.UserRightSettingsModule.Data.Abstractions;
 using MongoDB.Driver;
-using System.Security.Claims;
 using MongoEnteties = AppPlatform.Data.MongoDb.Enteties.Authorization;
 
 namespace AppPlatform.UserRightSettingsModule.Data.Mongo;
@@ -12,9 +11,9 @@ internal class MongoRoleStore
     )
     : IRoleStore
 {
-    public Task CreateUserRole(string userId, Role role)
+    public async Task CreateUserRoleAsync(string userId, Role role)
     {
-        var userRole = userRoleCollection.Find(ur => ur.UserId == userId && ur.RoleId == role.Id).FirstOrDefault();
+        var userRole = await userRoleCollection.Find(ur => ur.UserId == userId && ur.RoleId == role.Id).FirstOrDefaultAsync();
         if (userRole is null)
         {
             userRole = new MongoEnteties.UserRole
@@ -22,12 +21,11 @@ internal class MongoRoleStore
                 UserId = userId,
                 RoleId = role.Id
             };
-            return userRoleCollection.InsertOneAsync(userRole);
+            await userRoleCollection.InsertOneAsync(userRole);
         }
-        return Task.CompletedTask;
     }
 
-    public Task CreateUserRole(UserRole userRole)
+    public Task CreateUserRoleAsync(UserRole userRole)
     {
         var mongoUserRole = new MongoEnteties.UserRole
         {
@@ -42,22 +40,22 @@ internal class MongoRoleStore
         return roleCollection.DeleteOneAsync(r => r.Id == role.Id);
     }
 
-    public Task DeleteUserRole(string userId, Role role)
+    public Task DeleteUserRoleAsync(string userId, Role role)
     {
         return userRoleCollection.DeleteOneAsync(ur => ur.UserId == userId && ur.RoleId == role.Id);
     }
 
-    public Task DeleteUserRole(UserRole userRole)
+    public Task DeleteUserRoleAsync(UserRole userRole)
     {
         return userRoleCollection.DeleteOneAsync(ur => ur.UserId == userRole.UserId && ur.RoleId == userRole.RoleId);
     }
 
-    public Task<Role?> GetRoleAsync(string roleId)
+    public async Task<Role?> GetRoleAsync(string roleId)
     {
-        var mongoRole = roleCollection.Find(r => r.Id == roleId).FirstOrDefault();
+        var mongoRole = await roleCollection.Find(r => r.Id == roleId).FirstOrDefaultAsync();
         if (mongoRole is null)
         {
-            return Task.FromResult<Role?>(null);
+            return null;
         }
         var role = new Role
         {
@@ -72,12 +70,12 @@ internal class MongoRoleStore
             Role = role,
             AccessClaimValue = acv
         }).ToList();
-        return Task.FromResult<Role?>(role);
+        return role;
     }
 
-    public Task<List<Role>> GetRolesAsync(string tenantId)
+    public async Task<List<Role>> GetRolesAsync(string tenantId)
     {
-        var mongoRoles = roleCollection.Find(r => r.TenantId == tenantId).ToList();
+        var mongoRoles = await roleCollection.Find(r => r.TenantId == tenantId).ToListAsync();
         var roles = mongoRoles.Select(mr =>
         {
             var role = new Role
@@ -95,23 +93,23 @@ internal class MongoRoleStore
             }).ToList();
             return role;
         }).ToList();
-        return Task.FromResult(roles);
+        return roles;
     }
 
-    public Task<List<UserRole>> GetUserRolesForRoleAsync(string roleId)
+    public async Task<List<UserRole>> GetUserRolesForRoleAsync(string roleId)
     {
-        var mongoUserRoles = userRoleCollection.Find(ur => ur.RoleId == roleId).ToList();
+        var mongoUserRoles = await userRoleCollection.Find(ur => ur.RoleId == roleId).ToListAsync();
         var userRoles = mongoUserRoles.Select(mur => new UserRole
         {
             UserId = mur.UserId,
             RoleId = mur.RoleId
         }).ToList();
-        return Task.FromResult(userRoles);
+        return userRoles;
     }
 
-    public Task<List<Role>> GetUserRolesForUserAsync(string userId)
+    public async Task<List<Role>> GetUserRolesForUserAsync(string userId)
     {
-        var mongoUserRoles = userRoleCollection.Find(ur => ur.UserId == userId).ToList();
+        var mongoUserRoles = await userRoleCollection.Find(ur => ur.UserId == userId).ToListAsync();
         var roles = mongoUserRoles.Select(mur =>
         {
             var role = roleCollection.Find(r => r.Id == mur.RoleId).FirstOrDefault();
@@ -134,7 +132,7 @@ internal class MongoRoleStore
             }).ToList();
             return r;
         }).Where(r => r is not null).Select(r => r!).ToList();
-        return Task.FromResult(roles);
+        return roles;
     }
 
     public Task UpsertRoleAsync(string tenantId, Role role)

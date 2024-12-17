@@ -52,11 +52,11 @@
         Roles.Clear();
         var state = await AuthenticationStateProvider.GetAuthenticationStateAsync();
         var tenantId = state.User.GetTenantId();
-        if (tenantId is null)
+        if (tenantId is not null)
         {
-            return;
+            Roles.AddRange(await RoleStore.GetRolesAsync(tenantId));
         }
-        Roles.AddRange(await RoleStore.GetRolesAsync(tenantId));
+        
         StateHasChanged();
     }
     void EditUserAccess(UserWithPhoto user)
@@ -73,13 +73,12 @@
         {
             var state = await AuthenticationStateProvider.GetAuthenticationStateAsync();
             var tenantId = state.User.GetTenantId();
-            if (tenantId is null)
+            if (tenantId is not null)
             {
-                return;
+                var role = new Role { Name = input };
+                await RoleStore.UpsertRoleAsync(tenantId, role);
+                NavigationManager.NavigateTo($"{Constants.ModuleRoutes.RoleAccessEdit}/{role.Id}");
             }
-            var role = new Role { Name = input };
-            await RoleStore.UpsertRoleAsync(tenantId, role);
-            NavigationManager.NavigateTo($"{Constants.ModuleRoutes.RoleAccessEdit}/{role.Id}");
         }
     }
 }

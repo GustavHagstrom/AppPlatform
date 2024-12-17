@@ -1,24 +1,15 @@
 ﻿using AppPlatform.Core.Models.Authorization;
-using AppPlatform.Core.Extensions;
 using Microsoft.EntityFrameworkCore;
 using System.Data;
-using System.Security.Claims;
 using AppPlatform.Data.EfCore;
 using AppPlatform.UserRightSettingsModule.Data.Abstractions;
 
 namespace AppPlatform.UserRightSettingsModule.Data.EfCore;
-internal class SqlRoleStore : IRoleStore
+internal class SqlRoleStore(IDbContextFactory<ApplicationDbContext> dbContextFactory) : IRoleStore
 {
-    private readonly IDbContextFactory<ApplicationDbContext> _dbContextFactory;
-
-    public SqlRoleStore(IDbContextFactory<ApplicationDbContext> dbContextFactory)
-    {
-        _dbContextFactory = dbContextFactory;
-    }
-
     public Task UpsertRoleAsync(string tenantId, Role role)
     {
-        using var context = _dbContextFactory.CreateDbContext();
+        using var context = dbContextFactory.CreateDbContext();
         var existingRole = context.Roles.FirstOrDefault(x => x.Id == role.Id);
         if (existingRole != null)
         {
@@ -37,68 +28,68 @@ internal class SqlRoleStore : IRoleStore
 
     public Task DeleteRoleAsync(Role role)
     {
-        using var context = _dbContextFactory.CreateDbContext();
+        using var context = dbContextFactory.CreateDbContext();
         context.Roles.Remove(role);
         return context.SaveChangesAsync();
     }
 
     public Task<Role?> GetRoleAsync(string roleId)
     {
-        using var context = _dbContextFactory.CreateDbContext();
+        using var context = dbContextFactory.CreateDbContext();
         return context.Roles.FirstOrDefaultAsync(x => x.Id == roleId);
     }
 
     public Task<List<Role>> GetRolesAsync(string tenantId)
     {
-        using var context = _dbContextFactory.CreateDbContext();
+        using var context = dbContextFactory.CreateDbContext();
         return context.Roles.Where(x => x.TenantId == tenantId).ToListAsync();
     }
 
     public async Task<List<Role>> GetUserRolesForUserAsync(string userId)
     {
-        using var context = _dbContextFactory.CreateDbContext();
+        using var context = dbContextFactory.CreateDbContext();
         var result = await context.UserRoles.Include(x => x.Role)
             .Where(x => x.UserId == userId)
             .Select(x => x.Role)
             .ToListAsync();
         var roles = result?.Where(x => x is not null).Select(x => x!).ToList();
-        return roles ?? new List<Role>();
+        return roles ?? [];
 
     }
 
     public Task<List<UserRole>> GetUserRolesForRoleAsync(string roleId)
     {
-        using var context = _dbContextFactory.CreateDbContext();
+        using var context = dbContextFactory.CreateDbContext();
         return context.UserRoles.Where(x => x.RoleId == roleId).ToListAsync();
     }
 
-    public Task CreateUserRole(string userId, Role role)
+    public Task CreateUserRoleAsync(string userId, Role role)
     {
         var userRole = new UserRole
         {
             RoleId = role.Id,
             UserId = userId
         };
-        return CreateUserRole(userRole);
+        return CreateUserRoleAsync(userRole);
     }
-    public Task CreateUserRole(UserRole userRole)
+    public Task CreateUserRoleAsync(UserRole userRole)
     {
-        using var context = _dbContextFactory.CreateDbContext();
+        using var context = dbContextFactory.CreateDbContext();
         context.UserRoles.Add(userRole);
         return context.SaveChangesAsync();
     }
-    public Task DeleteUserRole(string userId, Role role)
+    public Task DeleteUserRoleAsync(string userId, Role role)
     {
         var userRole = new UserRole
         {
             RoleId = role.Id,
             UserId = userId
         };
-        return DeleteUserRole(userRole);
+        return DeleteUserRoleAsync(userRole);
     }
-    public Task DeleteUserRole(UserRole userRole)
+    public Task DeleteUserRoleAsync(UserRole userRole)
     {
-        using var context = _dbContextFactory.CreateDbContext();
+        using var context = dbContextFactory.CreateDbContext();
         var existingUserRole = context.UserRoles.FirstOrDefault(x => x.RoleId == userRole.RoleId && x.UserId == userRole.UserId);
         if (existingUserRole != null)
         {

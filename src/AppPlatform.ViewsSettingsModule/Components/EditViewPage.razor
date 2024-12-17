@@ -1,6 +1,4 @@
 @page "/Settings/ViewSettings/Edit/{ViewId}"
-@using AppPlatform.ViewSettingsModule.Components.Tabs
-@using Microsoft.AspNetCore.Components.Authorization
 @inject IStringLocalizer<EditViewPage> Localizer
 
 @if(View is not null)
@@ -59,7 +57,7 @@
 }
    
 
-@inject IViewService _viewService
+@inject IViewStore _viewService
 @inject AuthenticationStateProvider AuthenticationStateProvider
 @inject Helper Helper
 @inject IBrowserViewportService BrowserViewportService
@@ -99,7 +97,11 @@
         {
             SetLoading(true);
             var state = await AuthenticationStateProvider.GetAuthenticationStateAsync();
-            View = await _viewService.GetAsync(state.User, ViewId);
+            var tenantId = state.User.GetTenantId();
+            if (tenantId is not null)
+            {
+                View = await _viewService.GetAsync(tenantId, ViewId);
+            }
             SetLoading(false);
         }
     }

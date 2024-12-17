@@ -52,12 +52,11 @@
             Access.AddRange(await AccessStore.GetUserAccessClaimValuesAsync(UserId));
             User = await MicrosoftGraphUserAccess.GetUserWithPhotoAsync(UserId);
             var tenantId = state.User.GetTenantId();
-            if (tenantId is null)
+            if (tenantId is not null)
             {
-                return;
+                AllRoles = await RoleStore.GetRolesAsync(tenantId);
+                PickedRoleIds = (await RoleStore.GetUserRolesForUserAsync(UserId)).Select(x => x.Id).ToList();
             }
-            AllRoles = await RoleStore.GetRolesAsync(tenantId);
-            PickedRoleIds = (await RoleStore.GetUserRolesForUserAsync(UserId)).Select(x => x.Id).ToList();
         }
         SetIsLoading(false);
     }
@@ -111,12 +110,12 @@
         if (state is null) return;
         if (pickedRecord.IsPicked)
         {
-            await RoleStore.CreateUserRole(userId, pickedRecord.Data);
+            await RoleStore.CreateUserRoleAsync(userId, pickedRecord.Data);
             AllRoles.Add(pickedRecord.Data);
         }
         else
         {
-            await RoleStore.DeleteUserRole(userId, pickedRecord.Data);
+            await RoleStore.DeleteUserRoleAsync(userId, pickedRecord.Data);
             AllRoles.Remove(AllRoles.First(x => x.Id == pickedRecord.Data.Id));
         }
     }

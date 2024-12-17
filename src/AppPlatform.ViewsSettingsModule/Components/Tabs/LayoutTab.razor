@@ -1,18 +1,9 @@
-@using AppPlatform.ViewSettingsModule.Components.Sections
-@using AppPlatform.ViewSettingsModule.Components.Sections.Data
-@using AppPlatform.ViewSettingsModule.Components.Sections.Sheet
-@using Microsoft.AspNetCore.Components.Authorization
-@using AppPlatform.ViewSettingsModule.Components.Format
 @inject IStringLocalizer<LayoutTab> Localizer
 @inject Helper Helper
-@inject IViewService _viewService
+@inject IViewStore _viewService
 @inject AuthenticationStateProvider AuthenticationStateProvider
 @inject IDialogService DialogService
 @inject NavigationManager NavigationManager
-
-
-
-
 
 
 <CustomMudField Title="@Localizer["Sektioner"]" Alignment="CustomMudField.HeaderAlignment.Right" MudFieldClass="custom-input-1" MudFieldStyle="min-height: 92px">
@@ -45,11 +36,6 @@
         </ul>
     </ChildContent>
 </CustomMudField>
-
-
-
-
-
 
 
 <SettingsSection>

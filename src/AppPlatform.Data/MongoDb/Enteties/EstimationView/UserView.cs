@@ -1,11 +1,9 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using MongoDB.Bson;
 
 namespace AppPlatform.Data.MongoDb.Enteties.EstimationView;
 public class UserView
 {
-    [StringLength(50)]
+    public ObjectId _id { get; set; }
     public string UserId { get; set; } = string.Empty;
-    [StringLength(50)]
     public string ViewId { get; set; } = string.Empty;
-    public View? View { get; set; }
 }

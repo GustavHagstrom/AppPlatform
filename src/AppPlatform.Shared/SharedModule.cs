@@ -1,7 +1,6 @@
 ﻿using AppPlatform.Core.Abstractions;
 using AppPlatform.Core.Builders;
 using AppPlatform.Core.Constants;
-using AppPlatform.Core.DataAccess.Settings;
 using AppPlatform.Core.Services;
 using AppPlatform.Data.Abstractions;
 using AppPlatform.Data.EfCore.Stores;
@@ -17,7 +16,7 @@ using AppPlatform.SharedModule.Services;
 using AppPlatform.SharedModule.Services.MicrosoftGraph;
 using AppPlatform.SharedModule.Services.Views;
 using AppPlatform.Data.MongoDb.Stores;
-
+using MongoEnteties = AppPlatform.Data.MongoDb.Enteties;
 namespace AppPlatform.SharedModule;
 public class SharedModule : IModule
 {
@@ -29,10 +28,13 @@ public class SharedModule : IModule
 
     public void ConfigForMongoDb(WebApplicationBuilder builder, MongoCollectionRegistrar collectionBuilder)
     {
-        collectionBuilder.Add<Data.MongoDb.Enteties.UserSettings>("UserSettings");
-        collectionBuilder.Add<Data.MongoDb.Enteties.Authorization.Role>("Roles");
-        collectionBuilder.Add<Data.MongoDb.Enteties.Authorization.UserAccess>("UserAccess");
-        collectionBuilder.Add<Data.MongoDb.Enteties.Authorization.UserRole>("UserRoles");
+        collectionBuilder.Add<MongoEnteties.UserSettings>("UserSettings");
+        collectionBuilder.Add<MongoEnteties.Authorization.Role>("Roles");
+        collectionBuilder.Add<MongoEnteties.Authorization.UserAccess>("UserAccess");
+        collectionBuilder.Add<MongoEnteties.Authorization.UserRole>("UserRoles");
+        collectionBuilder.Add<MongoEnteties.EstimationView.RoleView>("RoleViews");
+        collectionBuilder.Add<MongoEnteties.EstimationView.UserView>("UserViews");
+        collectionBuilder.Add<MongoEnteties.EstimationView.View>("Views");
 
 
         builder.Services.AddScoped<IDarkModeStore, MongoDarkModeStore>();

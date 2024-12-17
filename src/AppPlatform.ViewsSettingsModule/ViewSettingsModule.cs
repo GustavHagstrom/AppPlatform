@@ -2,10 +2,12 @@
 using AppPlatform.Core.Abstractions;
 using AppPlatform.Core.Builders;
 using AppPlatform.ViewSettingsModule.Components;
-using AppPlatform.ViewSettingsModule.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using AppPlatform.ViewSettingsModule.Data.Abstractions;
+using AppPlatform.ViewSettingsModule.Data.EfCore;
+using AppPlatform.ViewSettingsModule.Data.Mongo;
 
 namespace AppPlatform.ViewSettingsModule;
 public class ViewSettingsModule : IModule
@@ -34,9 +36,9 @@ public class ViewSettingsModule : IModule
 
     public void ConfigForEfCore(WebApplicationBuilder builder)
     {
-        builder.Services.AddScoped<IViewService, ViewService>();
-        builder.Services.AddScoped<IRoleViewService, RoleViewService>();
-        builder.Services.AddScoped<IUserViewService, UserViewService>();
+        builder.Services.AddScoped<IViewStore, SqlViewStore>();
+        builder.Services.AddScoped<IRoleViewStore, SqlRoleViewStore>();
+        builder.Services.AddScoped<IUserViewStore, SqlUserViewStore>();
     }
     public void OnEfCoreModelCreating(ModelBuilder modelBuilder)
     {
@@ -44,6 +46,9 @@ public class ViewSettingsModule : IModule
     }
     public void ConfigForMongoDb(WebApplicationBuilder builder, MongoCollectionRegistrar collectionBuilder)
     {
+        builder.Services.AddScoped<IViewStore, MongoViewStore>();
+        builder.Services.AddScoped<IRoleViewStore, MongoRoleViewStore>();
+        builder.Services.AddScoped<IUserViewStore, MongoUserViewStore>();
 
     }
 }

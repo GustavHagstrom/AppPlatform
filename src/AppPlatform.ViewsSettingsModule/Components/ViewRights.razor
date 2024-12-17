@@ -1,9 +1,3 @@
-@using AppPlatform.Core.Models.Authorization
-@using AppPlatform.Core.Models.FromShared
-@using AppPlatform.SharedModule.Components.Rights
-@using AppPlatform.Core.Models
-@using AppPlatform.SharedModule.Services.MicrosoftGraph
-@using Microsoft.AspNetCore.Components.Authorization
 @inject IStringLocalizer<ViewRights> Localizer
 
 
@@ -16,8 +10,8 @@
 
 @inject AuthenticationStateProvider AuthenticationStateProvider
 @inject IMicrosoftGraphUserAccess MicrosoftGraphUserAccess
-@inject IUserViewService UserViewService
-@inject IRoleViewService RoleViewService
+@inject IUserViewStore UserViewService
+@inject IRoleViewStore RoleViewService
 @code{
 
     [Parameter] public View? View { get; set; }
@@ -41,10 +35,16 @@
         }
         EditViewPage.SetLoading(true);
         var state = await AuthenticationStateProvider.GetAuthenticationStateAsync();
-        AllRoles = (await RoleViewService.GetRolesAsync(state.User)).ToList();
-        PickedRoleIds = (await RoleViewService.GetPickedRoleIdsAsync(state.User, View)).ToList();
+        var tenantId = state.User.GetTenantId();
+        if (tenantId is null)
+        {
+            EditViewPage.SetLoading(false);
+            return;
+        }
+        AllRoles = (await RoleViewService.GetRolesAsync(tenantId)).ToList();
+        PickedRoleIds = (await RoleViewService.GetPickedRoleIdsAsync(View)).ToList();
         AllUsers = (await MicrosoftGraphUserAccess.GetUsersWithPhotoAsync()).ToList();
-        PickedUserIds = (await UserViewService.GetPickedUserIdsAsync(state.User, View)).ToList();
+        PickedUserIds = (await UserViewService.GetPickedUserIdsAsync(View)).ToList();
         EditViewPage.SetLoading(false);
     }
     async Task OnRolePickChanged(PickChangedRecord<Role> record)
@@ -54,15 +54,14 @@
             return;
         }
         EditViewPage.SetLoading(true);
-        var state = await AuthenticationStateProvider.GetAuthenticationStateAsync();
         if(record.IsPicked)
         {
-            await RoleViewService.PickAsync(state.User, View, new string[] { record.Data.Id });
+            await RoleViewService.PickAsync(View, new string[] { record.Data.Id });
             PickedRoleIds.Add(record.Data.Id);
         }
         else
         {
-            await RoleViewService.UnpickAsync(state.User, View, new string[] { record.Data.Id });
+            await RoleViewService.UnpickAsync(View, new string[] { record.Data.Id });
             PickedRoleIds.Remove(record.Data.Id);
         }
         EditViewPage.SetLoading(false);
@@ -74,15 +73,14 @@
             return;
         }
         EditViewPage.SetLoading(true);
-        var state = await AuthenticationStateProvider.GetAuthenticationStateAsync();
         if (record.IsPicked)
         {
-            await UserViewService.PickAsync(state.User, View, new string[] { record.Data.User.Id });
+            await UserViewService.PickAsync(View, new string[] { record.Data.User.Id });
             PickedUserIds.Add(record.Data.User.Id);
         }
         else
         {
-            await UserViewService.UnpickAsync(state.User, View, new string[] { record.Data.User.Id });
+            await UserViewService.UnpickAsync(View, new string[] { record.Data.User.Id });
             PickedUserIds.Remove(record.Data.User.Id);
         }
         EditViewPage.SetLoading(false);

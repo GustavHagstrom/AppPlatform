@@ -59,12 +59,12 @@
         };
         if (record.IsPicked)
         {
-            await RoleStore.CreateUserRole(userRole);
+            await RoleStore.CreateUserRoleAsync(userRole);
             PickedUserIds.Add(record.Data.User.Id!);
         }
         else
         {
-            await RoleStore.DeleteUserRole(userRole);
+            await RoleStore.DeleteUserRoleAsync(userRole);
             PickedUserIds.Remove(record.Data.User.Id!);
         }
     }

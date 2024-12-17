@@ -4,21 +4,17 @@ using AppPlatform.Core.Extensions;
 using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
 using AppPlatform.Data.EfCore;
+using AppPlatform.ViewSettingsModule.Data.Abstractions;
 
-namespace AppPlatform.ViewSettingsModule.Services;
-internal class RoleViewService(IDbContextFactory<ApplicationDbContext> contextFactory) : IRoleViewService
+namespace AppPlatform.ViewSettingsModule.Data.EfCore;
+internal class SqlRoleViewStore(IDbContextFactory<ApplicationDbContext> contextFactory) : IRoleViewStore
 {
-    public async Task<IEnumerable<Role>> GetRolesAsync(ClaimsPrincipal userClaims)
+    public async Task<IEnumerable<Role>> GetRolesAsync(string tenantId)
     {
-        var tenantId = userClaims.GetTenantId();
-        if (tenantId is null)
-        {
-            return Array.Empty<Role>();
-        }
         using var context = await contextFactory.CreateDbContextAsync();
         return await context.Roles.Where(x => x.TenantId == tenantId).ToListAsync();
     }
-    public async Task<IEnumerable<string>> GetPickedRoleIdsAsync(ClaimsPrincipal userClaims, View view)
+    public async Task<IEnumerable<string>> GetPickedRoleIdsAsync(View view)
     {
         using var context = await contextFactory.CreateDbContextAsync();
         return await context.RoleViews
@@ -26,7 +22,7 @@ internal class RoleViewService(IDbContextFactory<ApplicationDbContext> contextFa
             .Select(x => x.RoleId)
             .ToListAsync();
     }
-    public async Task PickAsync(ClaimsPrincipal userClaims, View view, IEnumerable<string> roleIds)
+    public async Task PickAsync(View view, IEnumerable<string> roleIds)
     {
         using var context = await contextFactory.CreateDbContextAsync();
         var roleViews = roleIds.Select(x => new RoleView
@@ -37,7 +33,7 @@ internal class RoleViewService(IDbContextFactory<ApplicationDbContext> contextFa
         await context.RoleViews.AddRangeAsync(roleViews);
         await context.SaveChangesAsync();
     }
-    public async Task UnpickAsync(ClaimsPrincipal userClaims, View view, IEnumerable<string> roleIds)
+    public async Task UnpickAsync(View view, IEnumerable<string> roleIds)
     {
         using var context = await contextFactory.CreateDbContextAsync();
         var roleViews = await context.RoleViews

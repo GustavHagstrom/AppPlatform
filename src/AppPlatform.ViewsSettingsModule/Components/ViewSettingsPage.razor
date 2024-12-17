@@ -1,7 +1,4 @@
 @page "/Settings/ViewSettings"
-@using AppPlatform.SharedModule.Components.Dialogs
-@using AppPlatform.ViewSettingsModule.Services
-@using Microsoft.AspNetCore.Components.Authorization
 @layout SettingsLayout
 @inject IStringLocalizer<ViewSettingsPage> Localizer
 
@@ -17,7 +14,7 @@
     
 </SettingsPageBase>
 
-@inject IViewService ViewService
+@inject IViewStore ViewService
 @inject AuthenticationStateProvider AuthenticationStateProvider
 @inject IDialogService DialogService
 @inject NavigationManager NavigationManager
@@ -27,11 +24,15 @@
 
     async Task LoadViewsAsync()
     {
-        var state = await AuthenticationStateProvider.GetAuthenticationStateAsync();
         Views.Clear();
         SetLoading(true);
-        var views = await ViewService.GetViewListAsync(state.User);
-        Views.AddRange(views);
+        var state = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+        var tenantId = state.User.GetTenantId();
+        if (tenantId is not null)
+        {
+            var views = await ViewService.GetViewListAsync(tenantId);
+            Views.AddRange(views);
+        }
         SetLoading(false);
     }
     void SetLoading(bool isLoading)
@@ -48,9 +49,14 @@
         if (result?.Canceled == false && result.Data is string input and not null)
         {
             var state = await AuthenticationStateProvider.GetAuthenticationStateAsync();
-            var view = new View { Name = input };
-            await ViewService.UpsertAsync(state.User, view);
-            NavigationManager.NavigateTo($"{Constants.Routes.ViewEditPage}/{view.Id}");
+            var tenantId = state.User.GetTenantId();
+            if (tenantId is not null)
+            {
+                var view = new View { Name = input };
+                await ViewService.UpsertAsync(tenantId, view);
+                NavigationManager.NavigateTo($"{Constants.Routes.ViewEditPage}/{view.Id}");
+            }
+            
         }
     }
 }

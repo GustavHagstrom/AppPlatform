@@ -3,16 +3,16 @@ using AppPlatform.Core.Extensions;
 using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
 using AppPlatform.Data.EfCore;
+using AppPlatform.ViewSettingsModule.Data.Abstractions;
 
-namespace AppPlatform.ViewSettingsModule.Services;
-internal class ViewService(IDbContextFactory<ApplicationDbContext> dbContextFactory) : IViewService
+namespace AppPlatform.ViewSettingsModule.Data.EfCore;
+internal class SqlViewStore(IDbContextFactory<ApplicationDbContext> dbContextFactory) : IViewStore
 {
-    
 
-    public async Task DeleteAsync(ClaimsPrincipal userClaims, View view)
+
+    public async Task DeleteAsync(string tenantId, View view)
     {
         using var dbContext = await dbContextFactory.CreateDbContextAsync();
-        var tenantId = userClaims.GetTenantId();
         var viewToDelete = await dbContext.Views.FirstOrDefaultAsync(x => x.Id == view.Id && x.TenantId == tenantId);
         if (viewToDelete is null)
         {
@@ -22,10 +22,9 @@ internal class ViewService(IDbContextFactory<ApplicationDbContext> dbContextFact
         await dbContext.SaveChangesAsync();
     }
 
-    public async Task<View?> GetAsync(ClaimsPrincipal userClaims, string viewId)
+    public async Task<View?> GetAsync(string tenantId, string viewId)
     {
         using var dbContext = await dbContextFactory.CreateDbContextAsync();
-        var tenantId = userClaims.GetTenantId();
         var view = await dbContext.Views
             .Include(x => x.DataSections).ThenInclude(x => x.Columns)
             .Include(x => x.DataSections).ThenInclude(x => x.Rows)
@@ -37,22 +36,16 @@ internal class ViewService(IDbContextFactory<ApplicationDbContext> dbContextFact
         return view;
     }
 
-    public async Task<List<View>> GetViewListAsync(ClaimsPrincipal UserClaims)
+    public async Task<List<View>> GetViewListAsync(string tenantId)
     {
         using var dbContext = await dbContextFactory.CreateDbContextAsync();
-        var tenantId = UserClaims.GetTenantId();
         return await dbContext.Views
             .Where(x => x.TenantId == tenantId)
             .ToListAsync();
     }
-    public async Task UpsertAsync(ClaimsPrincipal userClaims, View view)
+    public async Task UpsertAsync(string tenantId, View view)
     {
         using var dbContext = await dbContextFactory.CreateDbContextAsync();
-        var tenantId = userClaims.GetTenantId();
-        if (tenantId is null)
-        {
-            throw new Exception("TenantId is null");
-        }
         view.TenantId = tenantId;
 
         //Adds the view to the database if none is found with the same Id
@@ -222,7 +215,7 @@ internal class ViewService(IDbContextFactory<ApplicationDbContext> dbContextFact
         foreach (var updatePair in EntetiesToUpdate(existing, incoming))
         {
             dbContext.Entry(updatePair.Existing).CurrentValues.SetValues(updatePair.Incoming);
-            if(extraActionOnUpdate is not null)
+            if (extraActionOnUpdate is not null)
             {
                 await extraActionOnUpdate.Invoke(updatePair);
             }

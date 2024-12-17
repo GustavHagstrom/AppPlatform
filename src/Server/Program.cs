@@ -19,6 +19,7 @@ using MongoDB.Driver;
 using AppPlatform.Data.EfCore;
 using AppPlatform.SharedModule;
 using AppPlatform.Data.Abstractions;
+using System.Collections;
 
 internal class Program
 {
@@ -135,7 +136,25 @@ internal class Program
                 }
             }
         }
-        
+        //else if (app.Configuration["DbType"] == "MongoDb")
+        //{
+        //    using (var scope = app.Services.CreateScope())
+        //    {
+        //        var db = scope.ServiceProvider.GetRequiredService<IMongoDatabase>();
+        //        try
+        //        {
+        //            var collectionNames = db.ListCollectionNames().ToList();
+        //            foreach (var collection in collectionNames)
+        //            {
+
+        //            }
+        //        }
+        //        catch (Exception ex)
+        //        {
+        //            // Log the error or handle it as necessary
+        //        }
+        //    }
+        //}
 
         app.UseHttpsRedirection();
 
@@ -186,8 +205,3 @@ internal class Program
         }
     }
 }
-
-#if DEBUG
-
-#else
-#endif

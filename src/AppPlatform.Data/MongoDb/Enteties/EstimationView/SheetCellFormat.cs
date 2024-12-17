@@ -1,19 +1,11 @@
 ﻿using AppPlatform.Core.Enums.ViewTemplate;
-using System.ComponentModel.DataAnnotations;
 
 namespace AppPlatform.Data.MongoDb.Enteties.EstimationView;
-public class SheetCellFormat : IFormat, IViewEntity
+public class SheetCellFormat
 {
-    [StringLength(50)]
-    public string Id { get; set; } = Guid.NewGuid().ToString();
-    [StringLength(50)]
-
-    public required string SheetSectionId { get; set; }
-    public SheetSection? SheetSection { get; set; }
     public required SheetRowType RowType { get; set; }
     public required SheetColumnType ColumnType { get; set; }
     public bool IsVisible { get; set; } = true;
-
     public Align? HorizontalAlign { get; set; } = Align.Start;
     public string? BackgroundColor { get; set; } = null;
     public BorderStyle BorderStyle { get; set; } = BorderStyle.Solid;
@@ -31,26 +23,4 @@ public class SheetCellFormat : IFormat, IViewEntity
     public bool IsUnderline { get; set; } = false;
     public Align? VerticalAlign { get; set; } = Align.End;
     public string? TextColor { get; set; } = null;
-    
-
-    public void ApplyFormat(IFormat format)
-    {
-        HorizontalAlign = format.HorizontalAlign;
-        BackgroundColor = format.BackgroundColor;
-        BorderStyle = format.BorderStyle;
-        DecimalCount = format.DecimalCount;
-        DoesIncludeTimeOfDay = format.DoesIncludeTimeOfDay;
-        FontSize = format.FontSize;
-        FormatType = format.FormatType;
-        HasBorderBottom = format.HasBorderBottom;
-        HasBorderLeft = format.HasBorderLeft;
-        HasBorderRight = format.HasBorderRight;
-        HasBorderTop = format.HasBorderTop;
-        HasThoasandsSeparator = format.HasThoasandsSeparator;
-        IsBold = format.IsBold;
-        IsItalic = format.IsItalic;
-        IsUnderline = format.IsUnderline;
-        VerticalAlign = format.VerticalAlign;
-        TextColor = format.TextColor;
-    }
 }
