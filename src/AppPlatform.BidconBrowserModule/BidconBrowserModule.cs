@@ -1,11 +1,11 @@
 ﻿using AppPlatform.BidconBrowserModule.Components;
-using AppPlatform.BidconBrowserModule.Services;
 using AppPlatform.Core.Constants;
 using AppPlatform.Core.Abstractions;
 using AppPlatform.Core.Builders;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using AppPlatform.BidconBrowserModule.Services;
 
 namespace AppPlatform.BidconBrowserModule;
 public class BidconBrowserModule : IModule
@@ -20,7 +20,7 @@ public class BidconBrowserModule : IModule
     }
     public void GeneralConfig(WebApplicationBuilder builder)
     {
-        
+        builder.Services.AddScoped<IBidconBrowserAccesService, BidconBrowserAccesService>();
         builder.Services.AddAuthorization(configure =>
         {
             configure.AddPolicy(Constants.Authorization.Policy, policy =>
@@ -33,7 +33,7 @@ public class BidconBrowserModule : IModule
 
     public void ConfigForEfCore(WebApplicationBuilder builder)
     {
-        builder.Services.AddScoped<IBidconBrowserAccesService, BidconBrowserAccesService>();
+        
     }
     public void OnEfCoreModelCreating(ModelBuilder modelBuilder)
     {

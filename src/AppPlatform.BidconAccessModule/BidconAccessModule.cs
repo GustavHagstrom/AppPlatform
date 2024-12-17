@@ -1,12 +1,13 @@
-﻿using AppPlatform.BidconAccessModule.DirectAccess.Services;
-using AppPlatform.BidconAccessModule.SdkAccess.Services;
-using AppPlatform.BidconAccessModule.Services;
+﻿using AppPlatform.BidconAccessModule.SdkAccess.Services;
 using AppPlatform.Core.Constants;
 using AppPlatform.Core.Abstractions;
 using AppPlatform.Core.Builders;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using AppPlatform.BidconAccessModule.DirectAccess.Data.EfCore;
+using AppPlatform.BidconAccessModule.DirectAccess.Data.Abstractions;
+using AppPlatform.BidconAccessModule.DirectAccess.Data.Mongo;
 
 namespace AppPlatform.BidconAccessModule;
 public class BidconAccessModule : IModule
@@ -18,22 +19,15 @@ public class BidconAccessModule : IModule
 
     public void RegisterInjectableComponents(ComponentBuilder componentBuilder)
     {
-        //When using SDK. (Not reflection)
-        //componentBuilder.AddCommonSettingsComponent<BidconSdkCredentials>();
 
-        //When using Direct
-        //componentBuilder.AddSettingsComponent<BidconDirectCredentials>();
     }
 
     public void GeneralConfig(WebApplicationBuilder builder)
     {
-        //when using SDK
-        UseSdkReflectionServices(builder.Services);
 
-        //when using direct
-        //UseDirectServices(services);
+        builder.Services.AddScoped<IBidconAccess, BidconSdkReflectionAccess>();
+        builder.Services.AddScoped<IBidconReflectionService, BidconReflectionService>();
 
-        
         builder.Services.AddAuthorizationBuilder()
             .AddPolicy(Constants.Authorization.EditBidconConnectionPolicy, policy =>
             {
@@ -43,40 +37,14 @@ public class BidconAccessModule : IModule
     }
     public void ConfigForEfCore(WebApplicationBuilder builder)
     {
-        builder.Services.AddTransient<IBidconDirectCredentialsService, BidconDirectCredentialsService>();
+        builder.Services.AddTransient<IDirectCredentialsStore, SqlDirectCredentialsStore>();
     }
 
     public void ConfigForMongoDb(WebApplicationBuilder builder, MongoCollectionRegistrar collectionBuilder)
     {
-
+        builder.Services.AddTransient<IDirectCredentialsStore, MongoDirectCredentialsStore>();
     }
 
-    /// <summary>
-    /// Use this when using direct access to DB
-    /// </summary>
-    /// <typeparam name="TImplementation"></typeparam>
-    /// <param name="services"></param>
-    private void UseDirectServices(IServiceCollection services)
-    {
-        services.AddTransient<IBidconDbConnectionstringService, BidconDatabaseConnectionsStringService>();
-        services.AddTransient<IEstimationQueryService, EstimationQueryService>();
-        services.AddTransient<IBidconAccess, BidconDirectDbAccess>();
-    }
-    /// <summary>
-    /// Use this when using SDK access to DB. SDK should be used when client use singel organization with on premis setup.
-    /// </summary>
-    /// <typeparam name="TImplementation"></typeparam>
-    /// <param name="services"></param>
-    private void UseSdkServices(IServiceCollection services)
-    {
-        services.AddTransient<ISdkCredentialsService, SdkCredentialsService>();
-        services.AddScoped<IBidconAccess, BidconSdkAccess>();
-    }
-    private void UseSdkReflectionServices(IServiceCollection services)
-    {
-        services.AddScoped<IBidconAccess, BidconSdkReflectionAccess>();
-        services.AddScoped<IBidconReflectionService, BidconReflectionService>();
-    }
 
     public void OnEfCoreModelCreating(ModelBuilder modelBuilder)
     {

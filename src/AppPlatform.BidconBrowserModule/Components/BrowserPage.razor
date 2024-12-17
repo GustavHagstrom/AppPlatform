@@ -1,6 +1,5 @@
 @page "/bidcon-browser"
-@using Microsoft.AspNetCore.Components.Authorization
-@using MudBlazor.Services
+
 @implements IAsyncDisposable
 
 @inject IStringLocalizer<BrowserPage> Localizer
@@ -74,11 +73,12 @@
     async Task LoadDataAsync()
     {
         var state = await AuthenticationStateProvider.GetAuthenticationStateAsync();
-        if(state.User.Identity?.IsAuthenticated == true)
+        var tenantId = state.User.GetTenantId();
+        if (state.User.Identity?.IsAuthenticated == true && tenantId is not null)
         {
             IsLoading = true;
             StateHasChanged();
-            ItemTree = await BidconBrowserAccesService.GetTreeItemRootAsync(state.User);
+            ItemTree = await BidconBrowserAccesService.GetTreeItemRootAsync(tenantId);
             ItemTree.SelectionChanged = StateHasChanged;
             IsLoading = false;
             StateHasChanged();

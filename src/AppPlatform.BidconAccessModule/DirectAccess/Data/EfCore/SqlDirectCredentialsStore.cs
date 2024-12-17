@@ -1,33 +1,21 @@
 ﻿using AppPlatform.Core.Models;
 using Microsoft.EntityFrameworkCore;
-using System.Security.Claims;
-using AppPlatform.Core.Extensions;
-using AppPlatform.BidconAccessModule.DirectAccess.Services;
 using AppPlatform.Data.EfCore;
+using AppPlatform.BidconAccessModule.DirectAccess.Data.Abstractions;
 
-namespace AppPlatform.BidconAccessModule.Services;
+namespace AppPlatform.BidconAccessModule.DirectAccess.Data.EfCore;
 
-public class BidconDirectCredentialsService(IDbContextFactory<ApplicationDbContext> ContextFactory) : IBidconDirectCredentialsService
+public class SqlDirectCredentialsStore(IDbContextFactory<ApplicationDbContext> ContextFactory) : IDirectCredentialsStore
 {
-    public async Task<BidconAccessCredentials?> GetAsync(ClaimsPrincipal userClaims)
+    public async Task<BidconAccessCredentials?> GetAsync(string tenantId)
     {
-        var tenantId = userClaims.GetTenantId();
-        if (tenantId is null)
-        {
-            return null;
-        }
         var dbContext = ContextFactory.CreateDbContext();
         var result = await dbContext.BidconAccessCredentials.FirstOrDefaultAsync(x => x.TenantId == tenantId);
         return result;
     }
 
-    public async Task UpsertAsync(ClaimsPrincipal userClaims, BidconAccessCredentials credentials)
+    public async Task UpsertAsync(string tenantId, BidconAccessCredentials credentials)
     {
-        var tenantId = userClaims.GetTenantId();
-        if (tenantId is null)
-        {
-            return;
-        }
         credentials.TenantId = tenantId;
         var dbContext = ContextFactory.CreateDbContext();
         var existingCredentials = await dbContext.BidconAccessCredentials

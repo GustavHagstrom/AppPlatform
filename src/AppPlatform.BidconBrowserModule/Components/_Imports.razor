@@ -1,5 +1,6 @@
 ﻿@attribute [Authorize(policy: Constants.Authorization.Policy)]
 
+@using Microsoft.AspNetCore.Components.Authorization
 @using Microsoft.AspNetCore.Authorization
 @using Microsoft.AspNetCore.Components.Web
 @using Microsoft.Extensions.Localization
@@ -7,3 +8,4 @@
 @using AppPlatform.SharedModule.Components
 @using AppPlatform.BidconBrowserModule.Models
 @using AppPlatform.BidconBrowserModule.Services
+@using AppPlatform.Core.Extensions

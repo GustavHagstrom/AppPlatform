@@ -1,17 +1,16 @@
-﻿using AppPlatform.Core.Extensions;
+﻿using AppPlatform.BidconAccessModule.DirectAccess.Data.Abstractions;
 using AppPlatform.Data.EfCore;
 using Microsoft.EntityFrameworkCore;
-using System.Security.Claims;
 
-namespace AppPlatform.BidconAccessModule.DirectAccess.Services;
-public class BidconDatabaseConnectionsStringService(IDbContextFactory<ApplicationDbContext> DbContextFactory) : IBidconDbConnectionstringService
+namespace AppPlatform.BidconAccessModule.DirectAccess.Data.EfCore;
+public class SqlDbConnectionStringStore(IDbContextFactory<ApplicationDbContext> DbContextFactory) : IDbConnectionStringStore
 {
-    public async Task<string> BuildAsync(ClaimsPrincipal userClaims)
+    public async Task<string> BuildAsync(string tenantId)
     {
         using var context = await DbContextFactory.CreateDbContextAsync();
-        var credentials = await context.BidconAccessCredentials.Where(x => x.TenantId == userClaims.GetTenantId()).FirstOrDefaultAsync();
+        var credentials = await context.BidconAccessCredentials.Where(x => x.TenantId == tenantId).FirstOrDefaultAsync();
 
-        if (credentials == null)
+        if (credentials is null)
         {
             throw new Exception("No credentials found for user");
         }

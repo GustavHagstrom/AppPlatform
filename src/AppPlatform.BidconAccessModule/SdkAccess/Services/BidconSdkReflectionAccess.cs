@@ -9,7 +9,7 @@ internal class BidconSdkReflectionAccess(IBidconReflectionService ReflectionServ
 {
     private DatabaseUser? _user = null;
 
-    private async Task<DatabaseUser> LazyUserAsync(ClaimsPrincipal userClaims)
+    private async Task<DatabaseUser> LazyUserAsync(string tenantId)
     {
         if (_user is not null) return _user;
         _user = await Task.Run(ReflectionService.CreateUser);
@@ -17,16 +17,16 @@ internal class BidconSdkReflectionAccess(IBidconReflectionService ReflectionServ
     }
 
 
-    public async Task<Estimation> GetEstimation(string estimationId, ClaimsPrincipal userClaims)
+    public async Task<Estimation> GetEstimation(string estimationId, string tenantId)
     {
-        var user = await LazyUserAsync(userClaims);
+        var user = await LazyUserAsync(tenantId);
         var bEstimation = user.ReadEstimation(estimationId);
         throw new NotImplementedException();
     }
 
-    public async Task<Folder> GetFolderRootAsync(ClaimsPrincipal userClaims)
+    public async Task<Folder> GetFolderRootAsync(string tenantId)
     {
-        var user = await LazyUserAsync(userClaims);
+        var user = await LazyUserAsync(tenantId);
         var dbFolder = await Task.Run(() => user!.ReadEstimations());
         var folder = CreateFolder(dbFolder);
         return folder;

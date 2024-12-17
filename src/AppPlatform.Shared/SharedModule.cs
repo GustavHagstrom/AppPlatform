@@ -35,6 +35,7 @@ public class SharedModule : IModule
         collectionBuilder.Add<MongoEnteties.EstimationView.RoleView>("RoleViews");
         collectionBuilder.Add<MongoEnteties.EstimationView.UserView>("UserViews");
         collectionBuilder.Add<MongoEnteties.EstimationView.View>("Views");
+        collectionBuilder.Add<MongoEnteties.BidconAccessCredentials>("BidconAccessCredentials");
 
 
         builder.Services.AddScoped<IDarkModeStore, MongoDarkModeStore>();

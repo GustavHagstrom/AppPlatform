@@ -12,14 +12,14 @@ internal class BidconDirectDbAccess : IBidconAccess
     {
         _estimationQuery = estimationQuery;
     }
-    public Task<Core.Models.EstimationEnteties.Estimation> GetEstimation(string estimationId, ClaimsPrincipal userClaims)
+    public Task<Core.Models.EstimationEnteties.Estimation> GetEstimation(string estimationId, string tenantId)
     {
         throw new NotImplementedException();
     }
 
-    public async Task<Folder> GetFolderRootAsync(ClaimsPrincipal userClaims)
+    public async Task<Folder> GetFolderRootAsync(string tenantId)
     {
-        var folderBatch = await _estimationQuery.GetFolderBatchAsync(userClaims);
+        var folderBatch = await _estimationQuery.GetFolderBatchAsync(tenantId);
         var folder = CreateFromBatch(folderBatch);
         return folder;
     }

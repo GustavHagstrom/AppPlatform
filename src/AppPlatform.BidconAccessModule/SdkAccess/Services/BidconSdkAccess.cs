@@ -3,17 +3,18 @@ using AppPlatform.Core.Abstractions;
 using BidCon.SDK.Database;
 using System.Security.Claims;
 using AppPlatform.Core.Models.FromShared;
+using AppPlatform.BidconAccessModule.SdkAccess.Data.Abstractions;
 
 namespace AppPlatform.BidconAccessModule.SdkAccess.Services;
 internal class BidconSdkAccess : IBidconAccess
 {
     private readonly DatabaseUser? _user = null;
-    private readonly ISdkCredentialsService _sdkCredentialsService;
+    private readonly ISdkCredentialsStore _sdkCredentialsService;
 
-    private async Task<DatabaseUser> LazyUserAsync(ClaimsPrincipal userClaims)
+    private async Task<DatabaseUser> LazyUserAsync(string tenantId)
     {
         if (_user is not null) return _user;
-        var credentials = await _sdkCredentialsService.GetSdkCredentialsAsync(userClaims);
+        var credentials = await _sdkCredentialsService.GetSdkCredentialsAsync(tenantId);
 
         if (credentials is null) throw new ArgumentNullException("No credentials found");
 
@@ -22,21 +23,21 @@ internal class BidconSdkAccess : IBidconAccess
         var user = await Task.Run(() =>app.Login(credentials.User, credentials.Password));
         return user;
     }
-    public BidconSdkAccess(ISdkCredentialsService sdkCredentialsService)
+    public BidconSdkAccess(ISdkCredentialsStore sdkCredentialsService)
     {
         _sdkCredentialsService = sdkCredentialsService;
     }
 
-    public async Task<Estimation> GetEstimation(string estimationId, ClaimsPrincipal userClaims)
+    public async Task<Estimation> GetEstimation(string estimationId, string tenantId)
     {
-        var user = await LazyUserAsync(userClaims);
+        var user = await LazyUserAsync(tenantId);
         var bEstimation = user.ReadEstimation(estimationId);
         throw new NotImplementedException();
     }
 
-    public async Task<Folder> GetFolderRootAsync(ClaimsPrincipal userClaims)
+    public async Task<Folder> GetFolderRootAsync(string tenantId)
     {
-        var user = await LazyUserAsync(userClaims);
+        var user = await LazyUserAsync(tenantId);
         var dbFolder = await Task.Run(() => user!.ReadEstimations());
         var folder = CreateFolder(dbFolder);
         return folder;
