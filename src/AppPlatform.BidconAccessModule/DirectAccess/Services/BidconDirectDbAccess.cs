@@ -12,7 +12,7 @@ internal class BidconDirectDbAccess : IBidconAccess
     {
         _estimationQuery = estimationQuery;
     }
-    public Task<Core.Models.EstimationEnteties.Estimation> GetEstimation(string estimationId, string tenantId)
+    public Task<Core.Models.EstimationEnteties.Estimation> GetEstimationAsync(string estimationId, string tenantId)
     {
         throw new NotImplementedException();
     }

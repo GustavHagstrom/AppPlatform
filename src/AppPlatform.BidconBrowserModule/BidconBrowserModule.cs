@@ -21,14 +21,12 @@ public class BidconBrowserModule : IModule
     public void GeneralConfig(WebApplicationBuilder builder)
     {
         builder.Services.AddScoped<IBidconBrowserAccesService, BidconBrowserAccesService>();
-        builder.Services.AddAuthorization(configure =>
-        {
-            configure.AddPolicy(Constants.Authorization.Policy, policy =>
+        builder.Services.AddAuthorizationBuilder()
+            .AddPolicy(Constants.Authorization.Policy, policy =>
             {
                 policy.RequireAuthenticatedUser();
                 policy.RequireClaim(SharedApplicationClaimTypes.AccessClaim, Constants.Authorization.AccessClaimValue);
             });
-        });
     }
 
     public void ConfigForEfCore(WebApplicationBuilder builder)
@@ -41,6 +39,6 @@ public class BidconBrowserModule : IModule
     }
     public void ConfigForMongoDb(WebApplicationBuilder builder, MongoCollectionRegistrar collectionBuilder)
     {
-
+        
     }
 }

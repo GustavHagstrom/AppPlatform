@@ -1,0 +1,46 @@
+@page "/bidcon-browser/preview"
+<PageSetupWithNavigation>
+    <NavigationContent>
+        @foreach (var estimation in Estimations)
+        {
+            <div @onclick="x => SelectedEstimation = estimation">
+                @estimation.ToString();
+            </div>
+        }
+    </NavigationContent>
+    <ChildContent>
+        <ViewPreviewer Estimation="SelectedEstimation"/> 
+    </ChildContent>
+</PageSetupWithNavigation>
+
+
+
+
+
+@inject ILocalStorageService LocalStorageService
+@inject IBidconAccess BidconAccess
+@inject AuthenticationStateProvider AuthenticationStateProvider
+@code{
+
+    List<Estimation> Estimations = new();
+    Estimation? SelectedEstimation;
+
+    
+
+    protected override async Task OnInitializedAsync()
+    {
+        var commaSeparatedIds = await LocalStorageService.GetItemAsync(Constants.LocalStorageKeys.SelectedEstimationsIds);
+        var ids = commaSeparatedIds?.Split(',');
+
+        var state = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+        var tenantId = state.User.GetTenantId();
+
+        if (tenantId is null || ids is null) return;
+
+        IEnumerable<Task<Estimation>> tasks = ids.Select(id => BidconAccess.GetEstimationAsync(id, tenantId));
+        var estimations = await Task.WhenAll(tasks);
+        Estimations = estimations.ToList();
+        SelectedEstimation = Estimations.FirstOrDefault();
+
+    }
+}

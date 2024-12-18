@@ -5,6 +5,6 @@ namespace AppPlatform.Core.Abstractions;
 public interface IBidconAccess
 {
     Task<Folder> GetFolderRootAsync(string tenantId);
-    Task<Estimation> GetEstimation(string estimationId, string tenantId);
+    Task<Estimation> GetEstimationAsync(string estimationId, string tenantId);
 
 }

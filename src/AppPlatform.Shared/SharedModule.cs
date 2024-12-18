@@ -24,6 +24,7 @@ public class SharedModule : IModule
     {
         builder.Services.AddScoped<IDarkModeStore, SqlDarkModeStore>();
         builder.Services.AddTransient<IAccessClaimStore, SqlAccessClaimStore>();
+        builder.Services.AddScoped<IViewAccessStore, SqlViewAccessStore>();
     }
 
     public void ConfigForMongoDb(WebApplicationBuilder builder, MongoCollectionRegistrar collectionBuilder)
@@ -40,6 +41,8 @@ public class SharedModule : IModule
 
         builder.Services.AddScoped<IDarkModeStore, MongoDarkModeStore>();
         builder.Services.AddTransient<IAccessClaimStore, MongoAccessClaimStore>();
+        builder.Services.AddScoped<IViewAccessStore, MongoViewAccessStore>();
+
     }
 
     public void GeneralConfig(WebApplicationBuilder builder)

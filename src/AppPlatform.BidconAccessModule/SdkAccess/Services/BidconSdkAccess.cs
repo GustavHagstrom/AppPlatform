@@ -28,7 +28,7 @@ internal class BidconSdkAccess : IBidconAccess
         _sdkCredentialsService = sdkCredentialsService;
     }
 
-    public async Task<Estimation> GetEstimation(string estimationId, string tenantId)
+    public async Task<Estimation> GetEstimationAsync(string estimationId, string tenantId)
     {
         var user = await LazyUserAsync(tenantId);
         var bEstimation = user.ReadEstimation(estimationId);
