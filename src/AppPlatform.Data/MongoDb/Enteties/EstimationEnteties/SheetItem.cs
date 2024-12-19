@@ -25,27 +25,9 @@ public class SheetItem
     /// <summary>
     /// Is null for all RowTypes but LayerdItems
     /// </summary>
-    public double? LayerItemUnitCost { get; set; }
+    public double? CostBearerUnitCost { get; set; }
     /// <summary>
     /// Is null for all RowTypes but LayerdItems
     /// </summary>
-    public double? LayerItemUnitAskingPrice { get; set; }
-
-
-    [NotMapped]
-    public double? UnitCost => RowType == (int)Core.Enums.BidconAccess.RowType.LayeredItem ? LayerItemUnitCost : Children.Sum(x => x.TotalCost);
-    [NotMapped]
-    public double? TotalCost => UnitCost * (Quantity is null ? 1 : Quantity);
-    [NotMapped]
-    public double? UnitAskingPrice => RowType == (int)Core.Enums.BidconAccess.RowType.LayeredItem ? LayerItemUnitAskingPrice : Children.Sum(x => x.TotalAskingPrice);
-    [NotMapped]
-    public double? TotalAskingPrice => UnitAskingPrice * (Quantity is null ? 1 : Quantity);
-
-    public IEnumerable<SheetItem> AllInOrder
-    {
-        get
-        {
-            return new[] { this }.Concat(Children.SelectMany(x => x.AllInOrder).OrderBy(x => x.Position));
-        }
-    }
+    public double? CostBearerUnitAskingPrice { get; set; }
 }

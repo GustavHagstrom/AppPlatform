@@ -1,5 +1,4 @@
 ﻿using AppPlatform.Data.MongoDb.Enteties.Abstractions;
-using AppPlatform.Data.MongoDb.Enteties.Abstractions;
 using System.ComponentModel.DataAnnotations;
 
 namespace AppPlatform.Data.MongoDb.Enteties.EstimationEnteties;

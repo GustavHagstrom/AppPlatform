@@ -82,11 +82,11 @@ public class Helper(IStringLocalizer<Helper> Localizer)
                                         new SheetItem
                                         {
                                             Description = "Post",
-                                            RowType = (int)RowType.LayeredItem,
+                                            RowType = (int)RowType.CostBearer,
                                             Quantity = 10,
                                             Unit = "st",
-                                            LayerItemUnitCost = 100.55,
-                                            LayerItemUnitAskingPrice = 200.1,
+                                            CostBearerUnitCost = 100.55,
+                                            CostBearerUnitAskingPrice = 200.1,
                                         }
                                     }
                                 }

@@ -38,16 +38,16 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
             .HasKey(uv => new { uv.UserId, uv.ViewId });
 
 
-        modelBuilder.Entity<Estimation>()
-            .HasOne(e => e.NetSheet)
-            .WithOne(si => si.Estimation)
-            .HasForeignKey<Estimation>(e => e.NetSheetId)
-            .OnDelete(DeleteBehavior.Cascade);
-        modelBuilder.Entity<SheetItem>()
-            .HasMany(si => si.Children)
-            .WithOne(si => si.Parent)
-            .HasForeignKey(si => si.ParentId)
-            .OnDelete(DeleteBehavior.Cascade);
+        //modelBuilder.Entity<Estimation>()
+        //    .HasOne(e => e.NetSheet)
+        //    .WithOne(si => si.Estimation)
+        //    .HasForeignKey<Estimation>(e => e.NetSheetId)
+        //    .OnDelete(DeleteBehavior.Cascade);
+        //modelBuilder.Entity<SheetItem>()
+        //    .HasMany(si => si.Children)
+        //    .WithOne(si => si.Parent)
+        //    .HasForeignKey(si => si.ParentId)
+        //    .OnDelete(DeleteBehavior.Cascade);
 
         //modelBuilder.Entity<SheetCellFormat>()
         //    .HasKey(sc => new { sc.SheetSectionId, sc.ColumnType, sc.RowType});
