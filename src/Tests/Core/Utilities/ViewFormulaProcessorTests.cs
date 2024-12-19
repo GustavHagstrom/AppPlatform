@@ -30,7 +30,7 @@ public class ViewFormulaProcessorTests
             Name = "Name",
             Description = "Description",
             Customer = "Customer",
-            Place = "Place",
+            Location = "Place",
             HandlingOfficer = "HandlingOfficer",
             ConfirmationOfficer = "ConfirmationOfficer",
             TenderTotal = 1000000.49999

@@ -43,7 +43,7 @@
                         int columnCount = 0;
                         @foreach (var column in columns)
                         {
-                            var rowType = RowTypeFromInt(context.SheetItem.RowType);
+                            var rowType = RowTypeFromRowType(context.SheetItem.Type);
                             var styleContainer = CellStyles[Section.CellFormats.First(x => x.RowType == rowType && x.ColumnType == column.ColumnType).Id];
                             columnCount += 1;
                             var isVisible = styleContainer.Format.IsVisible;
@@ -101,11 +101,10 @@
             CellStyles.Add(key, new(style, cellFormat));
         }
     }
-    SheetRowType RowTypeFromInt(int? rowType) => rowType switch
+    SheetRowType RowTypeFromRowType(AppPlatform.Core.Enums.BidconAccess.RowType rowType) => rowType switch
     {
-        (int)AppPlatform.Core.Enums.BidconAccess.RowType.Group => SheetRowType.Group,
-        (int)AppPlatform.Core.Enums.BidconAccess.RowType.Part => SheetRowType.Part,
-        null => SheetRowType.Header,
+        AppPlatform.Core.Enums.BidconAccess.RowType.Group => SheetRowType.Group,
+        AppPlatform.Core.Enums.BidconAccess.RowType.Part => SheetRowType.Part,
         _ => SheetRowType.Post
     };
 }

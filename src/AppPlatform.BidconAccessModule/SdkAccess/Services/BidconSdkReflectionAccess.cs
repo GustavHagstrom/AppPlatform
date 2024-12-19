@@ -3,6 +3,7 @@ using AppPlatform.Core.Abstractions;
 using BidCon.SDK.Database;
 using System.Security.Claims;
 using AppPlatform.Core.Models.FromShared;
+using AppPlatform.BidconAccessModule.SdkAccess.Utilities;
 
 namespace AppPlatform.BidconAccessModule.SdkAccess.Services;
 internal class BidconSdkReflectionAccess(IBidconReflectionService ReflectionService) : IBidconAccess
@@ -21,7 +22,8 @@ internal class BidconSdkReflectionAccess(IBidconReflectionService ReflectionServ
     {
         var user = await LazyUserAsync(tenantId);
         var bEstimation = user.ReadEstimation(estimationId);
-        throw new NotImplementedException();
+        var estimation = EstimationModelBuilder.Build(bEstimation);
+        return estimation;
     }
 
     public async Task<Folder> GetFolderRootAsync(string tenantId)

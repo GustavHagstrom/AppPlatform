@@ -5,5 +5,5 @@ public class Resource
     public double Quantity { get; set; }
     public double UnitCost { get; set; }
     public string? Account { get; set; }
-    public int Type { get; set; }
+    public string ResourceType { get; set; } = string.Empty;
 }

@@ -8,12 +8,12 @@
             @foreach (var estimation in Estimations)
             {
                 <div @onclick="x => SelectedEstimation = estimation">
-                    @estimation.ToString();
+                    @estimation.ToString()
                 </div>
             }
         </NavigationContent>
         <ChildContent>
-            @* <ViewPreviewer Estimation="SelectedEstimation" /> *@
+            <ViewPreviewer Estimation="SelectedEstimation" />
         </ChildContent>
     </PageSetupWithNavigation>
 </div>

@@ -58,23 +58,23 @@ public class Helper(IStringLocalizer<Helper> Localizer)
             Description = "Test",
             HandlingOfficer = "Test",
             Name = "Test",
-            Place = "Test",
+            Location = "Test",
             NetSheet = new SheetItem
             {
                 Description = "Root",
-                RowType = (int)RowType.Group,
+                Type = RowType.Group,
                 Children = new List<SheetItem>
                     {
                         new SheetItem
                         {
                             Description = "Group",
-                            RowType = (int)RowType.Group,
+                            Type = RowType.Group,
                             Children = new List<SheetItem>
                             {
                                 new SheetItem
                                 {
                                     Description = "Part",
-                                    RowType = (int)RowType.Part,
+                                    Type = RowType.Part,
                                     Quantity = 2,
                                     Unit = "st",
                                     Children = new List<SheetItem>
@@ -82,7 +82,7 @@ public class Helper(IStringLocalizer<Helper> Localizer)
                                         new SheetItem
                                         {
                                             Description = "Post",
-                                            RowType = (int)RowType.CostBearer,
+                                            Type = RowType.CostBearer,
                                             Quantity = 10,
                                             Unit = "st",
                                             CostBearerUnitCost = 100.55,

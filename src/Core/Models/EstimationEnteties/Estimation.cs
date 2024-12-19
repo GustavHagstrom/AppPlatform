@@ -9,7 +9,7 @@ public class Estimation : ITenantEntety
     public required string Name { get; set; }
     public string? Description { get; set; }
     public string? Customer { get; set; }
-    public string? Place { get; set; }
+    public string? Location { get; set; }
     public string? HandlingOfficer { get; set; }
     public string? ConfirmationOfficer { get; set; }
     public double? TenderTotal { get; set; }
@@ -22,4 +22,8 @@ public class Estimation : ITenantEntety
     //public ICollection<ISheetItem> LockedStages { get; set; } = new List<ISheetItem>();
 
     //Add support for ATA later?
+    public override string ToString()
+    {
+        return Description is null ? Name : $"{Name} - {Description}";
+    }
 }

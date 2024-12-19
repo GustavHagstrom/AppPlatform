@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using AppPlatform.Core.Enums.BidconAccess;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace AppPlatform.Core.Models.EstimationEnteties;
@@ -10,7 +11,7 @@ public class SheetItem
     public string Description { get; set; } = string.Empty;
     public SheetItem? Parent { get; set; }
     public int Position { get; set; }
-    public int RowType { get; set; }
+    public RowType Type { get; set; }
     public double? Quantity { get; set; }
     public List<SheetItem> Children { get; set; } = new List<SheetItem>();
     public string Remark { get; set; } = string.Empty;
@@ -27,11 +28,11 @@ public class SheetItem
 
 
     [NotMapped]
-    public double? UnitCost => RowType == (int)Enums.BidconAccess.RowType.CostBearer ? CostBearerUnitCost : Children.Sum(x => x.TotalCost);
+    public double? UnitCost => Type == RowType.CostBearer ? CostBearerUnitCost : Children.Sum(x => x.TotalCost);
     [NotMapped]
     public double? TotalCost => UnitCost * (Quantity is null ? 1 : Quantity);
     [NotMapped]
-    public double? UnitAskingPrice => RowType == (int)Enums.BidconAccess.RowType.CostBearer ? CostBearerUnitAskingPrice : Children.Sum(x => x.TotalAskingPrice);
+    public double? UnitAskingPrice => Type == RowType.CostBearer ? CostBearerUnitAskingPrice : Children.Sum(x => x.TotalAskingPrice);
     [NotMapped]
     public double? TotalAskingPrice => UnitAskingPrice * (Quantity is null ? 1 : Quantity);
 
@@ -41,5 +42,9 @@ public class SheetItem
         {
             return new[] { this }.Concat(Children.SelectMany(x => x.AllInOrder).OrderBy(x => x.Position));
         }
+    }
+    public override string ToString()
+    {
+        return Description;
     }
 }

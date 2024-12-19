@@ -12,7 +12,7 @@ public static class ViewFormulaProcessor
         { Placeholders.Estimation.Properties.Name, estimation => estimation.Name },
         { Placeholders.Estimation.Properties.Description, estimation => estimation.Description },
         { Placeholders.Estimation.Properties.Customer, estimation => estimation.Customer },
-        { Placeholders.Estimation.Properties.Place, estimation => estimation.Place },
+        { Placeholders.Estimation.Properties.Place, estimation => estimation.Location },
         { Placeholders.Estimation.Properties.HandlingOfficer, estimation => estimation.HandlingOfficer },
         { Placeholders.Estimation.Properties.ConfirmationOfficer, estimation => estimation.ConfirmationOfficer },
         { Placeholders.Estimation.Properties.TenderTotal, estimation => estimation.TenderTotal?.ToString("N0") }
